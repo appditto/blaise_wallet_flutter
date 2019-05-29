@@ -1,9 +1,0 @@
-// This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/flutter/flutter
-FLUTTER_APPLICATION_PATH=/Users/yekta/blaise_wallet_flutter
-FLUTTER_TARGET=/Users/yekta/blaise_wallet_flutter/lib/main.dart
-FLUTTER_BUILD_DIR=build
-SYMROOT=${SOURCE_ROOT}/../build/ios
-FLUTTER_FRAMEWORK_DIR=/flutter/flutter/bin/cache/artifacts/engine/ios-release
-FLUTTER_BUILD_NAME=1.0.0
-FLUTTER_BUILD_NUMBER=1
