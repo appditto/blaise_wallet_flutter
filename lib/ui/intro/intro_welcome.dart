@@ -27,7 +27,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       Stack(
                         children: <Widget>[
                           Container(
-                            height: 180.0,
+                            height: MediaQuery.of(context).size.width*0.475,
                             decoration: BoxDecoration(
                               // Box decoration takes a gradient
                               gradient: LinearGradient(
