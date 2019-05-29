@@ -102,7 +102,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                    color: Color(0xFCC642).withOpacity(0.75),
+                                    color: Color(0xFCC642).withOpacity(0.6),
                                     offset: Offset(0, 8),
                                     blurRadius: 16,
                                     spreadRadius: -4.0),
