@@ -73,6 +73,8 @@ flutter:
           weight: 300
         - asset: fonts/SourceCodePro-ExtraLight.ttf
           weight: 200
+  assets:
+    - assets/welcome_animation.flr
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
