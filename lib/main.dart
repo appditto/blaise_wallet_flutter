@@ -18,16 +18,16 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(title: 'Blaise'),
       // Routes for the application
       onGenerateRoute: (RouteSettings settings) {
-          switch (settings.name) {
-            case '/intro_welcome':
-              return MaterialPageRoute(
-                builder: (_) => IntroWelcomePage(),
-                settings: settings,
-              );        
-            default:
-              return null;
-          }
-        },
+        switch (settings.name) {
+          case '/intro_welcome':
+            return MaterialPageRoute(
+              builder: (_) => IntroWelcomePage(),
+              settings: settings,
+            );
+          default:
+            return null;
+        }
+      },
     );
   }
 }
@@ -109,7 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.of(context).pushNamed('/intro_welcome');
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
