@@ -20,6 +20,15 @@ class AppStyles {
         color: StateContainer.of(context).curTheme.textLight);
   }
 
+  // For paragraphs
+  static TextStyle paragraph(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w400);
+  }
+
   // Primary Button Text
   static TextStyle buttonPrimary(BuildContext context) {
     return TextStyle(

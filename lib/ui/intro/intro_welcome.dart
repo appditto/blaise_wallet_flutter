@@ -53,7 +53,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 MediaQuery.of(context).size.width * 262 / 400,
                             child: Center(
                               child: FlareActor(
-                                "assets/welcome_animation.flr",
+                                "assets/animation_welcome.flr",
                                 animation: "main",
                                 fit: BoxFit.contain,
                               ),
@@ -70,13 +70,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                             "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
                             maxLines: 4,
                             stepGranularity: 0.1,
-                            style: TextStyle(
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark,
-                                fontSize: 14.0,
-                                height: 1.3,
-                                fontWeight: FontWeight.w400),
+                            style: AppStyles.paragraph(context),
                           ),
                         ),
                       ),

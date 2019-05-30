@@ -5,13 +5,14 @@ import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class IntroNewPrivateKeyPage extends StatefulWidget {
+class IntroBackupConfirmPage extends StatefulWidget {
   @override
-  _IntroNewPrivateKeyPageState createState() => _IntroNewPrivateKeyPageState();
+  _IntroBackupConfirmPageState createState() => _IntroBackupConfirmPageState();
 }
 
-class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
+class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(4, 24, 4, 24),
                               child: AutoSizeText(
-                                "New Private Key",
+                                "Backup Your Key",
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -82,83 +83,23 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                           ],
                         ),
                       ),
+                      // Container for the illustration
+                      Container(
+                        margin: EdgeInsetsDirectional.only(
+                            top: MediaQuery.of(context).size.height * 0.1),
+                        child: SvgPicture.asset(
+                            'assets/illustration_backup.svg',
+                            width: MediaQuery.of(context).size.width / 1.75),
+                      ),
                       //Container for the paragraph
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Below is your new wallet’s private key. It is crucial that you backup your private key and never store it as plaintext or a screenshot. We recommend writing it on a piece of paper and storing it offline.",
+                          "Are you sure that you have backed up your new wallet’s private key?",
                           maxLines: 5,
                           stepGranularity: 0.5,
                           style: AppStyles.paragraph(context),
                         ),
-                      ),
-                      // Container for the seed
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(32, 16, 32, 16),
-                        width: MediaQuery.of(context).size.width - 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
-                        ),
-                        child: AutoSizeText(
-                          "CA02200046B7A086680D208272F6982F574FE226042F30D049F9A226283FC3346506411D",
-                          textAlign: TextAlign.center,
-                          maxLines: 3,
-                          stepGranularity: 0.5,
-                          style: TextStyle(
-                              color:
-                                  StateContainer.of(context).curTheme.primary,
-                              fontSize: 14.0,
-                              height: 1,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'SourceCodePro'),
-                        ),
-                      ),
-                      // Container for the "Copy to Clipboard" button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100.0),
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .backgroundPrimary,
-                              boxShadow: [
-                                StateContainer.of(context)
-                                    .curTheme
-                                    .shadowSecondary,
-                              ],
-                            ),
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                            height: 40,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100.0)),
-                              child: AutoSizeText(
-                                "Copy to Clipboard",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                style: AppStyles.buttonMiniBg(context),
-                              ),
-                              splashColor:
-                                  StateContainer.of(context).curTheme.primary30,
-                              highlightColor:
-                                  StateContainer.of(context).curTheme.primary15,
-                              onPressed: () {
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -170,19 +111,18 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                     // "I've Backed It Up" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(context, AppButtonType.Primary,
-                            "I've Backed It Up", buttonTop: true, onPressed: (){
-                              Navigator.of(context)
-                                    .pushNamed('/intro_backup_confirm');
-                            }),
+                        AppButton.buildAppButton(
+                            context, AppButtonType.Primary, "YES, I'M SURE",
+                            buttonTop: true),
                       ],
                     ),
                     // "Go Back" button
                     Row(
                       children: <Widget>[
                         AppButton.buildAppButton(
-                            context, AppButtonType.PrimaryOutline, "Go Back",
-                            onPressed: () {
+                            context,
+                            AppButtonType.PrimaryOutline,
+                            "NO, GO BACK", onPressed: () {
                           Navigator.pop(context);
                         }),
                       ],

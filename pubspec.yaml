@@ -28,6 +28,9 @@ dependencies:
   # Flare for animations
   flare_flutter: ^1.5.1
 
+  # SVG
+  flutter_svg: ^0.12.4
+  
   # Banner style alerts
   oktoast: ^2.1.7
 
@@ -84,7 +87,8 @@ flutter:
         - asset: fonts/AppIcons.ttf
           weight: 600
   assets:
-    - assets/welcome_animation.flr
+    - assets/animation_welcome.flr
+    - assets/illustration_backup.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

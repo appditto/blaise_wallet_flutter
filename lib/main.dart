@@ -1,5 +1,6 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_new_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
@@ -68,6 +69,11 @@ class _AppState extends State<App> {
             case '/intro_new_private_key':
               return MaterialPageRoute(
                 builder: (_) => IntroNewPrivateKeyPage(),
+                settings: settings,
+              );
+            case '/intro_backup_confirm':
+              return MaterialPageRoute(
+                builder: (_) => IntroBackupConfirmPage(),
                 settings: settings,
               );
             default:
