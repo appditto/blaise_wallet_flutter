@@ -17,7 +17,7 @@ abstract class BaseTheme {
   SystemUiOverlayStyle statusBar;
 }
 
-class BlaiseTheme extends BaseTheme {
+class BlaiseLightTheme extends BaseTheme {
   static const Color orange = Color(0xFFF7941F);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0x00000000);
