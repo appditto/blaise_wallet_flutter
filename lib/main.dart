@@ -1,6 +1,7 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
-import 'package:blaise_wallet_flutter/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/intro/intro_new_private_key.dart';
+import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(StateContainer.of(context).curTheme.statusBar);
     return OKToast(
-      textStyle: AppStyles.textStyleSnackbar(context),
+      textStyle: AppStyles.snackbar(context),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -55,13 +56,18 @@ class _AppState extends State<App> {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/':
-              return NoTransitionRoute(
+              return MaterialPageRoute(
                 builder: (_) => Splash(),
                 settings: settings,
               );
             case '/intro_welcome':
-              return NoTransitionRoute(
+              return MaterialPageRoute(
                 builder: (_) => IntroWelcomePage(),
+                settings: settings,
+              );
+            case '/intro_new_private_key':
+              return MaterialPageRoute(
+                builder: (_) => IntroNewPrivateKeyPage(),
                 settings: settings,
               );
             default:

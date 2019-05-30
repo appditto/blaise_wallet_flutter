@@ -1,4 +1,5 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -101,7 +102,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                             ),
                             margin:
                                 EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                            height: 45,
+                            height: 50,
                             child: FlatButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.0)),
@@ -109,19 +110,14 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 "New Private Key",
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
-                                stepGranularity: 0.5,
-                                style: TextStyle(
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textLight,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
+                                stepGranularity: 0.1,
+                                style: AppStyles.buttonPrimary(context),
                               ),
                               splashColor: StateContainer.of(context).curTheme.backgroundPrimary30,
                               highlightColor: StateContainer.of(context).curTheme.backgroundPrimary15,
                               onPressed: () {
-                                Navigator.pop(context);
-                                return;
+                                Navigator.of(context)
+                                    .pushNamed('/intro_new_private_key');
                               },
                             ),
                           ),
@@ -138,7 +134,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                               16,
                               20,
                               (MediaQuery.of(context).padding.bottom) +
-                                  (20 -
+                                  (24 -
                                       (MediaQuery.of(context).padding.bottom) /
                                           2),
                             ),
@@ -156,7 +152,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                   children: <Widget>[
                                     Container(
                                       width: double.maxFinite,
-                                      height: 45,
+                                      height: 50,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         gradient: StateContainer.of(context)
@@ -166,7 +162,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                     ),
                                     Container(
                                       margin: EdgeInsets.all(2),
-                                      height: 41,
+                                      height: 46,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: StateContainer.of(context)
@@ -181,20 +177,15 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                     borderRadius: BorderRadius.circular(12),
                                     color: Colors.transparent,
                                   ),
-                                  height: 45,
+                                  height: 50,
                                   width: double.maxFinite,
                                   child: FlatButton(
                                     child: AutoSizeText(
                                       "Import Private Key",
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
-                                      stepGranularity: 0.5,
-                                      style: TextStyle(
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .primary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700),
+                                      stepGranularity: 0.1,
+                                      style: AppStyles.buttonOutline(context),
                                     ),
                                     color: Colors.transparent,
                                     splashColor: StateContainer.of(context).curTheme.primary30,
@@ -203,8 +194,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                         borderRadius:
                                             BorderRadius.circular(12.0)),
                                     onPressed: () {
-                                      Navigator.pop(context);
-                                      return;
+                                      return null;
                                     },
                                   ),
                                 ),

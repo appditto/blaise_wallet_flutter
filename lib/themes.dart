@@ -7,6 +7,7 @@ abstract class BaseTheme {
   Color primary50;
   Color primary30;
   Color primary15;
+  Color primary10;
 
   Color secondary;
 
@@ -24,6 +25,8 @@ abstract class BaseTheme {
   Color textDark50;
 
   Color textLight;
+  Color textLight30;
+  Color textLight15;
 
   LinearGradient gradientPrimary;
 
@@ -48,6 +51,7 @@ class BlaiseLightTheme extends BaseTheme {
   Color primary50 = orange.withOpacity(0.5);
   Color primary30 = orange.withOpacity(0.3);
   Color primary15 = orange.withOpacity(0.15);
+  Color primary10 = orange.withOpacity(0.10);
 
   Color secondary = yellow;
 
@@ -65,6 +69,8 @@ class BlaiseLightTheme extends BaseTheme {
   Color textDark50 = grayDark.withOpacity(0.5);
 
   Color textLight = white;
+  Color textLight30 = white.withOpacity(0.3);
+  Color textLight15 = white.withOpacity(0.15);
 
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
@@ -74,13 +80,13 @@ class BlaiseLightTheme extends BaseTheme {
   );
 
   BoxShadow shadowPrimary = BoxShadow(
-      color: orange.withOpacity(0.6),
+      color: orange.withOpacity(0.5),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   
   BoxShadow shadowSecondary = BoxShadow(
-      color: orange.withOpacity(0.3),
+      color: orange.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);

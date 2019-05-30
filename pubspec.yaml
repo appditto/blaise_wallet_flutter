@@ -79,6 +79,10 @@ flutter:
           weight: 300
         - asset: fonts/SourceCodePro-ExtraLight.ttf
           weight: 200
+    - family: AppIcons
+      fonts:
+        - asset: fonts/AppIcons.ttf
+          weight: 600
   assets:
     - assets/welcome_animation.flr
 
