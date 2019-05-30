@@ -9,7 +9,7 @@ class IntroWelcomePage extends StatefulWidget {
 }
 
 class _IntroWelcomePageState extends State<IntroWelcomePage> {
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

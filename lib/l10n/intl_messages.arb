@@ -1,0 +1,9 @@
+{
+  "@@last_modified": "2019-05-29T19:56:56.121956",
+  "translatableString": "Hi, I'm a translatable string",
+  "@translatableString": {
+    "description": "sample",
+    "type": "text",
+    "placeholders": {}
+  }
+}
