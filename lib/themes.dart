@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 
 abstract class BaseTheme {
   Color primary;
+  Color primary60;
+  Color primary50;
+  Color primary30;
 
   Color secondary;
 
@@ -10,13 +13,20 @@ abstract class BaseTheme {
 
   Color danger;
 
-  Color background;
-  Color backgroundTwo;
+  Color backgroundPrimary;
+
+  Color backgroundSecondary;
 
   Color textDark;
+  Color textDark50;
+
   Color textLight;
 
-  LinearGradient gradientMain;
+  LinearGradient gradientPrimary;
+
+  BoxShadow shadowPrimary;
+
+  BoxShadow shadowSecondary;
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
@@ -31,6 +41,9 @@ class BlaiseLightTheme extends BaseTheme {
   static const Color grayDark = Color(0xFF6B6C71);
 
   Color primary = orange;
+  Color primary60 = orange.withOpacity(0.6);
+  Color primary50 = orange.withOpacity(0.5);
+  Color primary30 = orange.withOpacity(0.3);
 
   Color secondary = yellow;
 
@@ -38,20 +51,33 @@ class BlaiseLightTheme extends BaseTheme {
 
   Color danger = red;
 
-  Color background = white;
-  Color backgroundTwo = white;
+  Color backgroundPrimary = white;
+
+  Color backgroundSecondary = white;
 
   Color textDark = grayDark;
+  Color textDark50 = grayDark.withOpacity(0.5);
+
   Color textLight = white;
 
-  LinearGradient gradientMain = LinearGradient(
-    // Where the linear gradient begins and ends
+  LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
-    // Add one stop for each color. Stops should increase from 0 to 1
     stops: [0.0, 1],
     colors: [orange, yellow],
   );
+
+  BoxShadow shadowPrimary = BoxShadow(
+      color: orange.withOpacity(0.6),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowSecondary = BoxShadow(
+      color: orange.withOpacity(0.3),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
 
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =

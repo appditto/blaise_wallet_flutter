@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/unicorn_outline_button.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:flutter/material.dart';
@@ -24,29 +25,25 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      // A stack for background gradient and the animation
                       Stack(
                         children: <Widget>[
                           Container(
-                            height: (MediaQuery.of(context).padding.top+(MediaQuery.of(context).size.width * 262/400)) - (MediaQuery.of(context).size.width*160/400),
+                            height: (MediaQuery.of(context).padding.top +
+                                    (MediaQuery.of(context).size.width *
+                                        262 /
+                                        400)) -
+                                (MediaQuery.of(context).size.width * 160 / 400),
                             decoration: BoxDecoration(
-                              // Box decoration takes a gradient
-                              gradient: LinearGradient(
-                                // Where the linear gradient begins and ends
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                // Add one stop for each color. Stops should increase from 0 to 1
-                                stops: [0.0, 1],
-                                colors: [
-                                  // Colors are easy thanks to Flutter's Colors class.
-                                  Color(0xFFF7941F),
-                                  Color(0xFFFCC642),
-                                ],
-                              ),
+                              gradient: StateContainer.of(context)
+                                  .curTheme
+                                  .gradientPrimary,
                             ),
                           ),
                           //Container for the animation
                           Container(
-                            margin: EdgeInsetsDirectional.only(top: MediaQuery.of(context).padding.top),
+                            margin: EdgeInsetsDirectional.only(
+                                top: MediaQuery.of(context).padding.top),
                             //Width/Height ratio for the animation is needed because BoxFit is not working as expected
                             width: double.infinity,
                             height:
@@ -70,7 +67,8 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                           maxLines: 4,
                           stepGranularity: 0.5,
                           style: TextStyle(
-                              color: Color(0xFF6B6C71),
+                              color:
+                                  StateContainer.of(context).curTheme.textDark,
                               fontSize: 14.0,
                               fontWeight: FontWeight.w400),
                         ),
@@ -88,24 +86,13 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12.0),
-                              gradient: LinearGradient(
-                                // Where the linear gradient begins and ends
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                // Add one stop for each color. Stops should increase from 0 to 1
-                                stops: [0.0, 1],
-                                colors: [
-                                  // Colors are easy thanks to Flutter's Colors class.
-                                  Color(0xFFF7941F),
-                                  Color(0xFFFCC642),
-                                ],
-                              ),
+                              gradient: StateContainer.of(context)
+                                  .curTheme
+                                  .gradientPrimary,
                               boxShadow: [
-                                BoxShadow(
-                                    color: Color(0xFCC642).withOpacity(0.6),
-                                    offset: Offset(0, 8),
-                                    blurRadius: 16,
-                                    spreadRadius: -4.0),
+                                StateContainer.of(context)
+                                    .curTheme
+                                    .shadowPrimary,
                               ],
                             ),
                             margin:
@@ -120,7 +107,9 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 maxLines: 1,
                                 stepGranularity: 0.5,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .textLight,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700),
                               ),
@@ -139,24 +128,13 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              gradient: LinearGradient(
-                                // Where the linear gradient begins and ends
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                // Add one stop for each color. Stops should increase from 0 to 1
-                                stops: [0.0, 1],
-                                colors: [
-                                  // Colors are easy thanks to Flutter's Colors class.
-                                  Color(0xFFFFFFFF),
-                                  Color(0xFFFFFFFF),
-                                ],
-                              ),
+                              gradient: StateContainer.of(context)
+                                  .curTheme
+                                  .gradientPrimary,
                               boxShadow: [
-                                BoxShadow(
-                                    color: Color(0xFCC642).withOpacity(0.3),
-                                    offset: Offset(0, 8),
-                                    blurRadius: 16,
-                                    spreadRadius: -4.0),
+                                StateContainer.of(context)
+                                    .curTheme
+                                    .shadowSecondary,
                               ],
                             ),
                             margin:
@@ -171,15 +149,15 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 maxLines: 1,
                                 stepGranularity: 0.5,
                                 style: TextStyle(
-                                    color: Color(0xFFF7941F),
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700),
                               ),
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFF7941F), Color(0xFFFCC642)],
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                              ),
+                              gradient: StateContainer.of(context)
+                                  .curTheme
+                                  .gradientPrimary,
                               onPressed: () {
                                 Navigator.pop(context);
                                 return;

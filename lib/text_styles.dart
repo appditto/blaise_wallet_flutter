@@ -8,7 +8,7 @@ class AppStyles {
       fontFamily: "Metropolis",
       fontSize: AppFontSizes.small,
       fontWeight: FontWeight.w700,
-      color: StateContainer.of(context).curTheme.background);
+      color: StateContainer.of(context).curTheme.backgroundPrimary);
   }
 }
 
