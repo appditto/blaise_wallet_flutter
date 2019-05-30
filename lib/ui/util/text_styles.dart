@@ -29,7 +29,7 @@ class AppStyles {
   }
 
   // Outline Button Text
-  static TextStyle buttonOutline(BuildContext context) {
+  static TextStyle buttonPrimaryOutline(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 18,

@@ -1,6 +1,7 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -87,121 +88,16 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                     // "New Private Key" button 
                     Row(
                       children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.0),
-                              gradient: StateContainer.of(context)
-                                  .curTheme
-                                  .gradientPrimary,
-                              boxShadow: [
-                                StateContainer.of(context)
-                                    .curTheme
-                                    .shadowPrimary,
-                              ],
-                            ),
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                            height: 50,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
-                              child: AutoSizeText(
-                                "New Private Key",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                style: AppStyles.buttonPrimary(context),
-                              ),
-                              splashColor: StateContainer.of(context).curTheme.backgroundPrimary30,
-                              highlightColor: StateContainer.of(context).curTheme.backgroundPrimary15,
-                              onPressed: () {
-                                Navigator.of(context)
+                        AppButton.buildAppButton(context, AppButtonType.Primary, "New Private Key", buttonTop: true, onPressed: (){
+                          Navigator.of(context)
                                     .pushNamed('/intro_new_private_key');
-                              },
-                            ),
-                          ),
-                        ),
+                        }),
                       ],
                     ),
                     // "Import Private Key" button 
                     Row(
                       children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsetsDirectional.fromSTEB(
-                              20,
-                              16,
-                              20,
-                              (MediaQuery.of(context).padding.bottom) +
-                                  (24 -
-                                      (MediaQuery.of(context).padding.bottom) /
-                                          2),
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                StateContainer.of(context)
-                                    .curTheme
-                                    .shadowSecondary,
-                              ],
-                            ),
-                            child: Stack(
-                              children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      width: double.maxFinite,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        gradient: StateContainer.of(context)
-                                            .curTheme
-                                            .gradientPrimary,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.all(2),
-                                      height: 46,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .backgroundPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.transparent,
-                                  ),
-                                  height: 50,
-                                  width: double.maxFinite,
-                                  child: FlatButton(
-                                    child: AutoSizeText(
-                                      "Import Private Key",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      stepGranularity: 0.1,
-                                      style: AppStyles.buttonOutline(context),
-                                    ),
-                                    color: Colors.transparent,
-                                    splashColor: StateContainer.of(context).curTheme.primary30,
-                                    highlightColor: StateContainer.of(context).curTheme.primary15,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0)),
-                                    onPressed: () {
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        AppButton.buildAppButton(context, AppButtonType.PrimaryOutline, "Import Private Key"),
                       ],
                     ),
                   ],

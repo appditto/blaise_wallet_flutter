@@ -2,6 +2,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -128,12 +129,17 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100.0),
-                              color: StateContainer.of(context).curTheme.backgroundPrimary,
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .backgroundPrimary,
                               boxShadow: [
-                                StateContainer.of(context).curTheme.shadowSecondary,
+                                StateContainer.of(context)
+                                    .curTheme
+                                    .shadowSecondary,
                               ],
                             ),
-                            margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
                             height: 40,
                             child: FlatButton(
                               shape: RoundedRectangleBorder(
@@ -145,12 +151,10 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                                 stepGranularity: 0.1,
                                 style: AppStyles.buttonMiniBg(context),
                               ),
-                              splashColor: StateContainer.of(context)
-                                  .curTheme
-                                  .primary30,
-                              highlightColor: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15,
+                              splashColor:
+                                  StateContainer.of(context).curTheme.primary30,
+                              highlightColor:
+                                  StateContainer.of(context).curTheme.primary15,
                               onPressed: () {
                                 return null;
                               },
@@ -165,131 +169,21 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                 //A column with "New Private Key" and "Import Private Key" buttons
                 Column(
                   children: <Widget>[
-                    // "New Private Key" button
+                    // "I've Backed It Up" button
                     Row(
                       children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.0),
-                              gradient: StateContainer.of(context)
-                                  .curTheme
-                                  .gradientPrimary,
-                              boxShadow: [
-                                StateContainer.of(context)
-                                    .curTheme
-                                    .shadowPrimary,
-                              ],
-                            ),
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                            height: 50,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
-                              child: AutoSizeText(
-                                "I've Backed It Up",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                style: AppStyles.buttonPrimary(context),
-                              ),
-                              splashColor: StateContainer.of(context)
-                                  .curTheme
-                                  .backgroundPrimary30,
-                              highlightColor: StateContainer.of(context)
-                                  .curTheme
-                                  .backgroundPrimary15,
-                              onPressed: () {
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
+                        AppButton.buildAppButton(context, AppButtonType.Primary,
+                            "I've Backed It Up", buttonTop: true),
                       ],
                     ),
-                    // "Import Private Key" button
+                    // "Go Back" button
                     Row(
                       children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsetsDirectional.fromSTEB(
-                              20,
-                              16,
-                              20,
-                              (MediaQuery.of(context).padding.bottom) +
-                                  (24 -
-                                      (MediaQuery.of(context).padding.bottom) /
-                                          2),
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                StateContainer.of(context)
-                                    .curTheme
-                                    .shadowSecondary,
-                              ],
-                            ),
-                            child: Stack(
-                              children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      width: double.maxFinite,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        gradient: StateContainer.of(context)
-                                            .curTheme
-                                            .gradientPrimary,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.all(2),
-                                      height: 46,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .backgroundPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.transparent,
-                                  ),
-                                  height: 50,
-                                  width: double.maxFinite,
-                                  child: FlatButton(
-                                    child: AutoSizeText(
-                                      "Go Back",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      stepGranularity: 0.1,
-                                      style: AppStyles.buttonOutline(context),
-                                    ),
-                                    color: Colors.transparent,
-                                    splashColor: StateContainer.of(context)
-                                        .curTheme
-                                        .primary30,
-                                    highlightColor: StateContainer.of(context)
-                                        .curTheme
-                                        .primary15,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0)),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        AppButton.buildAppButton(
+                            context, AppButtonType.PrimaryOutline, "Go Back",
+                            onPressed: () {
+                          Navigator.pop(context);
+                        }),
                       ],
                     ),
                   ],
