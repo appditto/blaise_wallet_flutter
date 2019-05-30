@@ -27,7 +27,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       Stack(
                         children: <Widget>[
                           Container(
-                            height: MediaQuery.of(context).size.width*0.475,
+                            height: (MediaQuery.of(context).padding.top+(MediaQuery.of(context).size.width * 262/400)) - (MediaQuery.of(context).size.width*160/400),
                             decoration: BoxDecoration(
                               // Box decoration takes a gradient
                               gradient: LinearGradient(
@@ -46,11 +46,11 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                           ),
                           //Container for the animation
                           Container(
-                            margin: EdgeInsetsDirectional.only(top: 20),
+                            margin: EdgeInsetsDirectional.only(top: MediaQuery.of(context).padding.top),
                             //Width/Height ratio for the animation is needed because BoxFit is not working as expected
                             width: double.infinity,
                             height:
-                                MediaQuery.of(context).size.width * 250 / 400,
+                                MediaQuery.of(context).size.width * 262 / 400,
                             child: Center(
                               child: FlareActor(
                                 "assets/welcome_animation.flr",
