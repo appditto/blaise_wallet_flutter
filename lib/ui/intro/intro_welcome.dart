@@ -66,7 +66,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                           child: AutoSizeText(
                             "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
                             maxLines: 4,
-                            stepGranularity: 0.5,
+                            stepGranularity: 0.1,
                             style: TextStyle(
                                 color: StateContainer.of(context)
                                     .curTheme

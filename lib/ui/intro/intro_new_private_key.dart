@@ -65,7 +65,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                                       size: 24)),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width - 94,
+                              width: MediaQuery.of(context).size.width - 100,
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(4, 24, 4, 24),
                               child: AutoSizeText(
@@ -83,7 +83,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
                           "Below is your new wallet’s private key. It is crucial that you backup your private key and never store it as plaintext or a screenshot. We recommend writing it on a piece of paper and storing it offline.",
-                          maxLines: 4,
+                          maxLines: 5,
                           stepGranularity: 0.5,
                           style: TextStyle(
                               color:
@@ -96,7 +96,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                       // Container for the seed
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                        padding: EdgeInsetsDirectional.fromSTEB(32, 16, 32, 16),
                         width: MediaQuery.of(context).size.width - 60,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -127,17 +127,17 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                         children: <Widget>[
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.0),
+                              borderRadius: BorderRadius.circular(100.0),
                               color: StateContainer.of(context).curTheme.backgroundPrimary,
                               boxShadow: [
                                 StateContainer.of(context).curTheme.shadowSecondary,
                               ],
                             ),
                             margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                            height: 30,
+                            height: 40,
                             child: FlatButton(
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
+                                  borderRadius: BorderRadius.circular(100.0)),
                               child: AutoSizeText(
                                 "Copy to Clipboard",
                                 textAlign: TextAlign.center,
