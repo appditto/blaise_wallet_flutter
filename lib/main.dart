@@ -4,6 +4,7 @@ import 'package:blaise_wallet_flutter/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
@@ -80,16 +81,23 @@ class Splash extends StatefulWidget {
 }
 
 class SplashState extends State<Splash> with WidgetsBindingObserver {
+  bool _hasCheckedLoggedIn;
   Future checkLoggedIn() async {
-    Navigator.of(context).pushReplacementNamed('/intro_welcome');
+    if (!_hasCheckedLoggedIn) {
+      _hasCheckedLoggedIn = true;
+      Navigator.of(context).pushReplacementNamed('/intro_welcome');
+    }
   }
 
 
   @override
   void initState() {
     super.initState();
-    checkLoggedIn();
     WidgetsBinding.instance.addObserver(this);
+    _hasCheckedLoggedIn = false;
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+          SchedulerBinding.instance.addPostFrameCallback((_) => checkLoggedIn());
+    }
   }
 
   @override
