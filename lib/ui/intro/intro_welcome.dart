@@ -1,5 +1,4 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/unicorn_outline_button.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -33,7 +32,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                     (MediaQuery.of(context).size.width *
                                         262 /
                                         400)) -
-                                (MediaQuery.of(context).size.width * 160 / 400),
+                                (MediaQuery.of(context).size.width * 80 / 400),
                             decoration: BoxDecoration(
                               gradient: StateContainer.of(context)
                                   .curTheme
@@ -59,18 +58,23 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                         ],
                       ),
                       //Container for the paragraph
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 90),
-                        child: AutoSizeText(
-                          "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
-                          maxLines: 4,
-                          stepGranularity: 0.5,
-                          style: TextStyle(
-                              color:
-                                  StateContainer.of(context).curTheme.textDark,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment(0, -0.2),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 30),
+                          child: AutoSizeText(
+                            "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
+                            maxLines: 4,
+                            stepGranularity: 0.5,
+                            style: TextStyle(
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark,
+                                fontSize: 14.0,
+                                height: 1.3,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     ],
@@ -128,21 +132,27 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              gradient: StateContainer.of(context)
+                              color: StateContainer.of(context)
                                   .curTheme
-                                  .gradientPrimary,
+                                  .backgroundPrimary,
                               boxShadow: [
                                 StateContainer.of(context)
                                     .curTheme
                                     .shadowSecondary,
                               ],
                             ),
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(20, 16, 20, 20),
+                            margin: EdgeInsetsDirectional.fromSTEB(
+                                20,
+                                16,
+                                20,
+                                (MediaQuery.of(context).padding.bottom) +
+                                    (20 -
+                                        (MediaQuery.of(context)
+                                                .padding
+                                                .bottom) /
+                                            2)),
                             height: 45,
-                            child: UnicornOutlineButton(
-                              strokeWidth: 2.0,
-                              radius: 12,
+                            child: FlatButton(
                               child: AutoSizeText(
                                 "Import Private Key",
                                 textAlign: TextAlign.center,
@@ -155,9 +165,8 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700),
                               ),
-                              gradient: StateContainer.of(context)
-                                  .curTheme
-                                  .gradientPrimary,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0)),
                               onPressed: () {
                                 Navigator.pop(context);
                                 return;

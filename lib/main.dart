@@ -34,15 +34,15 @@ class _AppState extends State<App> {
     SystemChrome.setSystemUIOverlayStyle(StateContainer.of(context).curTheme.statusBar);
     return OKToast(
       textStyle: AppStyles.textStyleSnackbar(context),
-      backgroundColor: StateContainer.of(context).curTheme.background,
+      backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Blaise',
         theme: ThemeData(
-          dialogBackgroundColor: StateContainer.of(context).curTheme.background,
+          dialogBackgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
           primaryColor: StateContainer.of(context).curTheme.primary,
           accentColor: StateContainer.of(context).curTheme.primary,
-          backgroundColor: StateContainer.of(context).curTheme.background,
+          backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
           fontFamily: 'Metropolis',
           brightness: StateContainer.of(context).curTheme.brightness,
         ),
@@ -138,7 +138,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: StateContainer.of(context).curTheme.background,
+      backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
     );
   }
 }
