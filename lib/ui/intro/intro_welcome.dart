@@ -83,6 +83,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                 //A column with "New Private Key" and "Import Private Key" buttons
                 Column(
                   children: <Widget>[
+                    // "New Private Key" button 
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -127,6 +128,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                         ),
                       ],
                     ),
+                    // "Import Private Key" button 
                     Row(
                       children: <Widget>[
                         Expanded(
