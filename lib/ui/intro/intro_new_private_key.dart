@@ -15,6 +15,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    // The main scaffold that holds everything
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       key: _scaffoldKey,
@@ -38,6 +39,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                               .curTheme
                               .gradientPrimary,
                         ),
+                        // Row for back button and the header
                         child: Row(
                           children: <Widget>[
                             // Back Button
@@ -65,6 +67,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                                           .textLight,
                                       size: 24)),
                             ),
+                            // The header
                             Container(
                               width: MediaQuery.of(context).size.width - 100,
                               margin:

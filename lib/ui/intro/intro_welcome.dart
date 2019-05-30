@@ -14,6 +14,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    // The main scaffold that holds everything
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       key: _scaffoldKey,
@@ -29,6 +30,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       // A stack for background gradient and the animation
                       Stack(
                         children: <Widget>[
+                          // Container for the gradient background
                           Container(
                             height: (MediaQuery.of(context).padding.top +
                                     (MediaQuery.of(context).size.width *
