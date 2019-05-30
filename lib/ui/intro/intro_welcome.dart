@@ -61,8 +61,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       Expanded(
                         child: Container(
                           alignment: Alignment(0, -0.2),
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 30),
+                          margin: EdgeInsets.symmetric(horizontal: 30),
                           child: AutoSizeText(
                             "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
                             maxLines: 4,
@@ -117,6 +116,8 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700),
                               ),
+                              splashColor: StateContainer.of(context).curTheme.backgroundPrimary30,
+                              highlightColor: StateContainer.of(context).curTheme.backgroundPrimary15,
                               onPressed: () {
                                 Navigator.pop(context);
                                 return;
@@ -130,47 +131,82 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       children: <Widget>[
                         Expanded(
                           child: Container(
+                            margin: EdgeInsetsDirectional.fromSTEB(
+                              20,
+                              16,
+                              20,
+                              (MediaQuery.of(context).padding.bottom) +
+                                  (20 -
+                                      (MediaQuery.of(context).padding.bottom) /
+                                          2),
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .backgroundPrimary,
                               boxShadow: [
                                 StateContainer.of(context)
                                     .curTheme
                                     .shadowSecondary,
                               ],
                             ),
-                            margin: EdgeInsetsDirectional.fromSTEB(
-                                20,
-                                16,
-                                20,
-                                (MediaQuery.of(context).padding.bottom) +
-                                    (20 -
-                                        (MediaQuery.of(context)
-                                                .padding
-                                                .bottom) /
-                                            2)),
-                            height: 45,
-                            child: FlatButton(
-                              child: AutoSizeText(
-                                "Import Private Key",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                stepGranularity: 0.5,
-                                style: TextStyle(
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .primary,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                return;
-                              },
+                            child: Stack(
+                              children: <Widget>[
+                                Stack(
+                                  children: <Widget>[
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient: StateContainer.of(context)
+                                            .curTheme
+                                            .gradientPrimary,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(2),
+                                      height: 41,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .backgroundPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.transparent,
+                                  ),
+                                  height: 45,
+                                  width: double.maxFinite,
+                                  child: FlatButton(
+                                    child: AutoSizeText(
+                                      "Import Private Key",
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      stepGranularity: 0.5,
+                                      style: TextStyle(
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .primary,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    color: Colors.transparent,
+                                    splashColor: StateContainer.of(context).curTheme.primary30,
+                                    highlightColor: StateContainer.of(context).curTheme.primary15,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      return;
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

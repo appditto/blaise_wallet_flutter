@@ -6,6 +6,7 @@ abstract class BaseTheme {
   Color primary60;
   Color primary50;
   Color primary30;
+  Color primary15;
 
   Color secondary;
 
@@ -14,6 +15,8 @@ abstract class BaseTheme {
   Color danger;
 
   Color backgroundPrimary;
+  Color backgroundPrimary30;
+  Color backgroundPrimary15;
 
   Color backgroundSecondary;
 
@@ -44,6 +47,7 @@ class BlaiseLightTheme extends BaseTheme {
   Color primary60 = orange.withOpacity(0.6);
   Color primary50 = orange.withOpacity(0.5);
   Color primary30 = orange.withOpacity(0.3);
+  Color primary15 = orange.withOpacity(0.15);
 
   Color secondary = yellow;
 
@@ -52,6 +56,8 @@ class BlaiseLightTheme extends BaseTheme {
   Color danger = red;
 
   Color backgroundPrimary = white;
+  Color backgroundPrimary30 = white.withOpacity(0.3);
+  Color backgroundPrimary15 = white.withOpacity(0.15);
 
   Color backgroundSecondary = white;
 
