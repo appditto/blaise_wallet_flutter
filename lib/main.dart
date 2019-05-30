@@ -41,7 +41,7 @@ class _AppState extends State<App> {
         theme: ThemeData(
           dialogBackgroundColor: StateContainer.of(context).curTheme.background,
           primaryColor: StateContainer.of(context).curTheme.primary,
-          accentColor: StateContainer.of(context).curTheme.primary60,
+          accentColor: StateContainer.of(context).curTheme.primary,
           backgroundColor: StateContainer.of(context).curTheme.background,
           fontFamily: 'Metropolis',
           brightness: StateContainer.of(context).curTheme.brightness,

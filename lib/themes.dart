@@ -4,37 +4,80 @@ import 'package:flutter/services.dart';
 abstract class BaseTheme {
   Color primary;
   Color primary60;
+  Color primary50;
+  Color primary30;
+
+  Color secondary;
 
   Color success;
-  Color success60;
 
-  Color background;
-  Color background60;
+  Color danger;
 
-  Color text;
-  
+  Color backgroundPrimary;
+
+  Color backgroundSecondary;
+
+  Color textDark;
+  Color textDark50;
+
+  Color textLight;
+
+  LinearGradient gradientPrimary;
+
+  BoxShadow shadowPrimary;
+
+  BoxShadow shadowSecondary;
+
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
 }
 
 class BlaiseLightTheme extends BaseTheme {
   static const Color orange = Color(0xFFF7941F);
+  static const Color yellow = Color(0xFFFCC642);
+  static const Color teal = Color(0xFF00C5C3);
+  static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color black = Color(0x00000000);
+  static const Color grayDark = Color(0xFF6B6C71);
 
   Color primary = orange;
   Color primary60 = orange.withOpacity(0.6);
+  Color primary50 = orange.withOpacity(0.5);
+  Color primary30 = orange.withOpacity(0.3);
 
-  Color success = white;
-  Color success60 = white.withOpacity(0.6);
+  Color secondary = yellow;
 
-  Color successDark = white;
-  Color successDark30 = white.withOpacity(0.3);
+  Color success = teal;
 
-  Color background = white;
-  Color background60 = white.withOpacity(0.4);
+  Color danger = red;
 
-  Color text = black.withOpacity(0.9);
+  Color backgroundPrimary = white;
+
+  Color backgroundSecondary = white;
+
+  Color textDark = grayDark;
+  Color textDark50 = grayDark.withOpacity(0.5);
+
+  Color textLight = white;
+
+  LinearGradient gradientPrimary = LinearGradient(
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+    stops: [0.0, 1],
+    colors: [orange, yellow],
+  );
+
+  BoxShadow shadowPrimary = BoxShadow(
+      color: orange.withOpacity(0.6),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowSecondary = BoxShadow(
+      color: orange.withOpacity(0.3),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
 
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =
