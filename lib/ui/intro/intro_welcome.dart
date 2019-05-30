@@ -16,7 +16,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
               children: <Widget>[
