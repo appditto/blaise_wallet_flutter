@@ -141,7 +141,8 @@ class _IntroDecryptAndImportPrivateKeyPageState extends State<IntroDecryptAndImp
                           text: "Import",
                           buttonTop: true,
                           onPressed: () {
-                            return null;
+                            Navigator.of(context)
+                                .pushNamed('/accounts');
                           },
                         ),
                       ],

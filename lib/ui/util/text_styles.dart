@@ -27,6 +27,27 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w400);
   }
+  static TextStyle paragraphBig(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 16.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
+  }
+  static TextStyle paragraphTextLightSmall(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textLight,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w300);
+  }
+  static TextStyle paragraphTextLightSmallSemiBold(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textLight,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w600);
+  }
 
   // For text field labels
   static TextStyle textFieldLabel(BuildContext context) {
@@ -88,6 +109,14 @@ class AppStyles {
         color: StateContainer.of(context).curTheme.backgroundPrimary,
         fontSize: 14,
         fontWeight: FontWeight.w600);
+  }
+  // For header pascal icon
+  static TextStyle iconFontTextLightPascal(BuildContext context) {
+    return TextStyle(
+        fontSize: 20,
+        color: StateContainer.of(context).curTheme.textLight,
+        fontFamily: 'AppIcons',
+    );
   }
 }
 

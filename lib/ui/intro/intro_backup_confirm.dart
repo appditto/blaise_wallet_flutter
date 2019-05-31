@@ -90,6 +90,10 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                           type: AppButtonType.Primary,
                           text: "YES, I'M SURE",
                           buttonTop: true,
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed('/accounts');
+                          },
                         ),
                       ],
                     ),

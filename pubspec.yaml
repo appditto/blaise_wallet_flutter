@@ -89,6 +89,7 @@ flutter:
   assets:
     - assets/animation_welcome.flr
     - assets/illustration_backup.svg
+    - assets/illustration_new_wallet.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -41,6 +41,10 @@ abstract class BaseTheme {
 
   BoxShadow shadowTextDark;
 
+  BoxShadow shadowMainCard;
+
+  BoxShadow shadowBottomBar;
+
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
 }
@@ -112,6 +116,18 @@ class BlaiseLightTheme extends BaseTheme {
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
+
+  BoxShadow shadowMainCard = BoxShadow(
+      color: grayDark.withOpacity(0.2),
+      offset: Offset(0, 10),
+      blurRadius: 30,
+      spreadRadius: -3.0);
+  
+  BoxShadow shadowBottomBar = BoxShadow(
+      color: grayDark.withOpacity(0.2),
+      offset: Offset(0, -15),
+      blurRadius: 30,
+      spreadRadius: -5.0);
 
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =

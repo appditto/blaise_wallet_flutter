@@ -48,7 +48,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                             margin: EdgeInsetsDirectional.only(
                                 top: MediaQuery.of(context).padding.top),
                             //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                            width: double.infinity,
+                            width: double.maxFinite,
                             height:
                                 MediaQuery.of(context).size.width * 262 / 400,
                             child: Center(
