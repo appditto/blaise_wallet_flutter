@@ -163,7 +163,7 @@ class _IntroAccountsPageState extends State<IntroAccountsPage> {
                                                       .curTheme
                                                       .textLight30,
                                               onPressed: () {
-                                                Navigator.pop(context);
+                                                Navigator.pushNamed(context, '/settings');
                                               },
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -254,6 +254,9 @@ class _IntroAccountsPageState extends State<IntroAccountsPage> {
                                 AppButton(
                                   text: "Get an Account",
                                   type: AppButtonType.Primary,
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
                                 ),
                               ],
                             ),

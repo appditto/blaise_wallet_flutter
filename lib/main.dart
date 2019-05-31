@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_decrypt_and_import_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_import_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_new_private_key.dart';
+import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -50,6 +51,8 @@ class _AppState extends State<App> {
           backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
           fontFamily: 'Metropolis',
           brightness: StateContainer.of(context).curTheme.brightness,
+          splashColor: StateContainer.of(context).curTheme.primary30,
+          highlightColor: StateContainer.of(context).curTheme.primary15,
         ),
         localizationsDelegates: [
           AppLocalizationsDelegate(StateContainer.of(context).curLanguage),
@@ -92,6 +95,11 @@ class _AppState extends State<App> {
             case '/accounts':
               return MaterialPageRoute(
                 builder: (_) => IntroAccountsPage(),
+                settings: settings,
+              );
+            case '/settings':
+              return MaterialPageRoute(
+                builder: (_) => IntroSettingsPage(),
                 settings: settings,
               );
             default:

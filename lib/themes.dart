@@ -27,6 +27,7 @@ abstract class BaseTheme {
 
   Color textDark;
   Color textDark50;
+  Color textDark10;
 
   Color textLight;
   Color textLight30;
@@ -44,6 +45,8 @@ abstract class BaseTheme {
   BoxShadow shadowMainCard;
 
   BoxShadow shadowBottomBar;
+
+  BoxShadow shadowSettingsList;
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
@@ -82,6 +85,7 @@ class BlaiseLightTheme extends BaseTheme {
 
   Color textDark = grayDark;
   Color textDark50 = grayDark.withOpacity(0.5);
+  Color textDark10 = grayDark.withOpacity(0.1);
 
   Color textLight = white;
   Color textLight30 = white.withOpacity(0.3);
@@ -126,6 +130,12 @@ class BlaiseLightTheme extends BaseTheme {
   BoxShadow shadowBottomBar = BoxShadow(
       color: grayDark.withOpacity(0.2),
       offset: Offset(0, -15),
+      blurRadius: 30,
+      spreadRadius: -5.0);
+  
+  BoxShadow shadowSettingsList = BoxShadow(
+      color: grayDark.withOpacity(0.4),
+      offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -5.0);
 

@@ -49,6 +49,30 @@ class AppStyles {
         fontWeight: FontWeight.w600);
   }
 
+  // Settings item header
+  static TextStyle settingsItemHeader(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+  // Settings item subheader
+  static TextStyle settingsItemSubHeader(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w400);
+  }
+  // Settings header
+  static TextStyle settingsHeader(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 16.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
   // For text field labels
   static TextStyle textFieldLabel(BuildContext context) {
     return TextStyle(
