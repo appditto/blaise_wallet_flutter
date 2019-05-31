@@ -12,10 +12,14 @@ abstract class BaseTheme {
   Color secondary;
 
   Color success;
+  Color success30;
+  Color success15;
+  Color success10;
 
   Color danger;
 
   Color backgroundPrimary;
+  Color backgroundPrimary60;
   Color backgroundPrimary30;
   Color backgroundPrimary15;
 
@@ -30,9 +34,12 @@ abstract class BaseTheme {
 
   LinearGradient gradientPrimary;
 
-  BoxShadow shadowPrimary;
+  BoxShadow shadowPrimaryOne;
+  BoxShadow shadowPrimaryTwo;
 
-  BoxShadow shadowSecondary;
+  BoxShadow shadowSucces;
+
+  BoxShadow shadowTextDark;
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
@@ -56,10 +63,14 @@ class BlaiseLightTheme extends BaseTheme {
   Color secondary = yellow;
 
   Color success = teal;
+  Color success30 = teal.withOpacity(0.3);
+  Color success15 = teal.withOpacity(0.15);
+  Color success10 = teal.withOpacity(0.1);
 
   Color danger = red;
 
   Color backgroundPrimary = white;
+  Color backgroundPrimary60 = white.withOpacity(0.6);
   Color backgroundPrimary30 = white.withOpacity(0.3);
   Color backgroundPrimary15 = white.withOpacity(0.15);
 
@@ -79,14 +90,25 @@ class BlaiseLightTheme extends BaseTheme {
     colors: [orange, yellow],
   );
 
-  BoxShadow shadowPrimary = BoxShadow(
+  BoxShadow shadowPrimaryOne = BoxShadow(
       color: orange.withOpacity(0.5),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
-  
-  BoxShadow shadowSecondary = BoxShadow(
+  BoxShadow shadowPrimaryTwo = BoxShadow(
       color: orange.withOpacity(0.25),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
+  BoxShadow shadowSuccess = BoxShadow(
+      color: teal.withOpacity(0.25),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowTextDark = BoxShadow(
+      color: grayDark.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
