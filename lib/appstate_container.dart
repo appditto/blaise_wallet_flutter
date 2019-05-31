@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const List<String> PREACHED_SVG_ASSETS = [
-  'assets/illustration_backup.svg'
+  'assets/illustration_backup.svg',
+  'assets/illustration_new_wallet.svg'
 ];
 
 class _InheritedStateContainer extends InheritedWidget {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -11,6 +13,23 @@ class IntroSettingsPage extends StatefulWidget {
 }
 
 class _IntroSettingsPageState extends State<IntroSettingsPage> {
+  showOverlay(BuildContext context) async {
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              color: StateContainer.of(context).curTheme.overlay20,
+            ),
+          ),
+    );
+    overlayState.insert(overlayEntry);
+    await Future.delayed(Duration(seconds: 3));
+    overlayEntry.remove();
+  }
+
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -135,6 +154,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               header: "Currency",
                               subheader: "\$ US Dollar",
                               icon: AppIcons.currency,
+                              onPressed: () {
+                                showOverlay(context);
+                              },
                             ),
                             Container(
                               width: double.maxFinite,

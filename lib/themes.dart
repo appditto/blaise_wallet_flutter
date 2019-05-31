@@ -33,6 +33,8 @@ abstract class BaseTheme {
   Color textLight30;
   Color textLight15;
 
+  Color overlay20;
+
   LinearGradient gradientPrimary;
 
   BoxShadow shadowPrimaryOne;
@@ -59,6 +61,7 @@ class BlaiseLightTheme extends BaseTheme {
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
   static const Color grayDark = Color(0xFF6B6C71);
+  static const Color black = Color(0xFF000000);
 
   Color primary = orange;
   Color primary60 = orange.withOpacity(0.6);
@@ -90,6 +93,8 @@ class BlaiseLightTheme extends BaseTheme {
   Color textLight = white;
   Color textLight30 = white.withOpacity(0.3);
   Color textLight15 = white.withOpacity(0.15);
+
+  Color overlay20 = black.withOpacity(0.2);
 
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
