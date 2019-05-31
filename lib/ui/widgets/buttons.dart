@@ -33,6 +33,16 @@ class _AppButtonState extends State<AppButton> {
   Widget build(BuildContext context) {
     return Expanded(
         child: Container(
+      margin: widget.buttonTop
+          ? EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0)
+          : EdgeInsetsDirectional.fromSTEB(
+              20,
+              16,
+              20,
+              (MediaQuery.of(context).padding.bottom) +
+                  (24 - (MediaQuery.of(context).padding.bottom) / 2),
+            ),
+      height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         gradient: (widget.type == AppButtonType.Primary ||
@@ -47,16 +57,6 @@ class _AppButtonState extends State<AppButton> {
               : StateContainer.of(context).curTheme.shadowPrimaryTwo,
         ],
       ),
-      margin: widget.buttonTop
-          ? EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0)
-          : EdgeInsetsDirectional.fromSTEB(
-              20,
-              16,
-              20,
-              (MediaQuery.of(context).padding.bottom) +
-                  (24 - (MediaQuery.of(context).padding.bottom) / 2),
-            ),
-      height: 50,
       child: widget.type == AppButtonType.Primary
           // Primary Button
           ? FlatButton(
@@ -79,7 +79,7 @@ class _AppButtonState extends State<AppButton> {
                 return;
               },
             )
-          // Outlined Button
+          // Primary Outlined Button
           : Stack(
               children: <Widget>[
                 Container(
@@ -92,12 +92,12 @@ class _AppButtonState extends State<AppButton> {
                   ),
                 ),
                 Container(
+                  height: 50,
+                  width: double.maxFinite,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.transparent,
                   ),
-                  height: 50,
-                  width: double.maxFinite,
                   child: FlatButton(
                     child: AutoSizeText(
                       widget.text,
