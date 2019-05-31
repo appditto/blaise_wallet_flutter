@@ -105,6 +105,9 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                   highlightColor: StateContainer.of(context)
                                       .curTheme
                                       .primary15,
+                                  textSelectionColor: StateContainer.of(context)
+                                      .curTheme
+                                      .primary30,
                                 ),
                                 child: TextField(
                                   style: AppStyles.privateKeyPrimary(context),
@@ -120,78 +123,100 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                   minLines: 1,
                                   decoration: InputDecoration(
                                     suffixIcon: Container(
+                                      width: 72,
                                       height: 30,
-                                      width: 70,
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: <Widget>[
                                           Container(
-                                            height: 30,
                                             width: 30,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              gradient:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .gradientPrimary,
-                                            ),
-                                            child: FlatButton(
-                                              padding: EdgeInsets.all(0),
-                                              shape: CircleBorder(),
-                                              onPressed: () {
-                                                return null;
-                                              },
-                                              splashColor:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .backgroundPrimary30,
-                                              highlightColor:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .backgroundPrimary15,
-                                              child: Icon(
-                                                AppIcons.scan,
-                                                size: 18,
-                                                color:
-                                                    StateContainer.of(context)
+                                            height: 30,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    gradient: StateContainer.of(
+                                                            context)
                                                         .curTheme
-                                                        .backgroundPrimary,
-                                              ),
+                                                        .gradientPrimary,
+                                                  ),
+                                                  child: FlatButton(
+                                                    padding: EdgeInsets.all(0),
+                                                    shape: CircleBorder(),
+                                                    onPressed: () {
+                                                      return null;
+                                                    },
+                                                    splashColor: StateContainer
+                                                            .of(context)
+                                                        .curTheme
+                                                        .backgroundPrimary30,
+                                                    highlightColor:
+                                                        StateContainer.of(
+                                                                context)
+                                                            .curTheme
+                                                            .backgroundPrimary15,
+                                                    child: Icon(
+                                                      AppIcons.scan,
+                                                      size: 18,
+                                                      color: StateContainer.of(
+                                                              context)
+                                                          .curTheme
+                                                          .backgroundPrimary,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsetsDirectional.only(
-                                                start: 10),
-                                            height: 30,
+                                            margin: EdgeInsetsDirectional.only(start: 12),
                                             width: 30,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              gradient:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .gradientPrimary,
-                                            ),
-                                            child: FlatButton(
-                                              padding: EdgeInsets.all(0),
-                                              shape: CircleBorder(),
-                                              onPressed: () {
-                                                return null;
-                                              },
-                                              splashColor:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .backgroundPrimary30,
-                                              highlightColor:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .backgroundPrimary15,
-                                              child: Icon(
-                                                AppIcons.paste,
-                                                size: 18,
-                                                color:
-                                                    StateContainer.of(context)
+                                            height: 30,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    gradient: StateContainer.of(
+                                                            context)
                                                         .curTheme
-                                                        .backgroundPrimary,
-                                              ),
+                                                        .gradientPrimary,
+                                                  ),
+                                                  child: FlatButton(
+                                                    padding: EdgeInsets.all(0),
+                                                    shape: CircleBorder(),
+                                                    onPressed: () {
+                                                      return null;
+                                                    },
+                                                    splashColor: StateContainer
+                                                            .of(context)
+                                                        .curTheme
+                                                        .backgroundPrimary30,
+                                                    highlightColor:
+                                                        StateContainer.of(
+                                                                context)
+                                                            .curTheme
+                                                            .backgroundPrimary15,
+                                                    child: Icon(
+                                                      AppIcons.paste,
+                                                      size: 18,
+                                                      color: StateContainer.of(
+                                                              context)
+                                                          .curTheme
+                                                          .backgroundPrimary,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
