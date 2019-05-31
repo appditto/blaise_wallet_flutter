@@ -14,7 +14,6 @@ class AppStyles {
   // For headers
   static TextStyle header(BuildContext context) {
     return TextStyle(
-        fontFamily: "Metropolis",
         fontSize: AppFontSizes.largest,
         fontWeight: FontWeight.w700,
         color: StateContainer.of(context).curTheme.textLight);
@@ -27,6 +26,16 @@ class AppStyles {
         fontSize: 14.0,
         height: 1.3,
         fontWeight: FontWeight.w400);
+  }
+
+  // For text field labels
+  static TextStyle textFieldLabel(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontFamily: 'Metropolis',
+        fontSize: 16.0,
+        height: 1.3,
+        fontWeight: FontWeight.w600);
   }
 
   // For primary Private Key

@@ -42,40 +42,15 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                         // Row for back button and the header
                         child: Row(
                           children: <Widget>[
-                            // Back Button
-                            Container(
-                              margin: EdgeInsetsDirectional.only(start: 10),
-                              height: 50,
-                              width: 50,
-                              child: FlatButton(
-                                  highlightColor: StateContainer.of(context)
-                                      .curTheme
-                                      .textLight15,
-                                  splashColor: StateContainer.of(context)
-                                      .curTheme
-                                      .textLight30,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(50.0)),
-                                  padding: EdgeInsets.all(0.0),
-                                  child: Icon(AppIcons.back,
-                                      color: StateContainer.of(context)
-                                          .curTheme
-                                          .textLight,
-                                      size: 24)),
-                            ),
                             // The header
                             Container(
-                              width: MediaQuery.of(context).size.width - 100,
+                              width: MediaQuery.of(context).size.width - 60,
                               margin:
-                                  EdgeInsetsDirectional.fromSTEB(4, 24, 4, 24),
+                                  EdgeInsetsDirectional.fromSTEB(30, 24, 30, 24),
                               child: AutoSizeText(
-                                "Backup Your Key",
+                                "Backup Your Key!",
                                 style: AppStyles.header(context),
-                                maxLines: 1,
+                                maxLines: 3,
                                 stepGranularity: 0.1,
                               ),
                             ),
@@ -92,11 +67,12 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                       ),
                       //Container for the paragraph
                       Container(
+                        alignment: Alignment(-1, 0),
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
                           "Are you sure that you have backed up your new wallet’s private key?",
                           maxLines: 5,
-                          stepGranularity: 0.5,
+                          stepGranularity: 0.1,
                           style: AppStyles.paragraph(context),
                         ),
                       ),

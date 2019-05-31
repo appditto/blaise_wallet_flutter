@@ -64,7 +64,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       //Container for the paragraph
                       Expanded(
                         child: Container(
-                          alignment: Alignment(0, -0.2),
+                          alignment: Alignment(-1, -0.2),
                           margin: EdgeInsets.symmetric(horizontal: 30),
                           child: AutoSizeText(
                             "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
@@ -99,7 +99,10 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       children: <Widget>[
                         AppButton(
                           type: AppButtonType.PrimaryOutline,
-                          text: "Import Private Key"
+                          text: "Import Private Key",
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/intro_import_private_key');
+                          },
                         ),
                       ],
                     ),
