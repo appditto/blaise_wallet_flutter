@@ -80,7 +80,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                   ),
                 ),
 
-                //A column with "New Private Key" and "Import Private Key" buttons
+                //A column with "I've Backed It Up" and "No, Go Back" buttons
                 Column(
                   children: <Widget>[
                     // "I've Backed It Up" button
@@ -93,7 +93,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                         ),
                       ],
                     ),
-                    // "Go Back" button
+                    // "No, Go Back" button
                     Row(
                       children: <Widget>[
                         AppButton(

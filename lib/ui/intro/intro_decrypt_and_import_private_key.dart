@@ -7,13 +7,13 @@ import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
-class IntroImportPrivateKeyPage extends StatefulWidget {
+class IntroDecryptAndImportPrivateKeyPage extends StatefulWidget {
   @override
-  _IntroImportPrivateKeyPageState createState() =>
-      _IntroImportPrivateKeyPageState();
+  _IntroDecryptAndImportPrivateKeyPageState createState() =>
+      _IntroDecryptAndImportPrivateKeyPageState();
 }
 
-class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
+class _IntroDecryptAndImportPrivateKeyPageState extends State<IntroDecryptAndImportPrivateKeyPage> {
   bool _keyCopied;
   Timer _keyCopiedTimer;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -58,7 +58,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                               margin: EdgeInsetsDirectional.fromSTEB(
                                   30, 24, 30, 24),
                               child: AutoSizeText(
-                                "Import Private Key",
+                                "Decrypt & Import",
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -72,8 +72,8 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         alignment: Alignment(-1, 0),
                         child: AutoSizeText(
-                          "Enter your private key below.",
-                          maxLines: 2,
+                          "This looks like an encrypted private key, please enter the password to decrypt and import it.",
+                          maxLines: 3,
                           stepGranularity: 0.1,
                           style: AppStyles.paragraph(context),
                         ),
@@ -86,7 +86,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                             Container(
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                'Private Key',
+                                'Password',
                                 style: AppStyles.textFieldLabel(context),
                               ),
                             ),
@@ -121,96 +121,6 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                   textInputAction: TextInputAction.done,
                                   maxLines: null,
                                   minLines: 1,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Container(
-                                      width: 88,
-                                      height: 38,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          Container(
-                                            width: 38,
-                                            height: 38,
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                gradient: StateContainer.of(
-                                                        context)
-                                                    .curTheme
-                                                    .gradientPrimary,
-                                              ),
-                                              child: FlatButton(
-                                                padding: EdgeInsets.all(0),
-                                                shape: CircleBorder(),
-                                                onPressed: () {
-                                                  return null;
-                                                },
-                                                splashColor: StateContainer
-                                                        .of(context)
-                                                    .curTheme
-                                                    .backgroundPrimary30,
-                                                highlightColor:
-                                                    StateContainer.of(
-                                                            context)
-                                                        .curTheme
-                                                        .backgroundPrimary15,
-                                                child: Icon(
-                                                  AppIcons.scan,
-                                                  size: 22,
-                                                  color: StateContainer.of(
-                                                          context)
-                                                      .curTheme
-                                                      .backgroundPrimary,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsetsDirectional.only(start: 12),
-                                            width: 38,
-                                            height: 38,
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                gradient: StateContainer.of(
-                                                        context)
-                                                    .curTheme
-                                                    .gradientPrimary,
-                                              ),
-                                              child: FlatButton(
-                                                padding: EdgeInsets.all(0),
-                                                shape: CircleBorder(),
-                                                onPressed: () {
-                                                  return null;
-                                                },
-                                                splashColor: StateContainer
-                                                        .of(context)
-                                                    .curTheme
-                                                    .backgroundPrimary30,
-                                                highlightColor:
-                                                    StateContainer.of(
-                                                            context)
-                                                        .curTheme
-                                                        .backgroundPrimary15,
-                                                child: Icon(
-                                                  AppIcons.paste,
-                                                  size: 22,
-                                                  color: StateContainer.of(
-                                                          context)
-                                                      .curTheme
-                                                      .backgroundPrimary,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
                                 ),
                               ),
                             ),
@@ -232,8 +142,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                           text: "Import",
                           buttonTop: true,
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/intro_decrypt_and_import_private_key');
+                            return null;
                           },
                         ),
                       ],
