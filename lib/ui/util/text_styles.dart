@@ -27,6 +27,7 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w400);
   }
+
   static TextStyle paragraphBig(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textDark,
@@ -34,6 +35,7 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w500);
   }
+
   static TextStyle paragraphTextLightSmall(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textLight,
@@ -41,6 +43,7 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w300);
   }
+
   static TextStyle paragraphTextLightSmallSemiBold(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textLight,
@@ -57,6 +60,7 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w700);
   }
+
   // Settings item subheader
   static TextStyle settingsItemSubHeader(BuildContext context) {
     return TextStyle(
@@ -65,6 +69,7 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w400);
   }
+
   // Settings header
   static TextStyle settingsHeader(BuildContext context) {
     return TextStyle(
@@ -73,6 +78,26 @@ class AppStyles {
         height: 1.3,
         fontWeight: FontWeight.w700);
   }
+
+  // Contacts item name
+  static TextStyle contactsItemName(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 16.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
+  // Contacts item addree
+  static TextStyle contactsItemAddress(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'SourceCodePro',
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w400);
+  }
+
   // For text field labels
   static TextStyle textFieldLabel(BuildContext context) {
     return TextStyle(
@@ -134,12 +159,13 @@ class AppStyles {
         fontSize: 14,
         fontWeight: FontWeight.w600);
   }
+
   // For header pascal icon
   static TextStyle iconFontTextLightPascal(BuildContext context) {
     return TextStyle(
-        fontSize: 20,
-        color: StateContainer.of(context).curTheme.textLight,
-        fontFamily: 'AppIcons',
+      fontSize: 20,
+      color: StateContainer.of(context).curTheme.textLight,
+      fontFamily: 'AppIcons',
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_decrypt_and_import_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_import_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_new_private_key.dart';
+import 'package:blaise_wallet_flutter/ui/settings/contacts.dart';
 import 'package:blaise_wallet_flutter/ui/settings/security.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -106,6 +107,11 @@ class _AppState extends State<App> {
             case '/security':
               return MaterialPageRoute(
                 builder: (_) => IntroSecurityPage(),
+                settings: settings,
+              );
+            case '/contacts':
+              return MaterialPageRoute(
+                builder: (_) => IntroContactsPage(),
                 settings: settings,
               );
             default:

@@ -73,8 +73,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                           // The header
                           Container(
                             width: MediaQuery.of(context).size.width - 100,
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(4, 0, 24, 0),
+                            margin: EdgeInsetsDirectional.fromSTEB(4, 0, 24, 0),
                             child: AutoSizeText(
                               "Settings",
                               style: AppStyles.header(context),
@@ -107,7 +106,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                         ),
                         // Settings List
                         child: ListView(
-                          padding: EdgeInsetsDirectional.only(bottom: MediaQuery.of(context).padding.bottom+12),
+                          padding: EdgeInsetsDirectional.only(
+                              bottom:
+                                  MediaQuery.of(context).padding.bottom + 12),
                           children: <Widget>[
                             // Preferences text
                             Container(
@@ -169,7 +170,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                             SettingsListItem(
                               header: "Security",
                               icon: AppIcons.security,
-                              onPressed: (){
+                              onPressed: () {
                                 Navigator.pushNamed(context, '/security');
                               },
                             ),
@@ -202,6 +203,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                             SettingsListItem(
                               header: "Contacts",
                               icon: AppIcons.contacts,
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/contacts');
+                              },
                             ),
                             Container(
                               width: double.maxFinite,

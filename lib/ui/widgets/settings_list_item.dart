@@ -8,16 +8,23 @@ import 'package:flutter/material.dart';
 class SettingsListItem extends StatefulWidget {
   final String header;
   final String subheader;
+  final String contactName;
+  final String contactAddress;
   final IconData icon;
   final Function onPressed;
+  final bool contact;
   final bool disabled;
 
-  SettingsListItem(
-      {@required this.header,
-      @required this.icon,
-      this.subheader,
-      this.onPressed,
-      this.disabled = false});
+  SettingsListItem({
+    this.header,
+    this.subheader,
+    this.icon,
+    this.contactName,
+    this.contactAddress,
+    this.onPressed,
+    this.disabled = false,
+    this.contact = false,
+  });
 
   _SettingsListItemState createState() => _SettingsListItemState();
 }
@@ -37,45 +44,73 @@ class _SettingsListItemState extends State<SettingsListItem> {
           return;
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              child: Icon(widget.icon,
-                  size: 24, color: StateContainer.of(context).curTheme.primary),
-            ),
-            Container(
-              margin: EdgeInsetsDirectional.only(start: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: widget.contact
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width - 130,
+                    width: MediaQuery.of(context).size.width/2,
                     child: AutoSizeText(
-                      widget.header,
-                      style: AppStyles.settingsItemHeader(context),
+                      widget.contactName,
+                      style: AppStyles.contactsItemName(context),
                       maxLines: 1,
                       stepGranularity: 0.1,
                     ),
                   ),
-                  widget.subheader == null
-                      ? SizedBox()
-                      : Container(
+                  Container(
+                    width: MediaQuery.of(context).size.width/2-80,
+                    alignment: Alignment(1, 0),
+                    child: AutoSizeText(
+                      widget.contactAddress,
+                      style: AppStyles.contactsItemAddress(context),
+                      maxLines: 1,
+                      stepGranularity: 0.1,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Icon(widget.icon,
+                        size: 24,
+                        color: StateContainer.of(context).curTheme.primary),
+                  ),
+                  Container(
+                    margin: EdgeInsetsDirectional.only(start: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
                           width: MediaQuery.of(context).size.width - 130,
                           child: AutoSizeText(
-                            widget.subheader,
-                            style: AppStyles.settingsItemSubHeader(context),
+                            widget.header,
+                            style: AppStyles.settingsItemHeader(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
                           ),
                         ),
+                        widget.subheader == null
+                            ? SizedBox()
+                            : Container(
+                                width: MediaQuery.of(context).size.width - 130,
+                                child: AutoSizeText(
+                                  widget.subheader,
+                                  style:
+                                      AppStyles.settingsItemSubHeader(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
