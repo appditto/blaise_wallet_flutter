@@ -118,7 +118,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                         ),
                         // Settings List
                         child: ListView(
-                          padding: EdgeInsetsDirectional.only(bottom: MediaQuery.of(context).padding.bottom+5),
+                          padding: EdgeInsetsDirectional.only(bottom: MediaQuery.of(context).padding.bottom+12),
                           children: <Widget>[
                             // Preferences text
                             Container(
