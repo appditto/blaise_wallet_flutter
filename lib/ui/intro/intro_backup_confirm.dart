@@ -3,9 +3,8 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class IntroBackupConfirmPage extends StatefulWidget {
   @override
@@ -87,8 +86,8 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                       Container(
                         margin: EdgeInsetsDirectional.only(
                             top: MediaQuery.of(context).size.height * 0.1),
-                        child: SvgPicture.asset(
-                            'assets/illustration_backup.svg',
+                        child: SvgRepaintAsset(
+                            asset: 'assets/illustration_backup.svg',
                             width: MediaQuery.of(context).size.width / 1.75),
                       ),
                       //Container for the paragraph

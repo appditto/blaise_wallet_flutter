@@ -2,6 +2,11 @@ import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+const List<String> PREACHED_SVG_ASSETS = [
+  'assets/illustration_backup.svg'
+];
 
 class _InheritedStateContainer extends InheritedWidget {
    // Data is your entire state. In our case just 'User' 
@@ -50,9 +55,19 @@ class StateContainerState extends State<StateContainer> {
   BaseTheme curTheme = BlaiseLightTheme();
   LanguageSetting curLanguage = LanguageSetting(AvailableLanguage.DEFAULT);
 
+  Future<void> _precacheSvgs() async {
+    PREACHED_SVG_ASSETS.forEach((asset) {
+      precachePicture(ExactAssetPicture(
+        SvgPicture.svgStringDecoder,
+        asset
+      ), context);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _precacheSvgs();
   }
 
   @override
