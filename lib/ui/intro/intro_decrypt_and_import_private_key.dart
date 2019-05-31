@@ -110,14 +110,13 @@ class _IntroDecryptAndImportPrivateKeyPageState extends State<IntroDecryptAndImp
                                       .primary30,
                                 ),
                                 child: TextField(
+                                  obscureText: true,
                                   style: AppStyles.privateKeyPrimary(context),
                                   cursorColor: StateContainer.of(context)
                                       .curTheme
                                       .primary,
                                   keyboardType: TextInputType.text,
                                   autocorrect: false,
-                                  textCapitalization:
-                                      TextCapitalization.characters,
                                   textInputAction: TextInputAction.done,
                                   maxLines: null,
                                   minLines: 1,
