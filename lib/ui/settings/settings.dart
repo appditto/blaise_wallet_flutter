@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
 
 class IntroSettingsPage extends StatefulWidget {
@@ -134,11 +135,86 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                                     Container(
                                       alignment: Alignment(-1, 0),
                                       margin: EdgeInsetsDirectional.only(
-                                            start: 24, end: 24, top: 16, bottom: 8),
+                                          start: 24,
+                                          end: 24,
+                                          top: 16,
+                                          bottom: 8),
                                       child: AutoSizeText(
                                         "Preferences",
-                                        style: AppStyles.settingsHeader(
-                                            context),
+                                        style:
+                                            AppStyles.settingsHeader(context),
+                                        maxLines: 1,
+                                        stepGranularity: 0.1,
+                                      ),
+                                    ),
+                                    // Divider
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                    ),
+                                    // List Items
+                                    SettingsListItem(
+                                      header: "Currency",
+                                      subheader: "\$ US Dollar",
+                                      icon: AppIcons.currency,
+                                    ),
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                    ),
+                                    SettingsListItem(
+                                      header: "Language",
+                                      subheader: "System Default",
+                                      icon: AppIcons.language,
+                                    ),
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                    ),
+                                    SettingsListItem(
+                                      header: "Theme",
+                                      subheader: "Light",
+                                      icon: AppIcons.theme,
+                                    ),
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                    ),
+                                    SettingsListItem(
+                                      header: "Security",
+                                      icon: AppIcons.security,
+                                    ),
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                    ),
+                                    // Manage text
+                                    Container(
+                                      alignment: Alignment(-1, 0),
+                                      margin: EdgeInsetsDirectional.only(
+                                          start: 24,
+                                          end: 24,
+                                          top: 16,
+                                          bottom: 8),
+                                      child: AutoSizeText(
+                                        "Manage",
+                                        style:
+                                            AppStyles.settingsHeader(context),
                                         maxLines: 1,
                                         stepGranularity: 0.1,
                                       ),
@@ -146,65 +222,24 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                                     Container(
                                       width: double.maxFinite,
                                       height: 1,
-                                      color: StateContainer.of(context).curTheme.textDark10,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
                                     ),
-                                    // List Item
+                                    SettingsListItem(
+                                      header: "Contacts",
+                                      icon: AppIcons.contacts,
+                                    ),
                                     Container(
                                       width: double.maxFinite,
-                                      height: 68,
-                                      child: FlatButton(
-                                        padding: EdgeInsetsDirectional.only(
-                                            start: 24, end: 24),
-                                        onPressed: () {
-                                          return null;
-                                        },
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Icon(AppIcons.currency,
-                                                  size: 24,
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .primary),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsetsDirectional.only(
-                                                      start: 16),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  AutoSizeText(
-                                                    "Currency",
-                                                    style: AppStyles
-                                                        .settingsItemHeader(
-                                                            context),
-                                                    maxLines: 1,
-                                                    stepGranularity: 0.1,
-                                                  ),
-                                                  AutoSizeText(
-                                                    "\$ US Dollar",
-                                                    style: AppStyles
-                                                        .settingsItemSubHeader(
-                                                            context),
-                                                    maxLines: 1,
-                                                    stepGranularity: 0.1,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      height: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                    ),
+                                    SettingsListItem(
+                                      header: "Backup Private Key",
+                                      icon: AppIcons.backupprivatekey,
                                     ),
                                   ],
                                 ),

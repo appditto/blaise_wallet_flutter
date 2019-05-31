@@ -1,127 +1,79 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:flutter/material.dart';
 
-enum AppButtonType {
-  Primary,
-  PrimaryOutline,
-  Success,
-  SuccessOutline,
-}
-
 /// A widget for displaying a mnemonic phrase
-class AppButton extends StatefulWidget {
-  final AppButtonType type;
-  final String text;
+class SettingsListItem extends StatefulWidget {
+  final String header;
+  final String subheader;
+  final IconData icon;
   final Function onPressed;
   final bool disabled;
-  final bool buttonTop;
 
-  AppButton(
-      {this.type,
-      this.text,
+  SettingsListItem(
+      {@required this.header,
+      @required this.icon,
+      this.subheader = null,
       this.onPressed,
-      this.disabled = false,
-      this.buttonTop = false});
+      this.disabled = false});
 
-  _AppButtonState createState() => _AppButtonState();
+  _SettingsListItemState createState() => _SettingsListItemState();
 }
 
-class _AppButtonState extends State<AppButton> {
+class _SettingsListItemState extends State<SettingsListItem> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Container(
-      margin: widget.buttonTop
-          ? EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0)
-          : EdgeInsetsDirectional.fromSTEB(
-              20,
-              16,
-              20,
-              (MediaQuery.of(context).padding.bottom) +
-                  (24 - (MediaQuery.of(context).padding.bottom) / 2),
+    return Container(
+      width: double.maxFinite,
+      height: 68,
+      child: FlatButton(
+        padding: EdgeInsetsDirectional.only(start: 24, end: 24),
+        onPressed: () {
+          return null;
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: Icon(widget.icon,
+                  size: 24, color: StateContainer.of(context).curTheme.primary),
             ),
-      height: 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        gradient: (widget.type == AppButtonType.Primary ||
-                widget.type == AppButtonType.PrimaryOutline)
-            ? StateContainer.of(context).curTheme.gradientPrimary
-            : StateContainer.of(context)
-                .curTheme
-                .gradientPrimary, // Success color placeholder
-        boxShadow: [
-          widget.type == AppButtonType.Primary
-              ? StateContainer.of(context).curTheme.shadowPrimaryOne
-              : StateContainer.of(context).curTheme.shadowPrimaryTwo,
-        ],
-      ),
-      child: widget.type == AppButtonType.Primary
-          // Primary Button
-          ? FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0)),
-              child: AutoSizeText(
-                widget.text,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                stepGranularity: 0.1,
-                style: AppStyles.buttonPrimary(context),
-              ),
-              splashColor:
-                  StateContainer.of(context).curTheme.backgroundPrimary30,
-              highlightColor: StateContainer.of(context).curTheme.primary15,
-              onPressed: () {
-                if (widget.onPressed != null && !widget.disabled) {
-                  widget.onPressed();
-                }
-                return;
-              },
-            )
-          // Primary Outlined Button
-          : Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(2),
-                  height: 46,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color:
-                        StateContainer.of(context).curTheme.backgroundPrimary,
-                  ),
-                ),
-                Container(
-                  height: 50,
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.transparent,
-                  ),
-                  child: FlatButton(
+            Container(
+              margin: EdgeInsetsDirectional.only(start: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width - 130,
                     child: AutoSizeText(
-                      widget.text,
-                      textAlign: TextAlign.center,
+                      widget.header,
+                      style: AppStyles.settingsItemHeader(context),
                       maxLines: 1,
                       stepGranularity: 0.1,
-                      style: AppStyles.buttonPrimaryOutline(context),
                     ),
-                    color: Colors.transparent,
-                    splashColor: StateContainer.of(context).curTheme.primary30,
-                    highlightColor:
-                        StateContainer.of(context).curTheme.primary15,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    onPressed: () {
-                      if (widget.onPressed != null && !widget.disabled) {
-                        widget.onPressed();
-                      }
-                      return;
-                    },
                   ),
-                ),
-              ],
+                  widget.subheader == null
+                      ? SizedBox()
+                      : Container(
+                          width: MediaQuery.of(context).size.width - 130,
+                          child: AutoSizeText(
+                            widget.subheader,
+                            style: AppStyles.settingsItemSubHeader(context),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
+                          ),
+                        ),
+                ],
+              ),
             ),
-    ));
+          ],
+        ),
+      ),
+    );
   }
 }
