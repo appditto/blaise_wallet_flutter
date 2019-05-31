@@ -29,6 +29,26 @@ class AppStyles {
         fontWeight: FontWeight.w400);
   }
 
+  // For primary Private Key
+  static TextStyle privateKeyPrimary(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        height: 1,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'SourceCodePro');
+  }
+
+  // For success Private Key
+  static TextStyle privateKeySuccess(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.success,
+        fontSize: 14.0,
+        height: 1,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'SourceCodePro');
+  }
+
   // Primary Button Text
   static TextStyle buttonPrimary(BuildContext context) {
     return TextStyle(
@@ -45,10 +65,18 @@ class AppStyles {
         fontWeight: FontWeight.w700);
   }
 
-  // Background Color Mini Button Text
+  // Bg Colored Mini Button Text
   static TextStyle buttonMiniBg(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14,
+        fontWeight: FontWeight.w600);
+  }
+
+  // Success Colored Mini Button Text
+  static TextStyle buttonMiniSuccess(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.backgroundPrimary,
         fontSize: 14,
         fontWeight: FontWeight.w600);
   }

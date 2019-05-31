@@ -81,19 +81,22 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                 //A column with "New Private Key" and "Import Private Key" buttons
                 Column(
                   children: <Widget>[
-                    // "New Private Key" button 
+                    // "New Private Key" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(context, AppButtonType.Primary, "New Private Key", buttonTop: true, onPressed: (){
+                        AppButton.buildAppButton(
+                            context, AppButtonType.Primary, "New Private Key",
+                            buttonTop: true, onPressed: () {
                           Navigator.of(context)
-                                    .pushNamed('/intro_new_private_key');
+                              .pushNamed('/intro_new_private_key');
                         }),
                       ],
                     ),
-                    // "Import Private Key" button 
+                    // "Import Private Key" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(context, AppButtonType.PrimaryOutline, "Import Private Key"),
+                        AppButton.buildAppButton(context,
+                            AppButtonType.PrimaryOutline, "Import Private Key"),
                       ],
                     ),
                   ],

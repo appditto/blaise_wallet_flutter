@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -12,7 +14,15 @@ class IntroNewPrivateKeyPage extends StatefulWidget {
 }
 
 class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
+  bool _keyCopied;
+  Timer _keyCopiedTimer;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    _keyCopied = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
@@ -101,23 +111,25 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                               width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
+                              color: _keyCopied
+                                  ? StateContainer.of(context)
+                                      .curTheme
+                                      .success15
+                                  : StateContainer.of(context)
+                                      .curTheme
+                                      .primary15),
+                          color: _keyCopied
+                              ? StateContainer.of(context).curTheme.success10
+                              : StateContainer.of(context).curTheme.primary10,
                         ),
                         child: AutoSizeText(
                           "CA02200046B7A086680D208272F6982F574FE226042F30D049F9A226283FC3346506411D",
                           textAlign: TextAlign.center,
                           maxLines: 3,
                           stepGranularity: 0.5,
-                          style: TextStyle(
-                              color:
-                                  StateContainer.of(context).curTheme.primary,
-                              fontSize: 14.0,
-                              height: 1,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'SourceCodePro'),
+                          style: _keyCopied
+                              ? AppStyles.privateKeySuccess(context)
+                              : AppStyles.privateKeyPrimary(context),
                         ),
                       ),
                       // Container for the "Copy to Clipboard" button
@@ -127,13 +139,15 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100.0),
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .backgroundPrimary,
+                              color: _keyCopied
+                                  ? StateContainer.of(context).curTheme.success
+                                  : StateContainer.of(context)
+                                      .curTheme
+                                      .backgroundPrimary,
                               boxShadow: [
                                 StateContainer.of(context)
                                     .curTheme
-                                    .shadowSecondary,
+                                    .shadowTextDark,
                               ],
                             ),
                             margin:
@@ -143,18 +157,31 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100.0)),
                               child: AutoSizeText(
-                                "Copy to Clipboard",
+                                _keyCopied ? "Copied" : "Copy",
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 stepGranularity: 0.1,
-                                style: AppStyles.buttonMiniBg(context),
+                                style: _keyCopied
+                                    ? AppStyles.buttonMiniSuccess(context)
+                                    : AppStyles.buttonMiniBg(context),
                               ),
                               splashColor:
-                                  StateContainer.of(context).curTheme.primary30,
+                                  StateContainer.of(context).curTheme.backgroundPrimary60,
                               highlightColor:
-                                  StateContainer.of(context).curTheme.primary15,
+                                  StateContainer.of(context).curTheme.backgroundPrimary30,
                               onPressed: () {
-                                return null;
+                                setState(() {
+                                  _keyCopied = true;
+                                });
+                                if (_keyCopiedTimer != null) {
+                                  _keyCopiedTimer.cancel();
+                                }
+                                _keyCopiedTimer = new Timer(
+                                    const Duration(milliseconds: 1500), () {
+                                  setState(() {
+                                    _keyCopied = false;
+                                  });
+                                });
                               },
                             ),
                           ),
@@ -170,11 +197,12 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                     // "I've Backed It Up" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(context, AppButtonType.Primary,
-                            "I've Backed It Up", buttonTop: true, onPressed: (){
-                              Navigator.of(context)
-                                    .pushNamed('/intro_backup_confirm');
-                            }),
+                        AppButton.buildAppButton(
+                            context, AppButtonType.Primary, "I've Backed It Up",
+                            buttonTop: true, onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed('/intro_backup_confirm');
+                        }),
                       ],
                     ),
                     // "Go Back" button

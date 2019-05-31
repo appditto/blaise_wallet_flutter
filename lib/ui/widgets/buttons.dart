@@ -24,7 +24,7 @@ class AppButton {
               borderRadius: BorderRadius.circular(12.0),
               gradient: StateContainer.of(context).curTheme.gradientPrimary,
               boxShadow: [
-                StateContainer.of(context).curTheme.shadowPrimary,
+                StateContainer.of(context).curTheme.shadowPrimaryOne,
               ],
             ),
             margin: buttonTop
@@ -75,7 +75,7 @@ class AppButton {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
-                StateContainer.of(context).curTheme.shadowSecondary,
+                StateContainer.of(context).curTheme.shadowPrimaryTwo,
               ],
             ),
             child: Stack(
