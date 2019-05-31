@@ -15,7 +15,7 @@ class SettingsListItem extends StatefulWidget {
   SettingsListItem(
       {@required this.header,
       @required this.icon,
-      this.subheader = null,
+      this.subheader,
       this.onPressed,
       this.disabled = false});
 
