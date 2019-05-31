@@ -5,12 +5,12 @@ import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
 
-class IntroSettingsPage extends StatefulWidget {
+class IntroSecurityPage extends StatefulWidget {
   @override
-  _IntroSettingsPageState createState() => _IntroSettingsPageState();
+  _IntroSecurityPageState createState() => _IntroSecurityPageState();
 }
 
-class _IntroSettingsPageState extends State<IntroSettingsPage> {
+class _IntroSecurityPageState extends State<IntroSecurityPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                             margin:
                                 EdgeInsetsDirectional.fromSTEB(4, 0, 24, 0),
                             child: AutoSizeText(
-                              "Settings",
+                              "Security",
                               style: AppStyles.header(context),
                               maxLines: 1,
                               stepGranularity: 0.1,
@@ -131,9 +131,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                             ),
                             // List Items
                             SettingsListItem(
-                              header: "Currency",
-                              subheader: "\$ US Dollar",
-                              icon: AppIcons.currency,
+                              header: "Authentication Method",
+                              subheader: "Biometrics",
+                              icon: AppIcons.fingerprint,
                             ),
                             Container(
                               width: double.maxFinite,
@@ -143,9 +143,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                                   .textDark10,
                             ),
                             SettingsListItem(
-                              header: "Language",
-                              subheader: "System Default",
-                              icon: AppIcons.language,
+                              header: "Authenticate on Launch",
+                              subheader: "Yes",
+                              icon: AppIcons.lock,
                             ),
                             Container(
                               width: double.maxFinite,
@@ -155,86 +155,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                                   .textDark10,
                             ),
                             SettingsListItem(
-                              header: "Theme",
-                              subheader: "Light",
-                              icon: AppIcons.theme,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Security",
-                              icon: AppIcons.security,
-                              onPressed: (){
-                                Navigator.pushNamed(context, '/security');
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            // Manage text
-                            Container(
-                              alignment: Alignment(-1, 0),
-                              margin: EdgeInsetsDirectional.only(
-                                  start: 24, end: 24, top: 16, bottom: 8),
-                              child: AutoSizeText(
-                                "Manage",
-                                style: AppStyles.settingsHeader(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                              ),
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Contacts",
-                              icon: AppIcons.contacts,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Backup Private Key",
-                              icon: AppIcons.backupprivatekey,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Share Blaise",
-                              icon: AppIcons.share,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Logout",
-                              icon: AppIcons.logout,
+                              header: "Automatically Lock",
+                              subheader: "Instantly",
+                              icon: AppIcons.timer,
                             ),
                             Container(
                               width: double.maxFinite,

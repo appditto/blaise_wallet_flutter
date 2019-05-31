@@ -31,7 +31,10 @@ class _SettingsListItemState extends State<SettingsListItem> {
       child: FlatButton(
         padding: EdgeInsetsDirectional.only(start: 24, end: 24),
         onPressed: () {
-          return null;
+          if (widget.onPressed != null && !widget.disabled) {
+            widget.onPressed();
+          }
+          return;
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
         child: Row(
