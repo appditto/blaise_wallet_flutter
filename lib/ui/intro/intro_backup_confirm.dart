@@ -110,20 +110,23 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                     // "I've Backed It Up" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(
-                            context, AppButtonType.Primary, "YES, I'M SURE",
-                            buttonTop: true),
+                        AppButton(
+                          type: AppButtonType.Primary,
+                          text: "YES, I'M SURE",
+                          buttonTop: true,
+                        ),
                       ],
                     ),
                     // "Go Back" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(
-                            context,
-                            AppButtonType.PrimaryOutline,
-                            "NO, GO BACK", onPressed: () {
-                          Navigator.pop(context);
-                        }),
+                        AppButton(
+                          type: AppButtonType.PrimaryOutline,
+                          text: "NO, GO BACK",
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
                       ],
                     ),
                   ],

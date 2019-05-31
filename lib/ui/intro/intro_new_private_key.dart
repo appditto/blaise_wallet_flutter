@@ -6,7 +6,6 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:flare_flutter/flare_actor.dart';
 
 class IntroNewPrivateKeyPage extends StatefulWidget {
   @override
@@ -197,22 +196,27 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                     // "I've Backed It Up" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(
-                            context, AppButtonType.Primary, "I've Backed It Up",
-                            buttonTop: true, onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed('/intro_backup_confirm');
-                        }),
+                        AppButton(
+                          type: AppButtonType.Primary,
+                          text: "I've Backed It Up",
+                          buttonTop: true,
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed('/intro_backup_confirm');                            
+                          },
+                        ),
                       ],
                     ),
                     // "Go Back" button
                     Row(
                       children: <Widget>[
-                        AppButton.buildAppButton(
-                            context, AppButtonType.PrimaryOutline, "Go Back",
-                            onPressed: () {
-                          Navigator.pop(context);
-                        }),
+                        AppButton(
+                          type:AppButtonType.PrimaryOutline,
+                          text: "Go Back",
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
                       ],
                     ),
                   ],
