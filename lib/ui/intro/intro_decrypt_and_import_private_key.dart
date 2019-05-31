@@ -118,7 +118,7 @@ class _IntroDecryptAndImportPrivateKeyPageState extends State<IntroDecryptAndImp
                                   keyboardType: TextInputType.text,
                                   autocorrect: false,
                                   textInputAction: TextInputAction.done,
-                                  maxLines: null,
+                                  maxLines: 1,
                                   minLines: 1,
                                 ),
                               ),
