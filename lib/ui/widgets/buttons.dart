@@ -10,7 +10,7 @@ enum AppButtonType {
   SuccessOutline,
 }
 
-/// A widget for displaying a mnemonic phrase
+/// A widget for buttons
 class AppButton extends StatefulWidget {
   final AppButtonType type;
   final String text;
