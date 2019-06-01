@@ -71,7 +71,7 @@ class _AppButtonState extends State<AppButton> {
               ),
               splashColor:
                   StateContainer.of(context).curTheme.backgroundPrimary30,
-              highlightColor: StateContainer.of(context).curTheme.primary15,
+              highlightColor: StateContainer.of(context).curTheme.backgroundPrimary15,
               onPressed: () {
                 if (widget.onPressed != null && !widget.disabled) {
                   widget.onPressed();

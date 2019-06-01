@@ -237,9 +237,6 @@ class _IntroAccountsPageState extends State<IntroAccountsPage> {
                                 AppButton(
                                   text: "Get an Account",
                                   type: AppButtonType.Primary,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
                                 ),
                               ],
                             ),
