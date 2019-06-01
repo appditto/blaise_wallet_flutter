@@ -38,9 +38,9 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                     ),
                     Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width - 120,
+                        width: MediaQuery.of(context).size.width - 100,
                         constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.6,
+                          maxHeight: MediaQuery.of(context).size.height * 0.5,
                         ),
                         decoration: BoxDecoration(
                           color: StateContainer.of(context)
@@ -58,31 +58,358 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                             ),
                           ],
                         ),
-                        child: Column(
-                          children: <Widget>[
-                            // Header of the modal
-                            Container(
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                gradient: StateContainer.of(context)
-                                    .curTheme
-                                    .gradientPrimary,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    topRight: Radius.circular(12)),
-                              ),
-                              child: Container(
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    24, 16, 24, 16),
-                                child: AutoSizeText(
-                                  "Header",
-                                  style: AppStyles.modalHeader(context),
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              // Header of the modal
+                              Container(
+                                width: double.maxFinite,
+                                decoration: BoxDecoration(
+                                  gradient: StateContainer.of(context)
+                                      .curTheme
+                                      .gradientPrimary,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12)),
+                                ),
+                                child: Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      24, 16, 24, 16),
+                                  child: AutoSizeText(
+                                    "Currency",
+                                    style: AppStyles.modalHeader(context),
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              // Options container
+                              Container(
+                                constraints: BoxConstraints(
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                                0.5 -
+                                            60),
+                                // Options list  
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.all(0),
+                                  children: <Widget>[
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "\$ US Dollar",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "\$ Argentine Peso",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "\$ Australian Dollar",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "R\$ Brazilian Real",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "\$ Canadian Dollar",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "CHF Swiss Franc",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "\$ Chilean Peso",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "¥ Chinese Yuan",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "Kč Czech Koruna",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "kr Danish Krone",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Single Option
+                                    Container(
+                                      width: double.maxFinite,
+                                      height: 50,
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          return null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        child: Container(
+                                          alignment: Alignment(-1, 0),
+                                          margin: EdgeInsetsDirectional.only(
+                                              start: 24, end: 24),
+                                          child: AutoSizeText(
+                                            "€ Euro",
+                                            style:
+                                                AppStyles.paragraphBig(context),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
