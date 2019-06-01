@@ -10,24 +10,21 @@ class AppModal extends StatefulWidget {
   final Function onPressed;
   final bool danger;
 
-  AppModal(
-      {this.header,
-      this.onPressed,
-      this.danger = false});
+  AppModal({this.header, this.onPressed, this.danger = false});
 
   _AppModalState createState() => _AppModalState();
 }
 
 class _AppModalState extends State<AppModal> {
+  OverlayEntry _overlayEntry;
   @override
   Widget build(BuildContext context) {
-    showOverlay(context);
-    return null;
+    this._overlayEntry = this._createOverlayEntry();
+    Overlay.of(context).insert(this._overlayEntry);
+    return Overlay.of(context).build(context);
   }
-  showOverlay(BuildContext context) {
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry;
-    overlayEntry = OverlayEntry(
+  OverlayEntry _createOverlayEntry(){
+    return OverlayEntry(
       builder: (context) => Material(
             color: Colors.transparent,
             child: BackdropFilter(
@@ -43,7 +40,7 @@ class _AppModalState extends State<AppModal> {
                       height: double.maxFinite,
                       child: GestureDetector(
                         onTap: () {
-                          overlayEntry?.remove();
+                          this._overlayEntry.remove();
                         },
                       ),
                     ),
@@ -106,7 +103,8 @@ class _AppModalState extends State<AppModal> {
                                     minHeight: 0),
                                 // Options list
                                 child: ListView(
-                                  padding: EdgeInsetsDirectional.only(top: 8, bottom: 8),
+                                  padding: EdgeInsetsDirectional.only(
+                                      top: 8, bottom: 8),
                                   children: <Widget>[
                                     // Single Option
                                     Container(
@@ -203,6 +201,5 @@ class _AppModalState extends State<AppModal> {
             ),
           ),
     );
-    overlayState.insert(overlayEntry);
   }
 }
