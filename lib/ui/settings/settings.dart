@@ -15,7 +15,8 @@ class IntroSettingsPage extends StatefulWidget {
 class _IntroSettingsPageState extends State<IntroSettingsPage> {
   showOverlay(BuildContext context) async {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
       builder: (context) => Material(
             color: Colors.transparent,
             child: BackdropFilter(
@@ -24,68 +25,74 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                 width: double.maxFinite,
                 height: double.maxFinite,
                 color: StateContainer.of(context).curTheme.overlay20,
-                child: GestureDetector(
-                  onTap: () {
-                    return null;
-                  },
-                  // Custom modal
-                  child: Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 120,
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: StateContainer.of(context)
-                            .curTheme
-                            .backgroundPrimary,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color:
-                                StateContainer.of(context).curTheme.textDark50,
-                            offset: Offset(0, 30),
-                            blurRadius: 60,
-                            spreadRadius: -10,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          // Header of the modal
-                          Container(
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                              gradient: StateContainer.of(context)
-                                  .curTheme
-                                  .gradientPrimary,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  topRight: Radius.circular(12)),
-                            ),
-                            child: Container(
-                              margin: EdgeInsetsDirectional.fromSTEB(
-                                  24, 16, 24, 16),
-                              child: AutoSizeText(
-                                "Header adasd",
-                                style: AppStyles.modalHeader(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                              ),
-                            ),
-                          ),
-                        ],
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      child: GestureDetector(
+                        onTap: () {
+                          overlayEntry?.remove();
+                        },
                       ),
                     ),
-                  ),
+                    Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 120,
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark50,
+                              offset: Offset(0, 30),
+                              blurRadius: 60,
+                              spreadRadius: -10,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            // Header of the modal
+                            Container(
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(
+                                gradient: StateContainer.of(context)
+                                    .curTheme
+                                    .gradientPrimary,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12)),
+                              ),
+                              child: Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    24, 16, 24, 16),
+                                child: AutoSizeText(
+                                  "Header",
+                                  style: AppStyles.modalHeader(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
     );
     overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(seconds: 10));
-    overlayEntry.remove();
   }
 
   var _scaffoldKey = GlobalKey<ScaffoldState>();
