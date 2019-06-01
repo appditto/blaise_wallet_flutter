@@ -2,6 +2,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,9 @@ class IntroSecurityPage extends StatefulWidget {
 }
 
 class _IntroSecurityPageState extends State<IntroSecurityPage> {
+  List<String> methodList = ["Biometrics", "PIN"];
+  List<String> launchList = ["Yes", "No"];
+  List<String> lockList = ["Instantly", "After 1 minute", "After 5 minutes", "After 15 minutes", "After 30 minutes", "After 60 minutes"];
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -134,6 +138,13 @@ class _IntroSecurityPageState extends State<IntroSecurityPage> {
                               header: "Authentication Method",
                               subheader: "Biometrics",
                               icon: AppIcons.fingerprint,
+                              onPressed: () {
+                               showDialog(
+                                 context: context,
+                                 builder: (_) => DialogOverlay(title: 'Authentication Method', optionsList: methodList)                               
+                               ); 
+                              },
+                              
                             ),
                             Container(
                               width: double.maxFinite,
@@ -146,6 +157,12 @@ class _IntroSecurityPageState extends State<IntroSecurityPage> {
                               header: "Authenticate on Launch",
                               subheader: "Yes",
                               icon: AppIcons.lock,
+                              onPressed: () {
+                               showDialog(
+                                 context: context,
+                                 builder: (_) => DialogOverlay(title: 'Authenticate on Launch', optionsList: launchList)                               
+                               ); 
+                              },
                             ),
                             Container(
                               width: double.maxFinite,
@@ -158,6 +175,12 @@ class _IntroSecurityPageState extends State<IntroSecurityPage> {
                               header: "Automatically Lock",
                               subheader: "Instantly",
                               icon: AppIcons.timer,
+                              onPressed: () {
+                               showDialog(
+                                 context: context,
+                                 builder: (_) => DialogOverlay(title: 'Automatically Lock', optionsList: lockList)                               
+                               ); 
+                              },
                             ),
                             Container(
                               width: double.maxFinite,

@@ -15,6 +15,9 @@ class IntroSettingsPage extends StatefulWidget {
 
 class _IntroSettingsPageState extends State<IntroSettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> currencyList = ["\$ US Dollar", "\$ Argentine Peso", "\$ Australian Dollar", "R\$ Brazilian Real", "\$ Canadian Dollar", "CHF Swiss Franc", "\$ Chilean Peso", "¥ Chinese Yuan", "Kč Czech Koruna", "kr. Danish Krone", "€ Euro", "£ Great Britain Pound", "HK\$ Hong Kong Dollar", "Ft Hungarian Forint", "Rp Indonesian Rupiah", "₪ Israeli Shekel", "₹ Indian Rupee", "¥ Japanese Yen"];
+  List<String> languageList = ["System Default", "English (en)", "简体字 (zh-Hans)", "繁體字 (zh-Hant)", "Français (fr)", "Deutsch (de)", "Español (es)"];
+  List<String> themeList = ["Light", "Dark"];
   @override
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
@@ -141,7 +144,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               onPressed: () {
                                showDialog(
                                  context: context,
-                                 builder: (_) => DialogOverlay(title: 'Currency')
+                                 builder: (_) => DialogOverlay(title: 'Currency', optionsList: currencyList)                               
                                ); 
                               },
                             ),
@@ -156,6 +159,12 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               header: "Language",
                               subheader: "System Default",
                               icon: AppIcons.language,
+                              onPressed: () {
+                               showDialog(
+                                 context: context,
+                                 builder: (_) => DialogOverlay(title: 'Language', optionsList: languageList)                               
+                               ); 
+                              },
                             ),
                             Container(
                               width: double.maxFinite,
@@ -168,6 +177,12 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               header: "Theme",
                               subheader: "Light",
                               icon: AppIcons.theme,
+                              onPressed: () {
+                               showDialog(
+                                 context: context,
+                                 builder: (_) => DialogOverlay(title: 'Theme', optionsList: themeList)                               
+                               ); 
+                              },
                             ),
                             Container(
                               width: double.maxFinite,
