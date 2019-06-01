@@ -16,18 +16,30 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
   showOverlay(BuildContext context) async {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
+      
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
               width: double.maxFinite,
               height: double.maxFinite,
               color: StateContainer.of(context).curTheme.overlay20,
+              child: GestureDetector(
+                onTap: () {
+                  return null;
+                },
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 120,
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
     );
     overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(seconds: 3));
-    overlayEntry.remove();
   }
 
   var _scaffoldKey = GlobalKey<ScaffoldState>();
