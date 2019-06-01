@@ -4,7 +4,6 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/modal.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
