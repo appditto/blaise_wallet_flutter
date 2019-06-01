@@ -52,6 +52,15 @@ class AppStyles {
         fontWeight: FontWeight.w600);
   }
 
+  // Modal header
+  static TextStyle modalHeader(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textLight,
+        fontSize: 18.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
   // Settings item header
   static TextStyle settingsItemHeader(BuildContext context) {
     return TextStyle(

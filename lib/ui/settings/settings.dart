@@ -16,7 +16,6 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
   showOverlay(BuildContext context) async {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
-      
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
@@ -27,11 +26,40 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                 onTap: () {
                   return null;
                 },
+                // Custom modal
                 child: Center(
                   child: Container(
                     width: MediaQuery.of(context).size.width - 120,
                     constraints: BoxConstraints(
                       maxHeight: MediaQuery.of(context).size.height * 0.6,
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        // Header of the modal
+                        Container(
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            gradient: StateContainer.of(context)
+                                .curTheme
+                                .gradientPrimary,
+                          ),
+                          child: Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(24, 16, 24, 16),
+                            child: AutoSizeText(
+                              "Header",
+                              style: AppStyles.modalHeader(context),
+                              maxLines: 1,
+                              stepGranularity: 0.1,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
