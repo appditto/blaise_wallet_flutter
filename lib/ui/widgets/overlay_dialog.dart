@@ -16,23 +16,28 @@ class DialogOverlay extends StatefulWidget {
 
 class _DialogOverlayState extends State<DialogOverlay>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> scaleAnimation;
+  AnimationController _controller;
+  Animation<double> _scaleAnimation;
+  Animation<double> _blurAnimation;
+  Tween _tween;
 
   @override
   void initState() {
     super.initState();
 
-    controller =
+    _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
-    scaleAnimation =
-        CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    _scaleAnimation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _blurAnimation = Tween(begin: 0.0, end: 5.0).animate(
+     CurvedAnimation(parent: _controller, curve: Curves.easeInOut) 
+    );
 
-    controller.addListener(() {
+    _controller.addListener(() {
       setState(() {});
     });
 
-    controller.forward();
+    _controller.forward();
   }
 
   @override
@@ -41,9 +46,9 @@ class _DialogOverlayState extends State<DialogOverlay>
       child: Material(
         color: Colors.transparent,
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          filter: ImageFilter.blur(sigmaX: _blurAnimation.value, sigmaY: _blurAnimation.value),
           child: ScaleTransition(
-            scale: scaleAnimation,
+            scale: _scaleAnimation,
               child: Container(
                 width: MediaQuery.of(context).size.width - 100,
                 constraints: BoxConstraints(
