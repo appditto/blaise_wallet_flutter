@@ -243,6 +243,18 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                                   .curTheme
                                   .textDark10,
                             ),
+                            SettingsListItem(
+                              header: "Daemon",
+                              subheader: "Default",
+                              icon: AppIcons.changedaemon,
+                            ),
+                            Container(
+                              width: double.maxFinite,
+                              height: 1,
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark10,
+                            ),
                             // Manage text
                             Container(
                               alignment: Alignment(-1, 0),
