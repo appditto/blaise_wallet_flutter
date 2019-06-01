@@ -50,16 +50,24 @@ class _SettingsListItemState extends State<SettingsListItem> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width/2,
-                    child: AutoSizeText(
-                      widget.contactName,
-                      style: AppStyles.contactsItemName(context),
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: AutoSizeText.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                          text: widget.contactName[0],
+                          style: AppStyles.settingsHeader(context),
+                        ),
+                        TextSpan(
+                          text: widget.contactName.substring(1),
+                          style: AppStyles.contactsItemName(context),
+                        ),
+                      ]),
                       maxLines: 1,
                       stepGranularity: 0.1,
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/2-80,
+                    width: MediaQuery.of(context).size.width / 2 - 80,
                     alignment: Alignment(1, 0),
                     child: AutoSizeText(
                       widget.contactAddress,

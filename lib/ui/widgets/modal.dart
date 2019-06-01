@@ -23,7 +23,7 @@ class _AppModalState extends State<AppModal> {
     Overlay.of(context).insert(this._overlayEntry);
     return Overlay.of(context).build(context);
   }
-  OverlayEntry _createOverlayEntry(){
+  _createOverlayEntry(){
     return OverlayEntry(
       builder: (context) => Material(
             color: Colors.transparent,
