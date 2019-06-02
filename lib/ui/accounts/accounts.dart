@@ -98,11 +98,14 @@ class _IntroAccountsPageState extends State<IntroAccountsPage> {
                                         TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: " ",
+                                              text: "",
                                               style: AppStyles
                                                   .iconFontTextLightPascal(
                                                       context),
                                             ),
+                                            TextSpan(
+                                                text: " ",
+                                                style: TextStyle(fontSize: 10)),
                                             TextSpan(
                                                 text: "0",
                                                 style:
@@ -110,7 +113,7 @@ class _IntroAccountsPageState extends State<IntroAccountsPage> {
                                           ],
                                         ),
                                         maxLines: 1,
-                                        minFontSize: 12,
+                                        minFontSize: 8,
                                         stepGranularity: 1,
                                         style: TextStyle(
                                           fontSize: 28,

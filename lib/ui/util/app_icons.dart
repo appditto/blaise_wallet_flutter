@@ -53,4 +53,5 @@ class AppIcons {
   static const IconData trashcan = const IconData(0xe81e, fontFamily: _kFontFam);
   static const IconData uparrow = const IconData(0xe81f, fontFamily: _kFontFam);
   static const IconData changedaemon = const IconData(0xe820, fontFamily: _kFontFam);
+  static const IconData pascalsymbol = const IconData(0xe821, fontFamily: _kFontFam);
 }
