@@ -323,6 +323,12 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                             SettingsListItem(
                               header: "Logout",
                               icon: AppIcons.logout,
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => DialogOverlay(
+                                        title: 'WARNING', logout: true));
+                              },
                             ),
                             Container(
                               width: double.maxFinite,

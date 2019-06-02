@@ -28,6 +28,14 @@ class AppStyles {
         fontWeight: FontWeight.w400);
   }
 
+  static TextStyle paragraphDanger(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.danger,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
   static TextStyle paragraphBig(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textDark,
@@ -151,6 +159,26 @@ class AppStyles {
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 18,
         fontWeight: FontWeight.w700);
+  }
+
+  // Danger Button Text
+  static TextStyle buttonDanger(BuildContext context) {
+    return TextStyle(
+      color: StateContainer.of(context).curTheme.textLight,
+      fontSize: 12,
+      fontWeight: FontWeight.w700,
+      height: 1.3,
+    );
+  }
+
+  // Danger Outline Button Text
+  static TextStyle buttonDangerOutline(BuildContext context) {
+    return TextStyle(
+      color: StateContainer.of(context).curTheme.danger,
+      fontSize: 12,
+      fontWeight: FontWeight.w700,
+      height: 1.3,
+    );
   }
 
   // Bg Colored Mini Button Text

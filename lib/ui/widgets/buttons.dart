@@ -8,6 +8,8 @@ enum AppButtonType {
   PrimaryOutline,
   Success,
   SuccessOutline,
+  Danger,
+  DangerOutline,
 }
 
 /// A widget for buttons
@@ -48,16 +50,28 @@ class _AppButtonState extends State<AppButton> {
         gradient: (widget.type == AppButtonType.Primary ||
                 widget.type == AppButtonType.PrimaryOutline)
             ? StateContainer.of(context).curTheme.gradientPrimary
-            : StateContainer.of(context)
-                .curTheme
-                .gradientPrimary, // Success color placeholder
+            : (widget.type == AppButtonType.Danger ||
+                    widget.type == AppButtonType.DangerOutline)
+                ? null
+                : StateContainer.of(context)
+                    .curTheme
+                    .gradientPrimary, // Success color placeholder
+        color: (widget.type == AppButtonType.Danger ||
+                widget.type == AppButtonType.DangerOutline)
+            ? StateContainer.of(context).curTheme.danger
+            : null,
         boxShadow: [
           widget.type == AppButtonType.Primary
               ? StateContainer.of(context).curTheme.shadowPrimaryOne
-              : StateContainer.of(context).curTheme.shadowPrimaryTwo,
+              : widget.type == AppButtonType.PrimaryOutline
+                  ? StateContainer.of(context).curTheme.shadowPrimaryTwo
+                  : widget.type == AppButtonType.Danger
+                      ? StateContainer.of(context).curTheme.shadowDangerOne
+                      : StateContainer.of(context).curTheme.shadowDangerTwo,
         ],
       ),
-      child: widget.type == AppButtonType.Primary
+      child: widget.type == AppButtonType.Primary ||
+              widget.type == AppButtonType.Danger
           // Primary Button
           ? FlatButton(
               shape: RoundedRectangleBorder(
@@ -65,13 +79,16 @@ class _AppButtonState extends State<AppButton> {
               child: AutoSizeText(
                 widget.text,
                 textAlign: TextAlign.center,
-                maxLines: 1,
+                maxLines: widget.type == AppButtonType.Danger ? 2 : 1,
                 stepGranularity: 0.1,
-                style: AppStyles.buttonPrimary(context),
+                style: widget.type == AppButtonType.Danger
+                    ? AppStyles.buttonDanger(context)
+                    : AppStyles.buttonPrimary(context),
               ),
               splashColor:
                   StateContainer.of(context).curTheme.backgroundPrimary30,
-              highlightColor: StateContainer.of(context).curTheme.backgroundPrimary15,
+              highlightColor:
+                  StateContainer.of(context).curTheme.backgroundPrimary15,
               onPressed: () {
                 if (widget.onPressed != null && !widget.disabled) {
                   widget.onPressed();
@@ -104,11 +121,16 @@ class _AppButtonState extends State<AppButton> {
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       stepGranularity: 0.1,
-                      style: AppStyles.buttonPrimaryOutline(context),
+                      style: widget.type == AppButtonType.DangerOutline
+                          ? AppStyles.buttonDangerOutline(context)
+                          : AppStyles.buttonPrimaryOutline(context),
                     ),
                     color: Colors.transparent,
-                    splashColor: StateContainer.of(context).curTheme.primary30,
+                    splashColor: 
+                      widget.type == AppButtonType.DangerOutline?StateContainer.of(context).curTheme.danger30:
+                      StateContainer.of(context).curTheme.primary30,
                     highlightColor:
+                    widget.type == AppButtonType.DangerOutline?StateContainer.of(context).curTheme.danger15:
                         StateContainer.of(context).curTheme.primary15,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),

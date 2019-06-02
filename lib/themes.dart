@@ -17,6 +17,8 @@ abstract class BaseTheme {
   Color success10;
 
   Color danger;
+  Color danger30;
+  Color danger15;
 
   Color backgroundPrimary;
   Color backgroundPrimary60;
@@ -43,6 +45,9 @@ abstract class BaseTheme {
 
   BoxShadow shadowPrimaryOne;
   BoxShadow shadowPrimaryTwo;
+
+  BoxShadow shadowDangerOne;
+  BoxShadow shadowDangerTwo;
 
   BoxShadow shadowSucces;
 
@@ -82,6 +87,8 @@ class BlaiseLightTheme extends BaseTheme {
   Color success10 = teal.withOpacity(0.1);
 
   Color danger = red;
+  Color danger30 = red.withOpacity(0.3);
+  Color danger15 = red.withOpacity(0.15);
 
   Color backgroundPrimary = white;
   Color backgroundPrimary60 = white.withOpacity(0.6);
@@ -127,7 +134,7 @@ class BlaiseLightTheme extends BaseTheme {
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
-  
+
   BoxShadow shadowTextDark = BoxShadow(
       color: grayDark.withOpacity(0.15),
       offset: Offset(0, 8),
@@ -139,18 +146,29 @@ class BlaiseLightTheme extends BaseTheme {
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -3.0);
-  
+
   BoxShadow shadowBottomBar = BoxShadow(
       color: grayDark.withOpacity(0.2),
       offset: Offset(0, -15),
       blurRadius: 30,
       spreadRadius: -5.0);
-  
+
   BoxShadow shadowSettingsList = BoxShadow(
       color: grayDark.withOpacity(0.4),
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -5.0);
+
+  BoxShadow shadowDangerOne = BoxShadow(
+      color: red.withOpacity(0.5),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  BoxShadow shadowDangerTwo = BoxShadow(
+      color: red.withOpacity(0.25),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
 
   Brightness brightness = Brightness.dark;
   SystemUiOverlayStyle statusBar =
@@ -227,7 +245,7 @@ class BlaiseDarkTheme extends BaseTheme {
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
-  
+
   BoxShadow shadowTextDark = BoxShadow(
       color: black.withOpacity(0.15),
       offset: Offset(0, 8),
@@ -239,13 +257,13 @@ class BlaiseDarkTheme extends BaseTheme {
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -3.0);
-  
+
   BoxShadow shadowBottomBar = BoxShadow(
       color: black.withOpacity(0.2),
       offset: Offset(0, -15),
       blurRadius: 30,
       spreadRadius: -5.0);
-  
+
   BoxShadow shadowSettingsList = BoxShadow(
       color: black.withOpacity(0.4),
       offset: Offset(0, 10),
