@@ -187,7 +187,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               subheader: "\$ US Dollar",
                               icon: AppIcons.currency,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'Currency',
