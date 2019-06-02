@@ -206,7 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               subheader: "System Default",
                               icon: AppIcons.language,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'Language',
@@ -225,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               subheader: "Light",
                               icon: AppIcons.theme,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'Theme',
@@ -324,7 +324,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               header: "Logout",
                               icon: AppIcons.logout,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'WARNING', logout: true));
