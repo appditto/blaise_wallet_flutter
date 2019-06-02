@@ -96,22 +96,17 @@ class _AppState extends State<App> {
               );
             case '/accounts':
               return MaterialPageRoute(
-                builder: (_) => IntroAccountsPage(),
-                settings: settings,
-              );
-            case '/settings':
-              return MaterialPageRoute(
-                builder: (_) => IntroSettingsPage(),
+                builder: (_) => AccountsPage(),
                 settings: settings,
               );
             case '/security':
               return MaterialPageRoute(
-                builder: (_) => IntroSecurityPage(),
+                builder: (_) => SecurityPage(),
                 settings: settings,
               );
             case '/contacts':
               return MaterialPageRoute(
-                builder: (_) => IntroContactsPage(),
+                builder: (_) => ContactsPage(),
                 settings: settings,
               );
             default:

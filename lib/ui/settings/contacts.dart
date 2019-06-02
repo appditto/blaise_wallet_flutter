@@ -6,12 +6,12 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
 
-class IntroContactsPage extends StatefulWidget {
+class ContactsPage extends StatefulWidget {
   @override
-  _IntroContactsPageState createState() => _IntroContactsPageState();
+  _ContactsPageState createState() => _ContactsPageState();
 }
 
-class _IntroContactsPageState extends State<IntroContactsPage> {
+class _ContactsPageState extends State<ContactsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
