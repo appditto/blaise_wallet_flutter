@@ -8,12 +8,12 @@ import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
 
-class IntroAccountsPage extends StatefulWidget {
+class AccountsPage extends StatefulWidget {
   @override
-  _IntroAccountsPageState createState() => _IntroAccountsPageState();
+  _AccountsPageState createState() => _AccountsPageState();
 }
 
-class _IntroAccountsPageState extends State<IntroAccountsPage> {
+class _AccountsPageState extends State<AccountsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {

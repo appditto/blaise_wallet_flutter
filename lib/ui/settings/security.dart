@@ -6,12 +6,12 @@ import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
 
-class IntroSecurityPage extends StatefulWidget {
+class SecurityPage extends StatefulWidget {
   @override
-  _IntroSecurityPageState createState() => _IntroSecurityPageState();
+  _SecurityPageState createState() => _SecurityPageState();
 }
 
-class _IntroSecurityPageState extends State<IntroSecurityPage> {
+class _SecurityPageState extends State<SecurityPage> {
   List<DialogListItem> methodList = [ DialogListItem(option:"Biometrics"), DialogListItem(option:"PIN")];
   List<DialogListItem> launchList = [DialogListItem(option:"Yes"), DialogListItem(option:"No")];
   List<DialogListItem> lockList = [DialogListItem(option:"Instantly"), DialogListItem(option:"After 1 minute"), DialogListItem(option:"After 5 minutes"), DialogListItem(option:"After 15 minutes"), DialogListItem(option:"After 30 minutes"), DialogListItem(option:"After 60 minutes")];

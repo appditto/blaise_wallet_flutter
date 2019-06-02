@@ -9,12 +9,12 @@ import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:flutter/material.dart';
 
-class IntroSettingsPage extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _IntroSettingsPageState createState() => _IntroSettingsPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _IntroSettingsPageState extends State<IntroSettingsPage> {
+class _SettingsPageState extends State<SettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   List<DialogListItem> currencyList = [
     DialogListItem(option: "\$ US Dollar"),
