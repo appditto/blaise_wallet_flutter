@@ -141,12 +141,20 @@ class _DialogOverlayState extends State<DialogOverlay>
                                   child: Column(
                                     children: <Widget>[
                                       AutoSizeText(
-                                          "Logging out will remove your private key and all Blaise related data from this device.\n",
-                                          style: AppStyles.paragraphDanger(
-                                              context)),
+                                        "Logging out will remove your private key and all Blaise related data from this device.\n",
+                                        style:
+                                            AppStyles.paragraphDanger(context),
+                                        stepGranularity: 0.1,
+                                        maxLines: 4,
+                                        minFontSize: 8,
+                                      ),
                                       AutoSizeText(
-                                          "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
-                                          style: AppStyles.paragraph(context)),
+                                        "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
+                                        style: AppStyles.paragraph(context),
+                                        stepGranularity: 0.1,
+                                        maxLines: 5,
+                                        minFontSize: 8,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -164,7 +172,9 @@ class _DialogOverlayState extends State<DialogOverlay>
                                     AppButton(
                                       type: AppButtonType.DangerOutline,
                                       text: "CANCEL",
-                                      onPressed: (){Navigator.pop(context);},
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
                                     ),
                                   ],
                                 ),
