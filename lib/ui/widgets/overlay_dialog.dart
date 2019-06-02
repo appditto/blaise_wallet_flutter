@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class DialogOverlay extends StatefulWidget {
   final String title;
-  final List<String> optionsList;
+  final List<DialogListItem> optionsList;
 
   DialogOverlay({@required this.title, @required this.optionsList});
 
@@ -38,7 +38,7 @@ class _DialogOverlayState extends State<DialogOverlay>
     _controller.forward();
   }
 
-  buildListItems(List<String> optionsList) {
+  buildListItems(List<DialogListItem> optionsList) {
     List<Widget> widgets = [];
     for (var option in optionsList) {
       widgets.add(
@@ -47,9 +47,7 @@ class _DialogOverlayState extends State<DialogOverlay>
           width: double.maxFinite,
           height: 50,
           child: FlatButton(
-              onPressed: () {
-                return null;
-              },
+              onPressed: option.action,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
@@ -58,7 +56,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                 alignment: Alignment(-1, 0),
                 margin: EdgeInsetsDirectional.only(start: 24, end: 24),
                 child: AutoSizeText(
-                  option,
+                  option.option,
                   style: AppStyles.paragraphBig(context),
                   textAlign: TextAlign.start,
                   maxLines: 1,
@@ -150,4 +148,10 @@ class _DialogOverlayState extends State<DialogOverlay>
       ),
     );
   }
+}
+
+class DialogListItem {
+  final String option;
+  final Function action;
+  DialogListItem({@required this.option, this.action});
 }

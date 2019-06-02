@@ -12,9 +12,9 @@ class IntroSecurityPage extends StatefulWidget {
 }
 
 class _IntroSecurityPageState extends State<IntroSecurityPage> {
-  List<String> methodList = ["Biometrics", "PIN"];
-  List<String> launchList = ["Yes", "No"];
-  List<String> lockList = ["Instantly", "After 1 minute", "After 5 minutes", "After 15 minutes", "After 30 minutes", "After 60 minutes"];
+  List<DialogListItem> methodList = [ DialogListItem(option:"Biometrics"), DialogListItem(option:"PIN")];
+  List<DialogListItem> launchList = [DialogListItem(option:"Yes"), DialogListItem(option:"No")];
+  List<DialogListItem> lockList = [DialogListItem(option:"Instantly"), DialogListItem(option:"After 1 minute"), DialogListItem(option:"After 5 minutes"), DialogListItem(option:"After 15 minutes"), DialogListItem(option:"After 30 minutes"), DialogListItem(option:"After 60 minutes")];
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
@@ -15,11 +16,55 @@ class IntroSettingsPage extends StatefulWidget {
 
 class _IntroSettingsPageState extends State<IntroSettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> currencyList = ["\$ US Dollar", "\$ Argentine Peso", "\$ Australian Dollar", "R\$ Brazilian Real", "\$ Canadian Dollar", "CHF Swiss Franc", "\$ Chilean Peso", "¥ Chinese Yuan", "Kč Czech Koruna", "kr. Danish Krone", "€ Euro", "£ Great Britain Pound", "HK\$ Hong Kong Dollar", "Ft Hungarian Forint", "Rp Indonesian Rupiah", "₪ Israeli Shekel", "₹ Indian Rupee", "¥ Japanese Yen"];
-  List<String> languageList = ["System Default", "English (en)", "简体字 (zh-Hans)", "繁體字 (zh-Hant)", "Français (fr)", "Deutsch (de)", "Español (es)"];
-  List<String> themeList = ["Light", "Dark"];
+  List<DialogListItem> currencyList = [
+    DialogListItem(option: "\$ US Dollar"),
+    DialogListItem(option: "\$ Argentine Peso"),
+    DialogListItem(option: "\$ Australian Dollar"),
+    DialogListItem(option: "R\$ Brazilian Real"),
+    DialogListItem(option: "\$ Canadian Dollar"),
+    DialogListItem(option: "CHF Swiss Franc"),
+    DialogListItem(option: "\$ Chilean Peso"),
+    DialogListItem(option: "¥ Chinese Yuan"),
+    DialogListItem(option: "Kč Czech Koruna"),
+    DialogListItem(option: "kr. Danish Krone"),
+    DialogListItem(option: "€ Euro"),
+    DialogListItem(option: "£ Great Britain Pound"),
+    DialogListItem(option: "HK\$ Hong Kong Dollar"),
+    DialogListItem(option: "Ft Hungarian Forint"),
+    DialogListItem(option: "Rp Indonesian Rupiah"),
+    DialogListItem(option: "₪ Israeli Shekel"),
+    DialogListItem(option: "₹ Indian Rupee"),
+    DialogListItem(option: "¥ Japanese Yen")
+  ];
+  List<DialogListItem> languageList = [
+    DialogListItem(option: "System Default"),
+    DialogListItem(option: "English (en)"),
+    DialogListItem(option: "简体字 (zh-Hans)"),
+    DialogListItem(option: "繁體字 (zh-Hant)"),
+    DialogListItem(option: "Français (fr)"),
+    DialogListItem(option: "Deutsch (de)"),
+    DialogListItem(option: "Español (es)")
+  ];
   @override
   Widget build(BuildContext context) {
+    List<DialogListItem> themeList = [
+      DialogListItem(
+          option: "Light",
+          action: () {
+            setState(() {
+              StateContainer.of(context).curTheme = BlaiseLightTheme();
+              Navigator.pop(context);
+            });
+          }),
+      DialogListItem(
+          option: "Dark",
+          action: () {
+            setState(() {
+              StateContainer.of(context).curTheme = BlaiseDarkTheme();
+              Navigator.pop(context);
+            });
+          })
+    ];
     // The main scaffold that holds everything
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -142,10 +187,11 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               subheader: "\$ US Dollar",
                               icon: AppIcons.currency,
                               onPressed: () {
-                               showDialog(
-                                 context: context,
-                                 builder: (_) => DialogOverlay(title: 'Currency', optionsList: currencyList)                               
-                               ); 
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => DialogOverlay(
+                                        title: 'Currency',
+                                        optionsList: currencyList));
                               },
                             ),
                             Container(
@@ -160,10 +206,11 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               subheader: "System Default",
                               icon: AppIcons.language,
                               onPressed: () {
-                               showDialog(
-                                 context: context,
-                                 builder: (_) => DialogOverlay(title: 'Language', optionsList: languageList)                               
-                               ); 
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => DialogOverlay(
+                                        title: 'Language',
+                                        optionsList: languageList));
                               },
                             ),
                             Container(
@@ -178,10 +225,11 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               subheader: "Light",
                               icon: AppIcons.theme,
                               onPressed: () {
-                               showDialog(
-                                 context: context,
-                                 builder: (_) => DialogOverlay(title: 'Theme', optionsList: themeList)                               
-                               ); 
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => DialogOverlay(
+                                        title: 'Theme',
+                                        optionsList: themeList));
                               },
                             ),
                             Container(
