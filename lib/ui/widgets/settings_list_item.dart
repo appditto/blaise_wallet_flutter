@@ -43,6 +43,8 @@ class _SettingsListItemState extends State<SettingsListItem> {
           }
           return;
         },
+        splashColor: StateContainer.of(context).curTheme.primary30,
+        highlightColor: StateContainer.of(context).curTheme.primary15,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
         child: widget.contact
             ? Row(

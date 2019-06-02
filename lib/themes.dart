@@ -25,6 +25,10 @@ abstract class BaseTheme {
 
   Color backgroundSecondary;
 
+  Color shadow;
+  Color shadow50;
+  Color shadow10;
+
   Color textDark;
   Color textDark50;
   Color textDark10;
@@ -90,6 +94,10 @@ class BlaiseLightTheme extends BaseTheme {
   Color textDark50 = grayDark.withOpacity(0.5);
   Color textDark10 = grayDark.withOpacity(0.1);
 
+  Color shadow = grayDark;
+  Color shadow50 = grayDark.withOpacity(0.5);
+  Color shadow10 = grayDark.withOpacity(0.1);
+
   Color textLight = white;
   Color textLight30 = white.withOpacity(0.3);
   Color textLight15 = white.withOpacity(0.15);
@@ -144,9 +152,9 @@ class BlaiseLightTheme extends BaseTheme {
       blurRadius: 30,
       spreadRadius: -5.0);
 
-  Brightness brightness = Brightness.light;
+  Brightness brightness = Brightness.dark;
   SystemUiOverlayStyle statusBar =
-      SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent);
+      SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent);
 }
 
 class BlaiseDarkTheme extends BaseTheme {
@@ -186,6 +194,10 @@ class BlaiseDarkTheme extends BaseTheme {
   Color textDark50 = white.withOpacity(0.5);
   Color textDark10 = white.withOpacity(0.1);
 
+  Color shadow = black;
+  Color shadow50 = black.withOpacity(0.3);
+  Color shadow10 = black.withOpacity(0.1);
+
   Color textLight = bluishGray;
   Color textLight30 = bluishGray.withOpacity(0.3);
   Color textLight15 = bluishGray.withOpacity(0.15);
@@ -200,12 +212,12 @@ class BlaiseDarkTheme extends BaseTheme {
   );
 
   BoxShadow shadowPrimaryOne = BoxShadow(
-      color: darkTeal.withOpacity(0.5),
+      color: darkTeal.withOpacity(0.3),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   BoxShadow shadowPrimaryTwo = BoxShadow(
-      color: darkTeal.withOpacity(0.25),
+      color: darkTeal.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -217,25 +229,25 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -4.0);
   
   BoxShadow shadowTextDark = BoxShadow(
-      color: grayDark.withOpacity(0.15),
+      color: black.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowMainCard = BoxShadow(
-      color: grayDark.withOpacity(0.2),
+      color: black.withOpacity(0.2),
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -3.0);
   
   BoxShadow shadowBottomBar = BoxShadow(
-      color: grayDark.withOpacity(0.2),
+      color: black.withOpacity(0.2),
       offset: Offset(0, -15),
       blurRadius: 30,
       spreadRadius: -5.0);
   
   BoxShadow shadowSettingsList = BoxShadow(
-      color: grayDark.withOpacity(0.4),
+      color: black.withOpacity(0.4),
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -5.0);

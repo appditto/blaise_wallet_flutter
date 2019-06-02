@@ -90,7 +90,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: StateContainer.of(context).curTheme.textDark50,
+                      color: StateContainer.of(context).curTheme.shadow50,
                       offset: Offset(0, 30),
                       blurRadius: 60,
                       spreadRadius: -10,
