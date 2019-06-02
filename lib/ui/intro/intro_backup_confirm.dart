@@ -45,8 +45,8 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                             // The header
                             Container(
                               width: MediaQuery.of(context).size.width - 60,
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 24, 30, 24),
+                              margin: EdgeInsetsDirectional.fromSTEB(
+                                  30, 24, 30, 24),
                               child: AutoSizeText(
                                 "Backup Your Key!",
                                 style: AppStyles.header(context),
@@ -80,34 +80,29 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                   ),
                 ),
 
-                //A column with "I've Backed It Up" and "No, Go Back" buttons
-                Column(
+                //"YES, I'M SURE" and "NO, GO BACK" buttons
+                // "YES, I'M SURE" button
+                Row(
                   children: <Widget>[
-                    // "I've Backed It Up" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.Primary,
-                          text: "YES, I'M SURE",
-                          buttonTop: true,
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/accounts');
-                          },
-                        ),
-                      ],
+                    AppButton(
+                      type: AppButtonType.Primary,
+                      text: "YES, I'M SURE",
+                      buttonTop: true,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/accounts');
+                      },
                     ),
-                    // "No, Go Back" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.PrimaryOutline,
-                          text: "NO, GO BACK",
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
+                  ],
+                ),
+                // "No, Go Back" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "NO, GO BACK",
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),

@@ -78,33 +78,28 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                   ),
                 ),
 
-                //A column with "New Private Key" and "Import Private Key" buttons
-                Column(
+                //"New Private Key" and "Import Private Key" buttons
+                Row(
                   children: <Widget>[
-                    // "New Private Key" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.Primary,
-                          text: "New Private Key",
-                          buttonTop: true,
-                          onPressed: () {
-                            Navigator.of(context).pushNamed('/intro_new_private_key');
-                          },
-                        ),
-                      ],
+                    AppButton(
+                      type: AppButtonType.Primary,
+                      text: "New Private Key",
+                      buttonTop: true,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/intro_new_private_key');
+                      },
                     ),
-                    // "Import Private Key" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.PrimaryOutline,
-                          text: "Import Private Key",
-                          onPressed: () {
-                            Navigator.of(context).pushNamed('/intro_import_private_key');
-                          },
-                        ),
-                      ],
+                  ],
+                ),
+                // "Import Private Key" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "Import Private Key",
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/intro_import_private_key');
+                      },
                     ),
                   ],
                 ),

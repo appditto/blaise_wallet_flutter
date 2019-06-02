@@ -166,34 +166,29 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                   ),
                 ),
 
-                //A column with "New Private Key" and "Import Private Key" buttons
-                Column(
+                //"I've Backed It Up" and "Go Back" buttons
+                Row(
                   children: <Widget>[
-                    // "I've Backed It Up" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.Primary,
-                          text: "I've Backed It Up",
-                          buttonTop: true,
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/intro_backup_confirm');                            
-                          },
-                        ),
-                      ],
+                    AppButton(
+                      type: AppButtonType.Primary,
+                      text: "I've Backed It Up",
+                      buttonTop: true,
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed('/intro_backup_confirm');                            
+                      },
                     ),
-                    // "Go Back" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type:AppButtonType.PrimaryOutline,
-                          text: "Go Back",
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
+                  ],
+                ),
+                // "Go Back" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type:AppButtonType.PrimaryOutline,
+                      text: "Go Back",
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),

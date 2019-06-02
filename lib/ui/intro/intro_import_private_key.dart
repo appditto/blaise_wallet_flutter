@@ -221,10 +221,8 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                   ),
                 ),
 
-                //A column with "Import" and "Go Back" buttons
-                Column(
-                  children: <Widget>[
-                    // "Import" button
+                //"Import" and "Go Back" buttons
+                // "Import" button
                     Row(
                       children: <Widget>[
                         AppButton(
@@ -250,8 +248,6 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                         ),
                       ],
                     ),
-                  ],
-                ),
               ],
             ),
       ),

@@ -1,5 +1,5 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/accounts/test_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/accounts/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
@@ -245,7 +245,7 @@ class _IntroAccountsPageState extends State<IntroAccountsPage> {
                                   onPressed: () {
                                     AppSheets.showBottomSheet(
                                       context: context,
-                                      widget: StatefulSheet()
+                                      widget: GetAccountSheet()
                                     );
                                   },
                                 ),

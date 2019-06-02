@@ -130,34 +130,29 @@ class _IntroDecryptAndImportPrivateKeyPageState extends State<IntroDecryptAndImp
                   ),
                 ),
 
-                //A column with "Import" and "Go Back" buttons
-                Column(
+                //"Import" and "Go Back" buttons
+                Row(
                   children: <Widget>[
-                    // "Import" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.Primary,
-                          text: "Import",
-                          buttonTop: true,
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/accounts');
-                          },
-                        ),
-                      ],
+                    AppButton(
+                      type: AppButtonType.Primary,
+                      text: "Import",
+                      buttonTop: true,
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed('/accounts');
+                      },
                     ),
-                    // "Go Back" button
-                    Row(
-                      children: <Widget>[
-                        AppButton(
-                          type: AppButtonType.PrimaryOutline,
-                          text: "Go Back",
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
+                  ],
+                ),
+                // "Go Back" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "Go Back",
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),
