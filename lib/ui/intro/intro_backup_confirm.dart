@@ -57,23 +57,33 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                           ],
                         ),
                       ),
-                      // Container for the illustration
-                      Container(
-                        margin: EdgeInsetsDirectional.only(
-                            top: MediaQuery.of(context).size.height * 0.1),
-                        child: SvgRepaintAsset(
-                            asset: 'assets/illustration_backup.svg',
-                            width: MediaQuery.of(context).size.width / 1.75),
-                      ),
-                      //Container for the paragraph
-                      Container(
-                        alignment: Alignment(-1, 0),
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Are you sure that you have backed up your new wallet’s private key?",
-                          maxLines: 5,
-                          stepGranularity: 0.1,
-                          style: AppStyles.paragraph(context),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            // Container for the illustration
+                            Container(
+                              child: SvgRepaintAsset(
+                                asset: 'assets/illustration_backup.svg',
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                height: MediaQuery.of(context).size.width *
+                                    0.6 *
+                                    (183 / 230),
+                              ),
+                            ),
+                            //Container for the paragraph
+                            Container(
+                              alignment: Alignment(-1, 0),
+                              margin: EdgeInsetsDirectional.fromSTEB(
+                                  30, 30, 30, 12),
+                              child: AutoSizeText(
+                                "Are you sure that you have backed up your new wallet’s private key?",
+                                maxLines: 5,
+                                stepGranularity: 0.1,
+                                style: AppStyles.paragraph(context),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

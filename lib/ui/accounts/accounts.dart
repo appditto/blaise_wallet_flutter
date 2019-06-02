@@ -26,11 +26,7 @@ class _AccountsPageState extends State<AccountsPage> {
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       endDrawer: SizedBox(
-        width: double.infinity,
-        child: AppDrawer(
-          child: SettingsPage()
-        )
-      ),
+          width: double.infinity, child: AppDrawer(child: SettingsPage())),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
@@ -167,7 +163,8 @@ class _AccountsPageState extends State<AccountsPage> {
                                                   .curTheme
                                                   .textLight30,
                                           onPressed: () {
-                                            _scaffoldKey.currentState.openDrawer();
+                                            _scaffoldKey.currentState
+                                                .openDrawer();
                                           },
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -220,7 +217,9 @@ class _AccountsPageState extends State<AccountsPage> {
                               child: SvgRepaintAsset(
                                   asset: 'assets/illustration_new_wallet.svg',
                                   width:
-                                      MediaQuery.of(context).size.width / 1.75),
+                                      MediaQuery.of(context).size.width * 0.55,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.55),
                             ),
                           ],
                         ),
@@ -253,9 +252,8 @@ class _AccountsPageState extends State<AccountsPage> {
                                   type: AppButtonType.Primary,
                                   onPressed: () {
                                     AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: GetAccountSheet()
-                                    );
+                                        context: context,
+                                        widget: GetAccountSheet());
                                   },
                                 ),
                               ],

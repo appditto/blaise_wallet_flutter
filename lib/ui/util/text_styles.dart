@@ -28,6 +28,15 @@ class AppStyles {
         fontWeight: FontWeight.w400);
   }
 
+  // For paragraphs
+  static TextStyle paragraphPrimary(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
   static TextStyle paragraphDanger(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.danger,

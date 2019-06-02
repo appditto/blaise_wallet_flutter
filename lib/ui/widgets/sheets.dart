@@ -147,21 +147,29 @@ class _AppBottomSheetModalRoute<T> extends PopupRoute<T> {
         },
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: AnimatedBuilder(
-            animation: appSheetAnimation,
-            builder: (context, child) => CustomSingleChildLayout(
-                  delegate: _AppBottomSheetLayout(appSheetAnimation.value),
-                  child: BottomSheet(
-                    animationController: _animationController,
-                    onClosing: () => Navigator.pop(context),
-                    builder: (context) => Container(
-                          decoration: BoxDecoration(
-                            color: this.color,
+          child: Theme(
+            data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+                      child: AnimatedBuilder(
+              animation: appSheetAnimation,
+              builder: (context, child) => CustomSingleChildLayout(
+                    delegate: _AppBottomSheetLayout(appSheetAnimation.value),
+                    child: BottomSheet(
+                      animationController: _animationController,
+                      onClosing: () => Navigator.pop(context),
+                      builder: (context) => Container(
+                            decoration: BoxDecoration(
+                              color: this.color,
+                              borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                            ),
+
+                            child: Builder(builder: this.builder),
                           ),
-                          child: Builder(builder: this.builder),
-                        ),
+                    ),
                   ),
-                ),
+            ),
           ),
         ),
       ),
