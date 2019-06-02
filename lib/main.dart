@@ -99,11 +99,6 @@ class _AppState extends State<App> {
                 builder: (_) => AccountsPage(),
                 settings: settings,
               );
-            case '/settings':
-              return MaterialPageRoute(
-                builder: (_) => SettingsPage(),
-                settings: settings,
-              );
             case '/security':
               return MaterialPageRoute(
                 builder: (_) => SecurityPage(),
