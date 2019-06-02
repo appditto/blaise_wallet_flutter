@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/appstate_container.dart';
@@ -88,9 +89,10 @@ class _DialogOverlayState extends State<DialogOverlay>
             child: ScaleTransition(
               scale: _scaleAnimation,
               child: Container(
+                margin: EdgeInsetsDirectional.only(start: 20, end: 20),
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.8,
-                  maxWidth: MediaQuery.of(context).size.width*0.8,
+                  maxWidth: 280,
                 ),
                 decoration: BoxDecoration(
                   color: StateContainer.of(context).curTheme.backgroundPrimary,
@@ -202,21 +204,18 @@ class _DialogOverlayState extends State<DialogOverlay>
                                           : "DELETE PRIVATE KEY\nAND LOGOUT",
                                       buttonTop: true,
                                       onPressed: () {
-                                        widget.logoutConfirm
-                                            ? Navigator.pushNamed(
-                                                context, "/intro_welcome")
-                                            : {
-                                                Navigator.pop(context),
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (_) =>
-                                                        DialogOverlay(
-                                                            title:
-                                                                'ARE YOU SURE?',
-                                                            logout: true,
-                                                            logoutConfirm:
-                                                                true))
-                                              };
+                                        if (widget.logoutConfirm) {
+                                          Navigator.pushNamed(
+                                              context, "/intro_welcome");
+                                        } else {
+                                          Navigator.pop(context);
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) => DialogOverlay(
+                                                  title: 'ARE YOU SURE?',
+                                                  logout: true,
+                                                  logoutConfirm: true));
+                                        }
                                       },
                                     ),
                                   ],
