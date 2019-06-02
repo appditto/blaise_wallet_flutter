@@ -139,7 +139,7 @@ class _SecurityPageState extends State<SecurityPage> {
                               subheader: "Biometrics",
                               icon: AppIcons.fingerprint,
                               onPressed: () {
-                               showDialog(
+                               showAppDialog(
                                  context: context,
                                  builder: (_) => DialogOverlay(title: 'Authentication Method', optionsList: methodList)                               
                                ); 
@@ -158,7 +158,7 @@ class _SecurityPageState extends State<SecurityPage> {
                               subheader: "Yes",
                               icon: AppIcons.lock,
                               onPressed: () {
-                               showDialog(
+                               showAppDialog(
                                  context: context,
                                  builder: (_) => DialogOverlay(title: 'Authenticate on Launch', optionsList: launchList)                               
                                ); 
@@ -176,7 +176,7 @@ class _SecurityPageState extends State<SecurityPage> {
                               subheader: "Instantly",
                               icon: AppIcons.timer,
                               onPressed: () {
-                               showDialog(
+                               showAppDialog(
                                  context: context,
                                  builder: (_) => DialogOverlay(title: 'Automatically Lock', optionsList: lockList)                               
                                ); 

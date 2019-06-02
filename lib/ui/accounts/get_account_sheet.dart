@@ -1,4 +1,5 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -25,7 +26,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
             ),
             child: Column(
               children: <Widget>[
-                // Header
+                // Sheet header
                 Container(
                   height: 60,
                   width: double.maxFinite,
@@ -37,27 +38,62 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       topRight: Radius.circular(12),
                     ),
                   ),
-                  child: Container(
-                    alignment: Alignment(0, 0),
-                    child: AutoSizeText(
-                      "GET ACCOUNT",
-                      style: AppStyles.header(context),
-                      maxLines: 1,
-                      stepGranularity: 0.1,
-                      textAlign: TextAlign.center,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      // Back Button
+                      Container(
+                        margin: EdgeInsetsDirectional.only(start: 5, end: 10),
+                        height: 50,
+                        width: 50,
+                        child: FlatButton(
+                            highlightColor:
+                                StateContainer.of(context).curTheme.textLight15,
+                            splashColor:
+                                StateContainer.of(context).curTheme.textLight30,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Icon(AppIcons.close,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textLight,
+                                size: 20)),
+                      ),
+                      // Header
+                      Container(
+                        width: MediaQuery.of(context).size.width-130,
+                        alignment: Alignment(0, 0),
+                        child: AutoSizeText(
+                          "GET ACCOUNT",
+                          style: AppStyles.header(context),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      // Sized Box
+                      SizedBox(
+                        height: 50,
+                        width: 65,
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
                   child:
-                    // Container for the illustration
-                    Container(
-                      margin: EdgeInsetsDirectional.only(top: 24, bottom: 16),
+                      // Container for the illustration
+                      Container(
+                    margin: EdgeInsetsDirectional.only(top: 24, bottom: 16),
                     child: SvgRepaintAsset(
-                        asset: 'assets/illustration_two_options.svg',
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.width*(142/180) * 0.6,
-                        ),
+                      asset: 'assets/illustration_two_options.svg',
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height:
+                          MediaQuery.of(context).size.width * (142 / 180) * 0.6,
+                    ),
                   ),
                 ),
                 // Paragraph
@@ -77,7 +113,8 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                           style: AppStyles.paragraph(context),
                         ),
                         TextSpan(
-                          text: "Only 1 account per phone number is allowed.\n\n",
+                          text:
+                              "Only 1 account per phone number is allowed.\n\n",
                           style: AppStyles.paragraphPrimary(context),
                         ),
                         TextSpan(
@@ -90,8 +127,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                           style: AppStyles.paragraphPrimary(context),
                         ),
                         TextSpan(
-                          text:
-                              ".",
+                          text: ".",
                           style: AppStyles.paragraph(context),
                         ),
                       ],

@@ -35,10 +35,10 @@ class _DialogOverlayState extends State<DialogOverlay>
 
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-    _scaleAnimation = Tween(begin: 0.5, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _opacityAnimation = Tween(begin: 0.5, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _scaleAnimation = Tween(begin: 0.75, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.decelerate));
+    _opacityAnimation = Tween(begin: 0.25, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.decelerate));
     _controller.addListener(() {
       setState(() {});
     });
