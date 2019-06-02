@@ -34,7 +34,7 @@ class _DialogOverlayState extends State<DialogOverlay>
     super.initState();
 
     _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     _scaleAnimation = Tween(begin: 0.5, end: 1.0)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     _opacityAnimation = Tween(begin: 0.5, end: 1.0)
@@ -209,7 +209,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                                               context, "/intro_welcome");
                                         } else {
                                           Navigator.pop(context);
-                                          showDialog(
+                                          showAppDialog(
                                               context: context,
                                               builder: (_) => DialogOverlay(
                                                   title: 'ARE YOU SURE?',

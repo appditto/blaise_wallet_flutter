@@ -206,7 +206,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               subheader: "System Default",
                               icon: AppIcons.language,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'Language',
@@ -225,7 +225,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               subheader: "Light",
                               icon: AppIcons.theme,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'Theme',
@@ -324,7 +324,7 @@ class _IntroSettingsPageState extends State<IntroSettingsPage> {
                               header: "Logout",
                               icon: AppIcons.logout,
                               onPressed: () {
-                                showDialog(
+                                showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
                                         title: 'WARNING', logout: true));
