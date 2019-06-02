@@ -10,8 +10,13 @@ class DialogOverlay extends StatefulWidget {
   final String title;
   final List<DialogListItem> optionsList;
   final bool logout;
+  final bool logoutConfirm;
 
-  DialogOverlay({this.title, this.optionsList, this.logout = false});
+  DialogOverlay(
+      {this.title,
+      this.optionsList,
+      this.logout = false,
+      this.logoutConfirm = false});
 
   @override
   State<StatefulWidget> createState() => _DialogOverlayState();
@@ -83,9 +88,9 @@ class _DialogOverlayState extends State<DialogOverlay>
             child: ScaleTransition(
               scale: _scaleAnimation,
               child: Container(
-                width: MediaQuery.of(context).size.width - 100,
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  maxWidth: MediaQuery.of(context).size.width*0.8,
                 ),
                 decoration: BoxDecoration(
                   color: StateContainer.of(context).curTheme.backgroundPrimary,
@@ -140,21 +145,51 @@ class _DialogOverlayState extends State<DialogOverlay>
                                       24, 16, 24, 16),
                                   child: Column(
                                     children: <Widget>[
-                                      AutoSizeText(
-                                        "Logging out will remove your private key and all Blaise related data from this device.\n",
-                                        style:
-                                            AppStyles.paragraphDanger(context),
-                                        stepGranularity: 0.1,
-                                        maxLines: 4,
-                                        minFontSize: 8,
-                                      ),
-                                      AutoSizeText(
-                                        "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
-                                        style: AppStyles.paragraph(context),
-                                        stepGranularity: 0.1,
-                                        maxLines: 5,
-                                        minFontSize: 8,
-                                      ),
+                                      widget.logoutConfirm
+                                          ? AutoSizeText.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "Are you sure that you’ve backed up your private key? ",
+                                                    style: AppStyles.paragraph(
+                                                        context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "As long as you’ve backed up your private key, you have nothing to worry about.",
+                                                    style: AppStyles
+                                                        .paragraphDanger(
+                                                            context),
+                                                  ),
+                                                ],
+                                              ),
+                                              stepGranularity: 0.1,
+                                              maxLines: 8,
+                                              minFontSize: 8,
+                                            )
+                                          : AutoSizeText.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "Logging out will remove your private key and all Blaise related data from this device. ",
+                                                    style: AppStyles
+                                                        .paragraphDanger(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
+                                                    style: AppStyles.paragraph(
+                                                        context),
+                                                  ),
+                                                ],
+                                              ),
+                                              stepGranularity: 0.1,
+                                              maxLines: 8,
+                                              minFontSize: 8,
+                                            ),
                                     ],
                                   ),
                                 ),
@@ -162,8 +197,27 @@ class _DialogOverlayState extends State<DialogOverlay>
                                   children: <Widget>[
                                     AppButton(
                                       type: AppButtonType.Danger,
-                                      text: "DELETE PRIVATE KEY\nAND LOGOUT",
+                                      text: widget.logoutConfirm
+                                          ? "YES, I'M SURE"
+                                          : "DELETE PRIVATE KEY\nAND LOGOUT",
                                       buttonTop: true,
+                                      onPressed: () {
+                                        widget.logoutConfirm
+                                            ? Navigator.pushNamed(
+                                                context, "/intro_welcome")
+                                            : {
+                                                Navigator.pop(context),
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        DialogOverlay(
+                                                            title:
+                                                                'ARE YOU SURE?',
+                                                            logout: true,
+                                                            logoutConfirm:
+                                                                true))
+                                              };
+                                      },
                                     ),
                                   ],
                                 ),
