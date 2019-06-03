@@ -164,7 +164,7 @@ class _AccountsPageState extends State<AccountsPage> {
                                                   .textLight30,
                                           onPressed: () {
                                             _scaffoldKey.currentState
-                                                .openDrawer();
+                                                .openEndDrawer();
                                           },
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
