@@ -51,18 +51,14 @@ class _SettingsPageState extends State<SettingsPage> {
       DialogListItem(
           option: "Light",
           action: () {
-            setState(() {
-              StateContainer.of(context).curTheme = BlaiseLightTheme();
-              Navigator.pop(context);
-            });
+            StateContainer.of(context).updateTheme(BlaiseLightTheme());
+            Navigator.pop(context);
           }),
       DialogListItem(
           option: "Dark",
           action: () {
-            setState(() {
-              StateContainer.of(context).curTheme = BlaiseDarkTheme();
-              Navigator.pop(context);
-            });
+            StateContainer.of(context).updateTheme(BlaiseDarkTheme());
+            Navigator.pop(context);
           })
     ];
     // The main scaffold that holds everything

@@ -66,6 +66,14 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  void updateTheme(BaseTheme theme) {
+    if (theme != null) {
+      setState(() {
+        this.curTheme = theme;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
