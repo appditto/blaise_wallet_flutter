@@ -84,6 +84,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                         margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
                         child: AppTextField(
                           label: "Private Key",
+                          style: AppStyles.privateKeyPrimary(context),
                           firstButton: TextFieldButton(
                             icon: AppIcons.paste,
                             onPressed: () {

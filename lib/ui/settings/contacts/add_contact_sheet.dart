@@ -1,6 +1,7 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -71,52 +72,12 @@ class _AddContactSheetState extends State<AddContactSheet> {
                       // Container for the name text field
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment(-1, 0),
-                              child: AutoSizeText(
-                                'Name',
-                                style: AppStyles.textFieldLabel(context),
-                              ),
-                            ),
-                            Container(
-                              child: Theme(
-                                data: ThemeData(
-                                  primaryColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  hintColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  splashColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary30,
-                                  highlightColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary15,
-                                  textSelectionColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary30,
-                                ),
-                                child: TextField(
-                                  style: AppStyles.contactsItemName(context),
-                                  cursorColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  keyboardType: TextInputType.text,
-                                  autocorrect: false,
-                                  textInputAction: TextInputAction.done,
-                                  maxLines: 1,
-                                  minLines: 1,
-                                  decoration: InputDecoration(
-                                    prefix: Text("@", style: AppStyles.settingsHeader(context),)
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: AppTextField(
+                          label: 'Name',
+                          style: AppStyles.contactsItemName(context),
+                          prefix: Text("@", style: AppStyles.settingsHeader(context)),
+                          maxLines: 1,
+                        )
                       ),
                       // Container for the address text field
                       Container(

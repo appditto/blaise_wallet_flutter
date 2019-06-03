@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -81,50 +82,11 @@ class _IntroDecryptAndImportPrivateKeyPageState extends State<IntroDecryptAndImp
                       // Container for the text field
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment(-1, 0),
-                              child: AutoSizeText(
-                                'Password',
-                                style: AppStyles.textFieldLabel(context),
-                              ),
-                            ),
-                            Container(
-                              child: Theme(
-                                data: ThemeData(
-                                  primaryColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  hintColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  splashColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary30,
-                                  highlightColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary15,
-                                  textSelectionColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary30,
-                                ),
-                                child: TextField(
-                                  obscureText: true,
-                                  style: AppStyles.privateKeyPrimary(context),
-                                  cursorColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  keyboardType: TextInputType.text,
-                                  autocorrect: false,
-                                  textInputAction: TextInputAction.done,
-                                  maxLines: 1,
-                                  minLines: 1,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: AppTextField(
+                          label: 'Password',
+                          style: AppStyles.privateKeyPrimary(context),
+                          passwordField: true,
+                        )
                       ),
                     ],
                   ),
