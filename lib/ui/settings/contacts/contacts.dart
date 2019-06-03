@@ -1,9 +1,11 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/settings/contacts/add_contact_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 
 class ContactsPage extends StatefulWidget {
@@ -312,6 +314,11 @@ class _ContactsPageState extends State<ContactsPage> {
                               AppButton(
                                 text: "Add Contact",
                                 type: AppButtonType.Primary,
+                                onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                        context: context,
+                                        widget: AddContactSheet());
+                                  },
                               ),
                             ],
                           ),
