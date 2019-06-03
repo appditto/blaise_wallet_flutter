@@ -34,4 +34,8 @@ class Vault {
   Future<String> setPrivateKey(PrivateKey privateKey) async {
     return await _write(PRIVATEKEY_KEY,  _privateKeyCoder.encodeToHex(privateKey));
   }
+
+  Future<void> deleteAll() async {
+    await _secureStorage.deleteAll();
+  }
 }

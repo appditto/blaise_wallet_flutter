@@ -1,9 +1,11 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/material.dart';
 
 class IntroBackupConfirmPage extends StatefulWidget {
@@ -99,7 +101,9 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                       text: "YES, I'M SURE",
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/accounts');
+                        sl.get<SharedPrefsUtil>().setPrivateKeyBackedUp(true).then((_) {
+                          Navigator.of(context).pushNamed('/accounts');
+                        });
                       },
                     ),
                   ],

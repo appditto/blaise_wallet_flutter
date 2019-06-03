@@ -10,6 +10,8 @@ import 'package:blaise_wallet_flutter/ui/settings/contacts/contacts.dart';
 import 'package:blaise_wallet_flutter/ui/settings/security.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -130,6 +132,11 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
   bool _hasCheckedLoggedIn;
   Future checkLoggedIn() async {
     if (!_hasCheckedLoggedIn) {
+      if (await sl.get<SharedPrefsUtil>().getFirstLaunch()) {
+        await sl.get<SharedPrefsUtil>().deleteAll(firstLaunch: true);
+        await sl.get<Vault>().deleteAll();
+        await sl.get<SharedPrefsUtil>().setFirstLaunch();
+      }
       _hasCheckedLoggedIn = true;
       Navigator.of(context).pushReplacementNamed('/intro_welcome');
     }
