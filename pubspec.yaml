@@ -22,6 +22,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # PascalCoin signing/rpc/etc.
+  pascaldart:
+    git:
+      url: https://github.com/bbedward/pascaldart.git
+
   # Localization
   intl: ^0.15.8
 
@@ -33,6 +38,12 @@ dependencies:
   
   # Banner style alerts
   oktoast: ^2.1.7
+
+  # Service locator
+  get_it: ^1.0.3+1
+
+  # KeyStore/keychain
+  flutter_secure_storage: ^3.2.1+1
 
 dev_dependencies:
   flutter_test:

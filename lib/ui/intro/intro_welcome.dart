@@ -1,7 +1,10 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/pascal_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -86,7 +89,9 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       text: "New Private Key",
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/intro_new_private_key');
+                        sl.get<Vault>().setPrivateKey(sl.get<PascalUtil>().generateKeyPair().privateKey).then((key) {
+                          Navigator.of(context).pushNamed('/intro_new_private_key');
+                        });
                       },
                     ),
                   ],

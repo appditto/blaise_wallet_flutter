@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
 class IntroNewPrivateKeyPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
   bool _keyCopied;
   Timer _keyCopiedTimer;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -97,14 +99,23 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                               ? StateContainer.of(context).curTheme.success10
                               : StateContainer.of(context).curTheme.primary10,
                         ),
-                        child: AutoSizeText(
-                          "CA02200046B7A086680D208272F6982F574FE226042F30D049F9A226283FC3346506411D",
-                          textAlign: TextAlign.center,
-                          maxLines: 3,
-                          stepGranularity: 0.5,
-                          style: _keyCopied
-                              ? AppStyles.privateKeySuccess(context)
-                              : AppStyles.privateKeyPrimary(context),
+                        child: FutureBuilder(
+                          future: sl.get<Vault>().getPrivateKey(),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData && snapshot.data!=null) {
+                              return AutoSizeText(
+                                snapshot.data,
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                                stepGranularity: 0.5,
+                                style: _keyCopied
+                                    ? AppStyles.privateKeySuccess(context)
+                                    : AppStyles.privateKeyPrimary(context),
+                              );
+                            } else {
+                              return SizedBox();
+                            }
+                          }
                         ),
                       ),
                       // Container for the "Copy to Clipboard" button

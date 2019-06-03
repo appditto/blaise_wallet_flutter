@@ -1,5 +1,6 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/accounts/accounts.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_decrypt_and_import_private_key.dart';
@@ -16,6 +17,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 
 void main() async {
+  // Register services
+  setupServiceLocator();
   // Run app
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(StateContainer(child: App()));
