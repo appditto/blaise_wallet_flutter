@@ -307,7 +307,7 @@ Future<T> showAppDialog<T>({
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: Colors.black54,
+    barrierColor: Colors.transparent,
     transitionDuration: const Duration(milliseconds: 0),
     transitionBuilder: _buildMaterialDialogTransitions,
   );
