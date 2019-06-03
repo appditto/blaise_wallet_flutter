@@ -5,8 +5,10 @@ import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/clipboard_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class IntroNewPrivateKeyPage extends StatefulWidget {
   @override
@@ -156,6 +158,9 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                               highlightColor:
                                   StateContainer.of(context).curTheme.backgroundPrimary30,
                               onPressed: () {
+                                sl.get<Vault>().getPrivateKey().then((key) {
+                                  Clipboard.setData(ClipboardData(text: key));
+                                });
                                 setState(() {
                                   _keyCopied = true;
                                 });
