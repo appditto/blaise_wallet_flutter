@@ -55,7 +55,7 @@ class _DialogOverlayState extends State<DialogOverlay>
           width: double.maxFinite,
           height: 50,
           child: FlatButton(
-              onPressed: option.action,
+              onPressed: option.action==null?(){return null;}:option.action,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
@@ -307,7 +307,7 @@ Future<T> showAppDialog<T>({
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: Colors.transparent,
+    barrierColor: Colors.black.withOpacity(0.001),
     transitionDuration: const Duration(milliseconds: 0),
     transitionBuilder: _buildMaterialDialogTransitions,
   );
