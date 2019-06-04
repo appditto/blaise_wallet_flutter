@@ -1,6 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/auto_resize_text.dart';
 import 'package:flutter/material.dart';
 
 /// TextField button

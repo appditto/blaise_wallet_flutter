@@ -30,6 +30,9 @@ dependencies:
   # Localization
   intl: ^0.15.8
 
+  # AutoSizeText widget
+  auto_size_text: ^2.0.0+2
+
   # Flare for animations
   flare_flutter: ^1.5.1
 
