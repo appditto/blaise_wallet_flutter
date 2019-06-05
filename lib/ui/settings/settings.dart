@@ -155,7 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: ListView(
                           padding: EdgeInsetsDirectional.only(
                               bottom:
-                                  MediaQuery.of(context).padding.bottom + 12),
+                                  MediaQuery.of(context).padding.bottom + 24),
                           children: <Widget>[
                             // Preferences text
                             Container(

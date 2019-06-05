@@ -39,7 +39,7 @@ enum AppDrawerAlignment {
 // The right nav can vary depending on content.
 
 const double _kWidth = 304.0;
-const double _kEdgeDragWidth = 80.0;
+const double _kEdgeDragWidth = 60.0;
 const double _kMinFlingVelocity = 365.0;
 const Duration _kBaseSettleDuration = Duration(milliseconds: 246);
 

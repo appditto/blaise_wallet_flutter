@@ -264,7 +264,7 @@ class _AccountsPageState extends State<AccountsPage> {
                                         ListView(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  0, 8, 0, 14),
+                                                  0, 3, 0, 19),
                                           children: <Widget>[
                                             AccountCard(
                                               name: "yekta",

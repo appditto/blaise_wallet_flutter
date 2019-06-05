@@ -33,7 +33,7 @@ class _SettingsListItemState extends State<SettingsListItem> {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: 68,
+      height: 70,
       child: FlatButton(
         padding: EdgeInsetsDirectional.only(start: 24, end: 24),
         onPressed: () {

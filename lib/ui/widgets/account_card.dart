@@ -22,8 +22,11 @@ class _AccountCardState extends State<AccountCard> {
   Widget build(BuildContext context) {
     // Account Card
     return Slidable(
-      actionPane: SlidableDrawerActionPane(),
+      actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.175,
+      movementDuration: Duration(milliseconds: 150),
+      showAllActionsThreshold: 0.25,
+
       actions: <Widget>[
         // Receive Icon
         Container(
@@ -34,8 +37,7 @@ class _AccountCardState extends State<AccountCard> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Container(
-              margin: EdgeInsetsDirectional.only(top: 0, end: 0),
-              height: 50,
+              height: 48,
               width: 50,
               decoration: BoxDecoration(
                   gradient:
@@ -67,7 +69,7 @@ class _AccountCardState extends State<AccountCard> {
             borderRadius: BorderRadius.circular(12),
             child: Container(
               margin: EdgeInsetsDirectional.only(top: 0, end: 0),
-              height: 50,
+              height: 48,
               width: 50,
               decoration: BoxDecoration(
                   gradient:
@@ -93,8 +95,8 @@ class _AccountCardState extends State<AccountCard> {
       ],
       child: Container(
         width: double.maxFinite,
-        margin: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 10),
-        height: 68,
+        margin: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 5),
+        height: 70,
         decoration: BoxDecoration(
             color: StateContainer.of(context).curTheme.backgroundPrimary,
             borderRadius: BorderRadius.circular(12),
