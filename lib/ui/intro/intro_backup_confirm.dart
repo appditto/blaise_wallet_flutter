@@ -101,7 +101,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                       buttonTop: true,
                       onPressed: () {
                         sl.get<SharedPrefsUtil>().setPrivateKeyBackedUp(true).then((_) {
-                          Navigator.of(context).pushNamed('/accounts');
+                          Navigator.of(context).pushNamed('/accounts_new');
                         });
                       },
                     ),

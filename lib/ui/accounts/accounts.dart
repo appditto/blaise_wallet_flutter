@@ -4,6 +4,7 @@ import 'package:blaise_wallet_flutter/ui/accounts/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/account_card.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -12,6 +13,8 @@ import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
 
 class AccountsPage extends StatefulWidget {
+  final bool newWallet;
+  AccountsPage({this.newWallet = true});
   @override
   _AccountsPageState createState() => _AccountsPageState();
 }
@@ -115,7 +118,7 @@ class _AccountsPageState extends State<AccountsPage> {
                                                 text: " ",
                                                 style: TextStyle(fontSize: 10)),
                                             TextSpan(
-                                                text: "0",
+                                                text: widget.newWallet?"0":"10,205",
                                                 style:
                                                     AppStyles.header(context)),
                                           ],
@@ -133,7 +136,8 @@ class _AccountsPageState extends State<AccountsPage> {
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           24, 0, 24, 0),
                                       child: AutoSizeText(
-                                        "(\$" + "0.00" + ")",
+                                        widget.newWallet?
+                                        "(\$" + "0.00" + ")":"(\$" + "2,745.14" + ")",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
@@ -193,37 +197,101 @@ class _AccountsPageState extends State<AccountsPage> {
                           ),
                         ],
                       ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            //Container for the paragraph
-                            Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
-                              child: AutoSizeText(
-                                "Welcome to Blaise Wallet.\nYou can start by getting an account",
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                stepGranularity: 0.1,
-                                style: AppStyles.paragraphBig(context),
+
+                      widget.newWallet
+                          ?
+                          // Paragraph and illustration
+                          Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  //Container for the paragraph
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        20, 0, 20, 0),
+                                    child: AutoSizeText(
+                                      "Welcome to Blaise Wallet.\nYou can start by getting an account",
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      stepGranularity: 0.1,
+                                      style: AppStyles.paragraphBig(context),
+                                    ),
+                                  ),
+                                  // Container for the illustration
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(
+                                      top: 24,
+                                    ),
+                                    child: SvgRepaintAsset(
+                                        asset:
+                                            'assets/illustration_new_wallet.svg',
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.55,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.55),
+                                  ),
+                                ],
+                              ),
+                            )
+                          :
+                          // Wallet Cards
+                          Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  // Accounts text
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        24, 16, 24, 0),
+                                    alignment: Alignment(-1, 0),
+                                    child: AutoSizeText(
+                                      "Accounts".toUpperCase(),
+                                      style: AppStyles.headerSmall(context),
+                                      textAlign: TextAlign.left,
+                                      stepGranularity: 0.5,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  // Accounts List
+                                  Expanded(
+                                    child: ListView(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 4, 0, 16),
+                                      children: <Widget>[
+                                        AccountCard(
+                                          name: "yekta",
+                                          number: "578706-79",
+                                          balance: "9,104",
+                                        ),
+                                        AccountCard(
+                                          name: "y.spending",
+                                          number: "545313-62",
+                                          balance: "565",
+                                        ),
+                                        AccountCard(
+                                          number: "475324-11",
+                                          balance: "125.4",
+                                        ),
+                                        AccountCard(
+                                          name: "y.hodl",
+                                          number: "151521-25",
+                                          balance: "391.41",
+                                        ),
+                                        AccountCard(
+                                          number: "101010-20",
+                                          balance: "0",
+                                        ),
+                                        AccountCard(
+                                          number: "191919-19",
+                                          balance: "0",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            // Container for the illustration
-                            Container(
-                              margin: EdgeInsetsDirectional.only(
-                                top: 24,
-                              ),
-                              child: SvgRepaintAsset(
-                                  asset: 'assets/illustration_new_wallet.svg',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.55,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.55),
-                            ),
-                          ],
-                        ),
-                      ),
                       // Bottom bar
                       Align(
                         alignment: Alignment.bottomCenter,

@@ -19,6 +19,14 @@ class AppStyles {
         color: StateContainer.of(context).curTheme.textLight);
   }
 
+  // For small headers
+  static TextStyle headerSmall(BuildContext context) {
+    return TextStyle(
+        fontSize: AppFontSizes.medium,
+        fontWeight: FontWeight.w500,
+        color: StateContainer.of(context).curTheme.primary);
+  }
+
   // For paragraphs
   static TextStyle paragraph(BuildContext context) {
     return TextStyle(
@@ -42,6 +50,13 @@ class AppStyles {
         color: StateContainer.of(context).curTheme.danger,
         fontSize: 14.0,
         height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
+  static TextStyle balanceMedium(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 18.0,
         fontWeight: FontWeight.w700);
   }
 
@@ -110,17 +125,15 @@ class AppStyles {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 16.0,
-        height: 1.3,
         fontWeight: FontWeight.w700);
   }
 
-  // Contacts item addree
+  // Contacts item address
   static TextStyle contactsItemAddress(BuildContext context) {
     return TextStyle(
         fontFamily: 'SourceCodePro',
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 14.0,
-        height: 1.3,
         fontWeight: FontWeight.w400);
   }
 
@@ -214,13 +227,37 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+  // For pascal icon on the account card balance
+  static TextStyle iconFontPrimaryBalanceMediumPascal(BuildContext context) {
+    return TextStyle(
+      fontSize: 18,
+      color: StateContainer.of(context).curTheme.primary,
+      fontFamily: 'AppIcons',
+    );
+  }
+  // Account Card Name
+  static TextStyle accountCardName(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      color: StateContainer.of(context).curTheme.textLight,
+      fontWeight: FontWeight.w700,
+    );
+  }
+  // Account Card Address
+  static TextStyle accountCardAddress(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      color: StateContainer.of(context).curTheme.textLight,
+      fontFamily: 'SourceCodePro',
+    );
+  }
 }
 
 class AppFontSizes {
   static const smallest = 12.0;
   static const small = 14.0;
   static const medium = 16.0;
-  static const large = 20.0;
+  static const large = 18.0;
   static const larger = 24.0;
   static const largest = 28.0;
 }

@@ -97,9 +97,14 @@ class _AppState extends State<App> {
                 builder: (_) => IntroDecryptAndImportPrivateKeyPage(),
                 settings: settings,
               );
-            case '/accounts':
+            case '/accounts_new':
               return MaterialPageRoute(
                 builder: (_) => AccountsPage(),
+                settings: settings,
+              );
+            case '/accounts':
+              return MaterialPageRoute(
+                builder: (_) => AccountsPage(newWallet: false,),
                 settings: settings,
               );
             case '/security':
