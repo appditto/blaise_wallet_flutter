@@ -23,14 +23,13 @@ class _AccountCardState extends State<AccountCard> {
     // Account Card
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.2,
-      secondaryActions: <Widget>[
+      actionExtentRatio: 0.175,
+      actions: <Widget>[
         // Receive Icon
         Container(
           color: Colors.transparent,
           margin: EdgeInsetsDirectional.only(
-              end: (MediaQuery.of(context).size.width * 0.05)*(2/3),
-              start: (MediaQuery.of(context).size.width * 0.05)*(1/3),
+              start: MediaQuery.of(context).size.width * 0.05,
               ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -61,7 +60,8 @@ class _AccountCardState extends State<AccountCard> {
         Container(
           color: Colors.transparent,
           padding: EdgeInsetsDirectional.only(
-            end: (MediaQuery.of(context).size.width * 0.05),
+            start: (MediaQuery.of(context).size.width * 0.05)*2/3,
+            end: (MediaQuery.of(context).size.width * 0.05)*1/3,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -82,7 +82,7 @@ class _AccountCardState extends State<AccountCard> {
                     return null;
                   },
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0)),
+                      borderRadius: BorderRadius.circular(12.0)),
                   padding: EdgeInsets.all(0.0),
                   child: Icon(AppIcons.uparrow,
                       color: StateContainer.of(context).curTheme.textLight,

@@ -116,7 +116,7 @@ class _AccountsPageState extends State<AccountsPage> {
                                             ),
                                             TextSpan(
                                                 text: " ",
-                                                style: TextStyle(fontSize: 10)),
+                                                style: TextStyle(fontSize: 12)),
                                             TextSpan(
                                                 text: widget.newWallet
                                                     ? "0"

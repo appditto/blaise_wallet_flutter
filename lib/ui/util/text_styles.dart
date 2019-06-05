@@ -222,7 +222,7 @@ class AppStyles {
   // For header pascal icon
   static TextStyle iconFontTextLightPascal(BuildContext context) {
     return TextStyle(
-      fontSize: 26,
+      fontSize: 28,
       color: StateContainer.of(context).curTheme.textLight,
       fontFamily: 'AppIcons',
     );
