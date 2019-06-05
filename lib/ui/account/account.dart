@@ -277,10 +277,7 @@ class _AccountPageState extends State<AccountPage> {
                                       topRight: Radius.circular(12)),
                                   child: ListView(
                                     padding: EdgeInsetsDirectional.only(
-                                        bottom: MediaQuery.of(context)
-                                                .padding
-                                                .bottom +
-                                            24),
+                                        bottom: 24),
                                     children: <Widget>[
                                       OperationListItem(
                                         type: OperationType.Received,

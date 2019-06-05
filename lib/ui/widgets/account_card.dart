@@ -43,9 +43,9 @@ class _AccountCardState extends State<AccountCard> {
               child: FlatButton(
                   highlightColor:
                       StateContainer.of(context).curTheme.textLight15,
-                  splashColor: StateContainer.of(context).curTheme.textLight30,
+                  splashColor: StateContainer.of(context).curTheme.textLight30,           
                   onPressed: () {
-                    Navigator.pushNamed(context, '/account');
+                    return null;
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
