@@ -82,6 +82,14 @@ class AppStyles {
         fontWeight: FontWeight.w500);
   }
 
+  static TextStyle paragraphBigDisabled(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark30,
+        fontSize: 16.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
+  }
+
   static TextStyle paragraphTextLightSmall(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textLight,

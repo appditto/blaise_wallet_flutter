@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/account/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -8,6 +9,8 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/operation_list_item.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
@@ -16,6 +19,13 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  List<DialogListItem> operationsList = [
+    DialogListItem(option: "Change Account Name"),
+    DialogListItem(option: "Transfer Account"),
+    DialogListItem(option: "List Account for Sale"),
+    DialogListItem(option: "Private Sale"),
+    DialogListItem(option: "Delist Account", disabled: true),
+  ];
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
 
   @override
@@ -78,36 +88,64 @@ class _AccountPageState extends State<AccountPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                // Back Icon
+                                // Back icon and price text
                                 Container(
                                   height: 130,
+                                  width: 60,
                                   alignment: Alignment(0, -1),
-                                  child: Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                        top: 2, start: 2),
-                                    height: 50,
-                                    width: 50,
-                                    child: FlatButton(
-                                        highlightColor:
-                                            StateContainer.of(context)
-                                                .curTheme
-                                                .textLight15,
-                                        splashColor: StateContainer.of(context)
-                                            .curTheme
-                                            .textLight30,
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0)),
-                                        padding:
-                                            EdgeInsetsDirectional.only(end: 10),
-                                        child: Icon(AppIcons.back,
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .textLight,
-                                            size: 22)),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      // Back icon
+                                      Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                            top: 2, start: 2),
+                                        height: 50,
+                                        width: 50,
+                                        child: FlatButton(
+                                            highlightColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight15,
+                                            splashColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight30,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        50.0)),
+                                            padding: EdgeInsetsDirectional.only(
+                                                end: 10),
+                                            child: Icon(AppIcons.back,
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textLight,
+                                                size: 22)),
+                                      ),
+                                      // Price text
+                                      Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                            start: 16, bottom: 12),
+                                        child: AutoSizeText(
+                                          "\$" + "0.269",
+                                          maxLines: 1,
+                                          stepGranularity: 0.1,
+                                          minFontSize: 8,
+                                          textAlign: TextAlign.start,
+                                          style: AppStyles
+                                              .paragraphTextLightSmallSemiBold(
+                                                  context),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 // Column for balance texts
@@ -172,7 +210,7 @@ class _AccountPageState extends State<AccountPage> {
                                     ),
                                   ],
                                 ),
-                                // Column for settings icon and price text
+                                // Column for settings icon and other operations icon
                                 Container(
                                   width: 60,
                                   child: Column(
@@ -211,18 +249,40 @@ class _AccountPageState extends State<AccountPage> {
                                                         .textLight,
                                                 size: 24)),
                                       ),
+                                      // Other Operations Icon
                                       Container(
                                         margin: EdgeInsetsDirectional.only(
-                                            end: 16, bottom: 12),
-                                        child: AutoSizeText(
-                                          "\$" + "0.269",
-                                          maxLines: 1,
-                                          stepGranularity: 0.1,
-                                          minFontSize: 8,
-                                          style: AppStyles
-                                              .paragraphTextLightSmallSemiBold(
-                                                  context),
-                                        ),
+                                            bottom: 2, end: 2),
+                                        height: 50,
+                                        width: 50,
+                                        child: FlatButton(
+                                            highlightColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight15,
+                                            splashColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight30,
+                                            onPressed: () {
+                                              showAppDialog(
+                                                  context: context,
+                                                  builder: (_) => DialogOverlay(
+                                                      title: 'Other Operations',
+                                                      optionsList:
+                                                          operationsList));
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        50.0)),
+                                            padding: EdgeInsetsDirectional.only(start: 8, top: 6),
+                                            child: Icon(AppIcons.edit,
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textLight,
+                                                size: 18)),
                                       ),
                                     ],
                                   ),
@@ -276,8 +336,8 @@ class _AccountPageState extends State<AccountPage> {
                                       topLeft: Radius.circular(12),
                                       topRight: Radius.circular(12)),
                                   child: ListView(
-                                    padding: EdgeInsetsDirectional.only(
-                                        bottom: 24),
+                                    padding:
+                                        EdgeInsetsDirectional.only(bottom: 24),
                                     children: <Widget>[
                                       OperationListItem(
                                         type: OperationType.Received,
@@ -404,6 +464,11 @@ class _AccountPageState extends State<AccountPage> {
                                 AppButton(
                                   text: "Receive",
                                   type: AppButtonType.PrimaryLeft,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                        context: context,
+                                        widget: ReceiveSheet());
+                                  },
                                 ),
                                 AppButton(
                                   text: "Send",

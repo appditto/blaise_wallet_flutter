@@ -41,7 +41,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      // Back Button
+                      // Close Button
                       Container(
                         margin: EdgeInsetsDirectional.only(start: 5, end: 10),
                         height: 50,
@@ -137,7 +137,6 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                     minFontSize: 8,
                   ),
                 ),
-                Container(),
                 //"Get a Free Account" and "Buy An Account" buttons
                 Row(
                   children: <Widget>[
