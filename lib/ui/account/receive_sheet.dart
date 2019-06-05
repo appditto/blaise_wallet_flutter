@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -16,6 +18,15 @@ class ReceiveSheet extends StatefulWidget {
 }
 
 class _ReceiveSheetState extends State<ReceiveSheet> {
+  bool _addressCopied;
+  Timer _addressCopiedTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _addressCopied = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -192,9 +203,25 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
               Row(
                 children: <Widget>[
                   AppButton(
-                    type: AppButtonType.Primary,
-                    text: "Copy Address",
+                    type: _addressCopied
+                        ? AppButtonType.Success
+                        : AppButtonType.Primary,
+                    text: _addressCopied ? "Address Copied" : "Copy Address",
                     buttonTop: true,
+                    onPressed: () {
+                      setState(() {
+                        _addressCopied = true;
+                      });
+                      if (_addressCopiedTimer != null) {
+                        _addressCopiedTimer.cancel();
+                      }
+                      _addressCopiedTimer =
+                          new Timer(const Duration(milliseconds: 1500), () {
+                        setState(() {
+                          _addressCopied = false;
+                        });
+                      });
+                    },
                   ),
                 ],
               ),

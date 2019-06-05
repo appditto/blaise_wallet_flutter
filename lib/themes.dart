@@ -52,6 +52,9 @@ abstract class BaseTheme {
   BoxShadow shadowPrimaryOne;
   BoxShadow shadowPrimaryTwo;
 
+  BoxShadow shadowSuccessOne;
+  BoxShadow shadowSuccessTwo;
+
   BoxShadow shadowDangerOne;
   BoxShadow shadowDangerTwo;
 
@@ -149,6 +152,18 @@ class BlaiseLightTheme extends BaseTheme {
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
+  
+  BoxShadow shadowSuccessOne = BoxShadow(
+      color: teal.withOpacity(0.5),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
+  BoxShadow shadowSuccessTwo = BoxShadow(
+      color: teal.withOpacity(0.25),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
 
   BoxShadow shadowSuccess = BoxShadow(
       color: teal.withOpacity(0.25),
@@ -206,6 +221,7 @@ class BlaiseDarkTheme extends BaseTheme {
   static const Color darkTeal = Color(0xFF61DEFF);
   static const Color lightTeal = Color(0xFFA8FDFF);
   static const Color teal = Color(0xFF00C5C3);
+  static const Color orange = Color(0xFFF7941F);
   static const Color red = Color(0xFFFF6C59);
   static const Color bluishGray = Color(0xFF3D3F4F);
   static const Color bluishGray00 = Color(0x003D3F4F);
@@ -275,6 +291,17 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -4.0);
   BoxShadow shadowPrimaryTwo = BoxShadow(
       color: darkTeal.withOpacity(0.15),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowSuccessOne = BoxShadow(
+      color: orange.withOpacity(0.3),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  BoxShadow shadowSuccessTwo = BoxShadow(
+      color: orange.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);

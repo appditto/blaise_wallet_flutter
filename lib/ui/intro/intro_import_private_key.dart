@@ -15,14 +15,8 @@ class IntroImportPrivateKeyPage extends StatefulWidget {
 }
 
 class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
-  bool _keyCopied;
-  Timer _keyCopiedTimer;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
-  void initState() {
-    super.initState();
-    _keyCopied = false;
-  }
 
   @override
   Widget build(BuildContext context) {

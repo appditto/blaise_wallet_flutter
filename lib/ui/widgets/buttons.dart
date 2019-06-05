@@ -40,9 +40,9 @@ class _AppButtonState extends State<AppButton> {
       margin: widget.buttonTop
           ? EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0)
           : EdgeInsetsDirectional.fromSTEB(
-              widget.type==AppButtonType.PrimaryRight?10:20,
+              widget.type == AppButtonType.PrimaryRight ? 10 : 20,
               16,
-              widget.type==AppButtonType.PrimaryLeft?10:20,
+              widget.type == AppButtonType.PrimaryLeft ? 10 : 20,
               (MediaQuery.of(context).padding.bottom) +
                   (24 - (MediaQuery.of(context).padding.bottom) / 2),
             ),
@@ -50,10 +50,14 @@ class _AppButtonState extends State<AppButton> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         gradient: (widget.type == AppButtonType.Primary ||
-                widget.type == AppButtonType.PrimaryOutline || widget.type ==AppButtonType.PrimaryLeft || widget.type ==AppButtonType.PrimaryRight)
+                widget.type == AppButtonType.PrimaryOutline ||
+                widget.type == AppButtonType.PrimaryLeft ||
+                widget.type == AppButtonType.PrimaryRight)
             ? StateContainer.of(context).curTheme.gradientPrimary
             : (widget.type == AppButtonType.Danger ||
-                    widget.type == AppButtonType.DangerOutline)
+                    widget.type == AppButtonType.DangerOutline ||
+                    widget.type == AppButtonType.Success ||
+                    widget.type == AppButtonType.SuccessOutline)
                 ? null
                 : StateContainer.of(context)
                     .curTheme
@@ -61,18 +65,34 @@ class _AppButtonState extends State<AppButton> {
         color: (widget.type == AppButtonType.Danger ||
                 widget.type == AppButtonType.DangerOutline)
             ? StateContainer.of(context).curTheme.danger
-            : null,
+            : widget.type == AppButtonType.Success ||
+                    widget.type == AppButtonType.SuccessOutline
+                ? StateContainer.of(context).curTheme.success
+                : null,
         boxShadow: [
-          widget.type == AppButtonType.Primary || widget.type == AppButtonType.PrimaryLeft || widget.type == AppButtonType.PrimaryRight
+          widget.type == AppButtonType.Primary ||
+                  widget.type == AppButtonType.PrimaryLeft ||
+                  widget.type == AppButtonType.PrimaryRight
               ? StateContainer.of(context).curTheme.shadowPrimaryOne
               : widget.type == AppButtonType.PrimaryOutline
                   ? StateContainer.of(context).curTheme.shadowPrimaryTwo
-                  : widget.type == AppButtonType.Danger
-                      ? StateContainer.of(context).curTheme.shadowDangerOne
-                      : StateContainer.of(context).curTheme.shadowDangerTwo,
+                  : widget.type == AppButtonType.Success
+                      ? StateContainer.of(context).curTheme.shadowSuccessOne
+                      : widget.type == AppButtonType.SuccessOutline
+                          ? StateContainer.of(context).curTheme.shadowSuccessTwo
+                          : widget.type == AppButtonType.Danger
+                              ? StateContainer.of(context)
+                                  .curTheme
+                                  .shadowDangerOne
+                              : StateContainer.of(context)
+                                  .curTheme
+                                  .shadowDangerTwo,
         ],
       ),
-      child: widget.type == AppButtonType.Primary || widget.type ==AppButtonType.PrimaryLeft || widget.type ==AppButtonType.PrimaryRight ||
+      child: widget.type == AppButtonType.Primary ||
+              widget.type == AppButtonType.PrimaryLeft ||
+              widget.type == AppButtonType.PrimaryRight ||
+              widget.type == AppButtonType.Success ||
               widget.type == AppButtonType.Danger
           // Primary Button
           ? FlatButton(
@@ -128,12 +148,12 @@ class _AppButtonState extends State<AppButton> {
                           : AppStyles.buttonPrimaryOutline(context),
                     ),
                     color: Colors.transparent,
-                    splashColor: 
-                      widget.type == AppButtonType.DangerOutline?StateContainer.of(context).curTheme.danger30:
-                      StateContainer.of(context).curTheme.primary30,
-                    highlightColor:
-                    widget.type == AppButtonType.DangerOutline?StateContainer.of(context).curTheme.danger15:
-                        StateContainer.of(context).curTheme.primary15,
+                    splashColor: widget.type == AppButtonType.DangerOutline
+                        ? StateContainer.of(context).curTheme.danger30
+                        : StateContainer.of(context).curTheme.primary30,
+                    highlightColor: widget.type == AppButtonType.DangerOutline
+                        ? StateContainer.of(context).curTheme.danger15
+                        : StateContainer.of(context).curTheme.primary15,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),
                     onPressed: () {
