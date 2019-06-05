@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/accounts/get_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -12,14 +12,14 @@ import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
 
-class AccountsPage extends StatefulWidget {
+class OverviewPage extends StatefulWidget {
   final bool newWallet;
-  AccountsPage({this.newWallet = true});
+  OverviewPage({this.newWallet = true});
   @override
-  _AccountsPageState createState() => _AccountsPageState();
+  _OverviewPageState createState() => _OverviewPageState();
 }
 
-class _AccountsPageState extends State<AccountsPage> {
+class _OverviewPageState extends State<OverviewPage> {
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
 
   @override
@@ -34,7 +34,6 @@ class _AccountsPageState extends State<AccountsPage> {
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
               children: <Widget>[
-                //A widget that holds welcome animation + paragraph
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

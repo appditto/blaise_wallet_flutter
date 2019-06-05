@@ -152,188 +152,193 @@ class _SettingsPageState extends State<SettingsPage> {
                           ],
                         ),
                         // Settings List
-                        child: ListView(
-                          padding: EdgeInsetsDirectional.only(
-                              bottom:
-                                  MediaQuery.of(context).padding.bottom + 24),
-                          children: <Widget>[
-                            // Preferences text
-                            Container(
-                              alignment: Alignment(-1, 0),
-                              margin: EdgeInsetsDirectional.only(
-                                  start: 24, end: 24, top: 16, bottom: 8),
-                              child: AutoSizeText(
-                                "Preferences",
-                                style: AppStyles.settingsHeader(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12)),
+                          child: ListView(
+                            padding: EdgeInsetsDirectional.only(
+                                bottom:
+                                    MediaQuery.of(context).padding.bottom + 24),
+                            children: <Widget>[
+                              // Preferences text
+                              Container(
+                                alignment: Alignment(-1, 0),
+                                margin: EdgeInsetsDirectional.only(
+                                    start: 24, end: 24, top: 16, bottom: 8),
+                                child: AutoSizeText(
+                                  "Preferences",
+                                  style: AppStyles.settingsHeader(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                ),
                               ),
-                            ),
-                            // Divider
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            // List Items
-                            SettingsListItem(
-                              header: "Currency",
-                              subheader: "\$ US Dollar",
-                              icon: AppIcons.currency,
-                              onPressed: () {
-                                showAppDialog(
-                                    context: context,
-                                    builder: (_) => DialogOverlay(
-                                        title: 'Currency',
-                                        optionsList: currencyList));
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Language",
-                              subheader: "System Default",
-                              icon: AppIcons.language,
-                              onPressed: () {
-                                showAppDialog(
-                                    context: context,
-                                    builder: (_) => DialogOverlay(
-                                        title: 'Language',
-                                        optionsList: languageList));
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Theme",
-                              subheader: "Light",
-                              icon: AppIcons.theme,
-                              onPressed: () {
-                                showAppDialog(
-                                    context: context,
-                                    builder: (_) => DialogOverlay(
-                                        title: 'Theme',
-                                        optionsList: themeList));
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Security",
-                              icon: AppIcons.security,
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/security');
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Daemon",
-                              subheader: "Default",
-                              icon: AppIcons.changedaemon,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            // Manage text
-                            Container(
-                              alignment: Alignment(-1, 0),
-                              margin: EdgeInsetsDirectional.only(
-                                  start: 24, end: 24, top: 16, bottom: 8),
-                              child: AutoSizeText(
-                                "Manage",
-                                style: AppStyles.settingsHeader(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
+                              // Divider
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
                               ),
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Contacts",
-                              icon: AppIcons.contacts,
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/contacts');
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Backup Private Key",
-                              icon: AppIcons.backupprivatekey,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Share Blaise",
-                              icon: AppIcons.share,
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                            SettingsListItem(
-                              header: "Logout",
-                              icon: AppIcons.logout,
-                              onPressed: () {
-                                showAppDialog(
-                                    context: context,
-                                    builder: (_) => DialogOverlay(
-                                        title: 'WARNING', logout: true));
-                              },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
-                          ],
+                              // List Items
+                              SettingsListItem(
+                                header: "Currency",
+                                subheader: "\$ US Dollar",
+                                icon: AppIcons.currency,
+                                onPressed: () {
+                                  showAppDialog(
+                                      context: context,
+                                      builder: (_) => DialogOverlay(
+                                          title: 'Currency',
+                                          optionsList: currencyList));
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Language",
+                                subheader: "System Default",
+                                icon: AppIcons.language,
+                                onPressed: () {
+                                  showAppDialog(
+                                      context: context,
+                                      builder: (_) => DialogOverlay(
+                                          title: 'Language',
+                                          optionsList: languageList));
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Theme",
+                                subheader: "Light",
+                                icon: AppIcons.theme,
+                                onPressed: () {
+                                  showAppDialog(
+                                      context: context,
+                                      builder: (_) => DialogOverlay(
+                                          title: 'Theme',
+                                          optionsList: themeList));
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Security",
+                                icon: AppIcons.security,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/security');
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Daemon",
+                                subheader: "Default",
+                                icon: AppIcons.changedaemon,
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              // Manage text
+                              Container(
+                                alignment: Alignment(-1, 0),
+                                margin: EdgeInsetsDirectional.only(
+                                    start: 24, end: 24, top: 16, bottom: 8),
+                                child: AutoSizeText(
+                                  "Manage",
+                                  style: AppStyles.settingsHeader(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                ),
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Contacts",
+                                icon: AppIcons.contacts,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/contacts');
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Backup Private Key",
+                                icon: AppIcons.backupprivatekey,
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Share Blaise",
+                                icon: AppIcons.share,
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "Logout",
+                                icon: AppIcons.logout,
+                                onPressed: () {
+                                  showAppDialog(
+                                      context: context,
+                                      builder: (_) => DialogOverlay(
+                                          title: 'WARNING', logout: true));
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -25,8 +25,6 @@ class _AccountCardState extends State<AccountCard> {
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.175,
       movementDuration: Duration(milliseconds: 150),
-      showAllActionsThreshold: 0.25,
-
       actions: <Widget>[
         // Receive Icon
         Container(
@@ -47,7 +45,7 @@ class _AccountCardState extends State<AccountCard> {
                       StateContainer.of(context).curTheme.textLight15,
                   splashColor: StateContainer.of(context).curTheme.textLight30,
                   onPressed: () {
-                    return null;
+                    Navigator.pushNamed(context, '/account');
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
@@ -117,7 +115,7 @@ class _AccountCardState extends State<AccountCard> {
               onPressed: widget.onPressed != null
                   ? widget.onPressed
                   : () {
-                      return null;
+                      Navigator.pushNamed(context, '/account');
                     },
               padding: EdgeInsets.all(0),
               shape: RoundedRectangleBorder(

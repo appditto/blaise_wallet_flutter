@@ -1,7 +1,8 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
-import 'package:blaise_wallet_flutter/ui/accounts/accounts.dart';
+import 'package:blaise_wallet_flutter/ui/account/account.dart';
+import 'package:blaise_wallet_flutter/ui/overview/overview.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_decrypt_and_import_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_import_private_key.dart';
@@ -97,14 +98,19 @@ class _AppState extends State<App> {
                 builder: (_) => IntroDecryptAndImportPrivateKeyPage(),
                 settings: settings,
               );
-            case '/accounts_new':
+            case '/overview_new':
               return MaterialPageRoute(
-                builder: (_) => AccountsPage(),
+                builder: (_) => OverviewPage(),
                 settings: settings,
               );
-            case '/accounts':
+            case '/overview':
               return MaterialPageRoute(
-                builder: (_) => AccountsPage(newWallet: false,),
+                builder: (_) => OverviewPage(newWallet: false,),
+                settings: settings,
+              );
+            case '/account':
+              return MaterialPageRoute(
+                builder: (_) => AccountPage(),
                 settings: settings,
               );
             case '/security':

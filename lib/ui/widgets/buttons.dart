@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 enum AppButtonType {
   Primary,
+  PrimaryLeft,
+  PrimaryRight,
   PrimaryOutline,
   Success,
   SuccessOutline,
@@ -38,9 +40,9 @@ class _AppButtonState extends State<AppButton> {
       margin: widget.buttonTop
           ? EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0)
           : EdgeInsetsDirectional.fromSTEB(
-              20,
+              widget.type==AppButtonType.PrimaryRight?10:20,
               16,
-              20,
+              widget.type==AppButtonType.PrimaryLeft?10:20,
               (MediaQuery.of(context).padding.bottom) +
                   (24 - (MediaQuery.of(context).padding.bottom) / 2),
             ),
@@ -48,7 +50,7 @@ class _AppButtonState extends State<AppButton> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         gradient: (widget.type == AppButtonType.Primary ||
-                widget.type == AppButtonType.PrimaryOutline)
+                widget.type == AppButtonType.PrimaryOutline || widget.type ==AppButtonType.PrimaryLeft || widget.type ==AppButtonType.PrimaryRight)
             ? StateContainer.of(context).curTheme.gradientPrimary
             : (widget.type == AppButtonType.Danger ||
                     widget.type == AppButtonType.DangerOutline)
@@ -61,7 +63,7 @@ class _AppButtonState extends State<AppButton> {
             ? StateContainer.of(context).curTheme.danger
             : null,
         boxShadow: [
-          widget.type == AppButtonType.Primary
+          widget.type == AppButtonType.Primary || widget.type == AppButtonType.PrimaryLeft || widget.type == AppButtonType.PrimaryRight
               ? StateContainer.of(context).curTheme.shadowPrimaryOne
               : widget.type == AppButtonType.PrimaryOutline
                   ? StateContainer.of(context).curTheme.shadowPrimaryTwo
@@ -70,7 +72,7 @@ class _AppButtonState extends State<AppButton> {
                       : StateContainer.of(context).curTheme.shadowDangerTwo,
         ],
       ),
-      child: widget.type == AppButtonType.Primary ||
+      child: widget.type == AppButtonType.Primary || widget.type ==AppButtonType.PrimaryLeft || widget.type ==AppButtonType.PrimaryRight ||
               widget.type == AppButtonType.Danger
           // Primary Button
           ? FlatButton(

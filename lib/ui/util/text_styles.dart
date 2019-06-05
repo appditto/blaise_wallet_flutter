@@ -60,6 +60,20 @@ class AppStyles {
         fontWeight: FontWeight.w700);
   }
 
+  static TextStyle balanceSmall(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w600);
+  }
+
+  static TextStyle balanceSmallTextDark(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w600);
+  }
+
   static TextStyle paragraphBig(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textDark,
@@ -109,6 +123,22 @@ class AppStyles {
         fontSize: 12.0,
         height: 1.3,
         fontWeight: FontWeight.w400);
+  }
+
+  // Date on operations list items
+  static TextStyle operationDate(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark50,
+        fontSize: 12.0,
+        fontWeight: FontWeight.w400);
+  }
+
+  // Operation type
+  static TextStyle operationType(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textLight,
+        fontSize: 13.0,
+        fontWeight: FontWeight.w600);
   }
 
   // Settings header
@@ -232,6 +262,21 @@ class AppStyles {
     return TextStyle(
       fontSize: 18,
       color: StateContainer.of(context).curTheme.primary,
+      fontFamily: 'AppIcons',
+    );
+  }
+  // For pascal icon on the operation items
+  static TextStyle iconFontPrimaryBalanceSmallPascal(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      color: StateContainer.of(context).curTheme.primary,
+      fontFamily: 'AppIcons',
+    );
+  }
+  static TextStyle iconFontTextDarkBalanceSmallPascal(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      color: StateContainer.of(context).curTheme.textDark,
       fontFamily: 'AppIcons',
     );
   }
