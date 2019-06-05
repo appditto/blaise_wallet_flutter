@@ -21,7 +21,7 @@ class _AccountCardState extends State<AccountCard> {
     return // Account Card
         Container(
       width: double.maxFinite,
-      margin: EdgeInsetsDirectional.fromSTEB(12, 10, 12, 0),
+      margin: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 10),
       height: 68,
       decoration: BoxDecoration(
           color: StateContainer.of(context).curTheme.backgroundPrimary,

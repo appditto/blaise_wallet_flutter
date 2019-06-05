@@ -43,6 +43,8 @@ abstract class BaseTheme {
 
   LinearGradient gradientPrimary;
 
+  LinearGradient gradientListTop;
+
   BoxShadow shadowPrimaryOne;
   BoxShadow shadowPrimaryTwo;
 
@@ -71,6 +73,7 @@ class BlaiseLightTheme extends BaseTheme {
   static const Color teal = Color(0xFF00C5C3);
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color white00 = Color(0x00FFFFFF);
   static const Color grayDark = Color(0xFF6B6C71);
   static const Color black = Color(0xFF000000);
 
@@ -120,6 +123,13 @@ class BlaiseLightTheme extends BaseTheme {
     colors: [orange, yellow],
   );
 
+  LinearGradient gradientListTop = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    stops: [0.0, 1],
+    colors: [white, white00],
+  );
+
   BoxShadow shadowPrimaryOne = BoxShadow(
       color: orange.withOpacity(0.5),
       offset: Offset(0, 8),
@@ -149,7 +159,7 @@ class BlaiseLightTheme extends BaseTheme {
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -3.0);
-  
+
   BoxShadow shadowAccountCard = BoxShadow(
       color: grayDark.withOpacity(0.15),
       offset: Offset(0, 8),
@@ -190,6 +200,7 @@ class BlaiseDarkTheme extends BaseTheme {
   static const Color teal = Color(0xFF00C5C3);
   static const Color red = Color(0xFFFF6C59);
   static const Color bluishGray = Color(0xFF3D3F4F);
+  static const Color bluishGray00 = Color(0x003D3F4F);
   static const Color grayDark = Color(0xFF6B6C71);
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFE8ECF3);
@@ -238,6 +249,13 @@ class BlaiseDarkTheme extends BaseTheme {
     colors: [darkTeal, lightTeal],
   );
 
+  LinearGradient gradientListTop = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    stops: [0.0, 1],
+    colors: [bluishGray, bluishGray00],
+  );
+
   BoxShadow shadowPrimaryOne = BoxShadow(
       color: darkTeal.withOpacity(0.3),
       offset: Offset(0, 8),
@@ -266,7 +284,7 @@ class BlaiseDarkTheme extends BaseTheme {
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -3.0);
-  
+
   BoxShadow shadowAccountCard = BoxShadow(
       color: black.withOpacity(0.15),
       offset: Offset(0, 8),

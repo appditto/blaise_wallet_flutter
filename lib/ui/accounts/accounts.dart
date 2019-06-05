@@ -118,7 +118,9 @@ class _AccountsPageState extends State<AccountsPage> {
                                                 text: " ",
                                                 style: TextStyle(fontSize: 10)),
                                             TextSpan(
-                                                text: widget.newWallet?"0":"10,205",
+                                                text: widget.newWallet
+                                                    ? "0"
+                                                    : "10,205",
                                                 style:
                                                     AppStyles.header(context)),
                                           ],
@@ -136,8 +138,9 @@ class _AccountsPageState extends State<AccountsPage> {
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           24, 0, 24, 0),
                                       child: AutoSizeText(
-                                        widget.newWallet?
-                                        "(\$" + "0.00" + ")":"(\$" + "2,745.14" + ")",
+                                        widget.newWallet
+                                            ? "(\$" + "0.00" + ")"
+                                            : "(\$" + "2,745.14" + ")",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
@@ -243,7 +246,7 @@ class _AccountsPageState extends State<AccountsPage> {
                                   // Accounts text
                                   Container(
                                     margin: EdgeInsetsDirectional.fromSTEB(
-                                        24, 16, 24, 0),
+                                        24, 18, 24, 4),
                                     alignment: Alignment(-1, 0),
                                     child: AutoSizeText(
                                       "Accounts".toUpperCase(),
@@ -255,36 +258,50 @@ class _AccountsPageState extends State<AccountsPage> {
                                   ),
                                   // Accounts List
                                   Expanded(
-                                    child: ListView(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 4, 0, 16),
+                                    child: Stack(
                                       children: <Widget>[
-                                        AccountCard(
-                                          name: "yekta",
-                                          number: "578706-79",
-                                          balance: "9,104",
+                                        // The list
+                                        ListView(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 8, 0, 14),
+                                          children: <Widget>[
+                                            AccountCard(
+                                              name: "yekta",
+                                              number: "578706-79",
+                                              balance: "9,104",
+                                            ),
+                                            AccountCard(
+                                              name: "y.spending",
+                                              number: "545313-62",
+                                              balance: "565",
+                                            ),
+                                            AccountCard(
+                                              number: "475324-11",
+                                              balance: "125.4",
+                                            ),
+                                            AccountCard(
+                                              name: "y.hodl",
+                                              number: "151521-25",
+                                              balance: "391.41",
+                                            ),
+                                            AccountCard(
+                                              number: "101010-20",
+                                              balance: "0",
+                                            ),
+                                            AccountCard(
+                                              number: "191919-19",
+                                              balance: "0",
+                                            ),
+                                          ],
                                         ),
-                                        AccountCard(
-                                          name: "y.spending",
-                                          number: "545313-62",
-                                          balance: "565",
-                                        ),
-                                        AccountCard(
-                                          number: "475324-11",
-                                          balance: "125.4",
-                                        ),
-                                        AccountCard(
-                                          name: "y.hodl",
-                                          number: "151521-25",
-                                          balance: "391.41",
-                                        ),
-                                        AccountCard(
-                                          number: "101010-20",
-                                          balance: "0",
-                                        ),
-                                        AccountCard(
-                                          number: "191919-19",
-                                          balance: "0",
+                                        // The gradient at the top
+                                        Container(
+                                          height: 8,
+                                          width: double.maxFinite,
+                                          decoration: BoxDecoration(
+                                            gradient: StateContainer.of(context).curTheme.gradientListTop
+                                          ),
                                         ),
                                       ],
                                     ),
