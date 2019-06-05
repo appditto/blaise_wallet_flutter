@@ -467,7 +467,7 @@ class _AccountPageState extends State<AccountPage> {
                                   onPressed: () {
                                     AppSheets.showBottomSheet(
                                         context: context,
-                                        widget: ReceiveSheet());
+                                        widget: ReceiveSheet(accountName: "yekta", address: "578706-79",));
                                   },
                                 ),
                                 AppButton(

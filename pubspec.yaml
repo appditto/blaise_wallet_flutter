@@ -42,6 +42,9 @@ dependencies:
   # Slidable
   flutter_slidable: "^0.5.3"
 
+  # QR Code Generator
+  qr_flutter: ^2.0.0
+
   # Banner style alerts
   oktoast: ^2.1.7
 

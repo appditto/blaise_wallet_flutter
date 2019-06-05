@@ -3,10 +3,15 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
+import 'package:qr/qr.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ReceiveSheet extends StatefulWidget {
+  final String accountName;
+  final String address;
+  ReceiveSheet({this.accountName, this.address});
+
   _ReceiveSheetState createState() => _ReceiveSheetState();
 }
 
@@ -31,8 +36,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                 height: 60,
                 width: double.maxFinite,
                 decoration: BoxDecoration(
-                  gradient:
-                      StateContainer.of(context).curTheme.gradientPrimary,
+                  gradient: StateContainer.of(context).curTheme.gradientPrimary,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
@@ -58,31 +62,44 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                               borderRadius: BorderRadius.circular(50.0)),
                           padding: EdgeInsets.all(0.0),
                           child: Icon(AppIcons.close,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textLight,
+                              color:
+                                  StateContainer.of(context).curTheme.textLight,
                               size: 20)),
                     ),
                     // Header
                     Container(
-                      width: MediaQuery.of(context).size.width-130,
+                      width: MediaQuery.of(context).size.width - 130,
                       alignment: Alignment(0, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          AutoSizeText(
-                            "yekta",
-                            style: AppStyles.accountCardName(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.center,
+                          Container(
+                            child: widget.accountName == null
+                                ? SizedBox()
+                                : Container(
+                                    margin: EdgeInsets.only(bottom: 2),
+                                    width:
+                                        MediaQuery.of(context).size.width - 130,
+                                    child: AutoSizeText(
+                                      widget.accountName,
+                                      style: AppStyles.accountCardName(context),
+                                      maxLines: 1,
+                                      stepGranularity: 0.1,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                           ),
-                          AutoSizeText(
-                            "578706-79",
-                            style: AppStyles.accountCardAddress(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.center,
+                          Container(
+                            width: MediaQuery.of(context).size.width - 130,
+                            child: AutoSizeText(
+                              widget.address,
+                              style: AppStyles.accountCardAddress(context),
+                              maxLines: 1,
+                              stepGranularity: 0.1,
+                              minFontSize: 8,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
@@ -104,10 +121,69 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                               borderRadius: BorderRadius.circular(50.0)),
                           padding: EdgeInsets.all(0.0),
                           child: Icon(AppIcons.shareaddress,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textLight,
+                              color:
+                                  StateContainer.of(context).curTheme.textLight,
                               size: 22)),
+                    ),
+                  ],
+                ),
+              ),
+              // QR Code
+              Container(
+                margin: EdgeInsetsDirectional.only(top: 30, bottom: 10),
+                child: Stack(
+                  alignment: Alignment(0, 0),
+                  children: <Widget>[
+                    // Gradient
+                    Container(
+                      width: 180,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient:
+                            StateContainer.of(context).curTheme.gradientPrimary,
+                      ),
+                    ),
+                    // White overlay
+                    Container(
+                      width: 172,
+                      height: 172,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary),
+                    ),
+                    // QR Code
+                    QrImage(
+                      data: widget.address,
+                      size: 180.0,
+                      errorCorrectionLevel: QrErrorCorrectLevel.Q,
+                    ),
+                    // Logo background
+                    Container(
+                      width: 58,
+                      height: 58,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary),
+                    ),
+                    // Logo
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient:
+                            StateContainer.of(context).curTheme.gradientPrimary,
+                      ),
+                      child: Icon(AppIcons.pascalsymbol,
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary,
+                          size: 30),
                     ),
                   ],
                 ),
