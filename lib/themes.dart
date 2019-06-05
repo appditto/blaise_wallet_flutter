@@ -40,6 +40,8 @@ abstract class BaseTheme {
   Color textLight15;
 
   Color overlay20;
+  Color overlay15;
+  Color overlay10;
 
   LinearGradient gradientPrimary;
 
@@ -115,6 +117,8 @@ class BlaiseLightTheme extends BaseTheme {
   Color textLight15 = white.withOpacity(0.15);
 
   Color overlay20 = black.withOpacity(0.2);
+  Color overlay15 = black.withOpacity(0.15);
+  Color overlay10 = black.withOpacity(0.10);
 
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
@@ -241,6 +245,8 @@ class BlaiseDarkTheme extends BaseTheme {
   Color textLight15 = bluishGray.withOpacity(0.15);
 
   Color overlay20 = black.withOpacity(0.2);
+  Color overlay15 = black.withOpacity(0.15);
+  Color overlay10 = black.withOpacity(0.10);
 
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
