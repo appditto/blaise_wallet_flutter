@@ -95,7 +95,7 @@ class _AppState extends State<App> {
               );
             case '/intro_decrypt_and_import_private_key':
               return MaterialPageRoute(
-                builder: (context) => IntroDecryptAndImportPrivateKeyPage(),
+                builder: (context) => IntroDecryptAndImportPrivateKeyPage(encryptedKey: settings.arguments),
                 settings: settings,
               );
             case '/overview_new':

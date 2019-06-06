@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -210,7 +208,9 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
     if (privateKeyIsValid(privateKeyController.text)) {
       Navigator.of(context).pushNamed('/overview');
     } else if (privateKeyIsEncrypted(privateKeyController.text)) {
-      Navigator.of(context).pushNamed('/intro_decrypt_and_import_private_key');
+      Navigator.of(context).pushNamed(
+        '/intro_decrypt_and_import_private_key',
+        arguments: privateKeyController.text);
     } else {
       setState(() {
         _showPrivateKeyError = true;

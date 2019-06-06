@@ -8,6 +8,10 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class IntroDecryptAndImportPrivateKeyPage extends StatefulWidget {
+  final String encryptedKey;
+
+  IntroDecryptAndImportPrivateKeyPage({@required this.encryptedKey});
+
   @override
   _IntroDecryptAndImportPrivateKeyPageState createState() =>
       _IntroDecryptAndImportPrivateKeyPageState();
