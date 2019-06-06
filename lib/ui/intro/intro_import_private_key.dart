@@ -202,6 +202,10 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
       Navigator.of(context).pushNamed('/overview');
     } else if (privateKeyIsEncrypted(privateKeyController.text)) {
         Navigator.of(context).pushNamed('/intro_decrypt_and_import_private_key');
+    } else {
+      setState(() {
+        _showPrivateKeyError = true;
+      });
     }
   }
 }
