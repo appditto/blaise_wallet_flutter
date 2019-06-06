@@ -1,11 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -179,12 +182,14 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
       return false;
     }
     try {
-      String salted = PDUtil.bytesToUtf8String(PDUtil.hexToBytes(pkText.substring(0, 8)));
+      String salted = PDUtil.bytesToUtf8String(PDUtil.hexToBytes(pkText.substring(0, 16)));
+      print(salted);
       if (salted == "Salted__") {
         return true;
       }
       return false;
     } catch (e) {
+      print('exception');
       return false;
     }
   }
@@ -206,7 +211,11 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
 
   void validateAndSubmit() {
     if (privateKeyIsValid(privateKeyController.text)) {
-      Navigator.of(context).pushNamed('/overview');
+      sl.get<Vault>().setPrivateKey(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(privateKeyController.text))).then((_) {
+        sl.get<SharedPrefsUtil>().setPrivateKeyBackedUp(true).then((_) {
+          Navigator.of(context).pushNamedAndRemoveUntil('/overview', (Route<dynamic> route) => false);
+        });
+      });
     } else if (privateKeyIsEncrypted(privateKeyController.text)) {
       Navigator.of(context).pushNamed(
         '/intro_decrypt_and_import_private_key',
