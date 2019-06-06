@@ -124,7 +124,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                       // Container for the contact name
                       Container(
                         width: MediaQuery.of(context).size.width - 60,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 14, 30, 0),
                         child: AutoSizeText.rich(
                           TextSpan(children: [
                             TextSpan(
@@ -144,7 +144,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                       // Container for the underline
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 8, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 10, 30, 0),
                         height: 2,
                         color: StateContainer.of(context).curTheme.primary,
                       ),
@@ -163,7 +163,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                       // Container for the contact address
                       Container(
                         width: MediaQuery.of(context).size.width - 60,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 14, 30, 0),
                         child: AutoSizeText(
                           widget.contactAddress,
                           style: AppStyles.contactsItemAddress(context),
@@ -175,7 +175,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                       // Container for the underline
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 8, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 10, 30, 0),
                         height: 2,
                         color: StateContainer.of(context).curTheme.primary,
                       ),

@@ -44,6 +44,8 @@ class AppTextField extends StatefulWidget {
   final TextFieldButton secondButton;
   final TextEditingController controller;
   final FocusNode focusNode;
+  final TextCapitalization textCapitalization;
+  final TextInputType inputType;
   final TextStyle style;
   final bool passwordField;
   final Widget prefix;
@@ -56,6 +58,8 @@ class AppTextField extends StatefulWidget {
       this.secondButton,
       this.controller,
       this.focusNode,
+      this.textCapitalization,
+      this.inputType = TextInputType.text,
       this.prefix,
       this.maxLines,
       this.passwordField = false});
@@ -90,9 +94,9 @@ class _AppTextFieldState extends State<AppTextField> {
               obscureText: widget.passwordField,
               style: widget.style,
               cursorColor: StateContainer.of(context).curTheme.primary,
-              keyboardType: TextInputType.text,
+              keyboardType: widget.inputType,
               autocorrect: false,
-              textCapitalization: TextCapitalization.characters,
+              textCapitalization: widget.textCapitalization,
               textInputAction: TextInputAction.done,
               maxLines: widget.maxLines,
               minLines: 1,

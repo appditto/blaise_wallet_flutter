@@ -85,9 +85,10 @@ class _AddContactSheetState extends State<AddContactSheet> {
                           child: AppTextField(
                             label: 'Address',
                             style: AppStyles.contactsItemAddress(context),
-                            firstButton: TextFieldButton(icon: AppIcons.scan),
-                            secondButton: TextFieldButton(icon: AppIcons.paste),
+                            firstButton: TextFieldButton(icon: AppIcons.paste),
+                            secondButton: TextFieldButton(icon: AppIcons.scan),
                             maxLines: 1,
+                            textCapitalization: TextCapitalization.characters,
                           )),
                     ],
                   ),
