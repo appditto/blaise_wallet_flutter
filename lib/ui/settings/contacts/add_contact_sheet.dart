@@ -71,153 +71,24 @@ class _AddContactSheetState extends State<AddContactSheet> {
                     children: <Widget>[
                       // Container for the name text field
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
-                        child: AppTextField(
-                          label: 'Name',
-                          style: AppStyles.contactsItemName(context),
-                          prefix: Text("@", style: AppStyles.settingsHeader(context)),
-                          maxLines: 1,
-                        )
-                      ),
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
+                          child: AppTextField(
+                            label: 'Contact Name',
+                            style: AppStyles.contactsItemName(context),
+                            prefix: Text("@",
+                                style: AppStyles.settingsHeader(context)),
+                            maxLines: 1,
+                          )),
                       // Container for the address text field
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment(-1, 0),
-                              child: AutoSizeText(
-                                'Address',
-                                style: AppStyles.textFieldLabel(context),
-                              ),
-                            ),
-                            Container(
-                              child: Theme(
-                                data: ThemeData(
-                                  primaryColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  hintColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  splashColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary30,
-                                  highlightColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary15,
-                                  textSelectionColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary30,
-                                ),
-                                child: TextField(
-                                  style: AppStyles.contactsItemAddress(context),
-                                  cursorColor: StateContainer.of(context)
-                                      .curTheme
-                                      .primary,
-                                  keyboardType: TextInputType.text,
-                                  autocorrect: false,
-                                  textCapitalization:
-                                      TextCapitalization.characters,
-                                  textInputAction: TextInputAction.done,
-                                  maxLines: null,
-                                  minLines: 1,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Container(
-                                      width: 88,
-                                      height: 38,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          Container(
-                                            width: 38,
-                                            height: 38,
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                gradient:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .gradientPrimary,
-                                              ),
-                                              child: FlatButton(
-                                                padding: EdgeInsets.all(0),
-                                                shape: CircleBorder(),
-                                                onPressed: () {
-                                                  return null;
-                                                },
-                                                splashColor:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .backgroundPrimary30,
-                                                highlightColor:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .backgroundPrimary15,
-                                                child: Icon(
-                                                  AppIcons.scan,
-                                                  size: 22,
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .backgroundPrimary,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsetsDirectional.only(
-                                                start: 12),
-                                            width: 38,
-                                            height: 38,
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                gradient:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .gradientPrimary,
-                                              ),
-                                              child: FlatButton(
-                                                padding: EdgeInsets.all(0),
-                                                shape: CircleBorder(),
-                                                onPressed: () {
-                                                  return null;
-                                                },
-                                                splashColor:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .backgroundPrimary30,
-                                                highlightColor:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .backgroundPrimary15,
-                                                child: Icon(
-                                                  AppIcons.paste,
-                                                  size: 22,
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .backgroundPrimary,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
+                          child: AppTextField(
+                            label: 'Address',
+                            style: AppStyles.contactsItemAddress(context),
+                            firstButton: TextFieldButton(icon: AppIcons.scan),
+                            secondButton: TextFieldButton(icon: AppIcons.paste),
+                            maxLines: 1,
+                          )),
                     ],
                   ),
                 ),

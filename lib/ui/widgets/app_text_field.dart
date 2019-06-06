@@ -17,10 +17,7 @@ class TextFieldButton extends StatelessWidget {
       width: 38,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: StateContainer.of(
-                context)
-            .curTheme
-            .gradientPrimary,
+        gradient: StateContainer.of(context).curTheme.gradientPrimary,
       ),
       child: FlatButton(
         padding: EdgeInsets.all(0),
@@ -28,22 +25,12 @@ class TextFieldButton extends StatelessWidget {
         onPressed: () {
           return onPressed != null ? onPressed() : null;
         },
-        splashColor: StateContainer
-                .of(context)
-            .curTheme
-            .backgroundPrimary30,
-        highlightColor:
-            StateContainer.of(
-                    context)
-                .curTheme
-                .backgroundPrimary15,
+        splashColor: StateContainer.of(context).curTheme.backgroundPrimary30,
+        highlightColor: StateContainer.of(context).curTheme.backgroundPrimary15,
         child: Icon(
           icon,
           size: 22,
-          color: StateContainer.of(
-                  context)
-              .curTheme
-              .backgroundPrimary,
+          color: StateContainer.of(context).curTheme.backgroundPrimary,
         ),
       ),
     );
@@ -62,17 +49,16 @@ class AppTextField extends StatefulWidget {
   final Widget prefix;
   final int maxLines;
 
-  AppTextField({
-    @required this.label,
-    @required this.style,
-    this.firstButton,
-    this.secondButton,
-    this.controller,
-    this.focusNode,
-    this.prefix,
-    this.maxLines,
-    this.passwordField = false
-  });
+  AppTextField(
+      {@required this.label,
+      @required this.style,
+      this.firstButton,
+      this.secondButton,
+      this.controller,
+      this.focusNode,
+      this.prefix,
+      this.maxLines,
+      this.passwordField = false});
 
   _AppTextFieldState createState() => _AppTextFieldState();
 }
@@ -92,70 +78,62 @@ class _AppTextFieldState extends State<AppTextField> {
         Container(
           child: Theme(
             data: ThemeData(
-              primaryColor: StateContainer.of(context)
-                  .curTheme
-                  .primary,
-              hintColor: StateContainer.of(context)
-                  .curTheme
-                  .primary,
-              splashColor: StateContainer.of(context)
-                  .curTheme
-                  .primary30,
-              highlightColor: StateContainer.of(context)
-                  .curTheme
-                  .primary15,
-              textSelectionColor: StateContainer.of(context)
-                  .curTheme
-                  .primary30,
+              primaryColor: StateContainer.of(context).curTheme.primary,
+              hintColor: StateContainer.of(context).curTheme.primary,
+              splashColor: StateContainer.of(context).curTheme.primary30,
+              highlightColor: StateContainer.of(context).curTheme.primary15,
+              textSelectionColor: StateContainer.of(context).curTheme.primary30,
             ),
             child: TextField(
               controller: widget.controller,
               focusNode: widget.focusNode,
               obscureText: widget.passwordField,
               style: widget.style,
-              cursorColor: StateContainer.of(context)
-                  .curTheme
-                  .primary,
+              cursorColor: StateContainer.of(context).curTheme.primary,
               keyboardType: TextInputType.text,
               autocorrect: false,
-              textCapitalization:
-                  TextCapitalization.characters,
+              textCapitalization: TextCapitalization.characters,
               textInputAction: TextInputAction.done,
               maxLines: widget.maxLines,
               minLines: 1,
               decoration: InputDecoration(
                 prefix: widget.prefix,
-                suffixIcon: widget.firstButton == null && widget.secondButton == null ?
-                null :
-                  Container(
-                    width: widget.firstButton == null || widget.secondButton == null ? 44 : 88,
-                    height: 38,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        widget.secondButton != null ? 
-                          Container(
-                            width: 38,
-                            height: 38,
-                            child: widget.secondButton
-                           )
-                        : SizedBox(),
-                        widget.firstButton != null ?
-                          Container(
-                            margin: EdgeInsetsDirectional.only(start: 12),
-                            width: 38,
-                            height: 38,
-                            child: widget.firstButton
-                           )
-                        : SizedBox()
-                      ],
-                    ),
-                  ),
+                suffixIcon: widget.firstButton == null &&
+                        widget.secondButton == null
+                    ? null
+                    : Container(
+                        width: widget.firstButton == null ||
+                                widget.secondButton == null
+                            ? 50
+                            : 100,
+                        height: 38,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            widget.secondButton != null
+                                ? Container(
+                                    margin:
+                                        EdgeInsetsDirectional.only(start: 12),
+                                    width: 38,
+                                    height: 38,
+                                    child: widget.secondButton)
+                                : SizedBox(),
+                            widget.firstButton != null
+                                ? Container(
+                                    margin:
+                                        EdgeInsetsDirectional.only(start: 12),
+                                    width: 38,
+                                    height: 38,
+                                    child: widget.firstButton)
+                                : SizedBox()
+                          ],
+                        ),
+                      ),
               ),
             ),
           ),
         ),
       ],
-    );        
+    );
   }
 }

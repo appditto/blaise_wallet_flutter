@@ -165,7 +165,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               Container(
                                 alignment: Alignment(-1, 0),
                                 margin: EdgeInsetsDirectional.only(
-                                    start: 24, end: 24, top: 16, bottom: 8),
+                                    start: 24, end: 24, top: 18, bottom: 8),
                                 child: AutoSizeText(
                                   "Preferences",
                                   style: AppStyles.settingsHeader(context),
@@ -269,7 +269,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               Container(
                                 alignment: Alignment(-1, 0),
                                 margin: EdgeInsetsDirectional.only(
-                                    start: 24, end: 24, top: 16, bottom: 8),
+                                    start: 24, end: 24, top: 18, bottom: 8),
                                 child: AutoSizeText(
                                   "Manage",
                                   style: AppStyles.settingsHeader(context),

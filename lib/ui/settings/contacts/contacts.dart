@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/add_contact_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/contacts/contact_detail_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -191,6 +192,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@bbedward",
                                     contactAddress: "186418-64",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@bbedward",
+                                            contactAddress: "186418-64",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -203,6 +212,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@herman",
                                     contactAddress: "212823-56",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@herman",
+                                            contactAddress: "212823-56",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -215,6 +232,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@hugle",
                                     contactAddress: "581319-11",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@hugle",
+                                            contactAddress: "581319-11",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -227,6 +252,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@mosu_forge",
                                     contactAddress: "112131-21",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@mosu_forge",
+                                            contactAddress: "112131-21",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -239,6 +272,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@odm4rk",
                                     contactAddress: "883103-20",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@odm4rk",
+                                            contactAddress: "883103-20",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -251,6 +292,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@redmonski",
                                     contactAddress: "102103-95",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@redmonski",
+                                            contactAddress: "102103-95",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -263,6 +312,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@techworker",
                                     contactAddress: "191919-19",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@techworker",
+                                            contactAddress: "191919-19",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -275,6 +332,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     contactName: "@yekta",
                                     contactAddress: "578706-79",
                                     contact: true,
+                                    onPressed: () {
+                                      AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: ContactDetailSheet(
+                                            contactName: "@yekta",
+                                            contactAddress: "578706-79",
+                                          ));
+                                    },
                                   ),
                                   Container(
                                     width: double.maxFinite,
@@ -315,10 +380,10 @@ class _ContactsPageState extends State<ContactsPage> {
                                 text: "Add Contact",
                                 type: AppButtonType.Primary,
                                 onPressed: () {
-                                    AppSheets.showBottomSheet(
-                                        context: context,
-                                        widget: AddContactSheet());
-                                  },
+                                  AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: AddContactSheet());
+                                },
                               ),
                             ],
                           ),

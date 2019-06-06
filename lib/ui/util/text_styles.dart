@@ -154,7 +154,6 @@ class AppStyles {
     return TextStyle(
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 16.0,
-        height: 1.3,
         fontWeight: FontWeight.w700);
   }
 
@@ -171,7 +170,7 @@ class AppStyles {
     return TextStyle(
         fontFamily: 'SourceCodePro',
         color: StateContainer.of(context).curTheme.textDark,
-        fontSize: 14.0,
+        fontSize: 16.0,
         fontWeight: FontWeight.w400);
   }
 
