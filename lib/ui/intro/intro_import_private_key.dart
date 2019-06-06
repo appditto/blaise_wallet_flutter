@@ -95,10 +95,17 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                           child: AppTextField(
                             label: "Private Key",
                             style: _privateKeyValid ? AppStyles.privateKeyPrimary(context) : AppStyles.privateKeyTextDark(context),
+                            focusNode: privateKeyFocusNode,
+                            controller: privateKeyController,
                             firstButton: TextFieldButton(
                               icon: AppIcons.paste,
                               onPressed: () {
-                                // Paste private key TODO
+                                Clipboard.getData("text/plain").then((cdata) {
+                                  if (privateKeyIsValid(cdata.text) || privateKeyIsEncrypted(cdata.text)) {
+                                    privateKeyController.text = cdata.text;
+                                    onKeyTextChanged(privateKeyController.text);
+                                  }
+                                });
                               },
                             ),
                             secondButton: TextFieldButton(
@@ -111,6 +118,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                               WhitelistingTextInputFormatter(RegExp("[a-fA-F0-9]")), // Hex characters
                               UpperCaseTextFormatter()
                             ],
+                            textCapitalization: TextCapitalization.characters,
                             onChanged: onKeyTextChanged,
                           )
                         ),
@@ -167,8 +175,9 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
     }
   }
 
-  bool privateKeyIsEncrypted(String pkText) {
-    if (pkText == null || pkText.length < 8) {
+  bool privateKeyIsEncrypted(String pkText, { bool lengthCheck = true }) {
+    int minLength = lengthCheck ? 100 : 8;
+    if (pkText == null || pkText.length < minLength) {
       return false;
     }
     try {
@@ -201,7 +210,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
     if (privateKeyIsValid(privateKeyController.text)) {
       Navigator.of(context).pushNamed('/overview');
     } else if (privateKeyIsEncrypted(privateKeyController.text)) {
-        Navigator.of(context).pushNamed('/intro_decrypt_and_import_private_key');
+      Navigator.of(context).pushNamed('/intro_decrypt_and_import_private_key');
     } else {
       setState(() {
         _showPrivateKeyError = true;

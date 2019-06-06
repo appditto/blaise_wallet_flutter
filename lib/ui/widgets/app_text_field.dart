@@ -101,10 +101,11 @@ class _AppTextFieldState extends State<AppTextField> {
               cursorColor: StateContainer.of(context).curTheme.primary,
               keyboardType: widget.inputType,
               autocorrect: false,
-              textCapitalization: widget.textCapitalization,
+              textCapitalization: widget.textCapitalization ?? TextCapitalization.none,
               textInputAction: TextInputAction.done,
               maxLines: widget.maxLines,
               minLines: 1,
+              inputFormatters: widget.inputFormatters,
               onChanged: (String newValue) {
                 if (widget.onChanged != null) {
                   widget.onChanged(newValue);

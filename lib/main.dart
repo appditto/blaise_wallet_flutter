@@ -70,57 +70,57 @@ class _AppState extends State<App> {
           switch (settings.name) {
             case '/':
               return MaterialPageRoute(
-                builder: (_) => Splash(),
+                builder: (context) => Splash(), // TODO NOtransitionRoute
                 settings: settings,
               );
             case '/intro_welcome':
               return MaterialPageRoute(
-                builder: (_) => IntroWelcomePage(),
+                builder: (context) => IntroWelcomePage(), // TODO NOTransitionRoute
                 settings: settings,
               );
             case '/intro_new_private_key':
               return MaterialPageRoute(
-                builder: (_) => IntroNewPrivateKeyPage(),
+                builder: (context) => IntroNewPrivateKeyPage(),
                 settings: settings,
               );
             case '/intro_backup_confirm':
               return MaterialPageRoute(
-                builder: (_) => IntroBackupConfirmPage(),
+                builder: (context) => IntroBackupConfirmPage(),
                 settings: settings,
               );
             case '/intro_import_private_key':
               return MaterialPageRoute(
-                builder: (_) => IntroImportPrivateKeyPage(),
+                builder: (context) => IntroImportPrivateKeyPage(),
                 settings: settings,
               );
             case '/intro_decrypt_and_import_private_key':
               return MaterialPageRoute(
-                builder: (_) => IntroDecryptAndImportPrivateKeyPage(),
+                builder: (context) => IntroDecryptAndImportPrivateKeyPage(),
                 settings: settings,
               );
             case '/overview_new':
               return MaterialPageRoute(
-                builder: (_) => OverviewPage(),
+                builder: (context) => OverviewPage(),
                 settings: settings,
               );
             case '/overview':
               return MaterialPageRoute(
-                builder: (_) => OverviewPage(newWallet: false,),
+                builder: (context) => OverviewPage(newWallet: false),
                 settings: settings,
               );
             case '/account':
               return MaterialPageRoute(
-                builder: (_) => AccountPage(),
+                builder: (context) => AccountPage(),
                 settings: settings,
               );
             case '/security':
               return MaterialPageRoute(
-                builder: (_) => SecurityPage(),
+                builder: (context) => SecurityPage(),
                 settings: settings,
               );
             case '/contacts':
               return MaterialPageRoute(
-                builder: (_) => ContactsPage(),
+                builder: (context) => ContactsPage(),
                 settings: settings,
               );
             default:
