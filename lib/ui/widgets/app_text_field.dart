@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// TextField button
 class TextFieldButton extends StatelessWidget {
@@ -50,6 +51,8 @@ class AppTextField extends StatefulWidget {
   final bool passwordField;
   final Widget prefix;
   final int maxLines;
+  final List<TextInputFormatter> inputFormatters;
+  final Function onChanged;
 
   AppTextField(
       {@required this.label,
@@ -62,6 +65,8 @@ class AppTextField extends StatefulWidget {
       this.inputType = TextInputType.text,
       this.prefix,
       this.maxLines,
+      this.inputFormatters,
+      this.onChanged,
       this.passwordField = false});
 
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -100,6 +105,11 @@ class _AppTextFieldState extends State<AppTextField> {
               textInputAction: TextInputAction.done,
               maxLines: widget.maxLines,
               minLines: 1,
+              onChanged: (String newValue) {
+                if (widget.onChanged != null) {
+                  widget.onChanged(newValue);
+                }
+              },
               decoration: InputDecoration(
                 prefix: widget.prefix,
                 suffixIcon: widget.firstButton == null &&
