@@ -81,7 +81,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                           )),
                       // Container for the address text field
                       Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AppTextField(
                             label: 'Address',
                             style: AppStyles.contactsItemAddress(context),
