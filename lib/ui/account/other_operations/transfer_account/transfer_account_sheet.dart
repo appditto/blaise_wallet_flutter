@@ -92,6 +92,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Enter a public key below to transfer the ownership of this account to it.",

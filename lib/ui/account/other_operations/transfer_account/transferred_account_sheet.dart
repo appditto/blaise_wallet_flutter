@@ -98,6 +98,7 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Your account has been transferred successfully to the public key below.",
@@ -150,8 +151,6 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                       type: AppButtonType.SuccessOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
                         Navigator.pop(context);
                       },
                     ),

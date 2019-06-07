@@ -100,6 +100,7 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Your account name has been changed successfully.",
@@ -152,8 +153,6 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                       type: AppButtonType.SuccessOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
                         Navigator.pop(context);
                       },
                     ),

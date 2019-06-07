@@ -91,6 +91,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Confirm your new account name to proceed.",
@@ -144,6 +145,8 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                         AppSheets.showBottomSheet(
                             context: context, widget: ChangedNameSheet());
                       },

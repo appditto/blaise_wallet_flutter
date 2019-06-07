@@ -92,6 +92,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Confirm the public key to transfer the ownership of this account.",
@@ -145,6 +146,8 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                         AppSheets.showBottomSheet(
                             context: context,
                             widget: TransferredAccountSheet());

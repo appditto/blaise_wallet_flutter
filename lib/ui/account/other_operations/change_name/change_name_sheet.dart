@@ -91,6 +91,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Enter a name below to change your account’s name.",
