@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/overview/get_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -149,7 +150,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       onPressed: () {
                         Navigator.pop(context);
                         AppSheets.showBottomSheet(
-                            context: context, widget: BuyAccountSheet());
+                            context: context, widget: GetFreeAccountSheet());
                       },
                     ),
                   ],
