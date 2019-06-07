@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -210,13 +211,35 @@ class _OverviewPageState extends State<OverviewPage> {
                                   //Container for the paragraph
                                   Container(
                                     margin: EdgeInsetsDirectional.fromSTEB(
-                                        20, 0, 20, 0),
-                                    child: AutoSizeText(
-                                      "Welcome to Blaise Wallet.\nYou can start by getting an account",
+                                        30, 0, 30, 0),
+                                    child: AutoSizeText.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "Welcome to",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text: " Blaise Wallet",
+                                            style: AppStyles.paragraphPrimary(
+                                                context),
+                                          ),
+                                          TextSpan(
+                                            text: ".\n",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                "You can start by getting an account.",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                        ],
+                                      ),
+                                      stepGranularity: 0.5,
+                                      maxLines: 10,
+                                      minFontSize: 8,
                                       textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      stepGranularity: 0.1,
-                                      style: AppStyles.paragraphBig(context),
+                                      style: TextStyle(fontSize: 14),
                                     ),
                                   ),
                                   // Container for the illustration
@@ -291,6 +314,10 @@ class _OverviewPageState extends State<OverviewPage> {
                                             AccountCard(
                                               number: "191919-19",
                                               balance: "0",
+                                              onPressed: () {
+                                                Navigator.pushNamed(context,
+                                                    "/account_borrowed");
+                                              },
                                             ),
                                           ],
                                         ),
@@ -299,8 +326,10 @@ class _OverviewPageState extends State<OverviewPage> {
                                           height: 8,
                                           width: double.maxFinite,
                                           decoration: BoxDecoration(
-                                            gradient: StateContainer.of(context).curTheme.gradientListTop
-                                          ),
+                                              gradient:
+                                                  StateContainer.of(context)
+                                                      .curTheme
+                                                      .gradientListTop),
                                         ),
                                       ],
                                     ),
@@ -309,39 +338,38 @@ class _OverviewPageState extends State<OverviewPage> {
                               ),
                             ),
                       // Bottom bar
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            color: StateContainer.of(context)
-                                .curTheme
-                                .backgroundPrimary,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
-                            ),
-                            boxShadow: [
-                              StateContainer.of(context)
-                                  .curTheme
-                                  .shadowBottomBar,
-                            ],
+                      Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
                           ),
-                          child: Container(
-                            margin: EdgeInsetsDirectional.only(top: 4),
-                            child: Row(
-                              children: <Widget>[
-                                AppButton(
-                                  text: "Get an Account",
-                                  type: AppButtonType.Primary,
-                                  onPressed: () {
-                                    AppSheets.showBottomSheet(
-                                        context: context,
-                                        widget: GetAccountSheet());
-                                  },
-                                ),
-                              ],
-                            ),
+                          boxShadow: [
+                            StateContainer.of(context).curTheme.shadowBottomBar,
+                          ],
+                        ),
+                        child: Container(
+                          margin: EdgeInsetsDirectional.only(top: 4),
+                          child: Row(
+                            children: <Widget>[
+                              AppButton(
+                                text: "Get an Account",
+                                type: AppButtonType.Primary,
+                                onPressed: () {
+                                  widget.newWallet
+                                      ? AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: GetAccountSheet())
+                                      : AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: BuyAccountSheet());
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),

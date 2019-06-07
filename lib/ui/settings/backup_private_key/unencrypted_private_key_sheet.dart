@@ -143,7 +143,9 @@ class _UnencryptedPrivateKeySheetState
                           color: StateContainer.of(context).curTheme.primary10,
                         ),
                         child: AutoSizeText(
-                          _showingKey?"CA0220001B9CD2E2128E9B82C242D55B05FA304DE13D669E9A121792E905D7470C592E7A":'•' * 72,
+                          _showingKey
+                              ? "CA0220001B9CD2E2128E9B82C242D55B05FA304DE13D669E9A121792E905D7470C592E7A"
+                              : '•' * 72,
                           maxLines: 4,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -159,8 +161,8 @@ class _UnencryptedPrivateKeySheetState
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100.0),
                               color: StateContainer.of(context)
-                                      .curTheme
-                                      .backgroundPrimary,
+                                  .curTheme
+                                  .backgroundPrimary,
                               boxShadow: [
                                 StateContainer.of(context)
                                     .curTheme

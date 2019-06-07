@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +67,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       ),
                       // Header
                       Container(
-                        width: MediaQuery.of(context).size.width-130,
+                        width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
                           "GET ACCOUNT",
@@ -144,6 +146,11 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       type: AppButtonType.Primary,
                       text: "Get a Free Account",
                       buttonTop: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        AppSheets.showBottomSheet(
+                            context: context, widget: BuyAccountSheet());
+                      },
                     ),
                   ],
                 ),
@@ -153,6 +160,11 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
                       text: "Buy An Account",
+                      onPressed: () {
+                        Navigator.pop(context);
+                        AppSheets.showBottomSheet(
+                            context: context, widget: BuyAccountSheet());
+                      },
                     ),
                   ],
                 ),

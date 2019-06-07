@@ -15,9 +15,12 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/operation_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
+  final bool isBorrowed;
+  AccountPage({this.isBorrowed = false});
   @override
   _AccountPageState createState() => _AccountPageState();
 }
@@ -214,10 +217,15 @@ class _AccountPageState extends State<AccountPage> {
                                             TextSpan(
                                                 text: " ",
                                                 style: TextStyle(fontSize: 12)),
-                                            TextSpan(
-                                                text: "9,104",
-                                                style:
-                                                    AppStyles.header(context)),
+                                            widget.isBorrowed
+                                                ? TextSpan(
+                                                    text: "0",
+                                                    style: AppStyles.header(
+                                                        context))
+                                                : TextSpan(
+                                                    text: "9,104",
+                                                    style: AppStyles.header(
+                                                        context)),
                                           ],
                                         ),
                                         textAlign: TextAlign.center,
@@ -234,7 +242,9 @@ class _AccountPageState extends State<AccountPage> {
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: AutoSizeText(
-                                        "(\$" + "2,448.97" + ")",
+                                        widget.isBorrowed
+                                            ? "(\$0.00)"
+                                            : "(\$" + "2,448.97" + ")",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
@@ -282,41 +292,46 @@ class _AccountPageState extends State<AccountPage> {
                                                 size: 24)),
                                       ),
                                       // Other Operations Icon
-                                      Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            bottom: 2, end: 2),
-                                        height: 50,
-                                        width: 50,
-                                        child: FlatButton(
-                                            highlightColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight15,
-                                            splashColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight30,
-                                            onPressed: () {
-                                              showAppDialog(
-                                                  context: context,
-                                                  builder: (_) => DialogOverlay(
-                                                      title: 'Other Operations',
-                                                      optionsList:
-                                                          operationsList));
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        50.0)),
-                                            padding: EdgeInsetsDirectional.only(
-                                                start: 8, top: 6),
-                                            child: Icon(AppIcons.edit,
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .textLight,
-                                                size: 18)),
-                                      ),
+                                      widget.isBorrowed
+                                          ? SizedBox()
+                                          : Container(
+                                              margin:
+                                                  EdgeInsetsDirectional.only(
+                                                      bottom: 2, end: 2),
+                                              height: 50,
+                                              width: 50,
+                                              child: FlatButton(
+                                                  highlightColor:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight15,
+                                                  splashColor:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight30,
+                                                  onPressed: () {
+                                                    showAppDialog(
+                                                        context: context,
+                                                        builder: (_) => DialogOverlay(
+                                                            title:
+                                                                'Other Operations',
+                                                            optionsList:
+                                                                operationsList));
+                                                  },
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0)),
+                                                  padding: EdgeInsetsDirectional
+                                                      .only(start: 8, top: 6),
+                                                  child: Icon(
+                                                      AppIcons.edit,
+                                                      color: StateContainer.of(
+                                                              context)
+                                                          .curTheme
+                                                          .textLight,
+                                                      size: 18)),
+                                            ),
                                     ],
                                   ),
                                 ),
@@ -325,207 +340,314 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                         ],
                       ),
-                      // Wallet Cards
-                      Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            // Accounts text
-                            Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
-                              alignment: Alignment(-1, 0),
-                              child: AutoSizeText(
-                                "Operations".toUpperCase(),
-                                style: AppStyles.headerSmall(context),
-                                textAlign: TextAlign.left,
-                                stepGranularity: 0.5,
-                                maxLines: 1,
-                              ),
-                            ),
-                            // Expanded list
-                            Expanded(
-                              // Container for the list
-                              child: Container(
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    12, 8, 12, 0),
-                                width: double.maxFinite,
-                                decoration: BoxDecoration(
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .backgroundPrimary,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    topRight: Radius.circular(12),
+                      widget.isBorrowed
+                          ? // Paragraph and illustration
+                          Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  //Container for the paragraph
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 0, 30, 0),
+                                    child: AutoSizeText.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "This is a",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text: " borrowed account",
+                                            style: AppStyles.paragraphPrimary(
+                                                context),
+                                          ),
+                                          TextSpan(
+                                            text: ".\n",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text: "If you send at least",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text: " 0.25 PASCAL",
+                                            style: AppStyles.paragraphPrimary(
+                                                context),
+                                          ),
+                                          TextSpan(
+                                            text: " to it in the next",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text: " 5 days 8 hours",
+                                            style: AppStyles.paragraphPrimary(
+                                                context),
+                                          ),
+                                          TextSpan(
+                                            text: ", it’ll be yours.",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                        ],
+                                      ),
+                                      stepGranularity: 0.5,
+                                      maxLines: 10,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
                                   ),
-                                  boxShadow: [
-                                    StateContainer.of(context)
-                                        .curTheme
-                                        .shadowSettingsList,
-                                  ],
-                                ),
-                                // Operations List
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      topRight: Radius.circular(12)),
-                                  child: ListView(
-                                    padding:
-                                        EdgeInsetsDirectional.only(bottom: 24),
-                                    children: <Widget>[
-                                      OperationListItem(
-                                        type: OperationType.Received,
-                                        amount: "1,864",
-                                        address: "212823-56",
-                                        date: "May 23 • 16:16",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet());
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                      OperationListItem(
-                                        type: OperationType.Sent,
-                                        amount: "41.843",
-                                        address: "@bbedward",
-                                        date: "May 22 • 12:19",
-                                        payload: "What's up bb?",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget: TransactionDetailsSheet(
-                                                  payload: "What's up bb?",
-                                                  isContact: true));
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                      OperationListItem(
-                                        type: OperationType.Received,
-                                        amount: "321.2",
-                                        address: "112131-21",
-                                        date: "May 22 • 11:44",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet());
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                      OperationListItem(
-                                        type: OperationType.Sent,
-                                        amount: "22.5321",
-                                        address: "@odm4rk",
-                                        date: "May 20 • 23:5",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget: TransactionDetailsSheet(
-                                                  isContact: true));
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                      OperationListItem(
-                                        type: OperationType.Sent,
-                                        amount: "19.19",
-                                        address: "191919-19",
-                                        date: "May 19 • 19:19",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet());
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                      OperationListItem(
-                                        type: OperationType.Received,
-                                        amount: "2,341.45",
-                                        address: "515219-67",
-                                        date: "May 19 • 16:07",
-                                        payload:
-                                            "This is the rest of the payment.",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget: TransactionDetailsSheet(
-                                                payload:
-                                                    "This is the rest of the payment.",
-                                              ));
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                      OperationListItem(
-                                        type: OperationType.Received,
-                                        amount: "16.75",
-                                        address: "442152-13",
-                                        date: "May 18 • 12:15",
-                                        onPressed: () {
-                                          AppSheets.showBottomSheet(
-                                              context: context,
-                                              animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet());
-                                        },
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
-                                    ],
+                                  // Container for the illustration
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(
+                                      top: 24,
+                                    ),
+                                    child: SvgRepaintAsset(
+                                        asset:
+                                            'assets/illustration_borrowed.svg',
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.8 *
+                                                132 /
+                                                295),
                                   ),
-                                ),
+                                ],
                               ),
+                            )
+                          :
+                          // Wallet Cards
+                          Expanded(
+                              child: widget.isBorrowed
+                                  ? SizedBox()
+                                  : Column(
+                                      children: <Widget>[
+                                        // Accounts text
+                                        Container(
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  24, 18, 24, 4),
+                                          alignment: Alignment(-1, 0),
+                                          child: AutoSizeText(
+                                            "Operations".toUpperCase(),
+                                            style:
+                                                AppStyles.headerSmall(context),
+                                            textAlign: TextAlign.left,
+                                            stepGranularity: 0.5,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                        // Expanded list
+                                        Expanded(
+                                          // Container for the list
+                                          child: Container(
+                                            margin:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 8, 12, 0),
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .backgroundPrimary,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(12),
+                                                topRight: Radius.circular(12),
+                                              ),
+                                              boxShadow: [
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .shadowSettingsList,
+                                              ],
+                                            ),
+                                            // Operations List
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(12),
+                                                  topRight:
+                                                      Radius.circular(12)),
+                                              child: ListView(
+                                                padding:
+                                                    EdgeInsetsDirectional.only(
+                                                        bottom: 24),
+                                                children: <Widget>[
+                                                  OperationListItem(
+                                                    type:
+                                                        OperationType.Received,
+                                                    amount: "1,864",
+                                                    address: "212823-56",
+                                                    date: "May 23 • 16:16",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget:
+                                                              TransactionDetailsSheet());
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                  OperationListItem(
+                                                    type: OperationType.Sent,
+                                                    amount: "41.843",
+                                                    address: "@bbedward",
+                                                    date: "May 22 • 12:19",
+                                                    payload: "What's up bb?",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget: TransactionDetailsSheet(
+                                                              payload:
+                                                                  "What's up bb?",
+                                                              isContact: true));
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                  OperationListItem(
+                                                    type:
+                                                        OperationType.Received,
+                                                    amount: "321.2",
+                                                    address: "112131-21",
+                                                    date: "May 22 • 11:44",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget:
+                                                              TransactionDetailsSheet());
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                  OperationListItem(
+                                                    type: OperationType.Sent,
+                                                    amount: "22.5321",
+                                                    address: "@odm4rk",
+                                                    date: "May 20 • 23:5",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget:
+                                                              TransactionDetailsSheet(
+                                                                  isContact:
+                                                                      true));
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                  OperationListItem(
+                                                    type: OperationType.Sent,
+                                                    amount: "19.19",
+                                                    address: "191919-19",
+                                                    date: "May 19 • 19:19",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget:
+                                                              TransactionDetailsSheet());
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                  OperationListItem(
+                                                    type:
+                                                        OperationType.Received,
+                                                    amount: "2,341.45",
+                                                    address: "515219-67",
+                                                    date: "May 19 • 16:07",
+                                                    payload:
+                                                        "This is the rest of the payment.",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget:
+                                                              TransactionDetailsSheet(
+                                                            payload:
+                                                                "This is the rest of the payment.",
+                                                          ));
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                  OperationListItem(
+                                                    type:
+                                                        OperationType.Received,
+                                                    amount: "16.75",
+                                                    address: "442152-13",
+                                                    date: "May 18 • 12:15",
+                                                    onPressed: () {
+                                                      AppSheets.showBottomSheet(
+                                                          context: context,
+                                                          animationDurationMs:
+                                                              200,
+                                                          widget:
+                                                              TransactionDetailsSheet());
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    width: double.maxFinite,
+                                                    height: 1,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textDark10,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
-                          ],
-                        ),
-                      ),
                       // Bottom bar
                       Align(
                         alignment: Alignment.bottomCenter,
@@ -564,6 +686,7 @@ class _AccountPageState extends State<AccountPage> {
                                 AppButton(
                                   text: "Send",
                                   type: AppButtonType.PrimaryRight,
+                                  disabled: widget.isBorrowed ? true : false,
                                 ),
                               ],
                             ),
