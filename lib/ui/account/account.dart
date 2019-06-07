@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -276,7 +277,8 @@ class _AccountPageState extends State<AccountPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                         50.0)),
-                                            padding: EdgeInsetsDirectional.only(start: 8, top: 6),
+                                            padding: EdgeInsetsDirectional.only(
+                                                start: 8, top: 6),
                                             child: Icon(AppIcons.edit,
                                                 color:
                                                     StateContainer.of(context)
@@ -344,6 +346,13 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "1,864",
                                         address: "212823-56",
                                         date: "May 23 • 16:16",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet());
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -357,6 +366,14 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "41.843",
                                         address: "@bbedward",
                                         date: "May 22 • 12:19",
+                                        payload: "What's up bb?",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet(payload: "What's up bb?",));
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -370,6 +387,13 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "321.2",
                                         address: "112131-21",
                                         date: "May 22 • 11:44",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet());
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -383,6 +407,13 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "22.5321",
                                         address: "@odm4rk",
                                         date: "May 20 • 23:5",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet());
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -396,6 +427,13 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "19.19",
                                         address: "191919-19",
                                         date: "May 19 • 19:19",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet());
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -409,6 +447,14 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "2,341.45",
                                         address: "515219-67",
                                         date: "May 19 • 16:07",
+                                        payload: "This is the rest of the payment.",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet(payload: "This is the rest of the payment.",));
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -422,6 +468,13 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "16.75",
                                         address: "442152-13",
                                         date: "May 18 • 12:15",
+                                        onPressed: () {
+                                          AppSheets.showBottomSheet(
+                                              context: context,
+                                              animationDurationMs: 200,
+                                              widget:
+                                                  TransactionDetailsSheet());
+                                        },
                                       ),
                                       Container(
                                         width: double.maxFinite,
@@ -467,7 +520,10 @@ class _AccountPageState extends State<AccountPage> {
                                   onPressed: () {
                                     AppSheets.showBottomSheet(
                                         context: context,
-                                        widget: ReceiveSheet(accountName: "yekta", address: "578706-79",));
+                                        widget: ReceiveSheet(
+                                          accountName: "yekta",
+                                          address: "578706-79",
+                                        ));
                                   },
                                 ),
                                 AppButton(

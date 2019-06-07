@@ -11,6 +11,7 @@ class OperationListItem extends StatefulWidget {
   final String amount;
   final String address;
   final String date;
+  final String payload;
   final Function onPressed;
 
   OperationListItem({
@@ -18,6 +19,7 @@ class OperationListItem extends StatefulWidget {
     this.amount,
     this.address,
     this.date,
+    this.payload,
     this.onPressed,
   });
 
@@ -61,7 +63,7 @@ class _OperationListItemState extends State<OperationListItem> {
                     style: AppStyles.operationType(context),
                   ),
                 ),
-                // Amount
+                // Amount & Payload indicator
                 Container(
                   width: MediaQuery.of(context).size.width / 2 - 72,
                   margin: EdgeInsetsDirectional.only(top: 4),
@@ -82,6 +84,17 @@ class _OperationListItemState extends State<OperationListItem> {
                             style: widget.type == OperationType.Received
                                 ? AppStyles.balanceSmall(context)
                                 : AppStyles.balanceSmallTextDark(context)),
+                        TextSpan(text: " ", style: TextStyle(fontSize: 14)),
+                        widget.payload != null
+                            ? TextSpan(
+                                text: "",
+                                style: widget.type == OperationType.Received
+                                    ? AppStyles.iconFontPrimaryBalanceSmallest(
+                                        context)
+                                    : AppStyles.iconFontTextDarkBalanceSmallest(
+                                        context),
+                              )
+                            : TextSpan(),
                       ],
                     ),
                     textAlign: TextAlign.start,

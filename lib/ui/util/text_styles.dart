@@ -26,7 +26,12 @@ class AppStyles {
         fontWeight: FontWeight.w500,
         color: StateContainer.of(context).curTheme.primary);
   }
-
+  static TextStyle headerSmallBold(BuildContext context) {
+    return TextStyle(
+        fontSize: AppFontSizes.medium,
+        fontWeight: FontWeight.w700,
+        color: StateContainer.of(context).curTheme.primary);
+  }
   // For paragraphs
   static TextStyle paragraph(BuildContext context) {
     return TextStyle(
@@ -34,6 +39,14 @@ class AppStyles {
         fontSize: 14.0,
         height: 1.3,
         fontWeight: FontWeight.w400);
+  }
+
+  static TextStyle paragraphMedium(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
   }
 
   // For paragraphs
@@ -294,6 +307,21 @@ class AppStyles {
     return TextStyle(
       fontSize: 14,
       color: StateContainer.of(context).curTheme.textDark,
+      fontFamily: 'AppIcons',
+    );
+  }
+  // For chat bubble icon
+  static TextStyle iconFontPrimaryBalanceSmallest(BuildContext context) {
+    return TextStyle(
+      fontSize: 12,
+      color: StateContainer.of(context).curTheme.primary50,
+      fontFamily: 'AppIcons',
+    );
+  }
+  static TextStyle iconFontTextDarkBalanceSmallest(BuildContext context) {
+    return TextStyle(
+      fontSize: 12,
+      color: StateContainer.of(context).curTheme.textDark50,
       fontFamily: 'AppIcons',
     );
   }

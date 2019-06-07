@@ -48,7 +48,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                   child: TapOutsideUnfocus(
                     focusNodes: [privateKeyFocusNode],
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         // Container for the header
                         Container(
@@ -124,10 +124,11 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                           )
                         ),
                         Container(
-                          child: Text(
+                          margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4),
+                          child: AutoSizeText(
                             _showPrivateKeyError ? "Private key is invalid" : "",
                             style: AppStyles.paragraphPrimary(context),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.start,
                           ),
                         )
                       ],

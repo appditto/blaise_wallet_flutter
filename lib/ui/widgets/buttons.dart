@@ -21,13 +21,15 @@ class AppButton extends StatefulWidget {
   final Function onPressed;
   final bool disabled;
   final bool buttonTop;
+  final bool buttonMiddle;
 
   AppButton(
       {this.type,
       this.text,
       this.onPressed,
       this.disabled = false,
-      this.buttonTop = false});
+      this.buttonTop = false,
+      this.buttonMiddle = false});
 
   _AppButtonState createState() => _AppButtonState();
 }
@@ -39,13 +41,15 @@ class _AppButtonState extends State<AppButton> {
         child: Container(
       margin: widget.buttonTop
           ? EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0)
-          : EdgeInsetsDirectional.fromSTEB(
-              widget.type == AppButtonType.PrimaryRight ? 10 : 20,
-              16,
-              widget.type == AppButtonType.PrimaryLeft ? 10 : 20,
-              (MediaQuery.of(context).padding.bottom) +
-                  (24 - (MediaQuery.of(context).padding.bottom) / 2),
-            ),
+          : widget.buttonMiddle
+              ? EdgeInsetsDirectional.fromSTEB(20, 16, 20, 0)
+              : EdgeInsetsDirectional.fromSTEB(
+                  widget.type == AppButtonType.PrimaryRight ? 10 : 20,
+                  16,
+                  widget.type == AppButtonType.PrimaryLeft ? 10 : 20,
+                  (MediaQuery.of(context).padding.bottom) +
+                      (24 - (MediaQuery.of(context).padding.bottom) / 2),
+                ),
       height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
