@@ -401,6 +401,7 @@ class _AccountPageState extends State<AccountPage> {
                                   Container(
                                     margin: EdgeInsetsDirectional.only(
                                       top: 24,
+                                      bottom: 24,
                                     ),
                                     child: SvgRepaintAsset(
                                         asset:

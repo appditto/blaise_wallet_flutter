@@ -105,7 +105,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                                 style: AppStyles.paragraph(context),
                               ),
                               TextSpan(
-                                text: "  following 7 days ",
+                                text: " following 7 days",
                                 style: AppStyles.paragraphPrimary(context),
                               ),
                               TextSpan(
@@ -118,7 +118,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                               ),
                               TextSpan(
                                 text:
-                                    " will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t be useable anymore.",
+                                    " will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of 7 days and won’t be useable anymore.",
                                 style: AppStyles.paragraph(context),
                               ),
                             ],
