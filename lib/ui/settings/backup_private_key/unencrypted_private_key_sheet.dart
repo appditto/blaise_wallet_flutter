@@ -131,7 +131,7 @@ class _UnencryptedPrivateKeySheetState
                       ),
                       // Container for the private key
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
                         padding: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),

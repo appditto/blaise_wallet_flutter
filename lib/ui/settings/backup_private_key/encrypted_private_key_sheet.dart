@@ -108,7 +108,7 @@ class _EncryptedPrivateKeySheetState
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: "Below is your encrypted private key. It is protected by a password. So, you can store it safely on a password manager for convenience\n\n",
+                                text: "Below is your encrypted private key. It is protected by a password. So, you can store it safely on a password manager for convenience.\n\n",
                                 style: AppStyles.paragraph(context),
                               ),
                               TextSpan(
@@ -126,7 +126,7 @@ class _EncryptedPrivateKeySheetState
                       ),
                       // Container for the private key
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
                         padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
