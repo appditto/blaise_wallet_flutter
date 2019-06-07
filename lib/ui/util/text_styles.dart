@@ -80,6 +80,13 @@ class AppStyles {
         fontWeight: FontWeight.w600);
   }
 
+  static TextStyle balanceSmallSuccess(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.success,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w600);
+  }
+
   static TextStyle balanceSmallTextDark(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textDark,
@@ -316,6 +323,13 @@ class AppStyles {
     return TextStyle(
       fontSize: 14,
       color: StateContainer.of(context).curTheme.primary,
+      fontFamily: 'AppIcons',
+    );
+  }
+  static TextStyle iconFontSuccessBalanceSmallPascal(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      color: StateContainer.of(context).curTheme.success,
       fontFamily: 'AppIcons',
     );
   }
