@@ -163,7 +163,6 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       text: "CANCEL",
                       onPressed: () {
                         Navigator.pop(context);
-                        Navigator.pop(context);
                       },
                     ),
                   ],

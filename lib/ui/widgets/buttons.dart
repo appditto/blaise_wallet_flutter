@@ -148,17 +148,22 @@ class _AppButtonState extends State<AppButton> {
                       maxLines: 1,
                       stepGranularity: 0.1,
                       style: widget.type == AppButtonType.DangerOutline
-                          ? AppStyles.buttonDangerOutline(context) : widget.type == AppButtonType.SuccessOutline
-                          ? AppStyles.buttonSuccessOutline(context)
-                          : AppStyles.buttonPrimaryOutline(context),
+                          ? AppStyles.buttonDangerOutline(context)
+                          : widget.type == AppButtonType.SuccessOutline
+                              ? AppStyles.buttonSuccessOutline(context)
+                              : AppStyles.buttonPrimaryOutline(context),
                     ),
                     color: Colors.transparent,
-                    splashColor: widget.type == AppButtonType.DangerOutline
-                        ? StateContainer.of(context).curTheme.danger30
-                        : StateContainer.of(context).curTheme.primary30,
-                    highlightColor: widget.type == AppButtonType.DangerOutline
-                        ? StateContainer.of(context).curTheme.danger15
-                        : StateContainer.of(context).curTheme.primary15,
+                    splashColor: widget.type == AppButtonType.SuccessOutline
+                        ? StateContainer.of(context).curTheme.success30
+                        : widget.type == AppButtonType.DangerOutline
+                            ? StateContainer.of(context).curTheme.danger30
+                            : StateContainer.of(context).curTheme.primary30,
+                    highlightColor: widget.type == AppButtonType.SuccessOutline
+                        ? StateContainer.of(context).curTheme.success15
+                        : widget.type == AppButtonType.DangerOutline
+                            ? StateContainer.of(context).curTheme.danger15
+                            : StateContainer.of(context).curTheme.primary15,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),
                     onPressed: () {

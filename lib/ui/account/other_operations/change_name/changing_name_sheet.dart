@@ -161,7 +161,6 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       text: "CANCEL",
                       onPressed: () {
                         Navigator.pop(context);
-                        Navigator.pop(context);
                       },
                     ),
                   ],
