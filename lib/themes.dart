@@ -62,6 +62,7 @@ abstract class BaseTheme {
   BoxShadow shadowSucces;
 
   BoxShadow shadowTextDark;
+  BoxShadow shadowTextDarkTwo;
 
   BoxShadow shadowMainCard;
 
@@ -177,6 +178,12 @@ class BlaiseLightTheme extends BaseTheme {
       color: grayDark.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowTextDarkTwo = BoxShadow(
+      color: grayDark.withOpacity(0.25),
+      offset: Offset(0, 12),
+      blurRadius: 24,
       spreadRadius: -4.0);
 
   BoxShadow shadowMainCard = BoxShadow(
@@ -319,6 +326,12 @@ class BlaiseDarkTheme extends BaseTheme {
       color: black.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowTextDarkTwo = BoxShadow(
+      color: black.withOpacity(0.25),
+      offset: Offset(0, 12),
+      blurRadius: 24,
       spreadRadius: -4.0);
 
   BoxShadow shadowMainCard = BoxShadow(

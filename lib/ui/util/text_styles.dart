@@ -197,6 +197,15 @@ class AppStyles {
         fontWeight: FontWeight.w600);
   }
 
+  static TextStyle textFieldLabelSuccess(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.success,
+        fontFamily: 'Metropolis',
+        fontSize: 16.0,
+        height: 1.3,
+        fontWeight: FontWeight.w600);
+  }
+
   // For primary Private Key
   static TextStyle privateKeyPrimary(BuildContext context) {
     return TextStyle(
@@ -239,6 +248,13 @@ class AppStyles {
   static TextStyle buttonPrimaryOutline(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.primary,
+        fontSize: 18,
+        fontWeight: FontWeight.w700);
+  }
+
+  static TextStyle buttonSuccessOutline(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.success,
         fontSize: 18,
         fontWeight: FontWeight.w700);
   }

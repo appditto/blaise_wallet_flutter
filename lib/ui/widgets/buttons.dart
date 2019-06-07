@@ -148,7 +148,8 @@ class _AppButtonState extends State<AppButton> {
                       maxLines: 1,
                       stepGranularity: 0.1,
                       style: widget.type == AppButtonType.DangerOutline
-                          ? AppStyles.buttonDangerOutline(context)
+                          ? AppStyles.buttonDangerOutline(context) : widget.type == AppButtonType.SuccessOutline
+                          ? AppStyles.buttonSuccessOutline(context)
                           : AppStyles.buttonPrimaryOutline(context),
                     ),
                     color: Colors.transparent,

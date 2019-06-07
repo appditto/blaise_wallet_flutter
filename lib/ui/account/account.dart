@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/account_card.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -20,17 +20,24 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  List<DialogListItem> operationsList = [
-    DialogListItem(option: "Change Account Name"),
-    DialogListItem(option: "Transfer Account"),
-    DialogListItem(option: "List Account for Sale"),
-    DialogListItem(option: "Private Sale"),
-    DialogListItem(option: "Delist Account", disabled: true),
-  ];
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    List<DialogListItem> operationsList = [
+      DialogListItem(
+        option: "Change Account Name",
+        action: () {
+          Navigator.pop(context);
+          AppSheets.showBottomSheet(
+              context: context, widget: ChangeNameSheet());
+        },
+      ),
+      DialogListItem(option: "Transfer Account"),
+      DialogListItem(option: "List Account for Sale"),
+      DialogListItem(option: "Private Sale"),
+      DialogListItem(option: "Delist Account", disabled: true),
+    ];
     // The main scaffold that holds everything
     return AppScaffold(
       key: _scaffoldKey,
@@ -412,8 +419,8 @@ class _AccountPageState extends State<AccountPage> {
                                           AppSheets.showBottomSheet(
                                               context: context,
                                               animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet(isContact: true));
+                                              widget: TransactionDetailsSheet(
+                                                  isContact: true));
                                         },
                                       ),
                                       Container(
