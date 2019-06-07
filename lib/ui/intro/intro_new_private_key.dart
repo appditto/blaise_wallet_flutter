@@ -80,7 +80,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                           style: AppStyles.paragraph(context),
                         ),
                       ),
-                      // Container for the seed
+                      // Container for the private key
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
                         padding: EdgeInsetsDirectional.fromSTEB(32, 16, 32, 16),

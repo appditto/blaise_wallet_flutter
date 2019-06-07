@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/creating_private_sale_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changing_name_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypted_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -8,11 +9,11 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 
-class CreatePrivateSaleSheet extends StatefulWidget {
-  _CreatePrivateSaleSheetState createState() => _CreatePrivateSaleSheetState();
+class EncryptPrivateKeySheet extends StatefulWidget {
+  _EncryptPrivateKeySheetState createState() => _EncryptPrivateKeySheetState();
 }
 
-class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
+class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,7 +71,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "PRIVATE SALE",
+                          "ENCRYPT",
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -92,65 +93,61 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Enter a price, a receiving account, and a public key below to create a private sale for this account.",
+                          "Create a new password to encrypt the your private key.",
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
                           minFontSize: 8,
                         ),
                       ),
-                      // Container for price field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
-                        child: AppTextField(
-                          label: 'Price',
-                          style: AppStyles.paragraphPrimary(context),
-                          maxLines: 1,
-                          inputType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          prefix: Text(" ",
-                              style:
-                                  AppStyles.iconFontPrimaryBalanceSmallPascal(
-                                      context)),
-                        ),
-                      ),
-                      // Container for receving account field
+                      // Container for new password field
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AppTextField(
-                          label: 'Receiving Account',
-                          style: AppStyles.privateKeyTextDark(context),
+                          label: 'New Password',
+                          style: AppStyles.paragraphMedium(context),
                           maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
+                          passwordField: true,
                         ),
                       ),
-                      // Container for public key field
+                      // Container for confirm password field
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AppTextField(
-                          label: 'Public Key',
-                          style: AppStyles.privateKeyTextDark(context),
+                          label: 'Confirm',
+                          style: AppStyles.paragraphMedium(context),
                           maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
+                          passwordField: true,
                         ),
                       ),
                     ],
                   ),
                 ),
-                // "Create Private Sale" button
+                // "Encrypt" button
                 Row(
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Create Private Sale",
+                      text: "Encrypt",
+                      buttonTop: true,
                       onPressed: () {
+                        Navigator.pop(context);
                         AppSheets.showBottomSheet(
-                            context: context,
-                            widget: CreatingPrivateSaleSheet());
+                            context: context, widget: EncryptedPrivateKeySheet());
+                      },
+                    ),
+                  ],
+                ),
+                // "Close" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "Close",
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                     ),
                   ],

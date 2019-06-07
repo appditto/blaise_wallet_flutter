@@ -1,18 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/creating_private_sale_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 
-class CreatePrivateSaleSheet extends StatefulWidget {
-  _CreatePrivateSaleSheetState createState() => _CreatePrivateSaleSheetState();
+class BackupPrivateKeySheet extends StatefulWidget {
+  _BackupPrivateKeySheetState createState() => _BackupPrivateKeySheetState();
 }
 
-class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
+class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,7 +70,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "PRIVATE SALE",
+                          "PRIVATE KEY",
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -91,66 +91,67 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                     children: <Widget>[
                       // Paragraph
                       Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
-                        child: AutoSizeText(
-                          "Enter a price, a receiving account, and a public key below to create a private sale for this account.",
-                          style: AppStyles.paragraph(context),
-                          stepGranularity: 0.1,
-                          maxLines: 3,
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        child: AutoSizeText.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text:
+                                    "You have 2 options for backing up your private key:\n\n",
+                                style: AppStyles.paragraph(context),
+                              ),
+                              TextSpan(
+                                text:
+                                    "1- Encrypted, which means it is protected by a password.\n\n",
+                                style: AppStyles.paragraphPrimary(context),
+                              ),
+                              TextSpan(
+                                text:
+                                    "2- Unencrypted, which means it is raw and not protected by a password.\n\n",
+                                style: AppStyles.paragraphPrimary(context),
+                              ),
+                              TextSpan(
+                                text:
+                                    "We recommend storing the unencrypted version offline, by writing it on a piece of paper. And storing the encrypted version on a password manager for convenience.",
+                                style: AppStyles.paragraph(context),
+                              ),
+                            ],
+                          ),
+                          stepGranularity: 0.5,
+                          maxLines: 14,
                           minFontSize: 8,
-                        ),
-                      ),
-                      // Container for price field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
-                        child: AppTextField(
-                          label: 'Price',
-                          style: AppStyles.paragraphPrimary(context),
-                          maxLines: 1,
-                          inputType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          prefix: Text(" ",
-                              style:
-                                  AppStyles.iconFontPrimaryBalanceSmallPascal(
-                                      context)),
-                        ),
-                      ),
-                      // Container for receving account field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Receiving Account',
-                          style: AppStyles.privateKeyTextDark(context),
-                          maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
-                        ),
-                      ),
-                      // Container for public key field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Public Key',
-                          style: AppStyles.privateKeyTextDark(context),
-                          maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
                     ],
                   ),
                 ),
-                // "Create Private Sale" button
+                //"Encrypted Key" and "Unencrypted Key" buttons
                 Row(
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Create Private Sale",
+                      text: "Encrypted Key",
+                      buttonTop: true,
                       onPressed: () {
+                        Navigator.pop(context);
+                        AppSheets.showBottomSheet(
+                            context: context, widget: EncryptPrivateKeySheet());
+                      },
+                    ),
+                  ],
+                ),
+                // "Close" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "Unencrypted Key",
+                      onPressed: () {
+                        Navigator.pop(context);
                         AppSheets.showBottomSheet(
                             context: context,
-                            widget: CreatingPrivateSaleSheet());
+                            widget: UnencryptedPrivateKeySheet());
                       },
                     ),
                   ],

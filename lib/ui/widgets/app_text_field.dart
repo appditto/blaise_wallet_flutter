@@ -53,6 +53,7 @@ class AppTextField extends StatefulWidget {
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
   final Function onChanged;
+  final Function onTap;
 
   AppTextField(
       {@required this.label,
@@ -67,6 +68,7 @@ class AppTextField extends StatefulWidget {
       this.maxLines,
       this.inputFormatters,
       this.onChanged,
+      this.onTap,
       this.passwordField = false});
 
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -106,6 +108,7 @@ class _AppTextFieldState extends State<AppTextField> {
               maxLines: widget.maxLines,
               minLines: 1,
               inputFormatters: widget.inputFormatters,
+              onTap: widget.onTap,
               onChanged: (String newValue) {
                 if (widget.onChanged != null) {
                   widget.onChanged(newValue);
