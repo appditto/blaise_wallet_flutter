@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/overview/confirm_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -11,11 +10,11 @@ import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
 
-class GetFreeAccountSheet extends StatefulWidget {
-  _GetFreeAccountSheetState createState() => _GetFreeAccountSheetState();
+class ConfirmFreeAccountSheet extends StatefulWidget {
+  _ConfirmFreeAccountSheetState createState() => _ConfirmFreeAccountSheetState();
 }
 
-class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
+class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -79,7 +78,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                         alignment: Alignment(-1, 0),
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Enter your phone number below.",
+                          "We've sent you a confirmation code. Please enter it below.",
                           maxLines: 3,
                           stepGranularity: 0.1,
                           style: AppStyles.paragraph(context),
@@ -89,35 +88,24 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AppTextField(
-                          label: 'Country Code',
+                          label: 'Confirmation Code',
                           style: AppStyles.paragraphMedium(context),
                           maxLines: 1,
-                          inputType: TextInputType.phone,
-                        ),
-                      ),
-                      // Container for phone number field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Phone Number',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
-                          inputType: TextInputType.phone,
                         ),
                       ),
                     ],
                   ),
                 ),
-                //"Send Confirmation" and "Cancel" buttons
+                //"CONFIRM" and "Go Back" buttons
                 Row(
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Send Confirmation",
+                      text: "CONFIRM",
                       buttonTop: true,
-                      onPressed: () {
-                        AppSheets.showBottomSheet(
-                            context: context, widget: ConfirmFreeAccountSheet());
+                      onPressed: (){
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -127,7 +115,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Cancel",
+                      text: "GO BACK",
                       onPressed: () {
                         Navigator.pop(context);
                       },
