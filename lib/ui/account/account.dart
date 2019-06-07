@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/create_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
@@ -51,7 +52,14 @@ class _AccountPageState extends State<AccountPage> {
               context: context, widget: ListForSaleSheet());
         },
       ),
-      DialogListItem(option: "Private Sale"),
+      DialogListItem(
+        option: "Private Sale",
+        action: () {
+          Navigator.pop(context);
+          AppSheets.showBottomSheet(
+              context: context, widget: CreatePrivateSaleSheet());
+        },
+      ),
       DialogListItem(option: "Delist Account", disabled: true),
     ];
     // The main scaffold that holds everything

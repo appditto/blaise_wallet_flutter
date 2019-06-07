@@ -101,7 +101,7 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
                           "Your account has been successfully listed for sale. We’ll let you know if someone buys it.",
                           style: AppStyles.paragraph(context),

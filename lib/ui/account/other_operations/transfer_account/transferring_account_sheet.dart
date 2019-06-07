@@ -102,7 +102,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                           minFontSize: 8,
                         ),
                       ),
-                      // "Address" header
+                      // "Public Key" header
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
