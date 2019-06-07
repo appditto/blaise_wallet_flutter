@@ -11,7 +11,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class TransactionDetailsSheet extends StatefulWidget {
   final String payload;
-  TransactionDetailsSheet({this.payload});
+  final bool isContact;
+  TransactionDetailsSheet({this.payload, this.isContact = false});
 
   _TransactionDetailsSheetState createState() =>
       _TransactionDetailsSheetState();
@@ -104,15 +105,17 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                   ),
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  AppButton(
-                    type: AppButtonType.PrimaryOutline,
-                    text: "Add to Contacts",
-                    buttonMiddle: true,
-                  ),
-                ],
-              ),
+              widget.isContact
+                  ? SizedBox()
+                  : Row(
+                      children: <Widget>[
+                        AppButton(
+                          type: AppButtonType.PrimaryOutline,
+                          text: "Add to Contacts",
+                          buttonMiddle: true,
+                        ),
+                      ],
+                    ),
               // "Transaction Details" button
               Row(
                 children: <Widget>[

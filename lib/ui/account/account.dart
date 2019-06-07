@@ -371,8 +371,9 @@ class _AccountPageState extends State<AccountPage> {
                                           AppSheets.showBottomSheet(
                                               context: context,
                                               animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet(payload: "What's up bb?",));
+                                              widget: TransactionDetailsSheet(
+                                                  payload: "What's up bb?",
+                                                  isContact: true));
                                         },
                                       ),
                                       Container(
@@ -412,7 +413,7 @@ class _AccountPageState extends State<AccountPage> {
                                               context: context,
                                               animationDurationMs: 200,
                                               widget:
-                                                  TransactionDetailsSheet());
+                                                  TransactionDetailsSheet(isContact: true));
                                         },
                                       ),
                                       Container(
@@ -447,13 +448,16 @@ class _AccountPageState extends State<AccountPage> {
                                         amount: "2,341.45",
                                         address: "515219-67",
                                         date: "May 19 • 16:07",
-                                        payload: "This is the rest of the payment.",
+                                        payload:
+                                            "This is the rest of the payment.",
                                         onPressed: () {
                                           AppSheets.showBottomSheet(
                                               context: context,
                                               animationDurationMs: 200,
-                                              widget:
-                                                  TransactionDetailsSheet(payload: "This is the rest of the payment.",));
+                                              widget: TransactionDetailsSheet(
+                                                payload:
+                                                    "This is the rest of the payment.",
+                                              ));
                                         },
                                       ),
                                       Container(
