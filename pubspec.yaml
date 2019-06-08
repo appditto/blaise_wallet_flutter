@@ -111,6 +111,7 @@ flutter:
           weight: 600
   assets:
     - assets/animation_welcome.flr
+    - assets/animation_send.flr
     - assets/illustration_backup.svg
     - assets/illustration_new_wallet.svg
     - assets/illustration_two_options.svg
