@@ -99,21 +99,37 @@ class _SendSheetState extends State<SendSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 // Account name
-                                AutoSizeText(
-                                  "yekta",
-                                  style: AppStyles.settingsItemHeader(context),
-                                  maxLines: 1,
-                                  minFontSize: 8,
-                                  stepGranularity: 0.1,
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width /
+                                                  2 -
+                                              45),
+                                  child: AutoSizeText(
+                                    "yekta",
+                                    style:
+                                        AppStyles.settingsItemHeader(context),
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1,
+                                  ),
                                 ),
                                 // Acccount address
-                                AutoSizeText(
-                                  "578706-79",
-                                  style:
-                                      AppStyles.monoTextDarkSmall400(context),
-                                  maxLines: 1,
-                                  minFontSize: 8,
-                                  stepGranularity: 0.1,
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width /
+                                                  2 -
+                                              45),
+                                  margin: EdgeInsetsDirectional.only(top: 2),
+                                  child: AutoSizeText(
+                                    "578706-79",
+                                    style:
+                                        AppStyles.monoTextDarkSmall400(context),
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1,
+                                  ),
                                 ),
                               ],
                             ),
@@ -121,41 +137,56 @@ class _SendSheetState extends State<SendSheet> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 // Account balance
-                                AutoSizeText.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "",
-                                        style: AppStyles
-                                            .iconFontPrimaryBalanceSmallPascal(
-                                                context),
-                                      ),
-                                      TextSpan(
-                                          text: " ",
-                                          style: TextStyle(fontSize: 7)),
-                                      TextSpan(
-                                          text: "9,104",
-                                          style:
-                                              AppStyles.balanceSmall(context)),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign.end,
-                                  maxLines: 1,
-                                  minFontSize: 8,
-                                  stepGranularity: 0.1,
-                                  style: TextStyle(
-                                    fontSize: 14,
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width /
+                                                  2 -
+                                              45),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "",
+                                          style: AppStyles
+                                              .iconFontPrimaryBalanceSmallPascal(
+                                                  context),
+                                        ),
+                                        TextSpan(
+                                            text: " ",
+                                            style: TextStyle(fontSize: 7)),
+                                        TextSpan(
+                                            text: "9,104",
+                                            style: AppStyles.balanceSmall(
+                                                context)),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.end,
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
                                 // Balance in fiat
-                                AutoSizeText(
-                                  "(\$2448.97)",
-                                  style:
-                                      AppStyles.primarySmallest400(context),
-                                  maxLines: 1,
-                                  minFontSize: 8,
-                                  stepGranularity: 0.1,
-                                  textAlign: TextAlign.end,
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width /
+                                                  2 -
+                                              45),
+                                  margin: EdgeInsetsDirectional.only(top: 2),
+                                  child: AutoSizeText(
+                                    "(\$2448.91)",
+                                    style:
+                                        AppStyles.primarySmallest400(context),
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1,
+                                    textAlign: TextAlign.end,
+                                  ),
                                 ),
                               ],
                             ),
@@ -177,7 +208,7 @@ class _SendSheetState extends State<SendSheet> {
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AppTextField(
-                          label: 'Price',
+                          label: 'Amount',
                           style: AppStyles.paragraphPrimary(context),
                           maxLines: 1,
                           inputType:
@@ -191,6 +222,41 @@ class _SendSheetState extends State<SendSheet> {
                           secondButton:
                               TextFieldButton(icon: AppIcons.currencyswitch),
                         ),
+                      ),
+                      // Container for the "Add Payload" button
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100.0),
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .backgroundPrimary,
+                              boxShadow: [
+                                StateContainer.of(context)
+                                    .curTheme
+                                    .shadowTextDark,
+                              ],
+                            ),
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                            height: 40,
+                            child: FlatButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100.0)),
+                              child: AutoSizeText(
+                                "+ Add a Payload",
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                style: AppStyles.buttonMiniBg(context),
+                              ),
+                              onPressed: () {
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

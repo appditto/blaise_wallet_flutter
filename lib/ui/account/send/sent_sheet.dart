@@ -32,16 +32,20 @@ class _SentSheetState extends State<SentSheet> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.0, 0.7, 0.7, 1.0],
-                      colors: [
-                        StateContainer.of(context).curTheme.success,
-                        StateContainer.of(context).curTheme.success,
-                        StateContainer.of(context).curTheme.backgroundPrimary,
-                        StateContainer.of(context).curTheme.backgroundPrimary,
-                      ]
-                    ),
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [
+                          0.0,
+                          0.7,
+                          0.7,
+                          1.0
+                        ],
+                        colors: [
+                          StateContainer.of(context).curTheme.success,
+                          StateContainer.of(context).curTheme.success,
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                        ]),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
@@ -86,9 +90,19 @@ class _SentSheetState extends State<SentSheet> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: StateContainer.of(context).curTheme.success,
-                            boxShadow:[StateContainer.of(context).curTheme.shadowTextDarkTwo],
+                            boxShadow: [
+                              StateContainer.of(context)
+                                  .curTheme
+                                  .shadowTextDarkTwo
+                            ],
                           ),
-                          child: Icon(AppIcons.tick, size: 40, color: StateContainer.of(context).curTheme.backgroundPrimary,),
+                          child: Icon(
+                            AppIcons.tick,
+                            size: 40,
+                            color: StateContainer.of(context)
+                                .curTheme
+                                .backgroundPrimary,
+                          ),
                         ),
                       ],
                     ),
@@ -103,7 +117,7 @@ class _SentSheetState extends State<SentSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
-                          "Your account name has been changed successfully.",
+                          "Transaction has been sent successfully.",
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -112,16 +126,17 @@ class _SentSheetState extends State<SentSheet> {
                       ),
                       // "Address" header
                       Container(
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "New Account Name",
+                          "Address",
                           style: AppStyles.textFieldLabelSuccess(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the name
+                      // Container for the account number
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
                         padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
@@ -135,14 +150,63 @@ class _SentSheetState extends State<SentSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "Appditto",
-                          maxLines: 6,
+                          "186418-64",
+                          maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
                           textAlign: TextAlign.center,
-                          style: AppStyles.paragraphMedium(context),
+                          style: AppStyles.privateKeyTextDark(context),
                         ),
-                      )
+                      ),
+                      // "Amount" header
+                      Container(
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        child: AutoSizeText(
+                          "Amount",
+                          style: AppStyles.textFieldLabelSuccess(context),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      // Container for the Amount
+                      Container(
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              width: 1,
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .success15),
+                          color: StateContainer.of(context).curTheme.success10,
+                        ),
+                        child: AutoSizeText.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "",
+                                style:
+                                    AppStyles.iconFontSuccessBalanceSmallPascal(
+                                        context),
+                              ),
+                              TextSpan(
+                                  text: " ", style: TextStyle(fontSize: 8)),
+                              TextSpan(
+                                  text: "191.9",
+                                  style: AppStyles.balanceSmallSuccess(context)),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          minFontSize: 8,
+                          stepGranularity: 1,
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
