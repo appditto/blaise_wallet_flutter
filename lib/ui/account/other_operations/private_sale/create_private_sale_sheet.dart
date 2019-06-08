@@ -187,7 +187,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                       onPressed: () {
                         AppSheets.showBottomSheet(
                             context: context,
-                            widget: CreatingPrivateSaleSheet());
+                            widget: CreatingPrivateSaleSheet(),
+                            noBlur: true);
                       },
                     ),
                   ],

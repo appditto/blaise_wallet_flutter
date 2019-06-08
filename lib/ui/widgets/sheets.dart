@@ -11,6 +11,7 @@ class AppSheets {
       @required Widget widget,
       Color color,
       Color bgColor,
+      bool noBlur = false,
       int animationDurationMs = 250,
       bool closeOnTap = false,
       Function onDisposed}) {
@@ -25,6 +26,7 @@ class AppSheets {
           return widget;
         },
         color: color,
+        noBlur: noBlur,
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
         bgColor: bgColor,
@@ -84,11 +86,13 @@ class _AppBottomSheetModalRoute<T> extends PopupRoute<T> {
       this.bgColor,
       this.animationDurationMs,
       this.closeOnTap,
+      this.noBlur,
       this.onDisposed})
       : super(settings: settings);
 
   final WidgetBuilder builder;
   final Color color;
+  final bool noBlur;
   final Color bgColor;
   final int animationDurationMs;
   final bool closeOnTap;
@@ -146,7 +150,7 @@ class _AppBottomSheetModalRoute<T> extends PopupRoute<T> {
           }
         },
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          filter: ImageFilter.blur(sigmaX: noBlur?0:5, sigmaY: noBlur?0:5),
           child: Theme(
             data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
                       child: AnimatedBuilder(

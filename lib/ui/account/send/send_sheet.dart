@@ -270,7 +270,7 @@ class _SendSheetState extends State<SendSheet> {
                       buttonTop: true,
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: SendingSheet());
+                            context: context, widget: SendingSheet(), noBlur: true);
                       },
                     ),
                   ],

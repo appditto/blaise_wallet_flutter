@@ -128,7 +128,9 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                       text: "Transfer",
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: TransferringAccountSheet());
+                            context: context,
+                            widget: TransferringAccountSheet(),
+                            noBlur: true);
                       },
                     ),
                   ],

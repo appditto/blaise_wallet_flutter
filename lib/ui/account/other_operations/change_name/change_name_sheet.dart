@@ -121,7 +121,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                       text: "Change Name",
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: ChangingNameSheet());
+                            context: context, widget: ChangingNameSheet(), noBlur: true);
                       },
                     ),
                   ],

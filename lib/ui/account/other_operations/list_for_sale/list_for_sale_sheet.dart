@@ -140,7 +140,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                       text: "List for Sale",
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: ListingForSaleSheet());
+                            context: context, widget: ListingForSaleSheet(), noBlur: true);
                       },
                     ),
                   ],
