@@ -58,6 +58,14 @@ class AppStyles {
         fontWeight: FontWeight.w700);
   }
 
+  static TextStyle primarySmallest400(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w400);
+  }
+
   static TextStyle paragraphDanger(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.danger,
@@ -191,6 +199,13 @@ class AppStyles {
         fontFamily: 'SourceCodePro',
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 16.0,
+        fontWeight: FontWeight.w400);
+  }
+  static TextStyle monoTextDarkSmall400(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'SourceCodePro',
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
         fontWeight: FontWeight.w400);
   }
 

@@ -122,10 +122,13 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     maxLines: 1,
                                     inputType: TextInputType.numberWithOptions(
                                         decimal: true),
-                                    prefix: Text(" ",
-                                        style: AppStyles
-                                            .iconFontPrimaryBalanceSmallPascal(
-                                                context)),
+                                    prefix: Icon(
+                                      AppIcons.pascalsymbol,
+                                      size: 15,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .primary,
+                                    ),
                                     focusNode: _focusNodePrice,
                                   ),
                                 ),

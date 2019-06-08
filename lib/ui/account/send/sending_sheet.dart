@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changing_name_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/listing_for_sale_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -9,11 +8,11 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 
-class ListForSaleSheet extends StatefulWidget {
-  _ListForSaleSheetState createState() => _ListForSaleSheetState();
+class SendingSheet extends StatefulWidget {
+  _SendingSheetState createState() => _SendingSheetState();
 }
 
-class _ListForSaleSheetState extends State<ListForSaleSheet> {
+class _SendingSheetState extends State<SendingSheet> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,7 +70,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "LIST FOR SALE",
+                          "SENDING",
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -93,54 +92,75 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
-                          "Enter a price and an account that will be receiving the payment to list this account for sale.",
+                          "Confirm your new account name to proceed.",
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
                           minFontSize: 8,
                         ),
                       ),
-                      // Container for price field
+                      // "Address" header
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Price',
-                          style: AppStyles.paragraphPrimary(context),
+                        child: AutoSizeText(
+                          "New Account Name",
+                          style: AppStyles.textFieldLabel(context),
                           maxLines: 1,
-                          inputType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          prefix: Icon(
-                            AppIcons.pascalsymbol,
-                            size: 15,
-                            color: StateContainer.of(context).curTheme.primary,
-                          ),
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for receving account field
+                      // Container for the name
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Receiving Account',
-                          style: AppStyles.privateKeyTextDark(context),
-                          maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              width: 1,
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark15),
+                          color: StateContainer.of(context).curTheme.textDark10,
                         ),
-                      ),
+                        child: AutoSizeText(
+                          "Appditto",
+                          maxLines: 6,
+                          stepGranularity: 0.1,
+                          minFontSize: 8,
+                          textAlign: TextAlign.center,
+                          style: AppStyles.paragraphMedium(context),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                // "List for Sale" button
+                // "CONFIRM" button
                 Row(
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "List for Sale",
+                      text: "CONFIRM",
+                      buttonTop: true,
                       onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                         AppSheets.showBottomSheet(
-                            context: context, widget: ListingForSaleSheet());
+                            context: context, widget: ChangedNameSheet());
+                      },
+                    ),
+                  ],
+                ),
+                // "CANCEL" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "CANCEL",
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                     ),
                   ],

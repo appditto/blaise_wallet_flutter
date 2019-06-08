@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/create_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -688,6 +689,12 @@ class _AccountPageState extends State<AccountPage> {
                                   text: "Send",
                                   type: AppButtonType.PrimaryRight,
                                   disabled: widget.isBorrowed ? true : false,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: SendSheet(),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
