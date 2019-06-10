@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
@@ -6,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
 class ChangingNameSheet extends StatefulWidget {
@@ -13,6 +16,40 @@ class ChangingNameSheet extends StatefulWidget {
 }
 
 class _ChangingNameSheetState extends State<ChangingNameSheet> {
+  showOverlay(BuildContext context) async {
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              color: StateContainer.of(context).curTheme.overlay20,
+              child: Center(
+                child: //Container for the animation
+                    Container(
+                  margin: EdgeInsetsDirectional.only(
+                      top: MediaQuery.of(context).padding.top),
+                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
+                  width: double.maxFinite,
+                  height: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: FlareActor(
+                      "assets/animation_name_change.flr",
+                      animation: "main",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+    overlayState.insert(overlayEntry);
+    await Future.delayed(Duration(milliseconds: 3000));
+    overlayEntry.remove();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -144,7 +181,8 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       type: AppButtonType.Primary,
                       text: "CONFIRM",
                       buttonTop: true,
-                      onPressed: () {
+                      onPressed: () async {
+                        await showOverlay(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
                         AppSheets.showBottomSheet(
