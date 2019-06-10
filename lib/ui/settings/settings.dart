@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -9,6 +10,8 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -331,10 +334,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 header: "Logout",
                                 icon: AppIcons.logout,
                                 onPressed: () {
-                                  showAppDialog(
-                                      context: context,
-                                      builder: (_) => DialogOverlay(
-                                          title: 'WARNING', logout: true));
+                                  logoutPressed();
                                 },
                               ),
                               Container(
@@ -355,5 +355,71 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
       ),
     );
+  }
+
+  void logoutPressed() {
+    showAppDialog(
+        context: context,
+        builder: (_) => DialogOverlay(
+            title: 'WARNING',
+            warningStyle: true,
+            confirmButtonText: "DELETE PRIVATE KEY\nAND LOGOUT",
+            body:
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text:
+                        "Are you sure that you’ve backed up your private key? ",
+                    style: AppStyles.paragraph(
+                        context),
+                  ),
+                  TextSpan(
+                    text:
+                        "As long as you’ve backed up your private key, you have nothing to worry about.",
+                    style: AppStyles
+                        .paragraphDanger(
+                            context),
+                  ),
+                ],
+              ),
+              onConfirm: () {
+                Navigator.pop(context);
+                showAppDialog(
+                    context: context,
+                    builder: (_) => DialogOverlay(
+                        title: 'ARE YOU SURE?',
+                        warningStyle: true,
+                        confirmButtonText: "YES, I'M SURE",
+                        body: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  "Logging out will remove your private key and all Blaise related data from this device. ",
+                              style: AppStyles
+                                  .paragraphDanger(
+                                      context),
+                            ),
+                            TextSpan(
+                              text:
+                                  "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
+                              style: AppStyles.paragraph(
+                                  context),
+                            ),
+                          ],
+                        ),
+                        onConfirm: () {
+                          // Handle logging out
+                          sl.get<Vault>().deleteAll().then((_) {
+                            sl.get<SharedPrefsUtil>().deleteAll().then((_) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                      '/', (Route<dynamic> route) => false);
+                            });
+                          });
+                        }
+                    )
+                );
+              },
+            )
+        );
   }
 }
