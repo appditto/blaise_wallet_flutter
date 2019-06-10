@@ -97,7 +97,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
                         child: AutoSizeText(
                           "Enter a price, a receiving account, and a public key below to create a private sale for this account.",
                           style: AppStyles.paragraph(context),
@@ -117,7 +117,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                               // Container for price field
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
-                                    30, 0, 30, 0),
+                                    30, 10, 30, 0),
                                 child: AppTextField(
                                   label: 'Price',
                                   style: AppStyles.paragraphPrimary(context),

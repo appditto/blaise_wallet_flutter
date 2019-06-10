@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SendSheet extends StatefulWidget {
   _SendSheetState createState() => _SendSheetState();
@@ -91,7 +92,7 @@ class _SendSheetState extends State<SendSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 16, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 16, 30, 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -193,70 +194,91 @@ class _SendSheetState extends State<SendSheet> {
                           ],
                         ),
                       ),
-                      // Container for the address text field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Address',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
-                        ),
-                      ),
-                      // Container for the amount text field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Amount',
-                          style: AppStyles.paragraphPrimary(context),
-                          maxLines: 1,
-                          inputType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          prefix: Icon(
-                            AppIcons.pascalsymbol,
-                            size: 15,
-                            color: StateContainer.of(context).curTheme.primary,
-                          ),
-                          firstButton: TextFieldButton(icon: AppIcons.max),
-                          secondButton:
-                              TextFieldButton(icon: AppIcons.currencyswitch),
-                        ),
-                      ),
-                      // Container for the "Add Payload" button
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100.0),
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .backgroundPrimary,
-                              boxShadow: [
-                                StateContainer.of(context)
-                                    .curTheme
-                                    .shadowTextDark,
-                              ],
-                            ),
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                            height: 40,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100.0)),
-                              child: AutoSizeText(
-                                "+ Add a Payload",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                style: AppStyles.buttonMiniBg(context),
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for the address text field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 0),
+                                child: AppTextField(
+                                  label: 'Address',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                  firstButton:
+                                      TextFieldButton(icon: AppIcons.paste),
+                                  secondButton:
+                                      TextFieldButton(icon: AppIcons.scan),
+                                ),
                               ),
-                              onPressed: () {
-                                return null;
-                              },
-                            ),
+                              // Container for the amount text field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 0),
+                                child: AppTextField(
+                                  label: 'Amount',
+                                  style: AppStyles.paragraphPrimary(context),
+                                  maxLines: 1,
+                                  inputType: TextInputType.numberWithOptions(
+                                      decimal: true),
+                                  prefix: Icon(
+                                    AppIcons.pascalsymbol,
+                                    size: 15,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary,
+                                  ),
+                                  firstButton:
+                                      TextFieldButton(icon: AppIcons.max),
+                                  secondButton: TextFieldButton(
+                                      icon: AppIcons.currencyswitch),
+                                ),
+                              ),
+                              // Container for the "Add Payload" button
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(100.0),
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .backgroundPrimary,
+                                      boxShadow: [
+                                        StateContainer.of(context)
+                                            .curTheme
+                                            .shadowTextDark,
+                                      ],
+                                    ),
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 30, 30, 40),
+                                    height: 40,
+                                    child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100.0)),
+                                      child: AutoSizeText(
+                                        "+ Add a Payload",
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        stepGranularity: 0.1,
+                                        style: AppStyles.buttonMiniBg(context),
+                                      ),
+                                      onPressed: () {
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -270,7 +292,9 @@ class _SendSheetState extends State<SendSheet> {
                       buttonTop: true,
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: SendingSheet(), noBlur: true);
+                            context: context,
+                            widget: SendingSheet(),
+                            noBlur: true);
                       },
                     ),
                   ],

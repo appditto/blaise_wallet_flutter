@@ -10,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class GetFreeAccountSheet extends StatefulWidget {
   _GetFreeAccountSheetState createState() => _GetFreeAccountSheetState();
@@ -85,24 +86,38 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           style: AppStyles.paragraph(context),
                         ),
                       ),
-                      // Container for country code field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Country Code',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
-                          inputType: TextInputType.phone,
-                        ),
-                      ),
-                      // Container for phone number field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Phone Number',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
-                          inputType: TextInputType.phone,
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for country code field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 0),
+                                child: AppTextField(
+                                  label: 'Country Code',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                  inputType: TextInputType.phone,
+                                ),
+                              ),
+                              // Container for phone number field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 40),
+                                child: AppTextField(
+                                  label: 'Phone Number',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                  inputType: TextInputType.phone,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -117,7 +132,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                       buttonTop: true,
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: ConfirmFreeAccountSheet());
+                            context: context,
+                            widget: ConfirmFreeAccountSheet());
                       },
                     ),
                   ],

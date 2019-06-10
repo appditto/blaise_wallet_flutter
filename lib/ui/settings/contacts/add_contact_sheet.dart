@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class AddContactSheet extends StatefulWidget {
   _AddContactSheetState createState() => _AddContactSheetState();
@@ -67,30 +68,40 @@ class _AddContactSheetState extends State<AddContactSheet> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      // Container for the name text field
-                      Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
-                          child: AppTextField(
-                            label: 'Contact Name',
-                            style: AppStyles.contactsItemName(context),
-                            prefix: Text("@",
-                                style: AppStyles.settingsHeader(context)),
-                            maxLines: 1,
-                          )),
-                      // Container for the address text field
-                      Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                          child: AppTextField(
-                            label: 'Address',
-                            style: AppStyles.contactsItemAddress(context),
-                            firstButton: TextFieldButton(icon: AppIcons.paste),
-                            secondButton: TextFieldButton(icon: AppIcons.scan),
-                            maxLines: 1,
-                            textCapitalization: TextCapitalization.characters,
-                          )),
-                    ],
+                  child: KeyboardAvoider(
+                    duration: Duration(milliseconds: 0),
+                    autoScroll: true,
+                    focusPadding: 40,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Container for the name text field
+                        Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                            child: AppTextField(
+                              label: 'Contact Name',
+                              style: AppStyles.contactsItemName(context),
+                              prefix: Text("@",
+                                  style: AppStyles.settingsHeader(context)),
+                              maxLines: 1,
+                            )),
+                        // Container for the address text field
+                        Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 40),
+                            child: AppTextField(
+                              label: 'Address',
+                              style: AppStyles.contactsItemAddress(context),
+                              firstButton:
+                                  TextFieldButton(icon: AppIcons.paste),
+                              secondButton:
+                                  TextFieldButton(icon: AppIcons.scan),
+                              maxLines: 1,
+                              textCapitalization: TextCapitalization.characters,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
                 //"Add Contact" and "Close" buttons

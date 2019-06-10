@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class TransferAccountSheet extends StatefulWidget {
   _TransferAccountSheetState createState() => _TransferAccountSheetState();
@@ -93,7 +94,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 20),
                         child: AutoSizeText(
                           "Enter a public key below to transfer the ownership of this account to it.",
                           style: AppStyles.paragraph(context),
@@ -102,18 +103,31 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                           minFontSize: 8,
                         ),
                       ),
-                      // Container for the name text field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        child: AppTextField(
-                          label: 'Public Key',
-                          style: AppStyles.privateKeyTextDark(context),
-                          maxLines: 6,
-                          firstButton: TextFieldButton(
-                            icon: AppIcons.paste,
-                          ),
-                          secondButton: TextFieldButton(
-                            icon: AppIcons.scan,
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for the name text field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 40),
+                                child: AppTextField(
+                                  label: 'Public Key',
+                                  style: AppStyles.privateKeyTextDark(context),
+                                  maxLines: 6,
+                                  firstButton: TextFieldButton(
+                                    icon: AppIcons.paste,
+                                  ),
+                                  secondButton: TextFieldButton(
+                                    icon: AppIcons.scan,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

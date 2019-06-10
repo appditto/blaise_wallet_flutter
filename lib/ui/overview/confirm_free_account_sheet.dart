@@ -9,9 +9,11 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class ConfirmFreeAccountSheet extends StatefulWidget {
-  _ConfirmFreeAccountSheetState createState() => _ConfirmFreeAccountSheetState();
+  _ConfirmFreeAccountSheetState createState() =>
+      _ConfirmFreeAccountSheetState();
 }
 
 class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
@@ -84,13 +86,26 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                           style: AppStyles.paragraph(context),
                         ),
                       ),
-                      // Container for country code field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Confirmation Code',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for country code field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 30),
+                                child: AppTextField(
+                                  label: 'Confirmation Code',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -103,7 +118,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                       type: AppButtonType.Primary,
                       text: "CONFIRM",
                       buttonTop: true,
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },

@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class ChangeNameSheet extends StatefulWidget {
   _ChangeNameSheetState createState() => _ChangeNameSheetState();
@@ -92,7 +93,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 20),
                         child: AutoSizeText(
                           "Enter a name below to change your account’s name.",
                           style: AppStyles.paragraph(context),
@@ -101,13 +102,26 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                           minFontSize: 8,
                         ),
                       ),
-                      // Container for the name text field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        child: AppTextField(
-                          label: 'New Account Name',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for the name text field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 40),
+                                child: AppTextField(
+                                  label: 'New Account Name',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -121,7 +135,9 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                       text: "Change Name",
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: ChangingNameSheet(), noBlur: true);
+                            context: context,
+                            widget: ChangingNameSheet(),
+                            noBlur: true);
                       },
                     ),
                   ],

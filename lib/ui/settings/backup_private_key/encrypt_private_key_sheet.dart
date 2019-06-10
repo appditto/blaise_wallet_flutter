@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class EncryptPrivateKeySheet extends StatefulWidget {
   _EncryptPrivateKeySheetState createState() => _EncryptPrivateKeySheetState();
@@ -93,7 +94,7 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
                         child: AutoSizeText(
                           "Create a new password to encrypt the your private key.",
                           style: AppStyles.paragraph(context),
@@ -102,24 +103,38 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                           minFontSize: 8,
                         ),
                       ),
-                      // Container for new password field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'New Password',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
-                          passwordField: true,
-                        ),
-                      ),
-                      // Container for confirm password field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Confirm',
-                          style: AppStyles.paragraphMedium(context),
-                          maxLines: 1,
-                          passwordField: true,
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for new password field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 0),
+                                child: AppTextField(
+                                  label: 'New Password',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                  passwordField: true,
+                                ),
+                              ),
+                              // Container for confirm password field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 40),
+                                child: AppTextField(
+                                  label: 'Confirm',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                  passwordField: true,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -135,7 +150,8 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                       onPressed: () {
                         Navigator.pop(context);
                         AppSheets.showBottomSheet(
-                            context: context, widget: EncryptedPrivateKeySheet());
+                            context: context,
+                            widget: EncryptedPrivateKeySheet());
                       },
                     ),
                   ],

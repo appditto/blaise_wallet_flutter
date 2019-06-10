@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class ListForSaleSheet extends StatefulWidget {
   _ListForSaleSheetState createState() => _ListForSaleSheetState();
@@ -93,7 +94,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
                         child: AutoSizeText(
                           "Enter a price and an account that will be receiving the payment to list this account for sale.",
                           style: AppStyles.paragraph(context),
@@ -102,31 +103,49 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                           minFontSize: 8,
                         ),
                       ),
-                      // Container for price field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Price',
-                          style: AppStyles.paragraphPrimary(context),
-                          maxLines: 1,
-                          inputType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          prefix: Icon(
-                            AppIcons.pascalsymbol,
-                            size: 15,
-                            color: StateContainer.of(context).curTheme.primary,
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for price field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 0),
+                                child: AppTextField(
+                                  label: 'Price',
+                                  style: AppStyles.paragraphPrimary(context),
+                                  maxLines: 1,
+                                  inputType: TextInputType.numberWithOptions(
+                                      decimal: true),
+                                  prefix: Icon(
+                                    AppIcons.pascalsymbol,
+                                    size: 15,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary,
+                                  ),
+                                ),
+                              ),
+                              // Container for receving account field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 40),
+                                child: AppTextField(
+                                  label: 'Receiving Account',
+                                  style: AppStyles.privateKeyTextDark(context),
+                                  maxLines: 1,
+                                  firstButton:
+                                      TextFieldButton(icon: AppIcons.paste),
+                                  secondButton:
+                                      TextFieldButton(icon: AppIcons.scan),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      // Container for receving account field
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AppTextField(
-                          label: 'Receiving Account',
-                          style: AppStyles.privateKeyTextDark(context),
-                          maxLines: 1,
-                          firstButton: TextFieldButton(icon: AppIcons.paste),
-                          secondButton: TextFieldButton(icon: AppIcons.scan),
                         ),
                       ),
                     ],
@@ -140,7 +159,9 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                       text: "List for Sale",
                       onPressed: () {
                         AppSheets.showBottomSheet(
-                            context: context, widget: ListingForSaleSheet(), noBlur: true);
+                            context: context,
+                            widget: ListingForSaleSheet(),
+                            noBlur: true);
                       },
                     ),
                   ],
