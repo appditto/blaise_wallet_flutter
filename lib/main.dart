@@ -148,13 +148,16 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
   bool _hasCheckedLoggedIn;
   Future checkLoggedIn() async {
     if (!_hasCheckedLoggedIn) {
+      _hasCheckedLoggedIn = true;
       if (await sl.get<SharedPrefsUtil>().getFirstLaunch()) {
         await sl.get<SharedPrefsUtil>().deleteAll(firstLaunch: true);
         await sl.get<Vault>().deleteAll();
         await sl.get<SharedPrefsUtil>().setFirstLaunch();
+      } else if ((await sl.get<Vault>().getPrivateKey() != null) && (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
+        Navigator.of(context).pushReplacementNamed('/overview');
+      } else {
+        Navigator.of(context).pushReplacementNamed('/intro_welcome');
       }
-      _hasCheckedLoggedIn = true;
-      Navigator.of(context).pushReplacementNamed('/intro_welcome');
     }
   }
 
