@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
+enum TransitionOption {
+  NONE,
+  NOPUSH,
+  NOPOP
+}
+
 /// NoTransitionRoute
 /// Custom route which has no transitions
 class NoTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoTransitionRoute({ WidgetBuilder builder, RouteSettings settings })
+  NoTransitionRoute(
+    {WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);
 
   @override

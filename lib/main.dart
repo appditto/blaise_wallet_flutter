@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/intro/intro_import_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_new_private_key.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/contacts.dart';
 import 'package:blaise_wallet_flutter/ui/settings/security.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -69,13 +70,13 @@ class _AppState extends State<App> {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/':
-              return MaterialPageRoute(
-                builder: (context) => Splash(), // TODO NOtransitionRoute
+              return NoTransitionRoute(
+                builder: (context) => Splash(),
                 settings: settings,
               );
             case '/intro_welcome':
-              return MaterialPageRoute(
-                builder: (context) => IntroWelcomePage(), // TODO NOTransitionRoute
+              return NoTransitionRoute(
+                builder: (context) => IntroWelcomePage(),
                 settings: settings,
               );
             case '/intro_new_private_key':
@@ -104,6 +105,12 @@ class _AppState extends State<App> {
                 settings: settings,
               );
             case '/overview':
+              if (settings.arguments != null && settings.arguments is TransitionOption && settings.arguments == TransitionOption.NONE) {
+                return NoTransitionRoute(
+                  builder: (context) => OverviewPage(newWallet: false),
+                  settings: settings,
+                );
+              }
               return MaterialPageRoute(
                 builder: (context) => OverviewPage(newWallet: false),
                 settings: settings,
@@ -154,7 +161,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         await sl.get<Vault>().deleteAll();
         await sl.get<SharedPrefsUtil>().setFirstLaunch();
       } else if ((await sl.get<Vault>().getPrivateKey() != null) && (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
-        Navigator.of(context).pushReplacementNamed('/overview');
+        Navigator.of(context).pushReplacementNamed('/overview', arguments: TransitionOption.NONE);
       } else {
         Navigator.of(context).pushReplacementNamed('/intro_welcome');
       }
