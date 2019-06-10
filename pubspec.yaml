@@ -51,6 +51,9 @@ dependencies:
   # Service locator
   get_it: ^1.0.3+1
 
+  # To avoid keyboard overlap
+  keyboard_avoider: ^0.1.2
+
   # KeyStore/keychain
   flutter_secure_storage: ^3.2.1+1
 

@@ -67,7 +67,9 @@ class _DialogOverlayState extends State<DialogOverlay>
                 margin: EdgeInsetsDirectional.only(start: 24, end: 24),
                 child: AutoSizeText(
                   option.option,
-                  style: option.disabled?AppStyles.paragraphBigDisabled(context):AppStyles.paragraphBig(context),
+                  style: option.disabled
+                      ? AppStyles.paragraphBigDisabled(context)
+                      : AppStyles.paragraphBig(context),
                   textAlign: TextAlign.start,
                   maxLines: 1,
                   stepGranularity: 0.1,
@@ -76,7 +78,7 @@ class _DialogOverlayState extends State<DialogOverlay>
         ),
       );
     }
-    return widgets;
+    return Column(children: widgets);
   }
 
   @override
@@ -242,11 +244,10 @@ class _DialogOverlayState extends State<DialogOverlay>
                                           60,
                                   minHeight: 0),
                               // Options list
-                              child: ListView(
-                                shrinkWrap: true,
+                              child: SingleChildScrollView(
                                 padding: EdgeInsetsDirectional.only(
                                     top: 8, bottom: 8),
-                                children: buildListItems(widget.optionsList),
+                                child: buildListItems(widget.optionsList),
                               ),
                             ),
                     ],

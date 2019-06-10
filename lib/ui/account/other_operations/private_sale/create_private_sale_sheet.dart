@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class CreatePrivateSaleSheet extends StatefulWidget {
   _CreatePrivateSaleSheetState createState() => _CreatePrivateSaleSheetState();
@@ -106,69 +107,63 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                         ),
                       ),
                       Expanded(
-                        child: SingleChildScrollView(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               // Container for price field
-                              EnsureVisibleWhenFocused(
-                                focusNode: _focusNodePrice,
-                                child: Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 0, 30, 0),
-                                  child: AppTextField(
-                                    label: 'Price',
-                                    style: AppStyles.paragraphPrimary(context),
-                                    maxLines: 1,
-                                    inputType: TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    prefix: Icon(
-                                      AppIcons.pascalsymbol,
-                                      size: 15,
-                                      color: StateContainer.of(context)
-                                          .curTheme
-                                          .primary,
-                                    ),
-                                    focusNode: _focusNodePrice,
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 0, 30, 0),
+                                child: AppTextField(
+                                  label: 'Price',
+                                  style: AppStyles.paragraphPrimary(context),
+                                  maxLines: 1,
+                                  inputType: TextInputType.numberWithOptions(
+                                      decimal: true),
+                                  prefix: Icon(
+                                    AppIcons.pascalsymbol,
+                                    size: 15,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary,
                                   ),
+                                  focusNode: _focusNodePrice,
                                 ),
                               ),
                               // Container for receving account field
-                              EnsureVisibleWhenFocused(
-                                focusNode: _focusNodeReceivingAccount,
-                                child: Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 30, 30, 0),
-                                  child: AppTextField(
-                                    label: 'Receiving Account',
-                                    style:
-                                        AppStyles.privateKeyTextDark(context),
-                                    maxLines: 1,
-                                    firstButton:
-                                        TextFieldButton(icon: AppIcons.paste),
-                                    secondButton:
-                                        TextFieldButton(icon: AppIcons.scan),
-                                    focusNode: _focusNodeReceivingAccount,
-                                  ),
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 0),
+                                child: AppTextField(
+                                  label: 'Receiving Account',
+                                  style:
+                                      AppStyles.privateKeyTextDark(context),
+                                  maxLines: 1,
+                                  firstButton:
+                                      TextFieldButton(icon: AppIcons.paste),
+                                  secondButton:
+                                      TextFieldButton(icon: AppIcons.scan),
+                                  focusNode: _focusNodeReceivingAccount,
                                 ),
                               ),
                               // Container for public key field
-                              EnsureVisibleWhenFocused(
-                                focusNode: _focusNodePublicKey,
-                                child: Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 30, 30, 0),
-                                  child: AppTextField(
-                                    label: 'Public Key',
-                                    style:
-                                        AppStyles.privateKeyTextDark(context),
-                                    maxLines: 1,
-                                    firstButton:
-                                        TextFieldButton(icon: AppIcons.paste),
-                                    secondButton:
-                                        TextFieldButton(icon: AppIcons.scan),
-                                    focusNode: _focusNodePublicKey,
-                                  ),
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 40),
+                                child: AppTextField(
+                                  label: 'Public Key',
+                                  style:
+                                      AppStyles.privateKeyTextDark(context),
+                                  maxLines: 1,
+                                  firstButton:
+                                      TextFieldButton(icon: AppIcons.paste),
+                                  secondButton:
+                                      TextFieldButton(icon: AppIcons.scan),
+                                  focusNode: _focusNodePublicKey,
                                 ),
                               ),
                             ],
