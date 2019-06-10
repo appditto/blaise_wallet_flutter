@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/public_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
@@ -310,6 +311,22 @@ class _SettingsPageState extends State<SettingsPage> {
                                   AppSheets.showBottomSheet(
                                       context: context,
                                       widget: BackupPrivateKeySheet());
+                                },
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              SettingsListItem(
+                                header: "View Public Key",
+                                icon: Icons.public,
+                                onPressed: () {
+                                  AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: PublicKeySheet());
                                 },
                               ),
                               Container(

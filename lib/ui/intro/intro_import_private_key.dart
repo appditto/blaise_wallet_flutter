@@ -96,8 +96,8 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                           Expanded(
                             child: KeyboardAvoider(
                               duration: Duration(milliseconds: 0),
-                          autoScroll: true,
-                          focusPadding: 40,
+                              autoScroll: true,
+                              focusPadding: 40,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
