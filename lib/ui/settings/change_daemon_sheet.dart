@@ -122,7 +122,7 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                                       TextFieldButton(icon: AppIcons.paste),
                                 ),
                               ),
-                               // Container for the "Set to Default" button
+                              // Container for the "Set to Default" button
                               Row(
                                 children: <Widget>[
                                   Container(
