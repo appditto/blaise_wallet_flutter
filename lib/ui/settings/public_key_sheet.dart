@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class PublicKeySheet extends StatefulWidget {
@@ -160,6 +161,11 @@ class _PublicKeySheetState
                       text: _keyCopied ? "Key Copied" : "Copy Public Key",
                       buttonTop: true,
                       onPressed: () {
+                        sl.get<Vault>().getPrivateKey().then((key) {
+                          PrivateKey pk = PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(key));
+                          String pubKey = PublicKeyCoder().encodeToBase58(Keys.fromPrivateKey(pk).publicKey);
+                          Clipboard.setData(ClipboardData(text: pubKey));
+                        });
                         setState(() {
                           _keyCopied = true;
                         });

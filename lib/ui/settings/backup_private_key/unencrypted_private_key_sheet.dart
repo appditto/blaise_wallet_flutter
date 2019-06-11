@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UnencryptedPrivateKeySheet extends StatefulWidget {
   _UnencryptedPrivateKeySheetState createState() =>
@@ -215,6 +216,9 @@ class _UnencryptedPrivateKeySheetState
                       text: _keyCopied ? "Key Copied" : "Copy Unencrypted Key",
                       buttonTop: true,
                       onPressed: () {
+                        sl.get<Vault>().getPrivateKey().then((key) {
+                          Clipboard.setData(ClipboardData(text: key));
+                        });
                         setState(() {
                           _keyCopied = true;
                         });
