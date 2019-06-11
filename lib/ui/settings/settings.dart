@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/change_daemon_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/public_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -263,6 +264,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                 header: "Daemon",
                                 subheader: "Default",
                                 icon: AppIcons.changedaemon,
+                                onPressed: () {
+                                  AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: ChangeDaemonSheet());
+                                },
                               ),
                               Container(
                                 width: double.maxFinite,
