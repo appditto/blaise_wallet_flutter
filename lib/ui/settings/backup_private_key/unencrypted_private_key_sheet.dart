@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
 class UnencryptedPrivateKeySheet extends StatefulWidget {
@@ -142,16 +144,25 @@ class _UnencryptedPrivateKeySheetState
                                   .primary15),
                           color: StateContainer.of(context).curTheme.primary10,
                         ),
-                        child: AutoSizeText(
-                          _showingKey
-                              ? "CA0220001B9CD2E2128E9B82C242D55B05FA304DE13D669E9A121792E905D7470C592E7A"
-                              : '•' * 72,
-                          maxLines: 4,
-                          stepGranularity: 0.1,
-                          minFontSize: 8,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.privateKeyPrimary(context),
-                        ),
+                        child: FutureBuilder(
+                          future: sl.get<Vault>().getPrivateKey(),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              return AutoSizeText(
+                                _showingKey
+                                  ? snapshot.data
+                                  : '•' * snapshot.data.length,
+                                maxLines: 4,
+                                stepGranularity: 0.1,
+                                minFontSize: 8,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.privateKeyPrimary(context)
+                              );
+                            } else {
+                              return SizedBox();
+                            }
+                          }
+                        )
                       ),
                       // Container for the Show/Hide button
                       Row(

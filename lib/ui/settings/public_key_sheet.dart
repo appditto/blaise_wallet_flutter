@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class PublicKeySheet extends StatefulWidget {
   _PublicKeySheetState createState() =>
@@ -123,14 +126,26 @@ class _PublicKeySheetState
                                   .primary15),
                           color: StateContainer.of(context).curTheme.primary10,
                         ),
-                        child: AutoSizeText(
-                          "3GhhbopDPbi883HVV6Hxun6q6AN43CB1yUD9km64cDoZMhgM1KkLy3N41vT1H1zqw4kHdqM64NHMSpSNviVkUP7fCrisZwYzb89dDs",
-                          maxLines: 6,
-                          stepGranularity: 0.1,
-                          minFontSize: 8,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.privateKeyPrimary(context),
-                        ),
+                        // TODO PublicKey would be nicer stored in the global state
+                        child: FutureBuilder(
+                          future: sl.get<Vault>().getPrivateKey(),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              PrivateKey pk = PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(snapshot.data));
+                              String pubKey = PublicKeyCoder().encodeToBase58(Keys.fromPrivateKey(pk).publicKey);
+                              return AutoSizeText(
+                                pubKey,
+                                maxLines: 6,
+                                stepGranularity: 0.1,
+                                minFontSize: 8,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.privateKeyPrimary(context),
+                              );
+                            } else {
+                              return SizedBox();
+                            }
+                          }
+                        )
                       ),
                     ],
                   ),

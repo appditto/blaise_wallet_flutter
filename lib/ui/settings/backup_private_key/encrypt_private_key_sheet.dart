@@ -1,20 +1,39 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changing_name_sheet.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypted_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class EncryptPrivateKeySheet extends StatefulWidget {
   _EncryptPrivateKeySheetState createState() => _EncryptPrivateKeySheetState();
 }
 
 class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
+  FocusNode passwordFocusNode;
+  TextEditingController passwordController;
+  FocusNode confirmPasswordFocusNode;
+  TextEditingController confirmPasswordController;
+
+  String passwordError;
+
+  @override
+  void initState() {
+    super.initState();
+    this.passwordFocusNode = FocusNode();
+    this.confirmPasswordFocusNode = FocusNode();
+    this.passwordController = TextEditingController();
+    this.confirmPasswordController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -120,6 +139,15 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                   style: AppStyles.paragraphMedium(context),
                                   maxLines: 1,
                                   passwordField: true,
+                                  focusNode: passwordFocusNode,
+                                  controller: passwordController,
+                                  onChanged: (String newText) {
+                                    if (passwordError != null) {
+                                      setState(() {
+                                        passwordError = null;
+                                      });
+                                    }
+                                  },
                                 ),
                               ),
                               // Container for confirm password field
@@ -131,8 +159,32 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                   style: AppStyles.paragraphMedium(context),
                                   maxLines: 1,
                                   passwordField: true,
+                                  focusNode: confirmPasswordFocusNode,
+                                  controller: confirmPasswordController,
+                                  onChanged: (String newText) {
+                                    if (passwordError != null) {
+                                      setState(() {
+                                        passwordError = null;
+                                      });
+                                    }
+                                    if (confirmPasswordController.text == passwordController.text) {
+                                      confirmPasswordFocusNode.unfocus();
+                                      passwordFocusNode.unfocus();
+                                    }                                    
+                                  },
                                 ),
                               ),
+                              // Error text
+                              Container(
+                                margin: EdgeInsetsDirectional.only(
+                                    start: 30, end: 30, top: 4, bottom: 40),
+                                child: AutoSizeText(
+                                  passwordError == null ? "" : passwordError,
+                                  style:
+                                      AppStyles.paragraphPrimary(context),
+                                  textAlign: TextAlign.start,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -148,10 +200,7 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                       text: "Encrypt",
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.pop(context);
-                        AppSheets.showBottomSheet(
-                            context: context,
-                            widget: EncryptedPrivateKeySheet());
+                        validatePasswordMatchAndEncrypt();
                       },
                     ),
                   ],
@@ -171,8 +220,29 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
               ],
             ),
           ),
-        ),
+        )
       ],
     );
+  }
+
+  void validatePasswordMatchAndEncrypt() {
+    if (passwordController.text != confirmPasswordController.text) {
+      setState(() {
+        passwordError = "Passwords do not match";
+      });
+    } else if (passwordController.text.isEmpty) {
+      setState(() {
+        passwordError = "Password cannot be empty";
+      });
+    } else {
+      sl.get<Vault>().getPrivateKey().then((pkStr) {
+        PrivateKey pk = PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(pkStr));
+        String encrypted = PDUtil.byteToHex(PrivateKeyCrypt.encrypt(pk, passwordController.text));
+        Navigator.of(context).pop();
+        AppSheets.showBottomSheet(
+            context: context,
+            widget: EncryptedPrivateKeySheet(encryptedKey: encrypted));
+        });
+    }
   }
 }
