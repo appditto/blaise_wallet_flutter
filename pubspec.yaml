@@ -116,6 +116,7 @@ flutter:
     - assets/animation_welcome.flr
     - assets/animation_send.flr
     - assets/animation_name_change.flr
+    - assets/animation_sale.flr
     - assets/illustration_backup.svg
     - assets/illustration_new_wallet.svg
     - assets/illustration_two_options.svg

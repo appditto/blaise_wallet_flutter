@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/created_private_sale_sheet.dart';
@@ -5,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
 class CreatingPrivateSaleSheet extends StatefulWidget {
@@ -13,6 +16,39 @@ class CreatingPrivateSaleSheet extends StatefulWidget {
 }
 
 class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
+  showOverlay(BuildContext context) async {
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              color: StateContainer.of(context).curTheme.overlay20,
+              child: Center(
+                child: //Container for the animation
+                    Container(
+                  margin: EdgeInsetsDirectional.only(
+                      top: MediaQuery.of(context).padding.top),
+                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
+                  width: double.maxFinite,
+                  height: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: FlareActor(
+                      "assets/animation_sale.flr",
+                      animation: "main",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+    overlayState.insert(overlayEntry);
+    await Future.delayed(Duration(milliseconds: 2000));
+    overlayEntry.remove();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -271,12 +307,12 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                       type: AppButtonType.Primary,
                       text: "CONFIRM",
                       buttonTop: true,
-                      onPressed: () {
+                      onPressed: () async {
+                        await showOverlay(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
                         AppSheets.showBottomSheet(
-                            context: context,
-                            widget: CreatedPrivateSaleSheet());
+                            context: context, widget: CreatedPrivateSaleSheet());
                       },
                     ),
                   ],
