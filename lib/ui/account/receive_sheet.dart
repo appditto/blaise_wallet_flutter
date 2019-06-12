@@ -161,9 +161,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                       height: 172,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: StateContainer.of(context)
-                              .curTheme
-                              .backgroundPrimary),
+                          color: Colors.white),
                     ),
                     // QR Code
                     QrImage(
@@ -177,9 +175,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                       height: 58,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: StateContainer.of(context)
-                              .curTheme
-                              .backgroundPrimary),
+                          color: Colors.white),
                     ),
                     // Logo
                     Container(

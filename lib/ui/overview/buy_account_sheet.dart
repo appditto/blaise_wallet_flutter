@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -78,7 +79,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                           top: 30,
                         ),
                         child: SvgRepaintAsset(
-                            asset: 'assets/illustration_borrowed.svg',
+                            asset: StateContainer.of(context).curTheme.illustrationBorrowed,
                             width: MediaQuery.of(context).size.width * 0.8,
                             height: MediaQuery.of(context).size.width *
                                 0.8 *

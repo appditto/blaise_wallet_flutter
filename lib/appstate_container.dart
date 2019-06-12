@@ -9,6 +9,10 @@ const List<String> PREACHED_SVG_ASSETS = [
   'assets/illustration_new_wallet.svg',
   'assets/illustration_two_options.svg',
   'assets/illustration_borrowed.svg',
+  'assets/illustration_backup_dark.svg',
+  'assets/illustration_new_wallet_dark.svg',
+  'assets/illustration_two_options_dark.svg',
+  'assets/illustration_borrowed_dark.svg',
 ];
 
 class _InheritedStateContainer extends InheritedWidget {

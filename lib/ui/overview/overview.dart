@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
@@ -248,8 +249,9 @@ class _OverviewPageState extends State<OverviewPage> {
                                       top: 24,
                                     ),
                                     child: SvgRepaintAsset(
-                                        asset:
-                                            'assets/illustration_new_wallet.svg',
+                                        asset: StateContainer.of(context)
+                                            .curTheme
+                                            .illustrationNewWallet,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.55,

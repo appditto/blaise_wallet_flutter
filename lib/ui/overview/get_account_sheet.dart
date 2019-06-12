@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -92,7 +93,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       Container(
                     margin: EdgeInsetsDirectional.only(top: 24, bottom: 16),
                     child: SvgRepaintAsset(
-                      asset: 'assets/illustration_two_options.svg',
+                      asset: StateContainer.of(context).curTheme.illustrationTwoOptions,
                       width: MediaQuery.of(context).size.width * 0.6,
                       height:
                           MediaQuery.of(context).size.width * (142 / 180) * 0.6,

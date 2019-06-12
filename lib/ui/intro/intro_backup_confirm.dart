@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
@@ -65,7 +66,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                             // Container for the illustration
                             Container(
                               child: SvgRepaintAsset(
-                                asset: 'assets/illustration_backup.svg',
+                                asset: StateContainer.of(context).curTheme.illustrationBackup,
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 height: MediaQuery.of(context).size.width *
                                     0.6 *
@@ -100,8 +101,12 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                       text: "YES, I'M SURE",
                       buttonTop: true,
                       onPressed: () {
-                        sl.get<SharedPrefsUtil>().setPrivateKeyBackedUp(true).then((_) {
-                          Navigator.of(context).pushNamedAndRemoveUntil('/overview_new', (Route<dynamic> route) => false);
+                        sl
+                            .get<SharedPrefsUtil>()
+                            .setPrivateKeyBackedUp(true)
+                            .then((_) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/overview_new', (Route<dynamic> route) => false);
                         });
                       },
                     ),
