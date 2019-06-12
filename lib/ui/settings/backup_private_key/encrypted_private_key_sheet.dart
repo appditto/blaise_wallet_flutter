@@ -6,8 +6,13 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EncryptedPrivateKeySheet extends StatefulWidget {
+  final String encryptedKey;
+
+  EncryptedPrivateKeySheet({this.encryptedKey});
+
   _EncryptedPrivateKeySheetState createState() =>
       _EncryptedPrivateKeySheetState();
 }
@@ -138,7 +143,7 @@ class _EncryptedPrivateKeySheetState
                           color: StateContainer.of(context).curTheme.primary10,
                         ),
                         child: AutoSizeText(
-                          _showingKey?"53616C7465645F5FED4A37ECAD2BF13FF24A66DDA299A57632520447B28B9E642C4B2A301CACC217FBD7713F6282C20CCCFDC5FFD2AB93A8E48D8C2C81704D36":'•' * 128,
+                          _showingKey ? widget.encryptedKey : '•' * widget.encryptedKey.length,
                           maxLines: 4,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -197,6 +202,7 @@ class _EncryptedPrivateKeySheetState
                       text: _keyCopied ? "Key Copied" : "Copy Encrypted Key",
                       buttonTop: true,
                       onPressed: () {
+                        Clipboard.setData(ClipboardData(text: widget.encryptedKey));
                         setState(() {
                           _keyCopied = true;
                         });

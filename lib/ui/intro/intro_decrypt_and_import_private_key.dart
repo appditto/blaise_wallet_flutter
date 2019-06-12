@@ -42,131 +42,132 @@ class _IntroDecryptAndImportPrivateKeyPageState
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
-      body: LayoutBuilder(
-        builder: (context, constraints) => Column(
-              children: <Widget>[
-                //A widget that holds welcome animation + paragraph
-                Expanded(
-                    child: TapOutsideUnfocus(
-                        focusNodes: [_passwordFocusNode],
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            // Container for the header
-                            Container(
-                              padding: EdgeInsetsDirectional.only(
-                                top: (MediaQuery.of(context).padding.top) +
-                                    (24 -
-                                        (MediaQuery.of(context).padding.top) /
-                                            2),
-                              ),
-                              decoration: BoxDecoration(
-                                gradient: StateContainer.of(context)
-                                    .curTheme
-                                    .gradientPrimary,
-                              ),
-                              // Row for back button and the header
-                              child: Row(
-                                children: <Widget>[
-                                  // The header
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width - 60,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 24, 30, 24),
-                                    child: AutoSizeText(
-                                      "Decrypt & Import",
-                                      style: AppStyles.header(context),
-                                      maxLines: 1,
-                                      stepGranularity: 0.1,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            //Container for the paragraph
-                            Container(
-                              margin: EdgeInsetsDirectional.fromSTEB(
-                                  30, 30, 30, 20),
-                              alignment: Alignment(-1, 0),
-                              child: AutoSizeText(
-                                "This looks like an encrypted private key, please enter the password to decrypt and import it.",
-                                maxLines: 3,
-                                stepGranularity: 0.1,
-                                style: AppStyles.paragraph(context),
-                              ),
-                            ),
-                            Expanded(
-                              child: KeyboardAvoider(
-                                duration: Duration(milliseconds: 0),
-                                autoScroll: true,
-                                focusPadding: 40,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    // Container for the text field
-                                    Container(
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            30, 10, 30, 0),
-                                        child: AppTextField(
-                                          label: 'Password',
-                                          style: AppStyles.privateKeyPrimary(
-                                              context),
-                                          passwordField: true,
-                                          focusNode: _passwordFocusNode,
-                                          controller: _passwordController,
-                                          onChanged: onPasswordChanged,
-                                        )),
-                                    // Error Text
-                                    Container(
-                                      margin: EdgeInsetsDirectional.only(
-                                          start: 30,
-                                          end: 30,
-                                          top: 4,
-                                          bottom: 40),
-                                      child: Text(
-                                        _passwordError == null
-                                            ? ""
-                                            : _passwordError,
-                                        style:
-                                            AppStyles.paragraphPrimary(context),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                  ],
+      body: TapOutsideUnfocus(
+        child: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            children: <Widget>[
+              //A widget that holds welcome animation + paragraph
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        // Container for the header
+                        Container(
+                          padding: EdgeInsetsDirectional.only(
+                            top: (MediaQuery.of(context).padding.top) +
+                                (24 -
+                                    (MediaQuery.of(context).padding.top) /
+                                        2),
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: StateContainer.of(context)
+                                .curTheme
+                                .gradientPrimary,
+                          ),
+                          // Row for back button and the header
+                          child: Row(
+                            children: <Widget>[
+                              // The header
+                              Container(
+                                width:
+                                    MediaQuery.of(context).size.width - 60,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 24, 30, 24),
+                                child: AutoSizeText(
+                                  "Decrypt & Import",
+                                  style: AppStyles.header(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                        //Container for the paragraph
+                        Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(
+                              30, 30, 30, 20),
+                          alignment: Alignment(-1, 0),
+                          child: AutoSizeText(
+                            "This looks like an encrypted private key, please enter the password to decrypt and import it.",
+                            maxLines: 3,
+                            stepGranularity: 0.1,
+                            style: AppStyles.paragraph(context),
+                          ),
+                        ),
+                        Expanded(
+                          child: KeyboardAvoider(
+                            duration: Duration(milliseconds: 0),
+                            autoScroll: true,
+                            focusPadding: 40,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                // Container for the text field
+                                Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 10, 30, 0),
+                                    child: AppTextField(
+                                      label: 'Password',
+                                      style: AppStyles.privateKeyPrimary(
+                                          context),
+                                      passwordField: true,
+                                      focusNode: _passwordFocusNode,
+                                      controller: _passwordController,
+                                      onChanged: onPasswordChanged,
+                                    )),
+                                // Error Text
+                                Container(
+                                  margin: EdgeInsetsDirectional.only(
+                                      start: 30,
+                                      end: 30,
+                                      top: 4,
+                                      bottom: 40),
+                                  child: Text(
+                                    _passwordError == null
+                                        ? ""
+                                        : _passwordError,
+                                    style:
+                                        AppStyles.paragraphPrimary(context),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ))),
-                //"Import" and "Go Back" buttons
-                Row(
-                  children: <Widget>[
-                    AppButton(
-                      type: AppButtonType.Primary,
-                      text: "Import",
-                      buttonTop: true,
-                      onPressed: () {
-                        decryptAndSubmit();
-                      },
-                    ),
-                  ],
-                ),
-                // "Go Back" button
-                Row(
-                  children: <Widget>[
-                    AppButton(
-                      type: AppButtonType.PrimaryOutline,
-                      text: "Go Back",
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-      ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ),
+              //"Import" and "Go Back" buttons
+              Row(
+                children: <Widget>[
+                  AppButton(
+                    type: AppButtonType.Primary,
+                    text: "Import",
+                    buttonTop: true,
+                    onPressed: () {
+                      decryptAndSubmit();
+                    },
+                  ),
+                ],
+              ),
+              // "Go Back" button
+              Row(
+                children: <Widget>[
+                  AppButton(
+                    type: AppButtonType.PrimaryOutline,
+                    text: "Go Back",
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      )
     );
   }
 

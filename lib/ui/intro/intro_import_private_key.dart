@@ -41,160 +41,160 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
-      body: LayoutBuilder(
-        builder: (context, constraints) => Column(
-              children: <Widget>[
-                //A widget that holds welcome animation + paragraph
-                Expanded(
-                  child: TapOutsideUnfocus(
-                      focusNodes: [privateKeyFocusNode],
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // Container for the header
-                          Container(
-                            padding: EdgeInsetsDirectional.only(
-                              top: (MediaQuery.of(context).padding.top) +
-                                  (24 -
-                                      (MediaQuery.of(context).padding.top) / 2),
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: StateContainer.of(context)
-                                  .curTheme
-                                  .gradientPrimary,
-                            ),
-                            // Row for back button and the header
-                            child: Row(
-                              children: <Widget>[
-                                // The header
-                                Container(
-                                  width: MediaQuery.of(context).size.width - 60,
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 24, 30, 24),
-                                  child: AutoSizeText(
-                                    "Import Private Key",
-                                    style: AppStyles.header(context),
-                                    maxLines: 1,
-                                    stepGranularity: 0.1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //Container for the paragraph
-                          Container(
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
-                            alignment: Alignment(-1, 0),
-                            child: AutoSizeText(
-                              "Enter your private key below.",
-                              maxLines: 2,
-                              stepGranularity: 0.1,
-                              style: AppStyles.paragraph(context),
-                            ),
-                          ),
-                          Expanded(
-                            child: KeyboardAvoider(
-                              duration: Duration(milliseconds: 0),
-                              autoScroll: true,
-                              focusPadding: 40,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  // Container for the text field
-                                  Container(
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          30, 10, 30, 0),
-                                      child: AppTextField(
-                                        label: "Private Key",
-                                        style: _privateKeyValid
-                                            ? AppStyles.privateKeyPrimary(
-                                                context)
-                                            : AppStyles.privateKeyTextDark(
-                                                context),
-                                        focusNode: privateKeyFocusNode,
-                                        controller: privateKeyController,
-                                        firstButton: TextFieldButton(
-                                          icon: AppIcons.paste,
-                                          onPressed: () {
-                                            Clipboard.getData("text/plain")
-                                                .then((cdata) {
-                                              if (privateKeyIsValid(
-                                                      cdata.text) ||
-                                                  privateKeyIsEncrypted(
-                                                      cdata.text)) {
-                                                privateKeyController.text =
-                                                    cdata.text;
-                                                onKeyTextChanged(
-                                                    privateKeyController.text);
-                                              }
-                                            });
-                                          },
-                                        ),
-                                        secondButton: TextFieldButton(
-                                          icon: AppIcons.scan,
-                                          onPressed: () {
-                                            // Scan private key TODO
-                                          },
-                                        ),
-                                        inputFormatters: [
-                                          WhitelistingTextInputFormatter(RegExp(
-                                              "[a-fA-F0-9]")), // Hex characters
-                                          UpperCaseTextFormatter()
-                                        ],
-                                        textCapitalization:
-                                            TextCapitalization.characters,
-                                        onChanged: onKeyTextChanged,
-                                      )),
-                                  // Error text
-                                  Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                        start: 30, end: 30, top: 4, bottom: 40),
-                                    child: AutoSizeText(
-                                      _showPrivateKeyError
-                                          ? "Private key is invalid"
-                                          : "",
-                                      style:
-                                          AppStyles.paragraphPrimary(context),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  )
-                                ],
+      body: TapOutsideUnfocus(
+        child: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            children: <Widget>[
+              //A widget that holds welcome animation + paragraph
+              Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Container for the header
+                      Container(
+                        padding: EdgeInsetsDirectional.only(
+                          top: (MediaQuery.of(context).padding.top) +
+                              (24 -
+                                  (MediaQuery.of(context).padding.top) / 2),
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: StateContainer.of(context)
+                              .curTheme
+                              .gradientPrimary,
+                        ),
+                        // Row for back button and the header
+                        child: Row(
+                          children: <Widget>[
+                            // The header
+                            Container(
+                              width: MediaQuery.of(context).size.width - 60,
+                              margin: EdgeInsetsDirectional.fromSTEB(
+                                  30, 24, 30, 24),
+                              child: AutoSizeText(
+                                "Import Private Key",
+                                style: AppStyles.header(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      //Container for the paragraph
+                      Container(
+                        margin:
+                            EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
+                        alignment: Alignment(-1, 0),
+                        child: AutoSizeText(
+                          "Enter your private key below.",
+                          maxLines: 2,
+                          stepGranularity: 0.1,
+                          style: AppStyles.paragraph(context),
+                        ),
+                      ),
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for the text field
+                              Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      30, 10, 30, 0),
+                                  child: AppTextField(
+                                    label: "Private Key",
+                                    style: _privateKeyValid
+                                        ? AppStyles.privateKeyPrimary(
+                                            context)
+                                        : AppStyles.privateKeyTextDark(
+                                            context),
+                                    focusNode: privateKeyFocusNode,
+                                    controller: privateKeyController,
+                                    firstButton: TextFieldButton(
+                                      icon: AppIcons.paste,
+                                      onPressed: () {
+                                        Clipboard.getData("text/plain")
+                                            .then((cdata) {
+                                          if (privateKeyIsValid(
+                                                  cdata.text) ||
+                                              privateKeyIsEncrypted(
+                                                  cdata.text)) {
+                                            privateKeyController.text =
+                                                cdata.text;
+                                            onKeyTextChanged(
+                                                privateKeyController.text);
+                                          }
+                                        });
+                                      },
+                                    ),
+                                    secondButton: TextFieldButton(
+                                      icon: AppIcons.scan,
+                                      onPressed: () {
+                                        // Scan private key TODO
+                                      },
+                                    ),
+                                    inputFormatters: [
+                                      WhitelistingTextInputFormatter(RegExp(
+                                          "[a-fA-F0-9]")), // Hex characters
+                                      UpperCaseTextFormatter()
+                                    ],
+                                    textCapitalization:
+                                        TextCapitalization.characters,
+                                    onChanged: onKeyTextChanged,
+                                  )),
+                              // Error text
+                              Container(
+                                margin: EdgeInsetsDirectional.only(
+                                    start: 30, end: 30, top: 4, bottom: 40),
+                                child: AutoSizeText(
+                                  _showPrivateKeyError
+                                      ? "Private key is invalid"
+                                      : "",
+                                  style:
+                                      AppStyles.paragraphPrimary(context),
+                                  textAlign: TextAlign.start,
+                                ),
+                              )
+                            ],
                           ),
-                        ],
-                      )),
-                ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ),
 
-                // "Import" button
-                Row(
-                  children: <Widget>[
-                    AppButton(
-                      type: AppButtonType.Primary,
-                      text: "Import",
-                      buttonTop: true,
-                      onPressed: () {
-                        validateAndSubmit();
-                      },
-                    ),
-                  ],
-                ),
-                // "Go Back" button
-                Row(
-                  children: <Widget>[
-                    AppButton(
-                      type: AppButtonType.PrimaryOutline,
-                      text: "Go Back",
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-      ),
+              // "Import" button
+              Row(
+                children: <Widget>[
+                  AppButton(
+                    type: AppButtonType.Primary,
+                    text: "Import",
+                    buttonTop: true,
+                    onPressed: () {
+                      validateAndSubmit();
+                    },
+                  ),
+                ],
+              ),
+              // "Go Back" button
+              Row(
+                children: <Widget>[
+                  AppButton(
+                    type: AppButtonType.PrimaryOutline,
+                    text: "Go Back",
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      )
     );
   }
 
