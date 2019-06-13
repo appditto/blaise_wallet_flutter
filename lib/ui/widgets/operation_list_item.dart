@@ -112,6 +112,32 @@ class _OperationListItemState extends State<OperationListItem> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 // Address
+                widget.address[0]=="@"?
+                Container(
+                  width: MediaQuery.of(context).size.width / 2 - 72,
+                  alignment: Alignment(1, 0),
+                  child: AutoSizeText.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text:"@",
+                          style: AppStyles.contactsItemAddressPrimary(context),
+                        ),
+                        TextSpan(
+                          text: widget.address.substring(1),
+                          style: AppStyles.contactsItemAddress(context),
+                        ),
+                      ]
+                    ),
+                    maxLines: 1,
+                    stepGranularity: 0.1,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontFamily: 'SourceCodePro',
+                      fontSize: 16,
+                    ),
+                  ),
+                ):
                 Container(
                   width: MediaQuery.of(context).size.width / 2 - 72,
                   alignment: Alignment(1, 0),

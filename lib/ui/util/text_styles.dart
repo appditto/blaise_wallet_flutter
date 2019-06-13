@@ -209,6 +209,13 @@ class AppStyles {
         fontSize: 16.0,
         fontWeight: FontWeight.w400);
   }
+  static TextStyle contactsItemAddressPrimary(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'SourceCodePro',
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 16.0,
+        fontWeight: FontWeight.w400);
+  }
   static TextStyle monoTextDarkSmall400(BuildContext context) {
     return TextStyle(
         fontFamily: 'SourceCodePro',
