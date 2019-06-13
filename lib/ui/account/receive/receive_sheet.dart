@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/account/receive/request_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:qr/qr.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -221,12 +223,18 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                   ),
                 ],
               ),
-              // "Request Amount" button
+              // "Request" button
               Row(
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.PrimaryOutline,
-                    text: "Request Amount",
+                    text: "Request",
+                    onPressed: () {
+                        Navigator.pop(context);
+                        AppSheets.showBottomSheet(
+                            context: context,
+                            widget: RequestSheet(address: widget.address));
+                      },
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/ch
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/create_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/account/receive_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
