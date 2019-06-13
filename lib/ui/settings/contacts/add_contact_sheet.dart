@@ -4,6 +4,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
@@ -111,6 +112,13 @@ class _AddContactSheetState extends State<AddContactSheet> {
                       type: AppButtonType.Primary,
                       text: "Add Contact",
                       buttonTop: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        UIUtil.showSnackbar(
+                          "@yekta added to contacts",
+                          context,
+                        );
+                      },
                     ),
                   ],
                 ),

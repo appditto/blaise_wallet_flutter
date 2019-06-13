@@ -32,6 +32,7 @@ abstract class BaseTheme {
   Color shadow10;
 
   Color textDark;
+  Color textDark60;
   Color textDark50;
   Color textDark40;
   Color textDark30;
@@ -117,6 +118,7 @@ class BlaiseLightTheme extends BaseTheme {
   Color backgroundSecondary = white;
 
   Color textDark = grayDark;
+  Color textDark60 = grayDark.withOpacity(0.6);
   Color textDark50 = grayDark.withOpacity(0.5);
   Color textDark40 = grayDark.withOpacity(0.4);
   Color textDark30 = grayDark.withOpacity(0.3);
@@ -274,6 +276,7 @@ class BlaiseDarkTheme extends BaseTheme {
   Color backgroundSecondary = grayDark;
 
   Color textDark = grayLight;
+  Color textDark60 = grayLight.withOpacity(0.6);
   Color textDark50 = grayLight.withOpacity(0.5);
   Color textDark40 = grayLight.withOpacity(0.4);
   Color textDark30 = grayLight.withOpacity(0.3);

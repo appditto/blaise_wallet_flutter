@@ -135,6 +135,14 @@ class AppStyles {
   }
 
   // Modal header
+  static TextStyle snackBar(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w700);
+  }
+
+  // Modal header
   static TextStyle modalHeader(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textLight,
