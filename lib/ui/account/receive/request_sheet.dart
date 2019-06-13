@@ -74,7 +74,7 @@ class _RequestSheetState extends State<RequestSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            "Request",
+                            "REQUEST",
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
