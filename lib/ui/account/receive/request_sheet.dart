@@ -218,7 +218,6 @@ class _RequestSheetState extends State<RequestSheet> {
                         text: "Close",
                         onPressed: () {
                           Navigator.pop(context);
-                          Navigator.pop(context);
                         },
                       ),
                     ],
