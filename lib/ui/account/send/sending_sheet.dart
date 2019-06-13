@@ -36,7 +36,7 @@ class _SendingSheetState extends State<SendingSheet> {
                   height: MediaQuery.of(context).size.width,
                   child: Center(
                     child: FlareActor(
-                      "assets/animation_send.flr",
+                      StateContainer.of(context).curTheme.animationSend,
                       animation: "main",
                       fit: BoxFit.contain,
                     ),

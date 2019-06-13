@@ -56,7 +56,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 MediaQuery.of(context).size.width * 262 / 400,
                             child: Center(
                               child: FlareActor(
-                                "assets/animation_welcome.flr",
+                                StateContainer.of(context).curTheme.animationWelcome,
                                 animation: "main",
                                 fit: BoxFit.contain,
                               ),

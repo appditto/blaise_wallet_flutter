@@ -36,7 +36,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                   height: MediaQuery.of(context).size.width,
                   child: Center(
                     child: FlareActor(
-                      "assets/animation_transfer.flr",
+                      StateContainer.of(context).curTheme.animationTransfer,
                       animation: "main",
                       fit: BoxFit.contain,
                     ),

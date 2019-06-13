@@ -35,7 +35,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                   height: MediaQuery.of(context).size.width,
                   child: Center(
                     child: FlareActor(
-                      "assets/animation_name_change.flr",
+                      StateContainer.of(context).curTheme.animationNameChange,
                       animation: "main",
                       fit: BoxFit.contain,
                     ),

@@ -78,6 +78,12 @@ abstract class BaseTheme {
   String illustrationTwoOptions;
   String illustrationBorrowed;
 
+  String animationWelcome;
+  String animationSend;
+  String animationNameChange;
+  String animationSale;
+  String animationTransfer;
+
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
 }
@@ -233,6 +239,12 @@ class BlaiseLightTheme extends BaseTheme {
   String illustrationTwoOptions = 'assets/illustration_two_options.svg';
   String illustrationBorrowed = 'assets/illustration_borrowed.svg';
 
+  String animationWelcome = 'assets/animation_welcome.flr';
+  String animationSend = 'assets/animation_send.flr';
+  String animationNameChange = 'assets/animation_name_change.flr';
+  String animationSale = 'assets/animation_sale.flr';
+  String animationTransfer = 'assets/animation_transfer.flr';
+
   Brightness brightness = Brightness.dark;
   SystemUiOverlayStyle statusBar =
       SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent);
@@ -310,31 +322,25 @@ class BlaiseDarkTheme extends BaseTheme {
   );
 
   BoxShadow shadowPrimaryOne = BoxShadow(
-      color: teal.withOpacity(0.4),
+      color: teal.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowPrimaryTwo = BoxShadow(
-      color: teal.withOpacity(0.2),
+      color: teal.withOpacity(0.125),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   
   BoxShadow shadowSuccessOne = BoxShadow(
-      color: orange.withOpacity(0.4),
+      color: orange.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowSuccessTwo = BoxShadow(
-      color: orange.withOpacity(0.2),
-      offset: Offset(0, 8),
-      blurRadius: 16,
-      spreadRadius: -4.0);
-
-  BoxShadow shadowSuccess = BoxShadow(
-      color: orange.withOpacity(0.2),
+      color: orange.withOpacity(0.125),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -376,12 +382,12 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -5.0);
 
   BoxShadow shadowDangerOne = BoxShadow(
-      color: red.withOpacity(0.4),
+      color: red.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   BoxShadow shadowDangerTwo = BoxShadow(
-      color: red.withOpacity(0.2),
+      color: red.withOpacity(0.125),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -390,6 +396,13 @@ class BlaiseDarkTheme extends BaseTheme {
   String illustrationBackup = 'assets/illustration_backup_dark.svg';
   String illustrationTwoOptions = 'assets/illustration_two_options_dark.svg';
   String illustrationBorrowed = 'assets/illustration_borrowed_dark.svg';
+
+  String animationWelcome = 'assets/animation_welcome_dark.flr';
+  String animationSend = 'assets/animation_send_dark.flr';
+  String animationNameChange = 'assets/animation_name_change_dark.flr';
+  String animationSale = 'assets/animation_sale_dark.flr';
+  String animationTransfer = 'assets/animation_transfer_dark.flr';
+
 
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =

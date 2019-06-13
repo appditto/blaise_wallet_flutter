@@ -35,7 +35,7 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                   height: MediaQuery.of(context).size.width,
                   child: Center(
                     child: FlareActor(
-                      "assets/animation_sale.flr",
+                      StateContainer.of(context).curTheme.animationSale,
                       animation: "main",
                       fit: BoxFit.contain,
                     ),
