@@ -103,7 +103,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                                   child: AppTextField(
                                     label: 'Confirmation Code',
                                     style: AppStyles.paragraphMedium(context),
-                                    inputType: TextInputType.phone,
+                                    inputType: TextInputType.number,
                                     maxLines: 1,
                                   ),
                                 ),

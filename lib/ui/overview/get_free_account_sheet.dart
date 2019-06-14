@@ -150,7 +150,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                // "Contact Name" header
+                                // "Country Code" header
                                 Container(
                                   width: MediaQuery.of(context).size.width - 60,
                                   margin: EdgeInsetsDirectional.fromSTEB(
@@ -197,7 +197,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                     padding: EdgeInsets.all(0),
                                     child: Column(
                                       children: <Widget>[
-                                        // Container for the contact name
+                                        // Container for country code
                                         Container(
                                           width: MediaQuery.of(context)
                                                   .size
@@ -210,7 +210,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                             TextSpan(children: [
                                               TextSpan(
                                                 text: _selectedCountry?.displayName,
-                                                style: AppStyles.settingsHeader(
+                                                style: AppStyles.paragraphMedium(
                                                     context),
                                               ),
                                             ]),
