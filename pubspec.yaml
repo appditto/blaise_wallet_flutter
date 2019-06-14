@@ -136,6 +136,7 @@ flutter:
     - assets/illustration_borrowed_dark.svg
     - assets/illustration_security.svg
     - assets/illustration_security_dark.svg
+    - assets/country_phone_map.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
