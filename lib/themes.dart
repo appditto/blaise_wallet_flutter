@@ -77,6 +77,7 @@ abstract class BaseTheme {
   String illustrationBackup;
   String illustrationTwoOptions;
   String illustrationBorrowed;
+  String illustrationSecurity;
 
   String animationWelcome;
   String animationSend;
@@ -238,6 +239,7 @@ class BlaiseLightTheme extends BaseTheme {
   String illustrationBackup = 'assets/illustration_backup.svg';
   String illustrationTwoOptions = 'assets/illustration_two_options.svg';
   String illustrationBorrowed = 'assets/illustration_borrowed.svg';
+  String illustrationSecurity = 'assets/illustration_security.svg';
 
   String animationWelcome = 'assets/animation_welcome.flr';
   String animationSend = 'assets/animation_send.flr';
@@ -396,6 +398,7 @@ class BlaiseDarkTheme extends BaseTheme {
   String illustrationBackup = 'assets/illustration_backup_dark.svg';
   String illustrationTwoOptions = 'assets/illustration_two_options_dark.svg';
   String illustrationBorrowed = 'assets/illustration_borrowed_dark.svg';
+  String illustrationSecurity = 'assets/illustration_security_dark.svg';
 
   String animationWelcome = 'assets/animation_welcome_dark.flr';
   String animationSend = 'assets/animation_send_dark.flr';
