@@ -23,7 +23,7 @@ class DialogOverlay extends StatefulWidget {
       this.body,
       this.confirmButtonText,
       this.onConfirm,
-      this.payload = true,
+      this.payload = false,
       this.warningStyle = false});
 
   @override
