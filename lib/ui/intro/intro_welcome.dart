@@ -56,7 +56,9 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 MediaQuery.of(context).size.width * 262 / 400,
                             child: Center(
                               child: FlareActor(
-                                StateContainer.of(context).curTheme.animationWelcome,
+                                StateContainer.of(context)
+                                    .curTheme
+                                    .animationWelcome,
                                 animation: "main",
                                 fit: BoxFit.contain,
                               ),
@@ -89,9 +91,8 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       text: "New Private Key",
                       buttonTop: true,
                       onPressed: () {
-                        sl.get<Vault>().setPrivateKey(sl.get<PascalUtil>().generateKeyPair().privateKey).then((key) {
-                          Navigator.of(context).pushNamed('/intro_new_private_key');
-                        });
+                        Navigator.of(context)
+                            .pushNamed('/intro_security_first');
                       },
                     ),
                   ],
@@ -103,7 +104,8 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Import Private Key",
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/intro_import_private_key');
+                        Navigator.of(context)
+                            .pushNamed('/intro_import_private_key');
                       },
                     ),
                   ],

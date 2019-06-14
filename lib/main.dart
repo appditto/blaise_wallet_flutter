@@ -2,6 +2,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/account.dart';
+import 'package:blaise_wallet_flutter/ui/intro/intro_security_first.dart';
 import 'package:blaise_wallet_flutter/ui/overview/overview.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_decrypt_and_import_private_key.dart';
@@ -24,7 +25,8 @@ void main() async {
   // Register services
   setupServiceLocator();
   // Run app
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
     runApp(StateContainer(child: App()));
   });
 }
@@ -33,7 +35,6 @@ class App extends StatefulWidget {
   @override
   _AppState createState() => _AppState();
 }
-
 
 class _AppState extends State<App> {
   @override
@@ -44,7 +45,8 @@ class _AppState extends State<App> {
   // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(StateContainer.of(context).curTheme.statusBar);
+    SystemChrome.setSystemUIOverlayStyle(
+        StateContainer.of(context).curTheme.statusBar);
     return OKToast(
       textStyle: AppStyles.snackbar(context),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
@@ -52,10 +54,12 @@ class _AppState extends State<App> {
         debugShowCheckedModeBanner: false,
         title: 'Blaise',
         theme: ThemeData(
-          dialogBackgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+          dialogBackgroundColor:
+              StateContainer.of(context).curTheme.backgroundPrimary,
           primaryColor: StateContainer.of(context).curTheme.primary,
           accentColor: StateContainer.of(context).curTheme.primary,
-          backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+          backgroundColor:
+              StateContainer.of(context).curTheme.backgroundPrimary,
           fontFamily: 'Metropolis',
           brightness: StateContainer.of(context).curTheme.brightness,
           splashColor: StateContainer.of(context).curTheme.primary30,
@@ -79,6 +83,11 @@ class _AppState extends State<App> {
                 builder: (context) => IntroWelcomePage(),
                 settings: settings,
               );
+            case '/intro_security_first':
+              return MaterialPageRoute(
+                builder: (context) => IntroSecurityFirstPage(),
+                settings: settings,
+              );
             case '/intro_new_private_key':
               return MaterialPageRoute(
                 builder: (context) => IntroNewPrivateKeyPage(),
@@ -96,7 +105,8 @@ class _AppState extends State<App> {
               );
             case '/intro_decrypt_and_import_private_key':
               return MaterialPageRoute(
-                builder: (context) => IntroDecryptAndImportPrivateKeyPage(encryptedKey: settings.arguments),
+                builder: (context) => IntroDecryptAndImportPrivateKeyPage(
+                    encryptedKey: settings.arguments),
                 settings: settings,
               );
             case '/overview_new':
@@ -105,7 +115,9 @@ class _AppState extends State<App> {
                 settings: settings,
               );
             case '/overview':
-              if (settings.arguments != null && settings.arguments is TransitionOption && settings.arguments == TransitionOption.NONE) {
+              if (settings.arguments != null &&
+                  settings.arguments is TransitionOption &&
+                  settings.arguments == TransitionOption.NONE) {
                 return NoTransitionRoute(
                   builder: (context) => OverviewPage(newWallet: false),
                   settings: settings,
@@ -122,7 +134,9 @@ class _AppState extends State<App> {
               );
             case '/account_borrowed':
               return MaterialPageRoute(
-                builder: (context) => AccountPage(isBorrowed: true,),
+                builder: (context) => AccountPage(
+                      isBorrowed: true,
+                    ),
                 settings: settings,
               );
             case '/security':
@@ -160,22 +174,24 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         await sl.get<SharedPrefsUtil>().deleteAll(firstLaunch: true);
         await sl.get<Vault>().deleteAll();
         await sl.get<SharedPrefsUtil>().setFirstLaunch();
-      } else if ((await sl.get<Vault>().getPrivateKey() != null) && (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
-        Navigator.of(context).pushReplacementNamed('/overview', arguments: TransitionOption.NONE);
+      } else if ((await sl.get<Vault>().getPrivateKey() != null) &&
+          (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
+        Navigator.of(context).pushReplacementNamed('/overview',
+            arguments: TransitionOption.NONE);
       } else {
         Navigator.of(context).pushReplacementNamed('/intro_welcome');
       }
     }
   }
 
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _hasCheckedLoggedIn = false;
-    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
-          SchedulerBinding.instance.addPostFrameCallback((_) => checkLoggedIn());
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) => checkLoggedIn());
     }
   }
 
@@ -211,7 +227,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
       setState(() {
         StateContainer.of(context).updateLanguage(setting);
       });
-    });*/    
+    });*/
   }
 
   @override
