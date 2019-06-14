@@ -1,24 +1,76 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/overview/confirm_free_account_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+
+class CountryCode {
+  String isoCode;
+  String displayName;
+
+  CountryCode({@required this.isoCode, @required this.displayName});
+
+  static List<CountryCode> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((e) => CountryCode.fromJson(e)).toList();
+  }
+
+  factory CountryCode.fromJson(Map<String, dynamic> json) {
+    return CountryCode(
+      isoCode: json['iso'],
+      displayName: json['text']
+    );
+  }
+}
 
 class GetFreeAccountSheet extends StatefulWidget {
   _GetFreeAccountSheetState createState() => _GetFreeAccountSheetState();
 }
 
 class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
+  List<CountryCode> _countryCodes;
+  CountryCode _selectedCountry;
+
+  Future<List<CountryCode>> readCountryCodeFromAssets() async {
+    return CountryCode.fromJsonList(
+      json.decode(await DefaultAssetBundle.of(context).loadString("assets/country_phone_map.json"))
+    );
+  }
+
+  CountryCode getDefaultCountryCode(List<CountryCode> list) {
+    String locale = Localizations.localeOf(context).countryCode.toUpperCase();
+    return list.firstWhere((cc) => cc.isoCode == locale, orElse: () => list.firstWhere((cc) => cc.isoCode == 'US'));
+  }
+
+  List<Widget> _getCountryCodeForPicker() {
+    List<Widget> ret = [];
+    _countryCodes.forEach((value) {
+      ret.add(Center(child: Text(
+        value?.displayName,
+        style: AppStyles.paragraphMedium(context),
+        )));
+    });
+    return ret;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readCountryCodeFromAssets().then((values) {
+      setState(() {
+        _countryCodes = values;
+        _selectedCountry = getDefaultCountryCode(values);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return TapOutsideUnfocus(
@@ -116,6 +168,9 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                       start: 30, end: 30),
                                   child: FlatButton(
                                     onPressed: () {
+                                      if (_countryCodes == null) {
+                                        return;
+                                      }
                                       showCupertinoModalPopup(
                                         context: context,
                                         builder: (context) {
@@ -126,47 +181,13 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                                 backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
                                                 useMagnifier: true,
                                                 magnification: 1.5,
-                                                onSelectedItemChanged: (int) {
-                                                  return null;
+                                                onSelectedItemChanged: (index) {
+                                                  setState(() {
+                                                    _selectedCountry = _countryCodes[index];
+                                                  });
                                                 },
                                                 itemExtent: 30,
-                                                children: <Widget>[
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                  Center(child: Text(
-                                                    "data",
-                                                    style: AppStyles.paragraphMedium(
-                                                        context),
-                                                  ),),
-                                                ],
+                                                children: _getCountryCodeForPicker()
                                               ),
                                             ),
                                           );
@@ -188,7 +209,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                           child: AutoSizeText.rich(
                                             TextSpan(children: [
                                               TextSpan(
-                                                text: '',
+                                                text: _selectedCountry?.displayName,
                                                 style: AppStyles.settingsHeader(
                                                     context),
                                               ),
@@ -211,7 +232,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  )
                                 ),
                                 // Container for phone number field
                                 Container(

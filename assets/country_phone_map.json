@@ -1,0 +1,982 @@
+[
+    {
+       "iso": "AF",
+       "text": "Afghanistan (+93)"
+    },
+    {
+       "iso": "AL",
+       "text": "Albania (+355)"
+    },
+    {
+       "iso": "DZ",
+       "text": "Algeria (+213)"
+    },
+    {
+       "iso": "AS",
+       "text": "American Samoa (+1)"
+    },
+    {
+       "iso": "AD",
+       "text": "Andorra (+376)"
+    },
+    {
+       "iso": "AO",
+       "text": "Angola (+244)"
+    },
+    {
+       "iso": "AI",
+       "text": "Anguilla (+1)"
+    },
+    {
+       "iso": "AG",
+       "text": "Antigua & Barbuda (+1)"
+    },
+    {
+       "iso": "AR",
+       "text": "Argentina (+54)"
+    },
+    {
+       "iso": "AM",
+       "text": "Armenia (+374)"
+    },
+    {
+       "iso": "AW",
+       "text": "Aruba (+297)"
+    },
+    {
+       "iso": "AC",
+       "text": "Ascension Island (+247)"
+    },
+    {
+       "iso": "AU",
+       "text": "Australia (+61)"
+    },
+    {
+       "iso": "AT",
+       "text": "Austria (+43)"
+    },
+    {
+       "iso": "AZ",
+       "text": "Azerbaijan (+994)"
+    },
+    {
+       "iso": "BS",
+       "text": "Bahamas (+1)"
+    },
+    {
+       "iso": "BH",
+       "text": "Bahrain (+973)"
+    },
+    {
+       "iso": "BD",
+       "text": "Bangladesh (+880)"
+    },
+    {
+       "iso": "BB",
+       "text": "Barbados (+1)"
+    },
+    {
+       "iso": "BY",
+       "text": "Belarus (+375)"
+    },
+    {
+       "iso": "BE",
+       "text": "Belgium (+32)"
+    },
+    {
+       "iso": "BZ",
+       "text": "Belize (+501)"
+    },
+    {
+       "iso": "BJ",
+       "text": "Benin (+229)"
+    },
+    {
+       "iso": "BM",
+       "text": "Bermuda (+1)"
+    },
+    {
+       "iso": "BT",
+       "text": "Bhutan (+975)"
+    },
+    {
+       "iso": "BO",
+       "text": "Bolivia (+591)"
+    },
+    {
+       "iso": "BA",
+       "text": "Bosnia & Herzegovina (+387)"
+    },
+    {
+       "iso": "BW",
+       "text": "Botswana (+267)"
+    },
+    {
+       "iso": "BR",
+       "text": "Brazil (+55)"
+    },
+    {
+       "iso": "IO",
+       "text": "British Indian Ocean Territory (+246)"
+    },
+    {
+       "iso": "VG",
+       "text": "British Virgin Islands (+1)"
+    },
+    {
+       "iso": "BN",
+       "text": "Brunei (+673)"
+    },
+    {
+       "iso": "BG",
+       "text": "Bulgaria (+359)"
+    },
+    {
+       "iso": "BF",
+       "text": "Burkina Faso (+226)"
+    },
+    {
+       "iso": "BI",
+       "text": "Burundi (+257)"
+    },
+    {
+       "iso": "KH",
+       "text": "Cambodia (+855)"
+    },
+    {
+       "iso": "CM",
+       "text": "Cameroon (+237)"
+    },
+    {
+       "iso": "CA",
+       "text": "Canada (+1)"
+    },
+    {
+       "iso": "CV",
+       "text": "Cape Verde (+238)"
+    },
+    {
+       "iso": "BQ",
+       "text": "Caribbean Netherlands (+599)"
+    },
+    {
+       "iso": "KY",
+       "text": "Cayman Islands (+1)"
+    },
+    {
+       "iso": "CF",
+       "text": "Central African Republic (+236)"
+    },
+    {
+       "iso": "TD",
+       "text": "Chad (+235)"
+    },
+    {
+       "iso": "CL",
+       "text": "Chile (+56)"
+    },
+    {
+       "iso": "CN",
+       "text": "China (+86)"
+    },
+    {
+       "iso": "CX",
+       "text": "Christmas Island (+61)"
+    },
+    {
+       "iso": "CC",
+       "text": "Cocos (Keeling) Islands (+61)"
+    },
+    {
+       "iso": "CO",
+       "text": "Colombia (+57)"
+    },
+    {
+       "iso": "KM",
+       "text": "Comoros (+269)"
+    },
+    {
+       "iso": "CG",
+       "text": "Congo - Brazzaville (+242)"
+    },
+    {
+       "iso": "CD",
+       "text": "Congo - Kinshasa (+243)"
+    },
+    {
+       "iso": "CK",
+       "text": "Cook Islands (+682)"
+    },
+    {
+       "iso": "CR",
+       "text": "Costa Rica (+506)"
+    },
+    {
+       "iso": "HR",
+       "text": "Croatia (+385)"
+    },
+    {
+       "iso": "CU",
+       "text": "Cuba (+53)"
+    },
+    {
+       "iso": "CW",
+       "text": "Curaçao (+599)"
+    },
+    {
+       "iso": "CY",
+       "text": "Cyprus (+357)"
+    },
+    {
+       "iso": "CZ",
+       "text": "Czechia (+420)"
+    },
+    {
+       "iso": "CI",
+       "text": "Côte d’Ivoire (+225)"
+    },
+    {
+       "iso": "DK",
+       "text": "Denmark (+45)"
+    },
+    {
+       "iso": "DJ",
+       "text": "Djibouti (+253)"
+    },
+    {
+       "iso": "DM",
+       "text": "Dominica (+1)"
+    },
+    {
+       "iso": "DO",
+       "text": "Dominican Republic (+1)"
+    },
+    {
+       "iso": "EC",
+       "text": "Ecuador (+593)"
+    },
+    {
+       "iso": "EG",
+       "text": "Egypt (+20)"
+    },
+    {
+       "iso": "SV",
+       "text": "El Salvador (+503)"
+    },
+    {
+       "iso": "GQ",
+       "text": "Equatorial Guinea (+240)"
+    },
+    {
+       "iso": "ER",
+       "text": "Eritrea (+291)"
+    },
+    {
+       "iso": "EE",
+       "text": "Estonia (+372)"
+    },
+    {
+       "iso": "ET",
+       "text": "Ethiopia (+251)"
+    },
+    {
+       "iso": "FK",
+       "text": "Falkland Islands (+500)"
+    },
+    {
+       "iso": "FO",
+       "text": "Faroe Islands (+298)"
+    },
+    {
+       "iso": "FJ",
+       "text": "Fiji (+679)"
+    },
+    {
+       "iso": "FI",
+       "text": "Finland (+358)"
+    },
+    {
+       "iso": "FR",
+       "text": "France (+33)"
+    },
+    {
+       "iso": "GF",
+       "text": "French Guiana (+594)"
+    },
+    {
+       "iso": "PF",
+       "text": "French Polynesia (+689)"
+    },
+    {
+       "iso": "GA",
+       "text": "Gabon (+241)"
+    },
+    {
+       "iso": "GM",
+       "text": "Gambia (+220)"
+    },
+    {
+       "iso": "GE",
+       "text": "Georgia (+995)"
+    },
+    {
+       "iso": "DE",
+       "text": "Germany (+49)"
+    },
+    {
+       "iso": "GH",
+       "text": "Ghana (+233)"
+    },
+    {
+       "iso": "GI",
+       "text": "Gibraltar (+350)"
+    },
+    {
+       "iso": "GR",
+       "text": "Greece (+30)"
+    },
+    {
+       "iso": "GL",
+       "text": "Greenland (+299)"
+    },
+    {
+       "iso": "GD",
+       "text": "Grenada (+1)"
+    },
+    {
+       "iso": "GP",
+       "text": "Guadeloupe (+590)"
+    },
+    {
+       "iso": "GU",
+       "text": "Guam (+1)"
+    },
+    {
+       "iso": "GT",
+       "text": "Guatemala (+502)"
+    },
+    {
+       "iso": "GG",
+       "text": "Guernsey (+44)"
+    },
+    {
+       "iso": "GN",
+       "text": "Guinea (+224)"
+    },
+    {
+       "iso": "GW",
+       "text": "Guinea-Bissau (+245)"
+    },
+    {
+       "iso": "GY",
+       "text": "Guyana (+592)"
+    },
+    {
+       "iso": "HT",
+       "text": "Haiti (+509)"
+    },
+    {
+       "iso": "HN",
+       "text": "Honduras (+504)"
+    },
+    {
+       "iso": "HK",
+       "text": "Hong Kong SAR China (+852)"
+    },
+    {
+       "iso": "HU",
+       "text": "Hungary (+36)"
+    },
+    {
+       "iso": "IS",
+       "text": "Iceland (+354)"
+    },
+    {
+       "iso": "IN",
+       "text": "India (+91)"
+    },
+    {
+       "iso": "ID",
+       "text": "Indonesia (+62)"
+    },
+    {
+       "iso": "IR",
+       "text": "Iran (+98)"
+    },
+    {
+       "iso": "IQ",
+       "text": "Iraq (+964)"
+    },
+    {
+       "iso": "IE",
+       "text": "Ireland (+353)"
+    },
+    {
+       "iso": "IM",
+       "text": "Isle of Man (+44)"
+    },
+    {
+       "iso": "IL",
+       "text": "Israel (+972)"
+    },
+    {
+       "iso": "IT",
+       "text": "Italy (+39)"
+    },
+    {
+       "iso": "JM",
+       "text": "Jamaica (+1)"
+    },
+    {
+       "iso": "JP",
+       "text": "Japan (+81)"
+    },
+    {
+       "iso": "JE",
+       "text": "Jersey (+44)"
+    },
+    {
+       "iso": "JO",
+       "text": "Jordan (+962)"
+    },
+    {
+       "iso": "KZ",
+       "text": "Kazakhstan (+7)"
+    },
+    {
+       "iso": "KE",
+       "text": "Kenya (+254)"
+    },
+    {
+       "iso": "KI",
+       "text": "Kiribati (+686)"
+    },
+    {
+       "iso": "XK",
+       "text": "Kosovo (+383)"
+    },
+    {
+       "iso": "KW",
+       "text": "Kuwait (+965)"
+    },
+    {
+       "iso": "KG",
+       "text": "Kyrgyzstan (+996)"
+    },
+    {
+       "iso": "LA",
+       "text": "Laos (+856)"
+    },
+    {
+       "iso": "LV",
+       "text": "Latvia (+371)"
+    },
+    {
+       "iso": "LB",
+       "text": "Lebanon (+961)"
+    },
+    {
+       "iso": "LS",
+       "text": "Lesotho (+266)"
+    },
+    {
+       "iso": "LR",
+       "text": "Liberia (+231)"
+    },
+    {
+       "iso": "LY",
+       "text": "Libya (+218)"
+    },
+    {
+       "iso": "LI",
+       "text": "Liechtenstein (+423)"
+    },
+    {
+       "iso": "LT",
+       "text": "Lithuania (+370)"
+    },
+    {
+       "iso": "LU",
+       "text": "Luxembourg (+352)"
+    },
+    {
+       "iso": "MO",
+       "text": "Macau SAR China (+853)"
+    },
+    {
+       "iso": "MK",
+       "text": "Macedonia (+389)"
+    },
+    {
+       "iso": "MG",
+       "text": "Madagascar (+261)"
+    },
+    {
+       "iso": "MW",
+       "text": "Malawi (+265)"
+    },
+    {
+       "iso": "MY",
+       "text": "Malaysia (+60)"
+    },
+    {
+       "iso": "MV",
+       "text": "Maldives (+960)"
+    },
+    {
+       "iso": "ML",
+       "text": "Mali (+223)"
+    },
+    {
+       "iso": "MT",
+       "text": "Malta (+356)"
+    },
+    {
+       "iso": "MH",
+       "text": "Marshall Islands (+692)"
+    },
+    {
+       "iso": "MQ",
+       "text": "Martinique (+596)"
+    },
+    {
+       "iso": "MR",
+       "text": "Mauritania (+222)"
+    },
+    {
+       "iso": "MU",
+       "text": "Mauritius (+230)"
+    },
+    {
+       "iso": "YT",
+       "text": "Mayotte (+262)"
+    },
+    {
+       "iso": "MX",
+       "text": "Mexico (+52)"
+    },
+    {
+       "iso": "FM",
+       "text": "Micronesia (+691)"
+    },
+    {
+       "iso": "MD",
+       "text": "Moldova (+373)"
+    },
+    {
+       "iso": "MC",
+       "text": "Monaco (+377)"
+    },
+    {
+       "iso": "MN",
+       "text": "Mongolia (+976)"
+    },
+    {
+       "iso": "ME",
+       "text": "Montenegro (+382)"
+    },
+    {
+       "iso": "MS",
+       "text": "Montserrat (+1)"
+    },
+    {
+       "iso": "MA",
+       "text": "Morocco (+212)"
+    },
+    {
+       "iso": "MZ",
+       "text": "Mozambique (+258)"
+    },
+    {
+       "iso": "MM",
+       "text": "Myanmar (Burma) (+95)"
+    },
+    {
+       "iso": "NA",
+       "text": "Namibia (+264)"
+    },
+    {
+       "iso": "NR",
+       "text": "Nauru (+674)"
+    },
+    {
+       "iso": "NP",
+       "text": "Nepal (+977)"
+    },
+    {
+       "iso": "NL",
+       "text": "Netherlands (+31)"
+    },
+    {
+       "iso": "NC",
+       "text": "New Caledonia (+687)"
+    },
+    {
+       "iso": "NZ",
+       "text": "New Zealand (+64)"
+    },
+    {
+       "iso": "NI",
+       "text": "Nicaragua (+505)"
+    },
+    {
+       "iso": "NE",
+       "text": "Niger (+227)"
+    },
+    {
+       "iso": "NG",
+       "text": "Nigeria (+234)"
+    },
+    {
+       "iso": "NU",
+       "text": "Niue (+683)"
+    },
+    {
+       "iso": "NF",
+       "text": "Norfolk Island (+672)"
+    },
+    {
+       "iso": "KP",
+       "text": "North Korea (+850)"
+    },
+    {
+       "iso": "MP",
+       "text": "Northern Mariana Islands (+1)"
+    },
+    {
+       "iso": "NO",
+       "text": "Norway (+47)"
+    },
+    {
+       "iso": "OM",
+       "text": "Oman (+968)"
+    },
+    {
+       "iso": "PK",
+       "text": "Pakistan (+92)"
+    },
+    {
+       "iso": "PW",
+       "text": "Palau (+680)"
+    },
+    {
+       "iso": "PS",
+       "text": "Palestinian Territories (+970)"
+    },
+    {
+       "iso": "PA",
+       "text": "Panama (+507)"
+    },
+    {
+       "iso": "PG",
+       "text": "Papua New Guinea (+675)"
+    },
+    {
+       "iso": "PY",
+       "text": "Paraguay (+595)"
+    },
+    {
+       "iso": "PE",
+       "text": "Peru (+51)"
+    },
+    {
+       "iso": "PH",
+       "text": "Philippines (+63)"
+    },
+    {
+       "iso": "PL",
+       "text": "Poland (+48)"
+    },
+    {
+       "iso": "PT",
+       "text": "Portugal (+351)"
+    },
+    {
+       "iso": "PR",
+       "text": "Puerto Rico (+1)"
+    },
+    {
+       "iso": "QA",
+       "text": "Qatar (+974)"
+    },
+    {
+       "iso": "RO",
+       "text": "Romania (+40)"
+    },
+    {
+       "iso": "RU",
+       "text": "Russia (+7)"
+    },
+    {
+       "iso": "RW",
+       "text": "Rwanda (+250)"
+    },
+    {
+       "iso": "RE",
+       "text": "Réunion (+262)"
+    },
+    {
+       "iso": "WS",
+       "text": "Samoa (+685)"
+    },
+    {
+       "iso": "SM",
+       "text": "San Marino (+378)"
+    },
+    {
+       "iso": "SA",
+       "text": "Saudi Arabia (+966)"
+    },
+    {
+       "iso": "SN",
+       "text": "Senegal (+221)"
+    },
+    {
+       "iso": "RS",
+       "text": "Serbia (+381)"
+    },
+    {
+       "iso": "SC",
+       "text": "Seychelles (+248)"
+    },
+    {
+       "iso": "SL",
+       "text": "Sierra Leone (+232)"
+    },
+    {
+       "iso": "SG",
+       "text": "Singapore (+65)"
+    },
+    {
+       "iso": "SX",
+       "text": "Sint Maarten (+1)"
+    },
+    {
+       "iso": "SK",
+       "text": "Slovakia (+421)"
+    },
+    {
+       "iso": "SI",
+       "text": "Slovenia (+386)"
+    },
+    {
+       "iso": "SB",
+       "text": "Solomon Islands (+677)"
+    },
+    {
+       "iso": "SO",
+       "text": "Somalia (+252)"
+    },
+    {
+       "iso": "ZA",
+       "text": "South Africa (+27)"
+    },
+    {
+       "iso": "KR",
+       "text": "South Korea (+82)"
+    },
+    {
+       "iso": "SS",
+       "text": "South Sudan (+211)"
+    },
+    {
+       "iso": "ES",
+       "text": "Spain (+34)"
+    },
+    {
+       "iso": "LK",
+       "text": "Sri Lanka (+94)"
+    },
+    {
+       "iso": "BL",
+       "text": "St. Barthélemy (+590)"
+    },
+    {
+       "iso": "SH",
+       "text": "St. Helena (+290)"
+    },
+    {
+       "iso": "KN",
+       "text": "St. Kitts & Nevis (+1)"
+    },
+    {
+       "iso": "LC",
+       "text": "St. Lucia (+1)"
+    },
+    {
+       "iso": "MF",
+       "text": "St. Martin (+590)"
+    },
+    {
+       "iso": "PM",
+       "text": "St. Pierre & Miquelon (+508)"
+    },
+    {
+       "iso": "VC",
+       "text": "St. Vincent & Grenadines (+1)"
+    },
+    {
+       "iso": "SD",
+       "text": "Sudan (+249)"
+    },
+    {
+       "iso": "SR",
+       "text": "Suriname (+597)"
+    },
+    {
+       "iso": "SJ",
+       "text": "Svalbard & Jan Mayen (+47)"
+    },
+    {
+       "iso": "SZ",
+       "text": "Swaziland (+268)"
+    },
+    {
+       "iso": "SE",
+       "text": "Sweden (+46)"
+    },
+    {
+       "iso": "CH",
+       "text": "Switzerland (+41)"
+    },
+    {
+       "iso": "SY",
+       "text": "Syria (+963)"
+    },
+    {
+       "iso": "ST",
+       "text": "São Tomé & Príncipe (+239)"
+    },
+    {
+       "iso": "TW",
+       "text": "Taiwan (+886)"
+    },
+    {
+       "iso": "TJ",
+       "text": "Tajikistan (+992)"
+    },
+    {
+       "iso": "TZ",
+       "text": "Tanzania (+255)"
+    },
+    {
+       "iso": "TH",
+       "text": "Thailand (+66)"
+    },
+    {
+       "iso": "TL",
+       "text": "Timor-Leste (+670)"
+    },
+    {
+       "iso": "TG",
+       "text": "Togo (+228)"
+    },
+    {
+       "iso": "TK",
+       "text": "Tokelau (+690)"
+    },
+    {
+       "iso": "TO",
+       "text": "Tonga (+676)"
+    },
+    {
+       "iso": "TT",
+       "text": "Trinidad & Tobago (+1)"
+    },
+    {
+       "iso": "TA",
+       "text": "Tristan da Cunha (+290)"
+    },
+    {
+       "iso": "TN",
+       "text": "Tunisia (+216)"
+    },
+    {
+       "iso": "TR",
+       "text": "Turkey (+90)"
+    },
+    {
+       "iso": "TM",
+       "text": "Turkmenistan (+993)"
+    },
+    {
+       "iso": "TC",
+       "text": "Turks & Caicos Islands (+1)"
+    },
+    {
+       "iso": "TV",
+       "text": "Tuvalu (+688)"
+    },
+    {
+       "iso": "VI",
+       "text": "U.S. Virgin Islands (+1)"
+    },
+    {
+       "iso": "UG",
+       "text": "Uganda (+256)"
+    },
+    {
+       "iso": "UA",
+       "text": "Ukraine (+380)"
+    },
+    {
+       "iso": "AE",
+       "text": "United Arab Emirates (+971)"
+    },
+    {
+       "iso": "GB",
+       "text": "United Kingdom (+44)"
+    },
+    {
+       "iso": "US",
+       "text": "United States (+1)"
+    },
+    {
+       "iso": "UY",
+       "text": "Uruguay (+598)"
+    },
+    {
+       "iso": "UZ",
+       "text": "Uzbekistan (+998)"
+    },
+    {
+       "iso": "VU",
+       "text": "Vanuatu (+678)"
+    },
+    {
+       "iso": "VA",
+       "text": "Vatican City (+39)"
+    },
+    {
+       "iso": "VE",
+       "text": "Venezuela (+58)"
+    },
+    {
+       "iso": "VN",
+       "text": "Vietnam (+84)"
+    },
+    {
+       "iso": "WF",
+       "text": "Wallis & Futuna (+681)"
+    },
+    {
+       "iso": "EH",
+       "text": "Western Sahara (+212)"
+    },
+    {
+       "iso": "YE",
+       "text": "Yemen (+967)"
+    },
+    {
+       "iso": "ZM",
+       "text": "Zambia (+260)"
+    },
+    {
+       "iso": "ZW",
+       "text": "Zimbabwe (+263)"
+    },
+    {
+       "iso": "AX",
+       "text": "Åland Islands (+358)"
+    }
+ ]
