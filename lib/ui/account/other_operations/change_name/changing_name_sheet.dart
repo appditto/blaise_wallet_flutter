@@ -182,7 +182,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Change Name?")) {
+                        if (await AuthUtil().authenticate("Authenticate to change account name to \"Appditto\"")) {
                           await showOverlay(context);
                           Navigator.pop(context);
                           Navigator.pop(context);

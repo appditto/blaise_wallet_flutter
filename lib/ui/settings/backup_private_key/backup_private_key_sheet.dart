@@ -135,7 +135,7 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       text: "Encrypted Key",
                       buttonTop: true,
                       onPressed: () {
-                        AuthUtil().authenticate("Authenticate to backup private key").then((authenticated) {
+                        AuthUtil().authenticate("Authenticate to backup private key.").then((authenticated) {
                           if (authenticated) {
                             Navigator.pop(context);
                             AppSheets.showBottomSheet(
@@ -154,7 +154,7 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Unencrypted Key",
                       onPressed: () {
-                        AuthUtil().authenticate("Authenticate to backup private key").then((authenticated) {
+                        AuthUtil().authenticate("Authenticate to backup private key.").then((authenticated) {
                           if (authenticated) {
                             Navigator.pop(context);
                             AppSheets.showBottomSheet(

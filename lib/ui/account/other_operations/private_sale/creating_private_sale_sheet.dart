@@ -309,7 +309,7 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("List for Sale?")) {
+                        if (await AuthUtil().authenticate("Authenticate to create a private sale.")) {
                           await showOverlay(context);
                           Navigator.pop(context);
                           Navigator.pop(context);

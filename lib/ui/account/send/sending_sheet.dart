@@ -234,7 +234,7 @@ class _SendingSheetState extends State<SendingSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Send 1 Pascal?")) {
+                        if (await AuthUtil().authenticate("Authenticate to send 191.9 Pascal.")) {
                           await showOverlay(context);
                           Navigator.pop(context);
                           Navigator.pop(context);

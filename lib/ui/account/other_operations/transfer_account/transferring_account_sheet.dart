@@ -184,7 +184,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Transfer Account?")) {
+                        if (await AuthUtil().authenticate("Authenticate to transfer the account.")) {
                           await showOverlay(context);
                           Navigator.pop(context);
                           Navigator.pop(context);

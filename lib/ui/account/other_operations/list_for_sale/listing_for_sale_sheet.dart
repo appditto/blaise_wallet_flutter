@@ -233,7 +233,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("List for Sale?")) {
+                        if (await AuthUtil().authenticate("Authenticate to list for sale.")) {
                           await showOverlay(context);
                           Navigator.pop(context);
                           Navigator.pop(context);
