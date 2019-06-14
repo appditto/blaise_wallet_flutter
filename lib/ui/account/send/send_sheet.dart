@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
@@ -276,7 +277,11 @@ class _SendSheetState extends State<SendSheet> {
                                               AppStyles.buttonMiniBg(context),
                                         ),
                                         onPressed: () async {
-                                          return null;
+                                          showAppDialog(
+                                              context: context,
+                                              builder: (_) => DialogOverlay(
+                                                    payload: true,
+                                                  ));
                                         },
                                       ),
                                     ),

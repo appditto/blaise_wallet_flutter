@@ -4,6 +4,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -89,18 +90,55 @@ class _AddContactSheetState extends State<AddContactSheet> {
                             )),
                         // Container for the address text field
                         Container(
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 40),
-                            child: AppTextField(
-                              label: 'Address',
-                              style: AppStyles.contactsItemAddress(context),
-                              firstButton:
-                                  TextFieldButton(icon: AppIcons.paste),
-                              secondButton:
-                                  TextFieldButton(icon: AppIcons.scan),
-                              maxLines: 1,
-                              textCapitalization: TextCapitalization.characters,
-                            )),
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                          child: AppTextField(
+                            label: 'Address',
+                            style: AppStyles.contactsItemAddress(context),
+                            firstButton: TextFieldButton(icon: AppIcons.paste),
+                            secondButton: TextFieldButton(icon: AppIcons.scan),
+                            maxLines: 1,
+                            textCapitalization: TextCapitalization.characters,
+                          ),
+                        ),
+                        // Container for the "Add Payload" button
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              height: 40.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100.0),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .backgroundPrimary,
+                                boxShadow: [
+                                  StateContainer.of(context)
+                                      .curTheme
+                                      .shadowTextDark,
+                                ],
+                              ),
+                              margin: EdgeInsetsDirectional.fromSTEB(
+                                  30, 30, 30, 40),
+                              child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100.0)),
+                                child: AutoSizeText(
+                                  "+ Add a Payload",
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  style: AppStyles.buttonMiniBg(context),
+                                ),
+                                onPressed: () async {
+                                  showAppDialog(
+                                      context: context,
+                                      builder: (_) => DialogOverlay(
+                                            payload: true,
+                                          ));
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

@@ -1,7 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -30,8 +33,8 @@ class _AccountCardState extends State<AccountCard> {
         Container(
           color: Colors.transparent,
           margin: EdgeInsetsDirectional.only(
-              start: MediaQuery.of(context).size.width * 0.05,
-              ),
+            start: MediaQuery.of(context).size.width * 0.05,
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Container(
@@ -43,10 +46,18 @@ class _AccountCardState extends State<AccountCard> {
               child: FlatButton(
                   highlightColor:
                       StateContainer.of(context).curTheme.textLight15,
-                  splashColor: StateContainer.of(context).curTheme.textLight30,           
-                  onPressed: () {
-                    return null;
-                  },
+                  splashColor: StateContainer.of(context).curTheme.textLight30,
+                  onPressed: widget.onPressed != null
+                      ? widget.onPressed
+                      : () {
+                          Navigator.pushNamed(context, '/account');
+                          AppSheets.showBottomSheet(
+                              context: context,
+                              widget: ReceiveSheet(
+                                accountName: "yekta",
+                                address: "578706-79",
+                              ));
+                        },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
                   padding: EdgeInsets.all(0.0),
@@ -60,8 +71,8 @@ class _AccountCardState extends State<AccountCard> {
         Container(
           color: Colors.transparent,
           padding: EdgeInsetsDirectional.only(
-            start: (MediaQuery.of(context).size.width * 0.05)*2/3,
-            end: (MediaQuery.of(context).size.width * 0.05)*1/3,
+            start: (MediaQuery.of(context).size.width * 0.05) * 2 / 3,
+            end: (MediaQuery.of(context).size.width * 0.05) * 1 / 3,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -70,17 +81,21 @@ class _AccountCardState extends State<AccountCard> {
               height: 48,
               width: 50,
               decoration: BoxDecoration(
-                  gradient:
-                      StateContainer.of(context).curTheme.gradientPrimary,
-                      boxShadow: [StateContainer.of(context).curTheme.shadowPrimaryOne]
-                      ),
+                  gradient: StateContainer.of(context).curTheme.gradientPrimary,
+                  boxShadow: [
+                    StateContainer.of(context).curTheme.shadowPrimaryOne
+                  ]),
               child: FlatButton(
                   highlightColor:
                       StateContainer.of(context).curTheme.textLight15,
                   splashColor: StateContainer.of(context).curTheme.textLight30,
-                  onPressed: () {
-                    return null;
-                  },
+                  onPressed: widget.onPressed != null
+                      ? widget.onPressed
+                      : () {
+                          Navigator.pushNamed(context, '/account');
+                          AppSheets.showBottomSheet(
+                              context: context, widget: SendSheet());
+                        },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
                   padding: EdgeInsets.all(0.0),

@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ class DialogOverlay extends StatefulWidget {
   final TextSpan body;
   final String confirmButtonText;
   final Function onConfirm;
+  final bool payload;
 
   DialogOverlay(
       {this.title,
@@ -20,6 +23,7 @@ class DialogOverlay extends StatefulWidget {
       this.body,
       this.confirmButtonText,
       this.onConfirm,
+      this.payload = true,
       this.warningStyle = false});
 
   @override
@@ -101,7 +105,9 @@ class _DialogOverlayState extends State<DialogOverlay>
                 margin: EdgeInsetsDirectional.only(start: 20, end: 20),
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.8,
-                  maxWidth: 280,
+                  maxWidth: widget.payload
+                      ? MediaQuery.of(context).size.width - 40
+                      : 280,
                 ),
                 decoration: BoxDecoration(
                   color: StateContainer.of(context).curTheme.backgroundPrimary,
@@ -120,33 +126,36 @@ class _DialogOverlayState extends State<DialogOverlay>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      // Header of the modal
-                      Container(
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          gradient: widget.warningStyle
-                              ? null
-                              : StateContainer.of(context)
-                                  .curTheme
-                                  .gradientPrimary,
-                          color: widget.warningStyle
-                              ? StateContainer.of(context).curTheme.danger
-                              : null,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12)),
-                        ),
-                        child: Container(
-                          margin:
-                              EdgeInsetsDirectional.fromSTEB(24, 16, 24, 16),
-                          child: AutoSizeText(
-                            widget.title,
-                            style: AppStyles.modalHeader(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                          ),
-                        ),
-                      ),
+                      widget.payload
+                          ? SizedBox()
+                          :
+                          // Header of the modal
+                          Container(
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(
+                                gradient: widget.warningStyle
+                                    ? null
+                                    : StateContainer.of(context)
+                                        .curTheme
+                                        .gradientPrimary,
+                                color: widget.warningStyle
+                                    ? StateContainer.of(context).curTheme.danger
+                                    : null,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12)),
+                              ),
+                              child: Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    24, 16, 24, 16),
+                                child: AutoSizeText(
+                                  widget.title,
+                                  style: AppStyles.modalHeader(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                ),
+                              ),
+                            ),
                       // Options container
                       widget.body != null
                           ? Column(
@@ -157,10 +166,10 @@ class _DialogOverlayState extends State<DialogOverlay>
                                   child: Column(
                                     children: <Widget>[
                                       AutoSizeText.rich(
-                                          widget.body,
-                                          stepGranularity: 0.1,
-                                          maxLines: 8,
-                                          minFontSize: 8,
+                                        widget.body,
+                                        stepGranularity: 0.1,
+                                        maxLines: 8,
+                                        minFontSize: 8,
                                       )
                                     ],
                                   ),
@@ -199,11 +208,74 @@ class _DialogOverlayState extends State<DialogOverlay>
                                           60,
                                   minHeight: 0),
                               // Options list
-                              child: SingleChildScrollView(
-                                padding: EdgeInsetsDirectional.only(
-                                    top: 8, bottom: 8),
-                                child: buildListItems(widget.optionsList),
-                              ),
+                              child: widget.payload
+                                  ? Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        // Container for the amount text field
+                                        Container(
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  20, 24, 20, 0),
+                                          child: AppTextField(
+                                            label: 'Payload',
+                                            style: AppStyles.paragraph(
+                                                context),
+                                            maxLines: 1,
+                                            firstButton: TextFieldButton(
+                                                icon: AppIcons.paste),
+                                            secondButton: TextFieldButton(
+                                                icon: AppIcons.scan),
+                                          ),
+                                        ),
+                                        // Container for the "Add Payload" button
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                              height: 40.0,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        100.0),
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .backgroundPrimary,
+                                                boxShadow: [
+                                                  StateContainer.of(context)
+                                                      .curTheme
+                                                      .shadowTextDark,
+                                                ],
+                                              ),
+                                              margin: EdgeInsetsDirectional
+                                                  .fromSTEB(20, 30, 20, 24),
+                                              child: FlatButton(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100.0)),
+                                                child: AutoSizeText(
+                                                  "Encrypt the Payload",
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                  stepGranularity: 0.1,
+                                                  style: AppStyles.buttonMiniBg(
+                                                      context),
+                                                ),
+                                                onPressed: () async {
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  : SingleChildScrollView(
+                                      padding: EdgeInsetsDirectional.only(
+                                          top: 8, bottom: 8),
+                                      child: buildListItems(widget.optionsList),
+                                    ),
                             ),
                     ],
                   ),
