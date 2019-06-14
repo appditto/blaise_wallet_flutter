@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/authentication.dart';
 import 'package:flutter/material.dart';
 
 class BackupPrivateKeySheet extends StatefulWidget {
@@ -134,9 +135,14 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       text: "Encrypted Key",
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.pop(context);
-                        AppSheets.showBottomSheet(
-                            context: context, widget: EncryptPrivateKeySheet());
+                        AuthUtil().authenticate("Authenticate to backup private key").then((authenticated) {
+                          if (authenticated) {
+                            Navigator.pop(context);
+                            AppSheets.showBottomSheet(
+                                context: context,
+                                widget: EncryptPrivateKeySheet());
+                          }
+                        });
                       },
                     ),
                   ],
@@ -148,10 +154,14 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Unencrypted Key",
                       onPressed: () {
-                        Navigator.pop(context);
-                        AppSheets.showBottomSheet(
-                            context: context,
-                            widget: UnencryptedPrivateKeySheet());
+                        AuthUtil().authenticate("Authenticate to backup private key").then((authenticated) {
+                          if (authenticated) {
+                            Navigator.pop(context);
+                            AppSheets.showBottomSheet(
+                                context: context,
+                                widget: UnencryptedPrivateKeySheet());
+                          }
+                        });
                       },
                     ),
                   ],

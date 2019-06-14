@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/authentication.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
@@ -233,11 +234,13 @@ class _SendingSheetState extends State<SendingSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        await showOverlay(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        AppSheets.showBottomSheet(
-                            context: context, widget: SentSheet());
+                        if (await AuthUtil().authenticate("Send 1 Pascal?")) {
+                          await showOverlay(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          AppSheets.showBottomSheet(
+                              context: context, widget: SentSheet());
+                        }
                       },
                     ),
                   ],

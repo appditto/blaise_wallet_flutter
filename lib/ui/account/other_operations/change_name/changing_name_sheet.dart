@@ -5,9 +5,9 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/authentication.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
@@ -182,11 +182,13 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        await showOverlay(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        AppSheets.showBottomSheet(
-                            context: context, widget: ChangedNameSheet());
+                        if (await AuthUtil().authenticate("Change Name?")) {
+                          await showOverlay(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          AppSheets.showBottomSheet(
+                              context: context, widget: ChangedNameSheet());
+                        }
                       },
                     ),
                   ],

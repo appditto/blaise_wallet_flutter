@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/authentication.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
@@ -308,11 +309,13 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        await showOverlay(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        AppSheets.showBottomSheet(
-                            context: context, widget: CreatedPrivateSaleSheet());
+                        if (await AuthUtil().authenticate("List for Sale?")) {
+                          await showOverlay(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          AppSheets.showBottomSheet(
+                              context: context, widget: CreatedPrivateSaleSheet());
+                        }
                       },
                     ),
                   ],

@@ -60,6 +60,9 @@ dependencies:
   # shared prefs
   shared_preferences: ^0.5.3
 
+  # Biometrics
+  local_auth: ^0.5.2+2  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

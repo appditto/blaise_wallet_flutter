@@ -10,6 +10,12 @@
 .history
 .svn/
 
+# Eclipse project files
+.classpath
+.project
+.metadata
+.settings
+
 # IntelliJ related
 *.iml
 *.ipr
