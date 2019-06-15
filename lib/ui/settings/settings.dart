@@ -229,7 +229,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                               SettingsListItem(
                                 header: "Theme",
-                                subheader: "Light",
+                                subheader: StateContainer.of(context)
+                                            .curTheme
+                                            .toString() ==
+                                        BlaiseLightTheme().toString()
+                                    ? "Light"
+                                    : "Dark",
                                 icon: AppIcons.theme,
                                 onPressed: () {
                                   showAppDialog(
@@ -384,24 +389,20 @@ class _SettingsPageState extends State<SettingsPage> {
     showAppDialog(
         context: context,
         builder: (_) => DialogOverlay(
-            title: 'WARNING',
-            warningStyle: true,
-            confirmButtonText: "DELETE PRIVATE KEY\nAND LOGOUT",
-            body:
-              TextSpan(
+              title: 'WARNING',
+              warningStyle: true,
+              confirmButtonText: "DELETE PRIVATE KEY\nAND LOGOUT",
+              body: TextSpan(
                 children: [
                   TextSpan(
                     text:
                         "Are you sure that you’ve backed up your private key? ",
-                    style: AppStyles.paragraph(
-                        context),
+                    style: AppStyles.paragraph(context),
                   ),
                   TextSpan(
                     text:
                         "As long as you’ve backed up your private key, you have nothing to worry about.",
-                    style: AppStyles
-                        .paragraphDanger(
-                            context),
+                    style: AppStyles.paragraphDanger(context),
                   ),
                 ],
               ),
@@ -418,15 +419,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             TextSpan(
                               text:
                                   "Logging out will remove your private key and all Blaise related data from this device. ",
-                              style: AppStyles
-                                  .paragraphDanger(
-                                      context),
+                              style: AppStyles.paragraphDanger(context),
                             ),
                             TextSpan(
                               text:
                                   "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
-                              style: AppStyles.paragraph(
-                                  context),
+                              style: AppStyles.paragraph(context),
                             ),
                           ],
                         ),
@@ -435,14 +433,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           sl.get<Vault>().deleteAll().then((_) {
                             sl.get<SharedPrefsUtil>().deleteAll().then((_) {
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                      '/', (Route<dynamic> route) => false);
+                                  '/', (Route<dynamic> route) => false);
                             });
                           });
-                        }
-                    )
-                );
+                        }));
               },
-            )
-        );
+            ));
   }
 }
