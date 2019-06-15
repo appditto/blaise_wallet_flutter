@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class CreatePrivateSaleSheet extends StatefulWidget {
@@ -15,6 +16,16 @@ class CreatePrivateSaleSheet extends StatefulWidget {
 }
 
 class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
+  FocusNode publicKeyFocusNode;
+  TextEditingController publicKeyController;
+
+  @override
+  void initState() {
+    super.initState();
+    publicKeyFocusNode = FocusNode();
+    publicKeyController = TextEditingController();
+  }
+
   FocusNode _focusNodePrice = FocusNode();
   FocusNode _focusNodeReceivingAccount = FocusNode();
   FocusNode _focusNodePublicKey = FocusNode();
@@ -157,11 +168,19 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                   label: 'Public Key',
                                   style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 1,
-                                  firstButton:
-                                      TextFieldButton(icon: AppIcons.paste),
+                                  firstButton: TextFieldButton(
+                                    icon: AppIcons.paste,
+                                    onPressed: () {
+                                      Clipboard.getData("text/plain")
+                                          .then((cdata) {
+                                        publicKeyController.text = cdata.text;
+                                      });
+                                    },
+                                  ),
                                   secondButton:
                                       TextFieldButton(icon: AppIcons.scan),
-                                  focusNode: _focusNodePublicKey,
+                                  focusNode: publicKeyFocusNode,
+                                  controller: publicKeyController,
                                 ),
                               ),
                               // Container for the "Add Payload" button

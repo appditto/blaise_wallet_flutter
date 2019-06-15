@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class TransferAccountSheet extends StatefulWidget {
@@ -15,6 +16,16 @@ class TransferAccountSheet extends StatefulWidget {
 }
 
 class _TransferAccountSheetState extends State<TransferAccountSheet> {
+  FocusNode publicKeyFocusNode;
+  TextEditingController publicKeyController;
+
+  @override
+  void initState() {
+    super.initState();
+    publicKeyFocusNode = FocusNode();
+    publicKeyController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -121,10 +132,18 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                   maxLines: 6,
                                   firstButton: TextFieldButton(
                                     icon: AppIcons.paste,
+                                    onPressed: () {
+                                      Clipboard.getData("text/plain")
+                                          .then((cdata) {
+                                        publicKeyController.text = cdata.text;
+                                      });
+                                    },
                                   ),
                                   secondButton: TextFieldButton(
                                     icon: AppIcons.scan,
                                   ),
+                                  focusNode: publicKeyFocusNode,
+                                  controller: publicKeyController,
                                 ),
                               ),
                             ],
