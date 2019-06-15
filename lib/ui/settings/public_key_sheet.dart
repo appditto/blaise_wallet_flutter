@@ -2,22 +2,19 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class PublicKeySheet extends StatefulWidget {
-  _PublicKeySheetState createState() =>
-      _PublicKeySheetState();
+  _PublicKeySheetState createState() => _PublicKeySheetState();
 }
 
-class _PublicKeySheetState
-    extends State<PublicKeySheet> {
+class _PublicKeySheetState extends State<PublicKeySheet> {
   bool _keyCopied;
   Timer _keyCopiedTimer;
 
@@ -116,26 +113,24 @@ class _PublicKeySheetState
                       ),
                       // Container for the private key
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
-                        ),
-                        // TODO PublicKey would be nicer stored in the global state
-                        child: FutureBuilder(
-                          future: sl.get<Vault>().getPrivateKey(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
-                              PrivateKey pk = PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(snapshot.data));
-                              String pubKey = PublicKeyCoder().encodeToBase58(Keys.fromPrivateKey(pk).publicKey);
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(30, 12, 30, 12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                width: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .primary15),
+                            color:
+                                StateContainer.of(context).curTheme.primary10,
+                          ),
+                          child: Observer(builder: (BuildContext context) {
+                            if (walletState.publicKey != null) {
                               return AutoSizeText(
-                                pubKey,
+                                PublicKeyCoder()
+                                    .encodeToBase58(walletState.publicKey),
                                 maxLines: 6,
                                 stepGranularity: 0.1,
                                 minFontSize: 8,
@@ -145,9 +140,7 @@ class _PublicKeySheetState
                             } else {
                               return SizedBox();
                             }
-                          }
-                        )
-                      ),
+                          })),
                     ],
                   ),
                 ),
@@ -161,11 +154,11 @@ class _PublicKeySheetState
                       text: _keyCopied ? "Key Copied" : "Copy Public Key",
                       buttonTop: true,
                       onPressed: () {
-                        sl.get<Vault>().getPrivateKey().then((key) {
-                          PrivateKey pk = PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(key));
-                          String pubKey = PublicKeyCoder().encodeToBase58(Keys.fromPrivateKey(pk).publicKey);
-                          Clipboard.setData(ClipboardData(text: pubKey));
-                        });
+                        if (walletState.publicKey != null) {
+                          Clipboard.setData(ClipboardData(
+                              text: PublicKeyCoder()
+                                  .encodeToBase58(walletState.publicKey)));
+                        }
                         setState(() {
                           _keyCopied = true;
                         });
