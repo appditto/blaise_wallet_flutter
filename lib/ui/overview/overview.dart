@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
@@ -13,6 +12,8 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class OverviewPage extends StatefulWidget {
   final bool newWallet;
@@ -23,6 +24,13 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage> {
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Load the wallet, total balance, etc.
+    walletState.loadWallet();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,38 +110,46 @@ class _OverviewPageState extends State<OverviewPage> {
                                     ),
                                     // Container for the balance
                                     Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          160,
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          24, 4, 24, 4),
-                                      child: AutoSizeText.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: "",
-                                              style: AppStyles
-                                                  .iconFontTextLightPascal(
-                                                      context),
-                                            ),
-                                            TextSpan(
-                                                text: " ",
-                                                style: TextStyle(fontSize: 12)),
-                                            TextSpan(
-                                                text: widget.newWallet
-                                                    ? "0"
-                                                    : "10,205",
-                                                style:
-                                                    AppStyles.header(context)),
-                                          ],
-                                        ),
-                                        maxLines: 1,
-                                        minFontSize: 8,
-                                        stepGranularity: 1,
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                        ),
-                                      ),
-                                    ),
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                160,
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            24, 4, 24, 4),
+                                        child: Observer(
+                                            builder: (BuildContext context) {
+                                          if (walletState.walletLoading) {
+                                            return Text("Balance Loading");
+                                          } else {
+                                            return AutoSizeText.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "",
+                                                    style: AppStyles
+                                                        .iconFontTextLightPascal(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                      text: " ",
+                                                      style: TextStyle(
+                                                          fontSize: 12)),
+                                                  TextSpan(
+                                                      text: walletState
+                                                          .totalWalletBalance
+                                                          .toStringOpt(),
+                                                      style: AppStyles.header(
+                                                          context)),
+                                                ],
+                                              ),
+                                              maxLines: 1,
+                                              minFontSize: 8,
+                                              stepGranularity: 1,
+                                              style: TextStyle(
+                                                fontSize: 28,
+                                              ),
+                                            );
+                                          }
+                                        })),
                                     // Container for the fiat conversion
                                     Container(
                                       margin: EdgeInsetsDirectional.fromSTEB(
@@ -201,144 +217,113 @@ class _OverviewPageState extends State<OverviewPage> {
                           ),
                         ],
                       ),
-
-                      widget.newWallet
-                          ?
-                          // Paragraph and illustration
-                          Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  //Container for the paragraph
-                                  Container(
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 0, 30, 0),
-                                    child: AutoSizeText.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "Welcome to",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text: " Blaise Wallet",
-                                            style: AppStyles.paragraphPrimary(
-                                                context),
-                                          ),
-                                          TextSpan(
-                                            text: ".\n",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                "You can start by getting an account.",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                        ],
-                                      ),
-                                      stepGranularity: 0.5,
-                                      maxLines: 10,
-                                      minFontSize: 8,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  // Container for the illustration
-                                  Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                      top: 24,
-                                    ),
-                                    child: SvgRepaintAsset(
-                                        asset: StateContainer.of(context)
-                                            .curTheme
-                                            .illustrationNewWallet,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.55,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.55),
-                                  ),
-                                ],
-                              ),
-                            )
-                          :
-                          // Wallet Cards
-                          Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  // Accounts text
-                                  Container(
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        24, 18, 24, 4),
-                                    alignment: Alignment(-1, 0),
-                                    child: AutoSizeText(
-                                      "Accounts".toUpperCase(),
-                                      style: AppStyles.headerSmall(context),
-                                      textAlign: TextAlign.left,
-                                      stepGranularity: 0.5,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                  // Accounts List
-                                  Expanded(
-                                    child: Stack(
-                                      children: <Widget>[
-                                        // The list
-                                        ListView(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 3, 0, 19),
-                                          children: <Widget>[
-                                            AccountCard(
-                                              name: "yekta",
-                                              number: "578706-79",
-                                              balance: "9,104",
-                                            ),
-                                            AccountCard(
-                                              name: "y.spending",
-                                              number: "545313-62",
-                                              balance: "565",
-                                            ),
-                                            AccountCard(
-                                              number: "475324-11",
-                                              balance: "125.4",
-                                            ),
-                                            AccountCard(
-                                              name: "y.hodl",
-                                              number: "151521-25",
-                                              balance: "391.41",
-                                            ),
-                                            AccountCard(
-                                              number: "101010-20",
-                                              balance: "0",
-                                            ),
-                                            AccountCard(
-                                              number: "191919-19",
-                                              balance: "0",
-                                              onPressed: () {
-                                                Navigator.pushNamed(context,
-                                                    "/account_borrowed");
-                                              },
-                                            ),
-                                          ],
+                      Observer(builder: (BuildContext context) {
+                        // Wallet loaded with no accounts
+                        if (walletState.walletLoading) {
+                          return Text("Loading");
+                        } else if (walletState.walletAccounts.isEmpty) {
+                          return Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                //Container for the paragraph
+                                Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      30, 0, 30, 0),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "Welcome to",
+                                          style: AppStyles.paragraph(context),
                                         ),
-                                        // The gradient at the top
-                                        Container(
-                                          height: 8,
-                                          width: double.maxFinite,
-                                          decoration: BoxDecoration(
-                                              gradient:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .gradientListTop),
+                                        TextSpan(
+                                          text: " Blaise Wallet",
+                                          style: AppStyles.paragraphPrimary(
+                                              context),
+                                        ),
+                                        TextSpan(
+                                          text: ".\n",
+                                          style: AppStyles.paragraph(context),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              "You can start by getting an account.",
+                                          style: AppStyles.paragraph(context),
                                         ),
                                       ],
                                     ),
+                                    stepGranularity: 0.5,
+                                    maxLines: 10,
+                                    minFontSize: 8,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 14),
                                   ),
-                                ],
-                              ),
+                                ),
+                                // Container for the illustration
+                                Container(
+                                  margin: EdgeInsetsDirectional.only(
+                                    top: 24,
+                                  ),
+                                  child: SvgRepaintAsset(
+                                      asset: StateContainer.of(context)
+                                          .curTheme
+                                          .illustrationNewWallet,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.55,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.55),
+                                ),
+                              ],
                             ),
+                          );
+                        } else {
+                          // Wallet Cards
+                          return Expanded(
+                            child: Column(
+                              children: <Widget>[
+                                // Accounts text
+                                Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      24, 18, 24, 4),
+                                  alignment: Alignment(-1, 0),
+                                  child: AutoSizeText(
+                                    "Accounts".toUpperCase(),
+                                    style: AppStyles.headerSmall(context),
+                                    textAlign: TextAlign.left,
+                                    stepGranularity: 0.5,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                // Accounts List
+                                Expanded(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      // The list
+                                      ListView(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 3, 0, 19),
+                                          children: _getAccountCards(
+                                              walletState.walletAccounts)),
+                                      // The gradient at the top
+                                      Container(
+                                        height: 8,
+                                        width: double.maxFinite,
+                                        decoration: BoxDecoration(
+                                            gradient: StateContainer.of(context)
+                                                .curTheme
+                                                .gradientListTop),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      }),
                       // Bottom bar
                       Container(
                         width: double.maxFinite,
@@ -382,5 +367,16 @@ class _OverviewPageState extends State<OverviewPage> {
             ),
       ),
     );
+  }
+
+  List<Widget> _getAccountCards(List<PascalAccount> accounts) {
+    List<Widget> ret = [];
+    accounts.forEach((account) {
+      ret.add(AccountCard(
+          balance: account.balance.toStringOpt(),
+          name: account.name.accountName,
+          number: account.account.toString()));
+    });
+    return ret;
   }
 }

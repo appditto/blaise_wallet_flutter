@@ -435,6 +435,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         onConfirm: () {
                           // Handle logging out
+                          walletState.reset();
                           sl.get<Vault>().deleteAll().then((_) {
                             sl.get<SharedPrefsUtil>().deleteAll().then((_) {
                               Navigator.of(context).pushNamedAndRemoveUntil(

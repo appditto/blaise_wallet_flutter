@@ -1,8 +1,11 @@
 import 'package:blaise_wallet_flutter/model/available_languages.dart';
+import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+final Wallet walletState = Wallet();
 
 const List<String> PREACHED_SVG_ASSETS = [
   'assets/illustration_backup.svg',
@@ -18,9 +21,9 @@ const List<String> PREACHED_SVG_ASSETS = [
 ];
 
 class _InheritedStateContainer extends InheritedWidget {
-   // Data is your entire state. In our case just 'User' 
+  // Data is your entire state. In our case just 'User'
   final StateContainerState data;
-   
+
   // You must pass through a child and your state.
   _InheritedStateContainer({
     Key key,
@@ -36,21 +39,20 @@ class _InheritedStateContainer extends InheritedWidget {
 }
 
 class StateContainer extends StatefulWidget {
-   // You must pass through a child. 
+  // You must pass through a child.
   final Widget child;
 
-  StateContainer({
-    @required this.child
-  });
+  StateContainer({@required this.child});
 
   // This is the secret sauce. Write your own 'of' method that will behave
   // Exactly like MediaQuery.of and Theme.of
   // It basically says 'get the data from the widget of this type.
   static StateContainerState of(BuildContext context) {
     return (context.inheritFromWidgetOfExactType(_InheritedStateContainer)
-            as _InheritedStateContainer).data;
+            as _InheritedStateContainer)
+        .data;
   }
-  
+
   @override
   StateContainerState createState() => StateContainerState();
 }
@@ -58,7 +60,7 @@ class StateContainer extends StatefulWidget {
 /// App InheritedWidget
 /// This is where we handle the global state and also where
 /// we interact with the server and make requests/handle+propagate responses
-/// 
+///
 /// Basically the central hub behind the entire app
 class StateContainerState extends State<StateContainer> {
   BaseTheme curTheme = BlaiseLightTheme();
@@ -66,10 +68,8 @@ class StateContainerState extends State<StateContainer> {
 
   Future<void> _precacheSvgs() async {
     PREACHED_SVG_ASSETS.forEach((asset) {
-      precachePicture(ExactAssetPicture(
-        SvgPicture.svgStringDecoder,
-        asset
-      ), context);
+      precachePicture(
+          ExactAssetPicture(SvgPicture.svgStringDecoder, asset), context);
     });
   }
 
