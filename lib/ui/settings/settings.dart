@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:share/share.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/change_daemon_sheet.dart';
@@ -348,9 +349,13 @@ class _SettingsPageState extends State<SettingsPage> {
                                     .textDark10,
                               ),
                               SettingsListItem(
-                                header: "Share Blaise",
-                                icon: AppIcons.share,
-                              ),
+                                  header: "Share Blaise",
+                                  icon: AppIcons.share,
+                                  onPressed: () {
+                                    Share.share(
+                                        "Check out Blaise - Pascal Wallet for iOS and Android");
+                                  }),
+
                               Container(
                                 width: double.maxFinite,
                                 height: 1,

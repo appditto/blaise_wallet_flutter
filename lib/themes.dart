@@ -84,6 +84,7 @@ abstract class BaseTheme {
   String animationNameChange;
   String animationSale;
   String animationTransfer;
+  String animationGetAccount;
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
@@ -246,6 +247,7 @@ class BlaiseLightTheme extends BaseTheme {
   String animationNameChange = 'assets/animation_name_change.flr';
   String animationSale = 'assets/animation_sale.flr';
   String animationTransfer = 'assets/animation_transfer.flr';
+  String animationGetAccount = 'assets/animation_get_account.flr';
 
   Brightness brightness = Brightness.dark;
   SystemUiOverlayStyle statusBar =
@@ -255,7 +257,7 @@ class BlaiseLightTheme extends BaseTheme {
 class BlaiseDarkTheme extends BaseTheme {
   static const Color teal = Color(0xFF61DEFF);
   static const Color tealLight = Color(0xFFA8FDFF);
-  static const Color orange = Color(0xFFC4FF92);
+  static const Color green = Color(0xFF00FFBF);
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
@@ -273,10 +275,10 @@ class BlaiseDarkTheme extends BaseTheme {
 
   Color secondary = tealLight;
 
-  Color success = orange;
-  Color success30 = orange.withOpacity(0.3);
-  Color success15 = orange.withOpacity(0.15);
-  Color success10 = orange.withOpacity(0.1);
+  Color success = green;
+  Color success30 = green.withOpacity(0.3);
+  Color success15 = green.withOpacity(0.15);
+  Color success10 = green.withOpacity(0.1);
 
   Color danger = red;
   Color danger30 = red.withOpacity(0.3);
@@ -336,13 +338,13 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -4.0);
   
   BoxShadow shadowSuccessOne = BoxShadow(
-      color: orange.withOpacity(0.25),
+      color: green.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowSuccessTwo = BoxShadow(
-      color: orange.withOpacity(0.125),
+      color: green.withOpacity(0.125),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -405,6 +407,7 @@ class BlaiseDarkTheme extends BaseTheme {
   String animationNameChange = 'assets/animation_name_change_dark.flr';
   String animationSale = 'assets/animation_sale_dark.flr';
   String animationTransfer = 'assets/animation_transfer_dark.flr';
+  String animationGetAccount = 'assets/animation_get_account_dark.flr';
 
 
   Brightness brightness = Brightness.light;

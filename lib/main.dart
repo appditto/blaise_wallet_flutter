@@ -139,6 +139,13 @@ class _AppState extends State<App> {
                     ),
                 settings: settings,
               );
+            case '/account_new':
+              return MaterialPageRoute(
+                builder: (context) => AccountPage(
+                      isNew: true,
+                    ),
+                settings: settings,
+              );
             case '/security':
               return MaterialPageRoute(
                 builder: (context) => SecurityPage(),

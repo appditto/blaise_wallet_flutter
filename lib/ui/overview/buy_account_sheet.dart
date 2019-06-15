@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
@@ -8,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
 class BuyAccountSheet extends StatefulWidget {
@@ -15,6 +18,39 @@ class BuyAccountSheet extends StatefulWidget {
 }
 
 class _BuyAccountSheetState extends State<BuyAccountSheet> {
+  showOverlay(BuildContext context) async {
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              color: StateContainer.of(context).curTheme.overlay20,
+              child: Center(
+                child: //Container for the animation
+                    Container(
+                  margin: EdgeInsetsDirectional.only(
+                      top: MediaQuery.of(context).padding.top),
+                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
+                  width: double.maxFinite,
+                  height: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: FlareActor(
+                      StateContainer.of(context).curTheme.animationGetAccount,
+                      animation: "main",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+    overlayState.insert(overlayEntry);
+    await Future.delayed(Duration(milliseconds: 1500));
+    overlayEntry.remove();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -140,7 +176,8 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                       type: AppButtonType.Primary,
                       text: "Borrow an Account",
                       buttonTop: true,
-                      onPressed: () {
+                      onPressed: () async {
+                        await showOverlay(context);
                         Navigator.pop(context);
                         Navigator.pushNamed(context, '/account_borrowed');
                       },

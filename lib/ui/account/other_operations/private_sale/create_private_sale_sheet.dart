@@ -140,8 +140,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     30, 30, 30, 0),
                                 child: AppTextField(
                                   label: 'Receiving Account',
-                                  style:
-                                      AppStyles.privateKeyTextDark(context),
+                                  style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 1,
                                   firstButton:
                                       TextFieldButton(icon: AppIcons.paste),
@@ -153,11 +152,10 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                               // Container for public key field
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
-                                    30, 30, 30, 40),
+                                    30, 30, 30, 0),
                                 child: AppTextField(
                                   label: 'Public Key',
-                                  style:
-                                      AppStyles.privateKeyTextDark(context),
+                                  style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 1,
                                   firstButton:
                                       TextFieldButton(icon: AppIcons.paste),
@@ -166,6 +164,43 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                   focusNode: _focusNodePublicKey,
                                 ),
                               ),
+                              // Container for the "Add Payload" button
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(100.0),
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .backgroundPrimary,
+                                      boxShadow: [
+                                        StateContainer.of(context)
+                                            .curTheme
+                                            .shadowTextDark,
+                                      ],
+                                    ),
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 30, 30, 40),
+                                    child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100.0)),
+                                      child: AutoSizeText(
+                                        "+ Add a Duration",
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        stepGranularity: 0.1,
+                                        style: AppStyles.buttonMiniBg(context),
+                                      ),
+                                      onPressed: () async {
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         ),
