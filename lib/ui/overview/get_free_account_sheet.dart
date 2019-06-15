@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/overview/confirm_free_account_sheet.dart';
@@ -37,6 +36,7 @@ class GetFreeAccountSheet extends StatefulWidget {
 class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   List<CountryCode> _countryCodes;
   CountryCode _selectedCountry;
+  FixedExtentScrollController _cupertinoPickerController;
 
   Future<List<CountryCode>> readCountryCodeFromAssets() async {
     return CountryCode.fromJsonList(
@@ -63,10 +63,12 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   @override
   void initState() {
     super.initState();
+    _cupertinoPickerController = FixedExtentScrollController();
     readCountryCodeFromAssets().then((values) {
       setState(() {
         _countryCodes = values;
         _selectedCountry = getDefaultCountryCode(values);
+        _cupertinoPickerController = FixedExtentScrollController(initialItem: _countryCodes.indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
       });
     });
   }
@@ -171,28 +173,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                       if (_countryCodes == null) {
                                         return;
                                       }
-                                      showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (context) {
-                                          return Container(
-                                            height: MediaQuery.of(context).size.height*0.4,
-                                            child: Material(
-                                              child: CupertinoPicker(
-                                                backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
-                                                useMagnifier: true,
-                                                magnification: 1.5,
-                                                onSelectedItemChanged: (index) {
-                                                  setState(() {
-                                                    _selectedCountry = _countryCodes[index];
-                                                  });
-                                                },
-                                                itemExtent: 30,
-                                                children: _getCountryCodeForPicker()
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
+                                      showCountryCodePicker();
                                     },
                                     padding: EdgeInsets.all(0),
                                     child: Column(
@@ -286,5 +267,36 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
         ],
       ),
     );
+  }
+
+  Future<void> showCountryCodePicker() async {
+    CountryCode countrySelection;
+    await showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height*0.4,
+          child: Material(
+            child: CupertinoPicker(
+              backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+              useMagnifier: true,
+              magnification: 1.5,
+              scrollController: _cupertinoPickerController,
+              onSelectedItemChanged: (index) {
+                countrySelection = _countryCodes[index];
+              },
+              itemExtent: 30,
+              children: _getCountryCodeForPicker()
+            ),
+          ),
+        );
+      },
+    );
+    if (countrySelection != null) {
+      setState(() {
+        _selectedCountry = countrySelection;
+        _cupertinoPickerController = FixedExtentScrollController(initialItem: _countryCodes.indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
+      });
+    }
   }
 }
