@@ -1,4 +1,5 @@
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:mobx/mobx.dart';
@@ -27,6 +28,9 @@ abstract class WalletBase with Store {
 
   @observable
   PublicKey publicKey;
+
+  @observable
+  Map<int, Account> accountStateMap = Map();
 
   @action
   Future<void> initializeRpc() async {
@@ -68,6 +72,20 @@ abstract class WalletBase with Store {
   }
 
   @action
+  Account getAccountState(PascalAccount account) {
+    accountStateMap.putIfAbsent(account.account.account, () => Account(rpcClient: this.rpcClient, account: account));
+    return accountStateMap[account.account.account];
+  }
+  
+  @action
+  void changeRpcUrl(String rpcUrl) {
+    this.rpcClient = RPCClient(rpcAddress: rpcUrl);
+    accountStateMap.forEach((k, v) {
+      v.rpcClient = this.rpcClient;
+    });
+  }
+
+  @action
   void reset() {
     // Reset all properties (for when logging out, etc)
     this.walletLoading = true;
@@ -75,5 +93,6 @@ abstract class WalletBase with Store {
     this.rpcClient = null;
     this.walletAccounts = [];
     this.publicKey = null;
+    this.accountStateMap = Map();
   }
 }

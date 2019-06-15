@@ -78,7 +78,7 @@ dependencies:
   logger: ^0.6.0
 
   # quiver - various Dart utilities
-  quiver: ^2.0.3
+  quiver: ^2.0.2
 
 dev_dependencies:
   flutter_test:

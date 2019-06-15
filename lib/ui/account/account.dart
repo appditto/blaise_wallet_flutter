@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/create_private_sale_sheet.dart';

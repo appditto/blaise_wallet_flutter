@@ -89,6 +89,22 @@ mixin _$Wallet on WalletBase, Store {
     _$publicKeyAtom.reportChanged();
   }
 
+  final _$accountStateMapAtom = Atom(name: 'WalletBase.accountStateMap');
+
+  @override
+  Map<int, Account> get accountStateMap {
+    _$accountStateMapAtom.reportObserved();
+    return super.accountStateMap;
+  }
+
+  @override
+  set accountStateMap(Map<int, Account> value) {
+    _$accountStateMapAtom.context
+        .checkIfStateModificationsAreAllowed(_$accountStateMapAtom);
+    super.accountStateMap = value;
+    _$accountStateMapAtom.reportChanged();
+  }
+
   final _$initializeRpcAsyncAction = AsyncAction('initializeRpc');
 
   @override
@@ -104,6 +120,26 @@ mixin _$Wallet on WalletBase, Store {
   }
 
   final _$WalletBaseActionController = ActionController(name: 'WalletBase');
+
+  @override
+  Account getAccountState(PascalAccount account) {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.getAccountState(account);
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeRpcUrl(String rpcUrl) {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.changeRpcUrl(rpcUrl);
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void reset() {
