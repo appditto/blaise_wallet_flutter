@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:quiver/strings.dart';
 
 /// A widget for buttons
 class AccountCard extends StatefulWidget {
@@ -148,7 +149,7 @@ class _AccountCardState extends State<AccountCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        widget.name != null
+                        isNotEmpty(widget.name)
                             ? Container(
                                 margin: EdgeInsetsDirectional.only(bottom: 2),
                                 child: AutoSizeText(
