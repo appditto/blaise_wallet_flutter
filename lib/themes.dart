@@ -262,8 +262,8 @@ class BlaiseDarkTheme extends BaseTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
   static const Color grayLight = Color(0xFFD7D9E6);
-  static const Color grayDark = Color(0xFF3D3F4F);
-  static const Color grayDark00 = Color(0x003D3F4F);
+  static const Color grayDark = Color(0xFF2B2C37);
+  static const Color grayDark00 = Color(0x002B2C37);
   static const Color black = Color(0xFF000000);
 
   Color primary = teal;
@@ -326,25 +326,25 @@ class BlaiseDarkTheme extends BaseTheme {
   );
 
   BoxShadow shadowPrimaryOne = BoxShadow(
-      color: teal.withOpacity(0.25),
+      color: teal.withOpacity(0.2),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowPrimaryTwo = BoxShadow(
-      color: teal.withOpacity(0.125),
+      color: teal.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   
   BoxShadow shadowSuccessOne = BoxShadow(
-      color: green.withOpacity(0.25),
+      color: green.withOpacity(0.2),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowSuccessTwo = BoxShadow(
-      color: green.withOpacity(0.125),
+      color: green.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -368,30 +368,30 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -3.0);
 
   BoxShadow shadowAccountCard = BoxShadow(
-      color: black.withOpacity(0.15),
+      color: black.withOpacity(0.3),
       offset: Offset(0, 8),
       blurRadius: 24,
       spreadRadius: -4.0);
 
   BoxShadow shadowBottomBar = BoxShadow(
-      color: black.withOpacity(0.2),
+      color: black.withOpacity(0.3),
       offset: Offset(0, -15),
       blurRadius: 30,
       spreadRadius: -5.0);
 
   BoxShadow shadowSettingsList = BoxShadow(
-      color: black.withOpacity(0.4),
+      color: black.withOpacity(0.5),
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -5.0);
 
   BoxShadow shadowDangerOne = BoxShadow(
-      color: red.withOpacity(0.25),
+      color: red.withOpacity(0.2),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   BoxShadow shadowDangerTwo = BoxShadow(
-      color: red.withOpacity(0.125),
+      color: red.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);

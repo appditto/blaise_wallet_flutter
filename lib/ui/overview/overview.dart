@@ -220,7 +220,16 @@ class _OverviewPageState extends State<OverviewPage> {
                       Observer(builder: (BuildContext context) {
                         // Wallet loaded with no accounts
                         if (walletState.walletLoading) {
-                          return Text("Loading");
+                          return Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Center(
+                                  child: Text("Loading", style: AppStyles.paragraph(context),),
+                                ),
+                              ],
+                            ),
+                          );
                         } else if (walletState.walletAccounts.isEmpty) {
                           return Expanded(
                             child: Column(
