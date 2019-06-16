@@ -170,6 +170,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                       data: widget.address,
                       size: 180.0,
                       errorCorrectionLevel: QrErrorCorrectLevel.Q,
+                      gapless: false,
                     ),
                     // Logo background
                     Container(

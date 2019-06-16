@@ -129,6 +129,7 @@ class _RequestSheetState extends State<RequestSheet> {
                                   size: 180.0,
                                   version: 6,
                                   errorCorrectionLevel: QrErrorCorrectLevel.Q,
+                                  gapless: false,
                                 ),
                                 // Logo background
                                 Container(

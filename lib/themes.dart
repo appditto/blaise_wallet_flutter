@@ -362,19 +362,19 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -4.0);
 
   BoxShadow shadowMainCard = BoxShadow(
-      color: black.withOpacity(0.2),
+      color: black.withOpacity(0.25),
       offset: Offset(0, 10),
       blurRadius: 30,
       spreadRadius: -3.0);
 
   BoxShadow shadowAccountCard = BoxShadow(
-      color: black.withOpacity(0.3),
+      color: black.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 24,
       spreadRadius: -4.0);
 
   BoxShadow shadowBottomBar = BoxShadow(
-      color: black.withOpacity(0.3),
+      color: black.withOpacity(0.25),
       offset: Offset(0, -15),
       blurRadius: 30,
       spreadRadius: -5.0);
