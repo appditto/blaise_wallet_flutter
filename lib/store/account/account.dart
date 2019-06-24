@@ -25,11 +25,11 @@ abstract class AccountBase with Store {
 
   AccountBase({@required this.rpcClient, @required this.account});
 
-  // TODO - this will be one to add pagination to
   @action
   Future<void> getAccountOperations() async {
     GetAccountOperationsRequest request =
-        GetAccountOperationsRequest(account: account.account.account);
+        GetAccountOperationsRequest(account: account.account.account,
+                                    start: -1);
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
     if (resp.isError) {
       ErrorResponse err = resp;
@@ -37,7 +37,13 @@ abstract class AccountBase with Store {
       return null;
     }
     OperationsResponse opResp = resp;
-    this.operations = opResp.operations;
+    if (this.operations == null) {
+      this.operations = opResp.operations;
+    } else {
+      // Diff and update operations
+      this.operations.addAll(opResp.operations.where((op) => !this.operations.contains(op)));
+      this.operations.sort((a, b) => a.time.compareTo(b.time));
+    }
     this.operationsLoading = false;
   }
 }
