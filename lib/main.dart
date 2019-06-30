@@ -129,21 +129,7 @@ class _AppState extends State<App> {
               );
             case '/account':
               return MaterialPageRoute(
-                builder: (context) => AccountPage(),
-                settings: settings,
-              );
-            case '/account_borrowed':
-              return MaterialPageRoute(
-                builder: (context) => AccountPage(
-                      isBorrowed: true,
-                    ),
-                settings: settings,
-              );
-            case '/account_new':
-              return MaterialPageRoute(
-                builder: (context) => AccountPage(
-                      isNew: true,
-                    ),
+                builder: (context) => AccountPage(account: settings.arguments),
                 settings: settings,
               );
             case '/security':

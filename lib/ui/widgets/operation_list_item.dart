@@ -29,185 +29,198 @@ class OperationListItem extends StatefulWidget {
 class _OperationListItemState extends State<OperationListItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      height: widget.type == OperationType.Welcome ? null : 74,
-      child: FlatButton(
-        padding: EdgeInsetsDirectional.only(start: 24, end: 24),
-        onPressed: () {
-          if (widget.onPressed != null) {
-            widget.onPressed();
-          }
-          return;
-        },
-        splashColor: StateContainer.of(context).curTheme.primary30,
-        highlightColor: StateContainer.of(context).curTheme.primary15,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        child: widget.type == OperationType.Welcome
-            ? Container(
-                margin: EdgeInsetsDirectional.fromSTEB(30, 16, 30, 16),
-                child: AutoSizeText.rich(
-                  TextSpan(
-                    children: [
+    return Column(
+      children: <Widget>[
+        Container(
+          width: double.maxFinite,
+          height: widget.type == OperationType.Welcome ? null : 74,
+          child: FlatButton(
+            padding: EdgeInsetsDirectional.only(start: 24, end: 24),
+            onPressed: () {
+              if (widget.onPressed != null) {
+                widget.onPressed();
+              }
+              return;
+            },
+            splashColor: StateContainer.of(context).curTheme.primary30,
+            highlightColor: StateContainer.of(context).curTheme.primary15,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            child: widget.type == OperationType.Welcome
+                ? Container(
+                    margin: EdgeInsetsDirectional.fromSTEB(30, 16, 30, 16),
+                    child: AutoSizeText.rich(
                       TextSpan(
-                        text: "This is your new account.\n",
-                        style: AppStyles.paragraph(context),
-                      ),
-                      TextSpan(
-                        text: "Once you receive",
-                        style: AppStyles.paragraph(context),
-                      ),
-                      TextSpan(
-                        text: " PASCAL",
-                        style: AppStyles.paragraphPrimary(context),
-                      ),
-                      TextSpan(
-                        text: ", operations will show up like below.",
-                        style: AppStyles.paragraph(context),
-                      ),
-                    ],
-                  ),
-                  stepGranularity: 0.5,
-                  maxLines: 3,
-                  minFontSize: 8,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14),
-                ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Operation Type
-                      Container(
-                        padding: EdgeInsetsDirectional.fromSTEB(8, 4, 8, 4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: widget.type == OperationType.Received
-                                ? StateContainer.of(context).curTheme.primary
-                                : StateContainer.of(context).curTheme.textDark),
-                        child: AutoSizeText(
-                          widget.type == OperationType.Received
-                              ? "Received"
-                              : "Sent",
-                          style: AppStyles.operationType(context),
-                        ),
-                      ),
-                      // Amount & Payload indicator
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2 - 72,
-                        margin: EdgeInsetsDirectional.only(top: 4),
-                        child: AutoSizeText.rich(
+                        children: [
                           TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "",
-                                style: widget.type == OperationType.Received
-                                    ? AppStyles
-                                        .iconFontPrimaryBalanceSmallPascal(
-                                            context)
-                                    : AppStyles
-                                        .iconFontTextDarkBalanceSmallPascal(
-                                            context),
-                              ),
-                              TextSpan(
-                                  text: " ", style: TextStyle(fontSize: 7)),
-                              TextSpan(
-                                  text: widget.amount,
-                                  style: widget.type == OperationType.Received
-                                      ? AppStyles.balanceSmall(context)
-                                      : AppStyles.balanceSmallTextDark(
-                                          context)),
-                              TextSpan(
-                                  text: " ", style: TextStyle(fontSize: 14)),
-                              widget.payload != null
-                                  ? TextSpan(
-                                      text: "",
-                                      style: widget.type ==
-                                              OperationType.Received
-                                          ? AppStyles
-                                              .iconFontPrimaryBalanceSmallest(
-                                                  context)
-                                          : AppStyles
-                                              .iconFontTextDarkBalanceSmallest(
-                                                  context),
-                                    )
-                                  : TextSpan(),
-                            ],
+                            text: "This is your new account.\n",
+                            style: AppStyles.paragraph(context),
                           ),
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          minFontSize: 4,
-                          stepGranularity: 1,
-                          style: TextStyle(
-                            fontSize: 14,
+                          TextSpan(
+                            text: "Once you receive",
+                            style: AppStyles.paragraph(context),
                           ),
-                        ),
+                          TextSpan(
+                            text: " PASCAL",
+                            style: AppStyles.paragraphPrimary(context),
+                          ),
+                          TextSpan(
+                            text: ", operations will show up like below.",
+                            style: AppStyles.paragraph(context),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      stepGranularity: 0.5,
+                      maxLines: 3,
+                      minFontSize: 8,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      // Address
-                      widget.address[0] == "@"
-                          ? Container(
-                              width: MediaQuery.of(context).size.width / 2 - 72,
-                              alignment: Alignment(1, 0),
-                              child: AutoSizeText.rich(
-                                TextSpan(children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Operation Type
+                          Container(
+                            padding: EdgeInsetsDirectional.fromSTEB(8, 4, 8, 4),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: widget.type == OperationType.Received
+                                    ? StateContainer.of(context).curTheme.primary
+                                    : StateContainer.of(context).curTheme.textDark),
+                            child: AutoSizeText(
+                              widget.type == OperationType.Received
+                                  ? "Received"
+                                  : "Sent",
+                              style: AppStyles.operationType(context),
+                            ),
+                          ),
+                          // Amount & Payload indicator
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 72,
+                            margin: EdgeInsetsDirectional.only(top: 4),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                children: [
                                   TextSpan(
-                                    text: "@",
-                                    style: AppStyles.contactsItemAddressPrimary(
-                                        context),
+                                    text: "",
+                                    style: widget.type == OperationType.Received
+                                        ? AppStyles
+                                            .iconFontPrimaryBalanceSmallPascal(
+                                                context)
+                                        : AppStyles
+                                            .iconFontTextDarkBalanceSmallPascal(
+                                                context),
                                   ),
                                   TextSpan(
-                                    text: widget.address.substring(1),
-                                    style:
-                                        AppStyles.contactsItemAddress(context),
-                                  ),
-                                ]),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  fontFamily: 'SourceCodePro',
-                                  fontSize: 16,
-                                ),
+                                      text: " ", style: TextStyle(fontSize: 7)),
+                                  TextSpan(
+                                      text: widget.amount,
+                                      style: widget.type == OperationType.Received
+                                          ? AppStyles.balanceSmall(context)
+                                          : AppStyles.balanceSmallTextDark(
+                                              context)),
+                                  TextSpan(
+                                      text: " ", style: TextStyle(fontSize: 14)),
+                                  widget.payload != null
+                                      ? TextSpan(
+                                          text: "",
+                                          style: widget.type ==
+                                                  OperationType.Received
+                                              ? AppStyles
+                                                  .iconFontPrimaryBalanceSmallest(
+                                                      context)
+                                              : AppStyles
+                                                  .iconFontTextDarkBalanceSmallest(
+                                                      context),
+                                        )
+                                      : TextSpan(),
+                                ],
                               ),
-                            )
-                          : Container(
-                              width: MediaQuery.of(context).size.width / 2 - 72,
-                              alignment: Alignment(1, 0),
-                              child: AutoSizeText(
-                                widget.address,
-                                style: AppStyles.contactsItemAddress(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.end,
+                              textAlign: TextAlign.start,
+                              maxLines: 1,
+                              minFontSize: 4,
+                              stepGranularity: 1,
+                              style: TextStyle(
+                                fontSize: 14,
                               ),
                             ),
-                      // Date
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2 - 72,
-                        margin: EdgeInsetsDirectional.only(top: 2),
-                        alignment: Alignment(1, 0),
-                        child: AutoSizeText(
-                          widget.date,
-                          style: AppStyles.operationDate(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.end,
-                        ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // Address
+                          widget.address[0] == "@"
+                              ? Container(
+                                  width: MediaQuery.of(context).size.width / 2 - 72,
+                                  alignment: Alignment(1, 0),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                        text: "@",
+                                        style: AppStyles.contactsItemAddressPrimary(
+                                            context),
+                                      ),
+                                      TextSpan(
+                                        text: widget.address.substring(1),
+                                        style:
+                                            AppStyles.contactsItemAddress(context),
+                                      ),
+                                    ]),
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                      fontFamily: 'SourceCodePro',
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: MediaQuery.of(context).size.width / 2 - 72,
+                                  alignment: Alignment(1, 0),
+                                  child: AutoSizeText(
+                                    widget.address,
+                                    style: AppStyles.contactsItemAddress(context),
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                          // Date
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 72,
+                            margin: EdgeInsetsDirectional.only(top: 2),
+                            alignment: Alignment(1, 0),
+                            child: AutoSizeText(
+                              widget.date,
+                              style: AppStyles.operationDate(context),
+                              maxLines: 1,
+                              stepGranularity: 0.1,
+                              textAlign: TextAlign.end,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+          ),
       ),
+        Container(
+          width: double.maxFinite,
+          height: 1,
+          color:
+              StateContainer.of(
+                      context)
+                  .curTheme
+                  .textDark10,
+        )
+      ]
     );
   }
 }

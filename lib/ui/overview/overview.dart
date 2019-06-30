@@ -382,9 +382,8 @@ class _OverviewPageState extends State<OverviewPage> {
     List<Widget> ret = [];
     accounts.forEach((account) {
       ret.add(AccountCard(
-          balance: account.balance.toStringOpt(),
-          name: account.name.accountName,
-          number: account.account.toString()));
+          account: account
+      ));
     });
     return ret;
   }

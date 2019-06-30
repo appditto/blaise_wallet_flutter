@@ -7,16 +7,14 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
 
 /// A widget for buttons
 class AccountCard extends StatefulWidget {
-  final String name;
-  final String number;
-  final String balance;
-  final Function onPressed;
+  final PascalAccount account;
 
-  AccountCard({this.name, this.number, this.balance, this.onPressed});
+  AccountCard({@required this.account});
 
   _AccountCardState createState() => _AccountCardState();
 }
@@ -48,17 +46,15 @@ class _AccountCardState extends State<AccountCard> {
                   highlightColor:
                       StateContainer.of(context).curTheme.textLight15,
                   splashColor: StateContainer.of(context).curTheme.textLight30,
-                  onPressed: widget.onPressed != null
-                      ? widget.onPressed
-                      : () {
-                          Navigator.pushNamed(context, '/account');
-                          AppSheets.showBottomSheet(
-                              context: context,
-                              widget: ReceiveSheet(
-                                accountName: "yekta",
-                                address: "578706-79",
-                              ));
-                        },
+                  onPressed: () {
+                                Navigator.pushNamed(context, '/account', arguments: widget.account);
+                                AppSheets.showBottomSheet(
+                                    context: context,
+                                    widget: ReceiveSheet(
+                                      accountName: "yekta",
+                                      address: "578706-79",
+                                    ));
+                              },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
                   padding: EdgeInsets.all(0.0),
@@ -90,13 +86,11 @@ class _AccountCardState extends State<AccountCard> {
                   highlightColor:
                       StateContainer.of(context).curTheme.textLight15,
                   splashColor: StateContainer.of(context).curTheme.textLight30,
-                  onPressed: widget.onPressed != null
-                      ? widget.onPressed
-                      : () {
-                          Navigator.pushNamed(context, '/account');
-                          AppSheets.showBottomSheet(
-                              context: context, widget: SendSheet());
-                        },
+                  onPressed: () {
+                              Navigator.pushNamed(context, '/account', arguments: widget.account);
+                              AppSheets.showBottomSheet(
+                                  context: context, widget: SendSheet());
+                            },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
                   padding: EdgeInsets.all(0.0),
@@ -128,11 +122,9 @@ class _AccountCardState extends State<AccountCard> {
                       bottomLeft: Radius.circular(12))),
             ),
             FlatButton(
-              onPressed: widget.onPressed != null
-                  ? widget.onPressed
-                  : () {
-                      Navigator.pushNamed(context, '/account');
-                    },
+              onPressed: () {
+                            Navigator.pushNamed(context, '/account', arguments: widget.account);
+                          },
               padding: EdgeInsets.all(0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -149,11 +141,11 @@ class _AccountCardState extends State<AccountCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        isNotEmpty(widget.name)
+                        isNotEmpty(widget.account.name.accountName)
                             ? Container(
                                 margin: EdgeInsetsDirectional.only(bottom: 2),
                                 child: AutoSizeText(
-                                  widget.name,
+                                  widget.account.name.accountName,
                                   style: AppStyles.accountCardName(context),
                                   textAlign: TextAlign.left,
                                   stepGranularity: 0.5,
@@ -163,7 +155,7 @@ class _AccountCardState extends State<AccountCard> {
                               )
                             : SizedBox(),
                         AutoSizeText(
-                          widget.number,
+                          widget.account.account.toString(),
                           style: AppStyles.accountCardAddress(context),
                           textAlign: TextAlign.left,
                           stepGranularity: 0.5,
@@ -188,7 +180,7 @@ class _AccountCardState extends State<AccountCard> {
                           ),
                           TextSpan(text: " ", style: TextStyle(fontSize: 7)),
                           TextSpan(
-                              text: widget.balance,
+                              text: widget.account.balance.toStringOpt(),
                               style: AppStyles.balanceMedium(context)),
                         ],
                       ),

@@ -25,7 +25,7 @@ dependencies:
   # PascalCoin signing/rpc/etc.
   pascaldart:
     git:
-      url: https://github.com/bbedward/pascaldart.git
+      url: git@github.com:bbedward/pascaldart.git
 
   # Localization
   intl: ^0.15.8

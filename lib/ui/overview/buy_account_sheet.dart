@@ -177,9 +177,13 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                       text: "Borrow an Account",
                       buttonTop: true,
                       onPressed: () async {
+                        return;
+                        // TODO
+                        /*
                         await showOverlay(context);
                         Navigator.pop(context);
                         Navigator.pushNamed(context, '/account_borrowed');
+                        */
                       },
                     ),
                   ],

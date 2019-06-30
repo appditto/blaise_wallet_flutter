@@ -159,10 +159,14 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                         text: "CONFIRM",
                         buttonTop: true,
                         onPressed: () async {
+                          return;
+                          // TODO
+                          /*
                           await showOverlay(context);
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Navigator.pushNamed(context, '/account_new');
+                          */
                         },
                       ),
                     ],
