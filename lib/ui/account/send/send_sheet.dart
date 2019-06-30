@@ -1,22 +1,53 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changing_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sending_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/number_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:decimal/decimal.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class SendSheet extends StatefulWidget {
+  PascalAccount account;
+
+  SendSheet({@required this.account});
+
   _SendSheetState createState() => _SendSheetState();
 }
 
 class _SendSheetState extends State<SendSheet> {
+  TextEditingController addressController;
+  TextEditingController amountController;
+  FocusNode addressFocusNode;
+  FocusNode amountFocusNode;
+
+  // Local currency mode/fiat conversion
+  bool _localCurrencyMode = false;
+  String _lastLocalCurrencyAmount = "";
+  String _lastCryptoAmount = "";
+  NumberFormat _localCurrencyFormat;
+
+  @override
+  void initState() {
+    super.initState();
+    this.addressController = TextEditingController();
+    this.amountController = TextEditingController();
+    this.addressFocusNode = FocusNode();
+    this.amountFocusNode = FocusNode();
+    // TODO this is a placeholder
+    _localCurrencyFormat = NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return TapOutsideUnfocus(
@@ -113,7 +144,7 @@ class _SendSheetState extends State<SendSheet> {
                                                     2 -
                                                 45),
                                     child: AutoSizeText(
-                                      "yekta",
+                                      widget.account.name.toString(),
                                       style:
                                           AppStyles.settingsItemHeader(context),
                                       maxLines: 1,
@@ -130,7 +161,7 @@ class _SendSheetState extends State<SendSheet> {
                                                 45),
                                     margin: EdgeInsetsDirectional.only(top: 2),
                                     child: AutoSizeText(
-                                      "578706-79",
+                                      widget.account.account.toString(),
                                       style: AppStyles.monoTextDarkSmall400(
                                           context),
                                       maxLines: 1,
@@ -163,7 +194,7 @@ class _SendSheetState extends State<SendSheet> {
                                               text: " ",
                                               style: TextStyle(fontSize: 7)),
                                           TextSpan(
-                                              text: "9,104",
+                                              text: widget.account.balance.toStringOpt(),
                                               style: AppStyles.balanceSmall(
                                                   context)),
                                         ],
@@ -216,8 +247,24 @@ class _SendSheetState extends State<SendSheet> {
                                     label: 'Address',
                                     style: AppStyles.paragraphMedium(context),
                                     maxLines: 1,
+                                    inputFormatters: [
+                                       WhitelistingTextInputFormatter(RegExp("[0-9-]")),
+                                       PascalAccountFormatter()
+                                    ],
+                                    focusNode: addressFocusNode,
+                                    controller: addressController,
                                     firstButton:
-                                        TextFieldButton(icon: AppIcons.paste),
+                                        TextFieldButton(
+                                          icon: AppIcons.paste,
+                                          onPressed: () {
+                                            Clipboard.getData("text/plain").then((data) {
+                                              try {
+                                                AccountNumber num = AccountNumber(data.text);
+                                                addressController.text = num.toString();
+                                              } catch (e) {}
+                                            });
+                                          },
+                                        ),
                                     secondButton:
                                         TextFieldButton(icon: AppIcons.scan),
                                   ),
@@ -232,17 +279,44 @@ class _SendSheetState extends State<SendSheet> {
                                     maxLines: 1,
                                     inputType: TextInputType.numberWithOptions(
                                         decimal: true),
-                                    prefix: Icon(
+                                    prefix: _localCurrencyMode
+                                    ? Text("")
+                                    : Icon(
                                       AppIcons.pascalsymbol,
                                       size: 15,
                                       color: StateContainer.of(context)
                                           .curTheme
                                           .primary,
-                                    ),
+                                      ),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(13),
+                                      _localCurrencyMode
+                                          ? CurrencyFormatter(
+                                              decimalSeparator:
+                                                  _localCurrencyFormat.symbols.DECIMAL_SEP,
+                                              commaSeparator: _localCurrencyFormat.symbols.GROUP_SEP,
+                                              maxDecimalDigits: 2)
+                                          : CurrencyFormatter(
+                                              maxDecimalDigits: NumberUtil.maxDecimalDigits),
+                                      LocalCurrencyFormatter(
+                                          active: _localCurrencyMode,
+                                          currencyFormat: _localCurrencyFormat),
+                                    ],
+                                    focusNode: amountFocusNode,
+                                    controller: amountController,
                                     firstButton:
-                                        TextFieldButton(icon: AppIcons.max),
+                                        TextFieldButton(
+                                          icon: AppIcons.max,
+                                          onPressed: () {
+                                            amountController.text = widget.account.balance.toStringOpt();
+                                            amountFocusNode.unfocus();
+                                          },
+                                        ),
                                     secondButton: TextFieldButton(
-                                        icon: AppIcons.currencyswitch),
+                                        icon: AppIcons.currencyswitch,
+                                        onPressed: () {
+                                          toggleLocalCurrency();
+                                        }),
                                   ),
                                 ),
                                 // Container for the "Add Payload" button
@@ -329,5 +403,77 @@ class _SendSheetState extends State<SendSheet> {
         ],
       ),
     );
+  }
+
+  void toggleLocalCurrency() {
+    // Keep a cache of previous amounts because, it's kinda nice to see approx what nano is worth
+    // this way you can tap button and tap back and not end up with X.9993451 NANO
+    if (_localCurrencyMode) {
+      // Switching to crypto-mode
+      String cryptoAmountStr;
+      // Check out previous state
+      if (amountController.text == _lastLocalCurrencyAmount) {
+        cryptoAmountStr = _lastCryptoAmount;
+      } else {
+        _lastLocalCurrencyAmount = amountController.text;
+        _lastCryptoAmount = _convertLocalCurrencyToCrypto();
+        cryptoAmountStr = _lastCryptoAmount;
+      }
+      setState(() {
+        _localCurrencyMode = false;
+      });
+      Future.delayed(Duration(milliseconds: 50), () {
+        amountController.text = cryptoAmountStr;
+        amountController.selection = TextSelection.fromPosition(
+            TextPosition(offset: cryptoAmountStr.length));
+      });
+    } else {
+      // Switching to local-currency mode
+      String localAmountStr;
+      // Check our previous state
+      if (amountController.text == _lastCryptoAmount) {
+        localAmountStr = _lastLocalCurrencyAmount;
+      } else {
+        _lastCryptoAmount = amountController.text;
+        _lastLocalCurrencyAmount = _convertCryptoToLocalCurrency();
+        localAmountStr = _lastLocalCurrencyAmount;
+      }
+      setState(() {
+        _localCurrencyMode = true;
+      });
+      Future.delayed(Duration(milliseconds: 50), () {
+        amountController.text = localAmountStr;
+        amountController.selection = TextSelection.fromPosition(
+            TextPosition(offset: localAmountStr.length));
+      });
+    }
+  }
+
+  String _convertLocalCurrencyToCrypto() {
+    String convertedAmt = amountController.text.replaceAll(",", ".");
+    convertedAmt = NumberUtil.sanitizeNumber(convertedAmt);
+    if (convertedAmt.isEmpty) {
+      return "";
+    }
+    Decimal valueLocal = Decimal.parse(convertedAmt);
+    Decimal conversion = Decimal.parse("1.0");// TODO this is a fake conversion
+    return NumberUtil.truncateDecimal(valueLocal / conversion).toString();
+  }
+
+  String _convertCryptoToLocalCurrency() {
+    String convertedAmt = NumberUtil.sanitizeNumber(amountController.text,
+        maxDecimalDigits: 2);
+    if (convertedAmt.isEmpty) {
+      return "";
+    }
+    Decimal valueCrypto = Decimal.parse(convertedAmt);
+    Decimal conversion = Decimal.parse("1.0");
+    convertedAmt =
+        NumberUtil.truncateDecimal(valueCrypto * conversion, digits: 2)
+            .toString();
+    convertedAmt =
+        convertedAmt.replaceAll(".", _localCurrencyFormat.symbols.DECIMAL_SEP);
+    convertedAmt = _localCurrencyFormat.currencySymbol + convertedAmt;
+    return convertedAmt;
   }
 }

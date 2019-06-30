@@ -552,17 +552,23 @@ class _AccountPageState extends State<AccountPage> {
                                     );
                                   },
                                 ),
-                                AppButton(
-                                  text: "Send",
-                                  type: AppButtonType.PrimaryRight,
-                                  disabled: widget.isBorrowed ? true : false,
-                                  onPressed: () {
-                                    AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: SendSheet(),
+                                Observer(
+                                  builder: (BuildContext context) {
+                                    return AppButton(
+                                      text: "Send",
+                                      type: AppButtonType.PrimaryRight,
+                                      disabled: accountState.account.balance > Currency('0') ? false : true,
+                                      onPressed: () {
+                                        AppSheets.showBottomSheet(
+                                          context: context,
+                                          widget: SendSheet(
+                                            account: widget.account,
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
-                                ),
+                                )
                               ],
                             ),
                           ),

@@ -80,6 +80,9 @@ dependencies:
   # quiver - various Dart utilities
   quiver: ^2.0.2
 
+  # big decimal
+  decimal: ^0.3.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

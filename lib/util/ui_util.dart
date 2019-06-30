@@ -39,7 +39,14 @@ class UIUtil {
   }
 
   static String formatDateStr(DateTime dt) {
-    DateFormat df = DateFormat("MMM dd • HH:mm");
-    return df.format(dt);
+    int currentYear = DateTime.now().toLocal().year;
+    DateTime localTime = dt.toLocal();
+    DateFormat df;
+    if (localTime.year != currentYear) {
+      df = DateFormat("MMM dd, yyyy • HH:mm");
+    } else {
+      df = DateFormat("MMM dd • HH:mm");
+    }
+    return  df.format(localTime);
   }
 }

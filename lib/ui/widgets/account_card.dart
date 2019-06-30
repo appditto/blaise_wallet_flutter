@@ -64,8 +64,10 @@ class _AccountCardState extends State<AccountCard> {
             ),
           ),
         ),
+        widget.account.balance == Currency('0')
+        ? SizedBox()
         // Send Icon
-        Container(
+        : Container(
           color: Colors.transparent,
           padding: EdgeInsetsDirectional.only(
             start: (MediaQuery.of(context).size.width * 0.05) * 2 / 3,
@@ -87,10 +89,12 @@ class _AccountCardState extends State<AccountCard> {
                       StateContainer.of(context).curTheme.textLight15,
                   splashColor: StateContainer.of(context).curTheme.textLight30,
                   onPressed: () {
-                              Navigator.pushNamed(context, '/account', arguments: widget.account);
-                              AppSheets.showBottomSheet(
-                                  context: context, widget: SendSheet());
-                            },
+                    if (widget.account.balance > Currency('0')) {
+                      Navigator.pushNamed(context, '/account', arguments: widget.account);
+                      AppSheets.showBottomSheet(
+                          context: context, widget: SendSheet(account: widget.account));
+                    }
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0)),
                   padding: EdgeInsets.all(0.0),
