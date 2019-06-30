@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/c
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -17,6 +18,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/operation_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -533,16 +535,21 @@ class _AccountPageState extends State<AccountPage> {
                             margin: EdgeInsetsDirectional.only(top: 4),
                             child: Row(
                               children: <Widget>[
-                                AppButton(
-                                  text: "Receive",
-                                  type: AppButtonType.PrimaryLeft,
-                                  onPressed: () {
-                                    AppSheets.showBottomSheet(
-                                        context: context,
-                                        widget: ReceiveSheet(
-                                          accountName: "yekta",
-                                          address: "578706-79",
-                                        ));
+                                Observer(
+                                  builder: (BuildContext context) {
+                                    PascalAccount account = accountState.account;
+                                    return AppButton(
+                                      text: "Receive",
+                                      type: AppButtonType.PrimaryLeft,
+                                      onPressed: () {
+                                        AppSheets.showBottomSheet(
+                                            context: context,
+                                            widget: ReceiveSheet(
+                                              accountName: account.name.accountName,
+                                              accountNumber: account.account,
+                                            ));
+                                      },
+                                    );
                                   },
                                 ),
                                 AppButton(
@@ -573,7 +580,6 @@ class _AccountPageState extends State<AccountPage> {
   void updateAccountHistory() {
     List<Widget> history = [];
     this.accountState.operations.forEach((op) {
-      print(op.opblock);
       if (op.optype == OpType.TRANSACTION) {
         OperationType type;
         if (op.amount.pasc < BigInt.zero) {
@@ -584,9 +590,19 @@ class _AccountPageState extends State<AccountPage> {
         history.add(OperationListItem(
           type: type,
           amount: op.receivers[0].amount.toStringOpt(),
-          address: op.receivers[0].receivingAccount.toString(),
-          date: op.time.toIso8601String(),
-          payload: op.receivers[0].payload
+          address: type == OperationType.Received ? op.senders[0].sendingAccount.toString() : op.receivers[0].receivingAccount.toString(),
+          date: UIUtil.formatDateStr(op.time),
+          payload: op.receivers[0].payload,
+          onPressed: () {
+            AppSheets.showBottomSheet(
+                context: context,
+                animationDurationMs: 200,
+                widget: TransactionDetailsSheet(
+                  payload: op.receivers[0].payload,
+                  ophash: op.ophash,
+                  account: type == OperationType.Received ? op.senders[0].sendingAccount : op.receivers[0].receivingAccount,
+                ));
+          },
         ));
       }
     });

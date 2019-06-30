@@ -1,5 +1,6 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter/material.dart';
 
@@ -35,5 +36,10 @@ class UIUtil {
       dismissOtherToast: true,
       duration: Duration(milliseconds: 2000),
     );
+  }
+
+  static String formatDateStr(DateTime dt) {
+    DateFormat df = DateFormat("MMM dd • HH:mm");
+    return df.format(dt);
   }
 }

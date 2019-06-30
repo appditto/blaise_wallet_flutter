@@ -166,11 +166,13 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                                 if (_keyCopiedTimer != null) {
                                   _keyCopiedTimer.cancel();
                                 }
-                                _keyCopiedTimer = new Timer(
+                                _keyCopiedTimer = Timer(
                                     const Duration(milliseconds: 1500), () {
-                                  setState(() {
-                                    _keyCopied = false;
-                                  });
+                                  if (mounted) {
+                                    setState(() {
+                                      _keyCopied = false;
+                                    });
+                                  }
                                 });
                               },
                             ),

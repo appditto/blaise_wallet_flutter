@@ -166,10 +166,12 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                           _keyCopiedTimer.cancel();
                         }
                         _keyCopiedTimer =
-                            new Timer(const Duration(milliseconds: 1500), () {
-                          setState(() {
-                            _keyCopied = false;
-                          });
+                            Timer(const Duration(milliseconds: 1500), () {
+                          if (mounted) {
+                            setState(() {
+                              _keyCopied = false;
+                            });
+                          }
                         });
                       },
                     ),

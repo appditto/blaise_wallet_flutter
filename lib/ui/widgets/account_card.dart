@@ -51,8 +51,8 @@ class _AccountCardState extends State<AccountCard> {
                                 AppSheets.showBottomSheet(
                                     context: context,
                                     widget: ReceiveSheet(
-                                      accountName: "yekta",
-                                      address: "578706-79",
+                                      accountName: widget.account.name.accountName,
+                                      accountNumber: widget.account.account,
                                     ));
                               },
                   shape: RoundedRectangleBorder(

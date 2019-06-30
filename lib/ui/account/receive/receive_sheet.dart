@@ -8,13 +8,16 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pascaldart/pascaldart.dart';
 import 'package:qr/qr.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:quiver/strings.dart';
 
 class ReceiveSheet extends StatefulWidget {
   final String accountName;
-  final String address;
-  ReceiveSheet({this.accountName, this.address});
+  final AccountNumber accountNumber;
+  ReceiveSheet({this.accountName, this.accountNumber});
 
   _ReceiveSheetState createState() => _ReceiveSheetState();
 }
@@ -87,7 +90,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            child: widget.accountName == null
+                            child: isEmpty(widget.accountName)
                                 ? SizedBox()
                                 : Container(
                                     margin: EdgeInsets.only(bottom: 2),
@@ -106,7 +109,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                           Container(
                             width: MediaQuery.of(context).size.width - 130,
                             child: AutoSizeText(
-                              widget.address,
+                              widget.accountNumber.toString(),
                               style: AppStyles.accountCardAddress(context),
                               maxLines: 1,
                               stepGranularity: 0.1,
@@ -167,7 +170,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                     ),
                     // QR Code
                     QrImage(
-                      data: widget.address,
+                      data: widget.accountNumber.toString(),
                       size: 180.0,
                       errorCorrectionLevel: QrErrorCorrectLevel.Q,
                       gapless: false,
@@ -208,6 +211,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                     text: _addressCopied ? "Address Copied" : "Copy Address",
                     buttonTop: true,
                     onPressed: () {
+                      Clipboard.setData(ClipboardData(text: widget.accountNumber.toString()));
                       setState(() {
                         _addressCopied = true;
                       });
@@ -215,10 +219,12 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                         _addressCopiedTimer.cancel();
                       }
                       _addressCopiedTimer =
-                          new Timer(const Duration(milliseconds: 1500), () {
-                        setState(() {
-                          _addressCopied = false;
-                        });
+                          Timer(const Duration(milliseconds: 1500), () {
+                        if (mounted) {
+                          setState(() {
+                            _addressCopied = false;
+                          });
+                        }
                       });
                     },
                   ),
@@ -234,7 +240,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                         Navigator.pop(context);
                         AppSheets.showBottomSheet(
                             context: context,
-                            widget: RequestSheet(address: widget.address));
+                            widget: RequestSheet(address: widget.accountNumber.toString()));
                       },
                   ),
                 ],

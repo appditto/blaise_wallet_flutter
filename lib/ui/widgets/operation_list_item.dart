@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 enum OperationType { Received, Sent, Welcome }
 
@@ -125,7 +126,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                               context)),
                                   TextSpan(
                                       text: " ", style: TextStyle(fontSize: 14)),
-                                  widget.payload != null
+                                  isNotEmpty(widget.payload)
                                       ? TextSpan(
                                           text: "",
                                           style: widget.type ==

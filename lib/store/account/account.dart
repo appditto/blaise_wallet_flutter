@@ -42,7 +42,7 @@ abstract class AccountBase with Store {
     } else {
       // Diff and update operations
       this.operations.addAll(opResp.operations.where((op) => !this.operations.contains(op)));
-      this.operations.sort((a, b) => a.time.compareTo(b.time));
+      this.operations.sort((a, b) => b.time.compareTo(a.time));
     }
     this.operationsLoading = false;
   }

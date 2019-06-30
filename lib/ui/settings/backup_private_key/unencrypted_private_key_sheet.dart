@@ -226,10 +226,12 @@ class _UnencryptedPrivateKeySheetState
                           _keyCopiedTimer.cancel();
                         }
                         _keyCopiedTimer =
-                            new Timer(const Duration(milliseconds: 1500), () {
-                          setState(() {
-                            _keyCopied = false;
-                          });
+                            Timer(const Duration(milliseconds: 1500), () {
+                          if (mounted) {
+                            setState(() {
+                              _keyCopied = false;
+                            });
+                          }
                         });
                       },
                     ),

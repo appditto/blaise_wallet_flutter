@@ -1,18 +1,24 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
-import 'package:qr/qr.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:pascaldart/crypto.dart';
+import 'package:pascaldart/pascaldart.dart';
+import 'package:quiver/strings.dart';
 
 class TransactionDetailsSheet extends StatefulWidget {
   final String payload;
+  final String ophash;
+  final AccountNumber account;
   final bool isContact;
-  TransactionDetailsSheet({this.payload, this.isContact = false});
+  TransactionDetailsSheet({@required this.ophash, @required this.account, this.payload, this.isContact = false});
 
   _TransactionDetailsSheetState createState() =>
       _TransactionDetailsSheetState();
@@ -21,11 +27,29 @@ class TransactionDetailsSheet extends StatefulWidget {
 class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
   bool _addressCopied;
   Timer _addressCopiedTimer;
+  String payload;
 
   @override
   void initState() {
     super.initState();
     _addressCopied = false;
+    if (isNotEmpty(widget.payload)) {
+      try {
+        payload = PDUtil.bytesToUtf8String(PDUtil.hexToBytes(widget.payload));
+      } catch (e) {
+        // Try to decrypt this payload with private key
+        sl.get<Vault>().getPrivateKey().then((pkey) {
+          PrivateKey pk = PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(pkey));
+          try {
+            Uint8List result = EciesCrypt.decrypt(PDUtil.hexToBytes(widget.payload), pk);
+            String asUtf8 = PDUtil.bytesToUtf8String(result);
+            setState(() {
+              payload = asUtf8;
+            });
+          } catch (e) {}
+        });
+      }
+    }
   }
 
   @override
@@ -43,7 +67,7 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
           ),
           child: Column(
             children: <Widget>[
-              widget.payload != null
+              isNotEmpty(payload)
                   ? Container(
                       margin: EdgeInsetsDirectional.only(top: 20),
                       child: AutoSizeText(
@@ -56,7 +80,7 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                       ),
                     )
                   : SizedBox(),
-              widget.payload != null
+              isNotEmpty(payload)
                   ? Container(
                       margin: EdgeInsetsDirectional.only(
                           start: 24, end: 24, top: 10, bottom: 4),
@@ -70,7 +94,7 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                         color: StateContainer.of(context).curTheme.textDark10,
                       ),
                       child: AutoSizeText(
-                        widget.payload,
+                        payload,
                         maxLines: 6,
                         stepGranularity: 0.1,
                         minFontSize: 8,
@@ -89,6 +113,7 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                     text: _addressCopied ? "Address Copied" : "Copy Address",
                     buttonTop: true,
                     onPressed: () {
+                      Clipboard.setData(ClipboardData(text: widget.account.toString()));
                       setState(() {
                         _addressCopied = true;
                       });
@@ -96,10 +121,12 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                         _addressCopiedTimer.cancel();
                       }
                       _addressCopiedTimer =
-                          new Timer(const Duration(milliseconds: 1500), () {
-                        setState(() {
-                          _addressCopied = false;
-                        });
+                          Timer(const Duration(milliseconds: 1500), () {
+                        if (mounted) {
+                          setState(() {
+                            _addressCopied = false;
+                          });
+                        }
                       });
                     },
                   ),
