@@ -45,11 +45,13 @@ class _SendSheetState extends State<SendSheet> {
     this.addressFocusNode = FocusNode();
     this.amountFocusNode = FocusNode();
     // TODO this is a placeholder
-    _localCurrencyFormat = NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
+    _localCurrencyFormat =
+        NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
   }
 
   @override
   Widget build(BuildContext context) {
+    print("This is the account name:" + widget.account.name.toString() + "END");
     return TapOutsideUnfocus(
       child: Column(
         children: <Widget>[
@@ -132,26 +134,31 @@ class _SendSheetState extends State<SendSheet> {
                               EdgeInsetsDirectional.fromSTEB(30, 16, 30, 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   // Account name
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                45),
-                                    child: AutoSizeText(
-                                      widget.account.name.toString(),
-                                      style:
-                                          AppStyles.settingsItemHeader(context),
-                                      maxLines: 1,
-                                      minFontSize: 8,
-                                      stepGranularity: 0.1,
-                                    ),
-                                  ),
+                                  widget.account.name == null || widget.account.name.toString() == ""
+                                      ? SizedBox()
+                                      : Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2 -
+                                                  45),
+                                          child: AutoSizeText(
+                                            widget.account.name.toString(),
+                                            style: AppStyles.settingsItemHeader(
+                                                context),
+                                            maxLines: 1,
+                                            minFontSize: 8,
+                                            stepGranularity: 0.1,
+                                          ),
+                                        ),
                                   // Acccount address
                                   Container(
                                     constraints: BoxConstraints(
@@ -173,6 +180,7 @@ class _SendSheetState extends State<SendSheet> {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   // Account balance
                                   Container(
@@ -194,7 +202,8 @@ class _SendSheetState extends State<SendSheet> {
                                               text: " ",
                                               style: TextStyle(fontSize: 7)),
                                           TextSpan(
-                                              text: widget.account.balance.toStringOpt(),
+                                              text: widget.account.balance
+                                                  .toStringOpt(),
                                               style: AppStyles.balanceSmall(
                                                   context)),
                                         ],
@@ -248,23 +257,26 @@ class _SendSheetState extends State<SendSheet> {
                                     style: AppStyles.paragraphMedium(context),
                                     maxLines: 1,
                                     inputFormatters: [
-                                       WhitelistingTextInputFormatter(RegExp("[0-9-]")),
-                                       PascalAccountFormatter()
+                                      WhitelistingTextInputFormatter(
+                                          RegExp("[0-9-]")),
+                                      PascalAccountFormatter()
                                     ],
                                     focusNode: addressFocusNode,
                                     controller: addressController,
-                                    firstButton:
-                                        TextFieldButton(
-                                          icon: AppIcons.paste,
-                                          onPressed: () {
-                                            Clipboard.getData("text/plain").then((data) {
-                                              try {
-                                                AccountNumber num = AccountNumber(data.text);
-                                                addressController.text = num.toString();
-                                              } catch (e) {}
-                                            });
-                                          },
-                                        ),
+                                    firstButton: TextFieldButton(
+                                      icon: AppIcons.paste,
+                                      onPressed: () {
+                                        Clipboard.getData("text/plain")
+                                            .then((data) {
+                                          try {
+                                            AccountNumber num =
+                                                AccountNumber(data.text);
+                                            addressController.text =
+                                                num.toString();
+                                          } catch (e) {}
+                                        });
+                                      },
+                                    ),
                                     secondButton:
                                         TextFieldButton(icon: AppIcons.scan),
                                   ),
@@ -280,38 +292,43 @@ class _SendSheetState extends State<SendSheet> {
                                     inputType: TextInputType.numberWithOptions(
                                         decimal: true),
                                     prefix: _localCurrencyMode
-                                    ? Text("")
-                                    : Icon(
-                                      AppIcons.pascalsymbol,
-                                      size: 15,
-                                      color: StateContainer.of(context)
-                                          .curTheme
-                                          .primary,
-                                      ),
+                                        ? Text("")
+                                        : Icon(
+                                            AppIcons.pascalsymbol,
+                                            size: 15,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .primary,
+                                          ),
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(13),
                                       _localCurrencyMode
                                           ? CurrencyFormatter(
                                               decimalSeparator:
-                                                  _localCurrencyFormat.symbols.DECIMAL_SEP,
-                                              commaSeparator: _localCurrencyFormat.symbols.GROUP_SEP,
+                                                  _localCurrencyFormat
+                                                      .symbols.DECIMAL_SEP,
+                                              commaSeparator:
+                                                  _localCurrencyFormat
+                                                      .symbols.GROUP_SEP,
                                               maxDecimalDigits: 2)
                                           : CurrencyFormatter(
-                                              maxDecimalDigits: NumberUtil.maxDecimalDigits),
+                                              maxDecimalDigits:
+                                                  NumberUtil.maxDecimalDigits),
                                       LocalCurrencyFormatter(
                                           active: _localCurrencyMode,
                                           currencyFormat: _localCurrencyFormat),
                                     ],
                                     focusNode: amountFocusNode,
                                     controller: amountController,
-                                    firstButton:
-                                        TextFieldButton(
-                                          icon: AppIcons.max,
-                                          onPressed: () {
-                                            amountController.text = widget.account.balance.toStringOpt();
-                                            amountFocusNode.unfocus();
-                                          },
-                                        ),
+                                    firstButton: TextFieldButton(
+                                      icon: AppIcons.max,
+                                      onPressed: () {
+                                        amountController.text = widget
+                                            .account.balance
+                                            .toStringOpt();
+                                        amountFocusNode.unfocus();
+                                      },
+                                    ),
                                     secondButton: TextFieldButton(
                                         icon: AppIcons.currencyswitch,
                                         onPressed: () {
@@ -456,13 +473,13 @@ class _SendSheetState extends State<SendSheet> {
       return "";
     }
     Decimal valueLocal = Decimal.parse(convertedAmt);
-    Decimal conversion = Decimal.parse("1.0");// TODO this is a fake conversion
+    Decimal conversion = Decimal.parse("1.0"); // TODO this is a fake conversion
     return NumberUtil.truncateDecimal(valueLocal / conversion).toString();
   }
 
   String _convertCryptoToLocalCurrency() {
-    String convertedAmt = NumberUtil.sanitizeNumber(amountController.text,
-        maxDecimalDigits: 2);
+    String convertedAmt =
+        NumberUtil.sanitizeNumber(amountController.text, maxDecimalDigits: 2);
     if (convertedAmt.isEmpty) {
       return "";
     }
