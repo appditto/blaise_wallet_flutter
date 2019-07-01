@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:decimal/decimal.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:pascaldart/pascaldart.dart';
+import 'package:quiver/strings.dart';
 
 class SendSheet extends StatefulWidget {
   PascalAccount account;
@@ -141,7 +142,7 @@ class _SendSheetState extends State<SendSheet> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   // Account name
-                                  widget.account.name == null || widget.account.name.toString() == ""
+                                  isEmpty(widget.account.name.toString())
                                       ? SizedBox()
                                       : Container(
                                           constraints: BoxConstraints(
