@@ -26,12 +26,14 @@ class AppStyles {
         fontWeight: FontWeight.w500,
         color: StateContainer.of(context).curTheme.primary);
   }
+
   static TextStyle headerSmallBold(BuildContext context) {
     return TextStyle(
         fontSize: AppFontSizes.medium,
         fontWeight: FontWeight.w700,
         color: StateContainer.of(context).curTheme.primary);
   }
+
   // For paragraphs
   static TextStyle paragraph(BuildContext context) {
     return TextStyle(
@@ -98,6 +100,13 @@ class AppStyles {
   static TextStyle balanceSmallTextDark(BuildContext context) {
     return TextStyle(
         color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w600);
+  }
+
+  static TextStyle balanceSmallSecondary(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.secondary,
         fontSize: 14.0,
         fontWeight: FontWeight.w600);
   }
@@ -209,6 +218,7 @@ class AppStyles {
         fontSize: 16.0,
         fontWeight: FontWeight.w400);
   }
+
   static TextStyle contactsItemAddressPrimary(BuildContext context) {
     return TextStyle(
         fontFamily: 'SourceCodePro',
@@ -216,6 +226,7 @@ class AppStyles {
         fontSize: 16.0,
         fontWeight: FontWeight.w400);
   }
+
   static TextStyle monoTextDarkSmall400(BuildContext context) {
     return TextStyle(
         fontFamily: 'SourceCodePro',
@@ -340,6 +351,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   // For pascal icon on the account card balance
   static TextStyle iconFontPrimaryBalanceMediumPascal(BuildContext context) {
     return TextStyle(
@@ -348,6 +360,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   // For pascal icon on the operation items
   static TextStyle iconFontPrimaryBalanceSmallPascal(BuildContext context) {
     return TextStyle(
@@ -356,6 +369,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   static TextStyle iconFontSuccessBalanceSmallPascal(BuildContext context) {
     return TextStyle(
       fontSize: 14,
@@ -363,6 +377,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   static TextStyle iconFontTextDarkBalanceSmallPascal(BuildContext context) {
     return TextStyle(
       fontSize: 14,
@@ -370,6 +385,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   // For chat bubble icon
   static TextStyle iconFontPrimaryBalanceSmallest(BuildContext context) {
     return TextStyle(
@@ -378,6 +394,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   static TextStyle iconFontTextDarkBalanceSmallest(BuildContext context) {
     return TextStyle(
       fontSize: 12,
@@ -385,6 +402,7 @@ class AppStyles {
       fontFamily: 'AppIcons',
     );
   }
+
   // Account Card Name
   static TextStyle accountCardName(BuildContext context) {
     return TextStyle(
@@ -393,6 +411,7 @@ class AppStyles {
       fontWeight: FontWeight.w700,
     );
   }
+
   // Account Card Address
   static TextStyle accountCardAddress(BuildContext context) {
     return TextStyle(
