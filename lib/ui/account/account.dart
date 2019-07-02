@@ -44,6 +44,7 @@ class _AccountPageState extends State<AccountPage> {
     super.initState();
     this.operationsList = getOperationsList();
     this.accountState = walletState.getAccountState(widget.account);
+    this.accountState.updateAccount();
     if (!this.accountState.operationsLoading) {
       updateAccountHistory();
     }

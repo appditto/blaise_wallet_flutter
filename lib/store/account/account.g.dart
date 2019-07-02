@@ -72,6 +72,13 @@ mixin _$Account on AccountBase, Store {
     _$operationsAtom.reportChanged();
   }
 
+  final _$updateAccountAsyncAction = AsyncAction('updateAccount');
+
+  @override
+  Future<bool> updateAccount() {
+    return _$updateAccountAsyncAction.run(() => super.updateAccount());
+  }
+
   final _$getAccountOperationsAsyncAction = AsyncAction('getAccountOperations');
 
   @override

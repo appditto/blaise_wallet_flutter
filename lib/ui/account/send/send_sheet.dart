@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sending_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
@@ -38,6 +39,10 @@ class _SendSheetState extends State<SendSheet> {
   String _lastCryptoAmount = "";
   NumberFormat _localCurrencyFormat;
 
+  // Errors
+  String destinationError;
+  String amountError;
+
   @override
   void initState() {
     super.initState();
@@ -48,11 +53,18 @@ class _SendSheetState extends State<SendSheet> {
     // TODO this is a placeholder
     _localCurrencyFormat =
         NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
+    this.addressController.addListener(() {
+      if (!this.addressFocusNode.hasFocus) {
+        try {
+          AccountNumber numberFormatted = AccountNumber(this.addressController.text);
+          this.addressController.text = numberFormatted.toString();
+        } catch (e) { }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    print("This is the account name:" + widget.account.name.toString() + "END");
     return TapOutsideUnfocus(
       child: Column(
         children: <Widget>[
@@ -262,6 +274,11 @@ class _SendSheetState extends State<SendSheet> {
                                           RegExp("[0-9-]")),
                                       PascalAccountFormatter()
                                     ],
+                                    onChanged: (text) {
+                                      setState(() {
+                                        destinationError = null;
+                                      });
+                                    },
                                     focusNode: addressFocusNode,
                                     controller: addressController,
                                     firstButton: TextFieldButton(
@@ -280,6 +297,22 @@ class _SendSheetState extends State<SendSheet> {
                                     ),
                                     secondButton:
                                         TextFieldButton(icon: AppIcons.scan),
+                                  ),
+                                ),
+                                // Error Text
+                                Container(
+                                  margin: EdgeInsetsDirectional.only(
+                                      start: 30,
+                                      end: 30,
+                                      top: 4,
+                                      bottom: 40),
+                                  child: Text(
+                                    destinationError == null
+                                        ? ""
+                                        : destinationError,
+                                    style:
+                                        AppStyles.paragraphPrimary(context),
+                                    textAlign: TextAlign.start
                                   ),
                                 ),
                                 // Container for the amount text field
@@ -301,6 +334,11 @@ class _SendSheetState extends State<SendSheet> {
                                                 .curTheme
                                                 .primary,
                                           ),
+                                    onChanged: (text) {
+                                      setState(() {
+                                        amountError = null;
+                                      });
+                                    },
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(13),
                                       _localCurrencyMode
@@ -335,6 +373,22 @@ class _SendSheetState extends State<SendSheet> {
                                         onPressed: () {
                                           toggleLocalCurrency();
                                         }),
+                                  ),
+                                ),
+                                // Error Text
+                                Container(
+                                  margin: EdgeInsetsDirectional.only(
+                                      start: 30,
+                                      end: 30,
+                                      top: 4,
+                                      bottom: 40),
+                                  child: Text(
+                                    amountError == null
+                                        ? ""
+                                        : amountError,
+                                    style:
+                                        AppStyles.paragraphPrimary(context),
+                                    textAlign: TextAlign.start
                                   ),
                                 ),
                                 // Container for the "Add Payload" button
@@ -394,10 +448,7 @@ class _SendSheetState extends State<SendSheet> {
                         text: "Send",
                         buttonTop: true,
                         onPressed: () {
-                          AppSheets.showBottomSheet(
-                              context: context,
-                              widget: SendingSheet(),
-                              noBlur: true);
+                          validateAndSend();
                         },
                       ),
                     ],
@@ -421,6 +472,33 @@ class _SendSheetState extends State<SendSheet> {
         ],
       ),
     );
+  }
+
+  void validateAndSend() {
+    bool hasError = false;
+    Account accountState = walletState.getAccountState(widget.account);
+    if (accountState.account.balance < Currency(amountController.text)) {
+      hasError = true;
+      setState(() {
+        amountError = "Insufficent Balance";
+      });
+    }
+    try {
+      AccountNumber(addressController.text);
+    } catch (e) {
+      hasError = true;
+      setState(() {
+        destinationError = "Invalid Destination";
+      });
+    }
+    if (!hasError) {
+      AppSheets.showBottomSheet(
+          context: context,
+          widget: SendingSheet(destination: addressController.text,
+                               amount: amountController.text,
+                               source: widget.account),
+          noBlur: true);
+    }
   }
 
   void toggleLocalCurrency() {

@@ -2,25 +2,35 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sent_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class SendingSheet extends StatefulWidget {
+  final String destination;
+  final String amount;
+  final String payload;
+  final PascalAccount source;
+
+  SendingSheet({@required this.destination, @required this.amount, @required this.source, this.payload = ""});
+
   _SendingSheetState createState() => _SendingSheetState();
 }
 
 class _SendingSheetState extends State<SendingSheet> {
-  showOverlay(BuildContext context) async {
+  OverlayEntry _overlay;
+
+  void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
@@ -47,9 +57,7 @@ class _SendingSheetState extends State<SendingSheet> {
             ),
           ),
     );
-    overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(milliseconds: 1500));
-    overlayEntry.remove();
+    overlayState.insert(_overlay);
   }
 
   @override
@@ -166,7 +174,7 @@ class _SendingSheetState extends State<SendingSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "186418-64",
+                          widget.destination,
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -210,7 +218,7 @@ class _SendingSheetState extends State<SendingSheet> {
                               TextSpan(
                                   text: " ", style: TextStyle(fontSize: 8)),
                               TextSpan(
-                                  text: "191.9",
+                                  text: widget.amount,
                                   style: AppStyles.balanceSmall(context)),
                             ],
                           ),
@@ -234,12 +242,31 @@ class _SendingSheetState extends State<SendingSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Authenticate to send 191.9 Pascal.")) {
-                          await showOverlay(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                              context: context, widget: SentSheet());
+                        if (await AuthUtil().authenticate("Authenticate to send ${widget.amount} Pascal.")) {
+                          showOverlay(context);
+                          // Do send
+                          walletState.getAccountState(widget.source).doSend(
+                            amount: widget.amount,
+                            destination: widget.destination,
+                            payload: widget.payload
+                          ).then((result) {
+                            if (result.isError) {
+                              ErrorResponse errResp = result;
+                              UIUtil.showSnackbar(errResp.errorMessage, context);
+                              _overlay?.remove();
+                              Navigator.of(context).pop();
+                            } else {
+                              _overlay?.remove();
+                              OperationsResponse resp = result;
+                              PascalOperation op = resp.operations[0];
+                              if (op.valid) {
+                                Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+                                AppSheets.showBottomSheet(context: context, widget: SentSheet());
+                              } else {
+                                UIUtil.showSnackbar("Invalid: ${op.errors}", context);
+                              }
+                            }
+                          });
                         }
                       },
                     ),
