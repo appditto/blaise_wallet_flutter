@@ -83,9 +83,12 @@ abstract class AccountBase with Store {
     if (resp.isError) {
       return resp;
     }
-    this.account.balance-=Currency(amount);
-    this.account.nOperation++;
-    this.getAccountOperations();
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid) {
+      this.account.balance-=Currency(amount);
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
     return resp;
   }
 }
