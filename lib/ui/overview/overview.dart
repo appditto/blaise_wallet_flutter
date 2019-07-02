@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/account_card.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/placeholder_account_card.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,28 @@ class _OverviewPageState extends State<OverviewPage> {
                                         child: Observer(
                                             builder: (BuildContext context) {
                                           if (walletState.walletLoading) {
-                                            return Text("Balance Loading");
+                                            return Align(
+                                              alignment: Alignment(-1, 0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: AutoSizeText(
+                                                  "             ",
+                                                  style:
+                                                      AppStyles.header(context),
+                                                  maxLines: 1,
+                                                  minFontSize: 8,
+                                                  stepGranularity: 1,
+                                                ),
+                                              ),
+                                            );
                                           } else {
                                             return AutoSizeText.rich(
                                               TextSpan(
@@ -154,15 +176,38 @@ class _OverviewPageState extends State<OverviewPage> {
                                     Container(
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           24, 0, 24, 0),
-                                      child: AutoSizeText(
-                                        widget.newWallet
-                                            ? "(\$" + "0.00" + ")"
-                                            : "(\$" + "2,745.14" + ")",
-                                        style:
-                                            AppStyles.paragraphTextLightSmall(
-                                                context),
+                                      child: Observer(
+                                        builder: (BuildContext context) {
+                                          if (walletState.walletLoading) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textLight,
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
+                                              child: AutoSizeText(
+                                                "                  ",
+                                                style: AppStyles
+                                                    .paragraphTextLightSmall(
+                                                        context),
+                                              ),
+                                            );
+                                          } else {
+                                            return AutoSizeText(
+                                              widget.newWallet
+                                                  ? "(\$" + "0.00" + ")"
+                                                  : "(\$" + "2,745.14" + ")",
+                                              style: AppStyles
+                                                  .paragraphTextLightSmall(
+                                                      context),
+                                            );
+                                          }
+                                        },
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                                 // Column for settings icon and price text
@@ -222,10 +267,45 @@ class _OverviewPageState extends State<OverviewPage> {
                         if (walletState.walletLoading) {
                           return Expanded(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Center(
-                                  child: Text("Loading", style: AppStyles.paragraph(context),),
+                                // Accounts text
+                                Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      24, 18, 24, 4),
+                                  alignment: Alignment(-1, 0),
+                                  child: AutoSizeText(
+                                    "Accounts".toUpperCase(),
+                                    style: AppStyles.headerSmall(context),
+                                    textAlign: TextAlign.left,
+                                    stepGranularity: 0.5,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                // Accounts List
+                                Expanded(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      // The list
+                                      ListView(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 3, 0, 19),
+                                          children: [
+                                            PlaceholderAccountCard(),
+                                            PlaceholderAccountCard(),
+                                            PlaceholderAccountCard(),
+                                          ]),
+                                      // The gradient at the top
+                                      Container(
+                                        height: 8,
+                                        width: double.maxFinite,
+                                        decoration: BoxDecoration(
+                                            gradient: StateContainer.of(context)
+                                                .curTheme
+                                                .gradientListTop),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -381,9 +461,7 @@ class _OverviewPageState extends State<OverviewPage> {
   List<Widget> _getAccountCards(List<PascalAccount> accounts) {
     List<Widget> ret = [];
     accounts.forEach((account) {
-      ret.add(AccountCard(
-          account: account
-      ));
+      ret.add(AccountCard(account: account));
     });
     return ret;
   }
