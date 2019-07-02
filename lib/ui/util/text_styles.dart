@@ -386,6 +386,14 @@ class AppStyles {
     );
   }
 
+  static TextStyle iconFontSecondarySmallPascal(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      color: StateContainer.of(context).curTheme.secondary,
+      fontFamily: 'AppIcons',
+    );
+  }
+
   // For chat bubble icon
   static TextStyle iconFontPrimaryBalanceSmallest(BuildContext context) {
     return TextStyle(

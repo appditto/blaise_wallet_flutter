@@ -4,7 +4,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-enum OperationType { Received, Sent, NameChanged, Welcome }
+enum OperationType { Received, Sent, NameChanged, ListedForSale, Welcome }
 
 /// A widget for displaying a mnemonic phrase
 class OperationListItem extends StatefulWidget {
@@ -15,6 +15,7 @@ class OperationListItem extends StatefulWidget {
   final String payload;
   final Function onPressed;
   final String name;
+  final String price;
 
   OperationListItem({
     this.type,
@@ -24,6 +25,7 @@ class OperationListItem extends StatefulWidget {
     this.payload,
     this.onPressed,
     this.name,
+    this.price,
   });
 
   _OperationListItemState createState() => _OperationListItemState();
@@ -96,11 +98,9 @@ class _OperationListItemState extends State<OperationListItem> {
                                       ? StateContainer.of(context)
                                           .curTheme
                                           .textDark
-                                      : widget.type == OperationType.NameChanged
-                                          ? StateContainer.of(context)
-                                              .curTheme
-                                              .secondary
-                                          : null),
+                                      : StateContainer.of(context)
+                                          .curTheme
+                                          .secondary),
                           child: AutoSizeText(
                             widget.type == OperationType.Received
                                 ? "Received"
@@ -108,25 +108,21 @@ class _OperationListItemState extends State<OperationListItem> {
                                     ? "Sent"
                                     : widget.type == OperationType.NameChanged
                                         ? "Name Changed"
-                                        : SizedBox(),
+                                        : widget.type ==
+                                                OperationType.ListedForSale
+                                            ? "Listed For Sale"
+                                            : "Undefined",
                             style: AppStyles.operationType(context),
                           ),
                         ),
-                        // Amount & Payload indicator
+                        // Amount & Payload indicator or New Account Name
                         Container(
                           width: MediaQuery.of(context).size.width / 2 - 72,
                           margin: EdgeInsetsDirectional.only(top: 4),
-                          child: widget.type == OperationType.NameChanged
-                              ? AutoSizeText(
-                                  widget.name,
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  minFontSize: 4,
-                                  stepGranularity: 1,
-                                  style:
-                                      AppStyles.balanceSmallSecondary(context),
-                                )
-                              : AutoSizeText.rich(
+                          child: widget.type == OperationType.Received ||
+                                  widget.type == OperationType.Sent ||
+                                  widget.type == OperationType.ListedForSale
+                              ? AutoSizeText.rich(
                                   TextSpan(
                                     children: [
                                       TextSpan(
@@ -136,23 +132,40 @@ class _OperationListItemState extends State<OperationListItem> {
                                             ? AppStyles
                                                 .iconFontPrimaryBalanceSmallPascal(
                                                     context)
-                                            : AppStyles
-                                                .iconFontTextDarkBalanceSmallPascal(
-                                                    context),
+                                            : widget.type == OperationType.Sent
+                                                ? AppStyles
+                                                    .iconFontTextDarkBalanceSmallPascal(
+                                                        context)
+                                                : AppStyles
+                                                    .iconFontSecondarySmallPascal(
+                                                        context),
                                       ),
                                       TextSpan(
                                           text: " ",
                                           style: TextStyle(fontSize: 7)),
                                       TextSpan(
-                                          text: widget.amount,
+                                          text: widget.type ==
+                                                      OperationType.Received ||
+                                                  widget.type ==
+                                                      OperationType.Sent
+                                              ? widget.amount
+                                              : widget.price,
                                           style: widget.type ==
                                                   OperationType.Received
                                               ? AppStyles.balanceSmall(context)
-                                              : AppStyles.balanceSmallTextDark(
-                                                  context)),
-                                      TextSpan(
-                                          text: " ",
-                                          style: TextStyle(fontSize: 14)),
+                                              : widget.type ==
+                                                      OperationType.Sent
+                                                  ? AppStyles
+                                                      .balanceSmallTextDark(
+                                                          context)
+                                                  : AppStyles
+                                                      .balanceSmallSecondary(
+                                                          context)),
+                                      isNotEmpty(widget.payload)
+                                          ? TextSpan(
+                                              text: " ",
+                                              style: TextStyle(fontSize: 14))
+                                          : TextSpan(),
                                       isNotEmpty(widget.payload)
                                           ? TextSpan(
                                               text: "",
@@ -175,16 +188,27 @@ class _OperationListItemState extends State<OperationListItem> {
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
-                                ),
+                                )
+                              : widget.type == OperationType.NameChanged
+                                  ? AutoSizeText(
+                                      widget.name,
+                                      textAlign: TextAlign.start,
+                                      maxLines: 1,
+                                      minFontSize: 4,
+                                      stepGranularity: 1,
+                                      style: AppStyles.balanceSmallSecondary(
+                                          context),
+                                    )
+                                  : SizedBox(),
                         ),
                       ],
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        widget.type == OperationType.NameChanged
-                            ? SizedBox()
-                            :
+                        widget.type == OperationType.Received ||
+                                widget.type == OperationType.Sent
+                            ?
                             // Address
                             widget.address[0] == "@"
                                 ? Container(
@@ -228,7 +252,8 @@ class _OperationListItemState extends State<OperationListItem> {
                                       stepGranularity: 0.1,
                                       textAlign: TextAlign.end,
                                     ),
-                                  ),
+                                  )
+                            : SizedBox(),
                         // Date
                         Container(
                           width: MediaQuery.of(context).size.width / 2 - 72,
