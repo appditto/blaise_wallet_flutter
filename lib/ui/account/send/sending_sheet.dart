@@ -261,7 +261,10 @@ class _SendingSheetState extends State<SendingSheet> {
                               PascalOperation op = resp.operations[0];
                               if (op.valid) {
                                 Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
-                                AppSheets.showBottomSheet(context: context, widget: SentSheet());
+                                AppSheets.showBottomSheet(
+                                  context: context,
+                                  widget: SentSheet(destination: widget.destination, amount: widget.amount)
+                                );
                               } else {
                                 UIUtil.showSnackbar("Invalid: ${op.errors}", context);
                               }

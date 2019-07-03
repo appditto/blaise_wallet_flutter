@@ -64,14 +64,22 @@ class _OverviewPageState extends State<OverviewPage>
   }
 
   void _animationControllerListener() {
-    setState(() {});
+    if (walletState.walletLoading) {
+      setState(() {});
+    } else {
+      _disposeAnimations();
+    }
+  }
+
+  void _disposeAnimations() {
+    _opacityAnimation.removeStatusListener(_animationStatusListener);
+    _opacityAnimationController.removeListener(_animationControllerListener);
+    _opacityAnimationController.dispose();    
   }
 
   @override
   void dispose() {
-    _opacityAnimation.removeStatusListener(_animationStatusListener);
-    _opacityAnimationController.removeListener(_animationControllerListener);
-    _opacityAnimationController.dispose();
+    _disposeAnimations();
     super.dispose();
   }
 
