@@ -16,6 +16,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/operation_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/placeholder_operation_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
@@ -88,9 +89,8 @@ class _AccountPageState extends State<AccountPage> {
         },
       ),
       DialogListItem(option: "Delist Account", disabled: true),
-    ];    
+    ];
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -247,12 +247,14 @@ class _AccountPageState extends State<AccountPage> {
                                                 ),
                                                 TextSpan(
                                                     text: " ",
-                                                    style: TextStyle(fontSize: 12)),
+                                                    style: TextStyle(
+                                                        fontSize: 12)),
                                                 TextSpan(
-                                                        text: accountState.account.balance.toStringOpt(),
-                                                        style: AppStyles.header(
-                                                            context)
-                                                )
+                                                    text: accountState
+                                                        .account.balance
+                                                        .toStringOpt(),
+                                                    style: AppStyles.header(
+                                                        context))
                                               ],
                                             ),
                                             textAlign: TextAlign.center,
@@ -271,7 +273,7 @@ class _AccountPageState extends State<AccountPage> {
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: AutoSizeText(
-                                           "(\$0.00)",
+                                        "(\$0.00)",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
@@ -320,43 +322,40 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                       // Other Operations Icon
                                       Container(
-                                          margin:
-                                              EdgeInsetsDirectional.only(
-                                                  bottom: 2, end: 2),
-                                          height: 50,
-                                          width: 50,
-                                          child: FlatButton(
-                                              highlightColor:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .textLight15,
-                                              splashColor:
-                                                  StateContainer.of(context)
-                                                      .curTheme
-                                                      .textLight30,
-                                              onPressed: () {
-                                                showAppDialog(
-                                                    context: context,
-                                                    builder: (_) => DialogOverlay(
-                                                        title:
-                                                            'Other Operations',
-                                                        optionsList:
-                                                            operationsList));
-                                              },
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0)),
-                                              padding: EdgeInsetsDirectional
-                                                  .only(start: 8, top: 6),
-                                              child: Icon(
-                                                  AppIcons.edit,
-                                                  color: StateContainer.of(
-                                                          context)
-                                                      .curTheme
-                                                      .textLight,
-                                                  size: 18)),
-                                        ),
+                                        margin: EdgeInsetsDirectional.only(
+                                            bottom: 2, end: 2),
+                                        height: 50,
+                                        width: 50,
+                                        child: FlatButton(
+                                            highlightColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight15,
+                                            splashColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight30,
+                                            onPressed: () {
+                                              showAppDialog(
+                                                  context: context,
+                                                  builder: (_) => DialogOverlay(
+                                                      title: 'Other Operations',
+                                                      optionsList:
+                                                          operationsList));
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        50.0)),
+                                            padding: EdgeInsetsDirectional.only(
+                                                start: 8, top: 6),
+                                            child: Icon(AppIcons.edit,
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textLight,
+                                                size: 18)),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -469,46 +468,73 @@ class _AccountPageState extends State<AccountPage> {
                                         // Expanded list
                                         Expanded(
                                           // Container for the list
-                                          child: Observer(
-                                            builder: (BuildContext context) {
-                                              if (accountState.operationsLoading || accountHistory == null) {
-                                                return Text("LOADING");
-                                              }
-                                              return Container(
-                                                margin:
-                                                    EdgeInsetsDirectional.fromSTEB(
-                                                        12, 8, 12, 0),
-                                                width: double.maxFinite,
-                                                decoration: BoxDecoration(
-                                                  color: StateContainer.of(context)
-                                                      .curTheme
-                                                      .backgroundPrimary,
-                                                  borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(12),
-                                                    topRight: Radius.circular(12),
-                                                  ),
-                                                  boxShadow: [
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .shadowSettingsList,
-                                                  ],
-                                                ),
-                                                // Operations List
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(12),
-                                                      topRight:
-                                                          Radius.circular(12)),
-                                                  child: ListView(
-                                                    padding:
-                                                        EdgeInsetsDirectional.only(
-                                                            bottom: 24),
-                                                    children: accountHistory
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ) 
+                                          child: Container(
+                                            margin:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 8, 12, 0),
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .backgroundPrimary,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(12),
+                                                topRight: Radius.circular(12),
+                                              ),
+                                              boxShadow: [
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .shadowSettingsList,
+                                              ],
+                                            ),
+                                            // Operations List
+                                            child: Observer(
+                                              builder: (BuildContext context) {
+                                                if (accountState
+                                                        .operationsLoading ||
+                                                    accountHistory == null) {
+                                                  return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(12),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    12)),
+                                                    child: ListView(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .only(
+                                                                    bottom: 24),
+                                                        children: [
+                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Sent),
+                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Received),
+                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Sent),
+                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Received),
+                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Sent),
+                                                        ]),
+                                                  );
+                                                } else {
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(12),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    12)),
+                                                    child: ListView(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .only(
+                                                                    bottom: 24),
+                                                        children:
+                                                            accountHistory),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -538,7 +564,8 @@ class _AccountPageState extends State<AccountPage> {
                               children: <Widget>[
                                 Observer(
                                   builder: (BuildContext context) {
-                                    PascalAccount account = accountState.account;
+                                    PascalAccount account =
+                                        accountState.account;
                                     return AppButton(
                                       text: "Receive",
                                       type: AppButtonType.PrimaryLeft,
@@ -546,7 +573,8 @@ class _AccountPageState extends State<AccountPage> {
                                         AppSheets.showBottomSheet(
                                             context: context,
                                             widget: ReceiveSheet(
-                                              accountName: account.name.accountName,
+                                              accountName:
+                                                  account.name.accountName,
                                               accountNumber: account.account,
                                             ));
                                       },
@@ -558,7 +586,10 @@ class _AccountPageState extends State<AccountPage> {
                                     return AppButton(
                                       text: "Send",
                                       type: AppButtonType.PrimaryRight,
-                                      disabled: accountState.account.balance > Currency('0') ? false : true,
+                                      disabled: accountState.account.balance >
+                                              Currency('0')
+                                          ? false
+                                          : true,
                                       onPressed: () {
                                         AppSheets.showBottomSheet(
                                           context: context,
@@ -597,7 +628,9 @@ class _AccountPageState extends State<AccountPage> {
         history.add(OperationListItem(
           type: type,
           amount: op.receivers[0].amount.toStringOpt(),
-          address: type == OperationType.Received ? op.senders[0].sendingAccount.toString() : op.receivers[0].receivingAccount.toString(),
+          address: type == OperationType.Received
+              ? op.senders[0].sendingAccount.toString()
+              : op.receivers[0].receivingAccount.toString(),
           date: UIUtil.formatDateStr(op.time),
           payload: op.receivers[0].payload,
           onPressed: () {
@@ -607,7 +640,9 @@ class _AccountPageState extends State<AccountPage> {
                 widget: TransactionDetailsSheet(
                   payload: op.receivers[0].payload,
                   ophash: op.ophash,
-                  account: type == OperationType.Received ? op.senders[0].sendingAccount : op.receivers[0].receivingAccount,
+                  account: type == OperationType.Received
+                      ? op.senders[0].sendingAccount
+                      : op.receivers[0].receivingAccount,
                 ));
           },
         ));
@@ -615,9 +650,7 @@ class _AccountPageState extends State<AccountPage> {
     });
     if (history.length == 0) {
       // Show welcome
-      history.add(OperationListItem(
-        type: OperationType.Welcome
-      ));
+      history.add(OperationListItem(type: OperationType.Welcome));
       history.add(OperationListItem(
         type: OperationType.Sent,
         amount: "1,111",
