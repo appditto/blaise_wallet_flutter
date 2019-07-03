@@ -428,6 +428,14 @@ class AppStyles {
       fontFamily: 'SourceCodePro',
     );
   }
+
+  // PIN Description
+  static TextStyle pinDescription(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.small,
+      color: StateContainer.of(context).curTheme.textLight,
+    );
+  }
 }
 
 class AppFontSizes {
