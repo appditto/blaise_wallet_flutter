@@ -23,14 +23,62 @@ class OverviewPage extends StatefulWidget {
   _OverviewPageState createState() => _OverviewPageState();
 }
 
-class _OverviewPageState extends State<OverviewPage> {
+class _OverviewPageState extends State<OverviewPage>
+    with SingleTickerProviderStateMixin {
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
+  // Opacity Animation
+  Animation<double> _opacityAnimation;
+  AnimationController _opacityAnimationController;
 
   @override
   void initState() {
     super.initState();
     // Load the wallet, total balance, etc.
     walletState.loadWallet();
+    // Opacity Animation
+    _opacityAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _opacityAnimation = new Tween(begin: 1.0, end: 0.4).animate(
+      CurvedAnimation(
+        parent: _opacityAnimationController,
+        curve: Curves.easeIn,
+        reverseCurve: Curves.easeOut,
+      ),
+    );
+    _startAnimation();
+  }
+
+  void _animationStatusListener(AnimationStatus status) {
+    switch (status) {
+      case AnimationStatus.dismissed:
+        _opacityAnimationController.forward();
+        break;
+      case AnimationStatus.completed:
+        _opacityAnimationController.reverse();
+        break;
+      default:
+        return null;
+    }
+  }
+
+  void _animationControllerListener() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _opacityAnimation.removeStatusListener(_animationStatusListener);
+    _opacityAnimationController.removeListener(_animationControllerListener);
+    _opacityAnimationController.dispose();
+    super.dispose();
+  }
+
+  void _startAnimation() {
+    _opacityAnimationController.addListener(_animationControllerListener);
+    _opacityAnimation.addStatusListener(_animationStatusListener);
+    _opacityAnimationController.forward();
   }
 
   @override
@@ -119,25 +167,29 @@ class _OverviewPageState extends State<OverviewPage> {
                                         child: Observer(
                                             builder: (BuildContext context) {
                                           if (walletState.walletLoading) {
-                                            return Align(
-                                              alignment: Alignment(-1, 0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .textLight,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                ),
-                                                child: AutoSizeText(
-                                                  "             ",
-                                                  style:
-                                                      AppStyles.header(context),
-                                                  maxLines: 1,
-                                                  minFontSize: 8,
-                                                  stepGranularity: 1,
+                                            return Opacity(
+                                              opacity: _opacityAnimation.value,
+                                              child: Align(
+                                                alignment: Alignment(-1, 0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textLight
+                                                        .withOpacity(0.75),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                  child: AutoSizeText(
+                                                    "             ",
+                                                    style: AppStyles.header(
+                                                        context),
+                                                    maxLines: 1,
+                                                    minFontSize: 8,
+                                                    stepGranularity: 1,
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -179,20 +231,25 @@ class _OverviewPageState extends State<OverviewPage> {
                                       child: Observer(
                                         builder: (BuildContext context) {
                                           if (walletState.walletLoading) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .textLight,
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                              ),
-                                              child: AutoSizeText(
-                                                "                  ",
-                                                style: AppStyles
-                                                    .paragraphTextLightSmall(
-                                                        context),
+                                            return Opacity(
+                                              opacity: _opacityAnimation.value,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight
+                                                          .withOpacity(0.75),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: AutoSizeText(
+                                                  "                  ",
+                                                  style: AppStyles
+                                                      .paragraphTextLightSmall(
+                                                          context),
+                                                ),
                                               ),
                                             );
                                           } else {
@@ -248,11 +305,39 @@ class _OverviewPageState extends State<OverviewPage> {
                                     Container(
                                       margin: EdgeInsetsDirectional.only(
                                           end: 16, bottom: 12),
-                                      child: AutoSizeText(
-                                        "\$" + "0.269",
-                                        style: AppStyles
-                                            .paragraphTextLightSmallSemiBold(
-                                                context),
+                                      child: Observer(
+                                        builder: (BuildContext context) {
+                                          if (walletState.walletLoading) {
+                                            return Opacity(
+                                              opacity: _opacityAnimation.value,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight
+                                                          .withOpacity(0.75),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: AutoSizeText(
+                                                  "            ",
+                                                  style: AppStyles
+                                                      .paragraphTextLightSmallSemiBold(
+                                                          context),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return AutoSizeText(
+                                              "\$" + "0.269",
+                                              style: AppStyles
+                                                  .paragraphTextLightSmallSemiBold(
+                                                      context),
+                                            );
+                                          }
+                                        },
                                       ),
                                     ),
                                   ],
@@ -291,9 +376,21 @@ class _OverviewPageState extends State<OverviewPage> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 3, 0, 19),
                                           children: [
-                                            PlaceholderAccountCard(),
-                                            PlaceholderAccountCard(),
-                                            PlaceholderAccountCard(),
+                                            Opacity(
+                                                opacity:
+                                                    _opacityAnimation.value,
+                                                child:
+                                                    PlaceholderAccountCard()),
+                                            Opacity(
+                                                opacity:
+                                                    _opacityAnimation.value,
+                                                child:
+                                                    PlaceholderAccountCard()),
+                                            Opacity(
+                                                opacity:
+                                                    _opacityAnimation.value,
+                                                child:
+                                                    PlaceholderAccountCard()),
                                           ]),
                                       // The gradient at the top
                                       Container(

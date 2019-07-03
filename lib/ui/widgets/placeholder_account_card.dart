@@ -62,7 +62,7 @@ class _PlaceholderAccountCardState extends State<PlaceholderAccountCard> {
                       Container(
                         margin: EdgeInsetsDirectional.only(bottom: 5),
                         decoration: BoxDecoration(
-                          color: StateContainer.of(context).curTheme.textLight,
+                          color: StateContainer.of(context).curTheme.textLight.withOpacity(0.75),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: AutoSizeText(
@@ -76,7 +76,7 @@ class _PlaceholderAccountCardState extends State<PlaceholderAccountCard> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: StateContainer.of(context).curTheme.textLight,
+                          color: StateContainer.of(context).curTheme.textLight.withOpacity(0.75),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: AutoSizeText(
@@ -98,7 +98,7 @@ class _PlaceholderAccountCardState extends State<PlaceholderAccountCard> {
                   alignment: Alignment(1, 0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: StateContainer.of(context).curTheme.primary,
+                      color: StateContainer.of(context).curTheme.primary.withOpacity(0.75),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: AutoSizeText.rich(
