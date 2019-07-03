@@ -33,12 +33,16 @@ class AccountPage extends StatefulWidget {
   _AccountPageState createState() => _AccountPageState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _AccountPageState extends State<AccountPage>
+    with SingleTickerProviderStateMixin {
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
   List<DialogListItem> operationsList;
   Account accountState;
   List<PascalOperation> rawOperations;
   List<Widget> accountHistory;
+  // Opacity Animation
+  Animation<double> _opacityAnimation;
+  AnimationController _opacityAnimationController;
 
   @override
   void initState() {
@@ -52,6 +56,58 @@ class _AccountPageState extends State<AccountPage> {
     this.accountState.getAccountOperations().then((_) {
       updateAccountHistory();
     });
+    // Opacity Animation
+    _opacityAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _opacityAnimation = new Tween(begin: 1.0, end: 0.4).animate(
+      CurvedAnimation(
+        parent: _opacityAnimationController,
+        curve: Curves.easeIn,
+        reverseCurve: Curves.easeOut,
+      ),
+    );
+    _startAnimation();
+  }
+
+  void _animationStatusListener(AnimationStatus status) {
+    switch (status) {
+      case AnimationStatus.dismissed:
+        _opacityAnimationController.forward();
+        break;
+      case AnimationStatus.completed:
+        _opacityAnimationController.reverse();
+        break;
+      default:
+        return null;
+    }
+  }
+
+  void _animationControllerListener() {
+    if (accountState.operationsLoading || accountHistory == null) {
+      setState(() {});
+    } else {
+      _disposeAnimations();
+    }
+  }
+
+  void _disposeAnimations() {
+    _opacityAnimation.removeStatusListener(_animationStatusListener);
+    _opacityAnimationController.removeListener(_animationControllerListener);
+    _opacityAnimationController.dispose();
+  }
+
+  @override
+  void dispose() {
+    _disposeAnimations();
+    super.dispose();
+  }
+
+  void _startAnimation() {
+    _opacityAnimationController.addListener(_animationControllerListener);
+    _opacityAnimation.addStatusListener(_animationStatusListener);
+    _opacityAnimationController.forward();
   }
 
   List<DialogListItem> getOperationsList() {
@@ -501,45 +557,46 @@ class _AccountPageState extends State<AccountPage> {
                                                             topRight:
                                                                 Radius.circular(
                                                                     12)),
-                                                    child: ListView(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .only(
-                                                                    bottom: 24),
-                                                        children: [
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Received),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Sent),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Received),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Received),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Sent),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Sent),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Received),
-                                                          PlaceholderOperationListItem(
-                                                              type:
-                                                                  PlaceholderOperationType
-                                                                      .Sent),
-                                                        ]),
+                                                    child: Opacity(
+                                                      opacity: _opacityAnimation
+                                                          .value,
+                                                      child: ListView(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .only(
+                                                                      bottom:
+                                                                          24),
+                                                          children: [
+                                                            PlaceholderOperationListItem(
+                                                                type: PlaceholderOperationType
+                                                                    .Received),
+                                                            PlaceholderOperationListItem(
+                                                                type:
+                                                                    PlaceholderOperationType
+                                                                        .Sent),
+                                                            PlaceholderOperationListItem(
+                                                                type: PlaceholderOperationType
+                                                                    .Received),
+                                                            PlaceholderOperationListItem(
+                                                                type: PlaceholderOperationType
+                                                                    .Received),
+                                                            PlaceholderOperationListItem(
+                                                                type:
+                                                                    PlaceholderOperationType
+                                                                        .Sent),
+                                                            PlaceholderOperationListItem(
+                                                                type:
+                                                                    PlaceholderOperationType
+                                                                        .Sent),
+                                                            PlaceholderOperationListItem(
+                                                                type: PlaceholderOperationType
+                                                                    .Received),
+                                                            PlaceholderOperationListItem(
+                                                                type:
+                                                                    PlaceholderOperationType
+                                                                        .Sent),
+                                                          ]),
+                                                    ),
                                                   );
                                                 } else {
                                                   return ClipRRect(
