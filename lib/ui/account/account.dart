@@ -507,15 +507,30 @@ class _AccountPageState extends State<AccountPage> {
                                                                 .only(
                                                                     bottom: 24),
                                                         children: [
-                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Sent),
-                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Received),
-                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Sent),
-                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Received),
-                                                          PlaceholderOperationListItem(type: PlaceholderOperationType.Sent),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Sent),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Received),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Sent),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Received),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Sent),
                                                         ]),
                                                   );
                                                 } else {
-                                                  ClipRRect(
+                                                  return ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.only(
                                                             topLeft: Radius
