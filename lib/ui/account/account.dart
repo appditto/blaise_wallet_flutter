@@ -510,11 +510,23 @@ class _AccountPageState extends State<AccountPage> {
                                                           PlaceholderOperationListItem(
                                                               type:
                                                                   PlaceholderOperationType
+                                                                      .Received),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
                                                                       .Sent),
                                                           PlaceholderOperationListItem(
                                                               type:
                                                                   PlaceholderOperationType
                                                                       .Received),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Received),
+                                                          PlaceholderOperationListItem(
+                                                              type:
+                                                                  PlaceholderOperationType
+                                                                      .Sent),
                                                           PlaceholderOperationListItem(
                                                               type:
                                                                   PlaceholderOperationType

@@ -52,17 +52,24 @@ class _PlaceholderOperationListItemState
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         color: widget.type == PlaceholderOperationType.Received
-                            ? StateContainer.of(context).curTheme.primary
+                            ? StateContainer.of(context)
+                                .curTheme
+                                .primary
+                                .withOpacity(0.75)
                             : widget.type == PlaceholderOperationType.Sent
-                                ? StateContainer.of(context).curTheme.textDark
+                                ? StateContainer.of(context)
+                                    .curTheme
+                                    .textDark
+                                    .withOpacity(0.75)
                                 : StateContainer.of(context)
                                     .curTheme
-                                    .secondary),
+                                    .secondary
+                                    .withOpacity(0.75)),
                     child: AutoSizeText(
                       widget.type == PlaceholderOperationType.Received
-                          ? "            "
+                          ? "              "
                           : widget.type == PlaceholderOperationType.Sent
-                              ? "      "
+                              ? "       "
                               : widget.type ==
                                       PlaceholderOperationType.NameChanged
                                   ? "                  "
@@ -80,48 +87,69 @@ class _PlaceholderOperationListItemState
                     child: widget.type == PlaceholderOperationType.Received ||
                             widget.type == PlaceholderOperationType.Sent ||
                             widget.type ==
+                                PlaceholderOperationType.NameChanged ||
+                            widget.type ==
                                 PlaceholderOperationType.ListedForSale
-                        ? AutoSizeText.rich(
-                            TextSpan(
-                              children: [
+                        ? Align(
+                            alignment: Alignment(-1, 0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: widget.type ==
+                                          PlaceholderOperationType.Received
+                                      ? StateContainer.of(context)
+                                          .curTheme
+                                          .primary
+                                          .withOpacity(0.5)
+                                      : widget.type ==
+                                              PlaceholderOperationType.Sent
+                                          ? StateContainer.of(context)
+                                              .curTheme
+                                              .textDark
+                                              .withOpacity(0.5)
+                                          : StateContainer.of(context)
+                                              .curTheme
+                                              .secondary
+                                              .withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: AutoSizeText.rich(
                                 TextSpan(
-                                    text: "  ",
-                                    style: AppStyles
-                                        .iconFontTextDarkBalanceSmallPascal(
-                                            context)),
-                                TextSpan(
-                                    text: " ", style: TextStyle(fontSize: 7)),
-                                TextSpan(
-                                    text: "        ",
-                                    style: widget.type ==
-                                            PlaceholderOperationType.Received
-                                        ? AppStyles.balanceSmall(context)
-                                        : widget.type ==
-                                                PlaceholderOperationType.Sent
-                                            ? AppStyles.balanceSmallTextDark(
-                                                context)
-                                            : AppStyles.balanceSmallSecondary(
+                                  children: [
+                                    TextSpan(
+                                        text: "  ",
+                                        style: AppStyles
+                                            .iconFontTextDarkBalanceSmallPascal(
                                                 context)),
-                              ],
-                            ),
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            minFontSize: 4,
-                            stepGranularity: 1,
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          )
-                        : widget.type == PlaceholderOperationType.NameChanged
-                            ? AutoSizeText(
-                                "        ",
+                                    TextSpan(
+                                        text: " ",
+                                        style: TextStyle(fontSize: 7)),
+                                    TextSpan(
+                                        text: "           ",
+                                        style: widget.type ==
+                                                PlaceholderOperationType
+                                                    .Received
+                                            ? AppStyles.balanceSmall(context)
+                                            : widget.type ==
+                                                    PlaceholderOperationType
+                                                        .Sent
+                                                ? AppStyles
+                                                    .balanceSmallTextDark(
+                                                        context)
+                                                : AppStyles
+                                                    .balanceSmallSecondary(
+                                                        context)),
+                                  ],
+                                ),
                                 textAlign: TextAlign.start,
                                 maxLines: 1,
                                 minFontSize: 4,
                                 stepGranularity: 1,
-                                style: AppStyles.balanceSmallSecondary(context),
-                              )
-                            : SizedBox(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
                   ),
                 ],
               ),
@@ -135,26 +163,43 @@ class _PlaceholderOperationListItemState
                       Container(
                           width: MediaQuery.of(context).size.width / 2 - 72,
                           alignment: Alignment(1, 0),
-                          child: AutoSizeText(
-                            "               ",
-                            style: AppStyles.contactsItemAddress(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.end,
-                          ),
-                        )
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark
+                                  .withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: AutoSizeText(
+                              "          ",
+                              style: AppStyles.contactsItemAddress(context),
+                              maxLines: 1,
+                              stepGranularity: 0.1,
+                              textAlign: TextAlign.end,
+                            ),
+                          ))
                       : SizedBox(),
                   // Date
                   Container(
                     width: MediaQuery.of(context).size.width / 2 - 72,
                     margin: EdgeInsetsDirectional.only(top: 2),
                     alignment: Alignment(1, 0),
-                    child: AutoSizeText(
-                      "                     ",
-                      style: AppStyles.operationDate(context),
-                      maxLines: 1,
-                      stepGranularity: 0.1,
-                      textAlign: TextAlign.end,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: StateContainer.of(context)
+                            .curTheme
+                            .textDark
+                            .withOpacity(0.125),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: AutoSizeText(
+                        "                 ",
+                        style: AppStyles.operationDate(context),
+                        maxLines: 1,
+                        stepGranularity: 0.1,
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                   ),
                 ],
