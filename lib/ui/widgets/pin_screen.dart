@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PinScreen extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _PinScreenState extends State<PinScreen>
                   children: <Widget>[
                     // Pin Text & Dots
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.35,
                       width: double.maxFinite,
                       padding: EdgeInsetsDirectional.fromSTEB(
                           0,
@@ -53,8 +54,49 @@ class _PinScreenState extends State<PinScreen>
                               ),
                             ),
                             // Dots
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Container(
+                              margin: EdgeInsetsDirectional.only(top: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        4, 0, 4, 0),
+                                    child: Icon(FontAwesomeIcons.solidCircle,
+                                        size: 18),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        4, 0, 4, 0),
+                                    child: Icon(FontAwesomeIcons.solidCircle,
+                                        size: 18),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        4, 0, 4, 0),
+                                    child:
+                                        Icon(FontAwesomeIcons.circle, size: 18),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        4, 0, 4, 0),
+                                    child:
+                                        Icon(FontAwesomeIcons.circle, size: 18),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        4, 0, 4, 0),
+                                    child:
+                                        Icon(FontAwesomeIcons.circle, size: 18),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        4, 0, 4, 0),
+                                    child:
+                                        Icon(FontAwesomeIcons.circle, size: 18),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -64,10 +106,14 @@ class _PinScreenState extends State<PinScreen>
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.7 + 16,
+                        height: MediaQuery.of(context).size.height * 0.65 + 16,
                         width: double.maxFinite,
-                        padding: EdgeInsetsDirectional.only(
-                            bottom: MediaQuery.of(context).padding.bottom),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            MediaQuery.of(context).size.width * 0.075,
+                            MediaQuery.of(context).size.width * 0.075,
+                            MediaQuery.of(context).size.width * 0.075,
+                            MediaQuery.of(context).padding.bottom +
+                                MediaQuery.of(context).size.width * 0.075),
                         decoration: BoxDecoration(
                           color: StateContainer.of(context)
                               .curTheme
@@ -79,6 +125,170 @@ class _PinScreenState extends State<PinScreen>
                           boxShadow: [
                             StateContainer.of(context).curTheme.shadowBottomBar,
                           ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "1",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "2",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "3",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "4",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "5",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "6",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "7",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "8",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "9",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Container(
+                                    child: FlatButton(
+                                      child: Text(
+                                        " ",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Text(
+                                        "0",
+                                        style: AppStyles.pinNumberPad(context),
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
+                                      onPressed: () => null,
+                                      child: Icon(
+                                        Icons.backspace,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .primary,
+                                      ),
+                                      padding: EdgeInsets.all(30),
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

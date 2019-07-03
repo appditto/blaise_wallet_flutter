@@ -436,6 +436,15 @@ class AppStyles {
       color: StateContainer.of(context).curTheme.textLight,
     );
   }
+
+  // PIN Description
+  static TextStyle pinNumberPad(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.larger,
+      color: StateContainer.of(context).curTheme.primary,
+      fontWeight: FontWeight.w700,
+    );
+  }
 }
 
 class AppFontSizes {

@@ -39,6 +39,9 @@ dependencies:
   # SVG
   flutter_svg: ^0.12.4
 
+  # Font awesome
+  font_awesome_flutter: ^8.4.0
+
   # Share files
   share:
     git:
