@@ -306,7 +306,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 header: "Contacts",
                                 icon: AppIcons.contacts,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/contacts');
+                                  Navigator.pushNamed(context, '/pin_screen');
                                 },
                               ),
                               Container(

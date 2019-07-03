@@ -13,6 +13,7 @@ import 'package:blaise_wallet_flutter/ui/settings/security.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
@@ -140,6 +141,11 @@ class _AppState extends State<App> {
             case '/contacts':
               return MaterialPageRoute(
                 builder: (context) => ContactsPage(),
+                settings: settings,
+              );
+            case '/pin_screen':
+              return MaterialPageRoute(
+                builder: (context) => PinScreen(),
                 settings: settings,
               );
             default:
