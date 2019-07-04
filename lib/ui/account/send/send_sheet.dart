@@ -305,7 +305,7 @@ class _SendSheetState extends State<SendSheet> {
                                       start: 30,
                                       end: 30,
                                       top: 4,
-                                      bottom: 40),
+                                      bottom: 0),
                                   child: Text(
                                     destinationError == null
                                         ? ""
@@ -381,7 +381,7 @@ class _SendSheetState extends State<SendSheet> {
                                       start: 30,
                                       end: 30,
                                       top: 4,
-                                      bottom: 40),
+                                      bottom: 0),
                                   child: Text(
                                     amountError == null
                                         ? ""
