@@ -167,17 +167,17 @@ class _PinScreenState extends State<PinScreen>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                buildPINButton("2"),
-                                buildPINButton("3"),
                                 buildPINButton("4"),
+                                buildPINButton("5"),
+                                buildPINButton("6"),
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                buildPINButton("5"),
-                                buildPINButton("6"),
                                 buildPINButton("7"),
+                                buildPINButton("8"),
+                                buildPINButton("9"),
                               ],
                             ),
                             Row(
