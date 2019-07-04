@@ -259,7 +259,7 @@ class _SendingSheetState extends State<SendingSheet> {
                               _overlay?.remove();
                               OperationsResponse resp = result;
                               PascalOperation op = resp.operations[0];
-                              if (op.valid) {
+                              if (op.valid == null || op.valid) {
                                 Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
                                 AppSheets.showBottomSheet(
                                   context: context,

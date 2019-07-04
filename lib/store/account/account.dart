@@ -84,7 +84,7 @@ abstract class AccountBase with Store {
       return resp;
     }
     OperationsResponse opResp = resp;
-    if (opResp.operations[0].valid) {
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
       this.account.balance-=Currency(amount);
       this.account.nOperation++;
       this.getAccountOperations();
