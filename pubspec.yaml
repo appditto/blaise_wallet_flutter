@@ -89,6 +89,15 @@ dependencies:
   # Event Bus
   event_taxi: ^0.1.5
 
+  # Vibrate
+  vibrate:
+    git:
+      url: https://github.com/bbedward/flutter_vibrate.git
+      ref: master
+
+  # Device-specific info
+  device_info: ^0.4.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

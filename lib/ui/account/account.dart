@@ -20,8 +20,10 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/operation_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/placeholder_operation_list_item.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/reactive_refresh.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +48,13 @@ class _AccountPageState extends State<AccountPage>
   Animation<double> _opacityAnimation;
   AnimationController _opacityAnimationController;
 
+  // Refresh indicator
+  bool _isRefreshing;
+
   @override
   void initState() {
     super.initState();
+    _isRefreshing = false;
     _registerBus();
     this.operationsList = getOperationsList();
     this.accountState = walletState.getAccountState(widget.account);
@@ -166,6 +172,29 @@ class _AccountPageState extends State<AccountPage>
     if (_historySub != null) {
       _historySub.cancel();
     }
+  }
+
+  // Refresh list
+  Future<void> _refresh() async {
+    setState(() {
+      _isRefreshing = true;
+    });
+    HapticUtil.success();
+    // Hide refresh indicator after 3 seconds if no server response
+    Future.delayed(new Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _isRefreshing = false;
+        });
+      }
+    });
+    this.accountState?.getAccountOperations()?.whenComplete(() {
+      if (mounted) {
+        setState(() {
+          _isRefreshing = false;
+        });
+      }
+    });
   }
 
   @override
@@ -627,13 +656,19 @@ class _AccountPageState extends State<AccountPage>
                                                             topRight:
                                                                 Radius.circular(
                                                                     12)),
-                                                    child: ListView(
+                                                    child: ReactiveRefreshIndicator(
+                                                      backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+                                                      onRefresh: _refresh,
+                                                      isRefreshing: _isRefreshing,
+                                                      child: ListView(
                                                         padding:
                                                             EdgeInsetsDirectional
                                                                 .only(
                                                                     bottom: 24),
                                                         children:
-                                                            accountState.accountHistory),
+                                                            accountState.accountHistory
+                                                      )
+                                                    ),
                                                   );
                                                 }
                                               },
