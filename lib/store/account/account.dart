@@ -1,5 +1,7 @@
+import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:mobx/mobx.dart';
@@ -75,6 +77,7 @@ abstract class AccountBase with Store {
     } else {
       // Diff and update operations
       this.diffAndSortOperations(opResp.operations);
+      EventTaxiImpl.singleton().fire(UpdateHistoryEvent());
     }
     this.operationsLoading = false;
   }

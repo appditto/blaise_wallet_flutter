@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
@@ -20,6 +23,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/placeholder_operation_list_item
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -38,7 +42,6 @@ class _AccountPageState extends State<AccountPage>
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
   List<DialogListItem> operationsList;
   Account accountState;
-  List<PascalOperation> rawOperations;
   // Opacity Animation
   Animation<double> _opacityAnimation;
   AnimationController _opacityAnimationController;
@@ -46,6 +49,7 @@ class _AccountPageState extends State<AccountPage>
   @override
   void initState() {
     super.initState();
+    _registerBus();
     this.operationsList = getOperationsList();
     this.accountState = walletState.getAccountState(widget.account);
     this.accountState.updateAccount();
@@ -100,6 +104,7 @@ class _AccountPageState extends State<AccountPage>
   @override
   void dispose() {
     _disposeAnimations();
+    _destroyBus();
     super.dispose();
   }
 
@@ -145,6 +150,22 @@ class _AccountPageState extends State<AccountPage>
       ),
       DialogListItem(option: "Delist Account", disabled: true),
     ];
+  }
+
+  StreamSubscription<UpdateHistoryEvent> _historySub;
+
+  void _registerBus() {
+    _historySub = EventTaxiImpl.singleton()
+        .registerTo<UpdateHistoryEvent>()
+        .listen((event) {
+      updateAccountHistory();
+    });
+  }
+
+  void _destroyBus() {
+    if (_historySub != null) {
+      _historySub.cancel();
+    }
   }
 
   @override
