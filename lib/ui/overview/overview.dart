@@ -72,9 +72,9 @@ class _OverviewPageState extends State<OverviewPage>
   }
 
   void _disposeAnimations() {
-    _opacityAnimation.removeStatusListener(_animationStatusListener);
-    _opacityAnimationController.removeListener(_animationControllerListener);
-    _opacityAnimationController.dispose();    
+    _opacityAnimation?.removeStatusListener(_animationStatusListener);
+    _opacityAnimationController?.removeListener(_animationControllerListener);
+    _opacityAnimationController?.dispose();    
   }
 
   @override

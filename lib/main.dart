@@ -173,6 +173,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         await sl.get<SharedPrefsUtil>().deleteAll(firstLaunch: true);
         await sl.get<Vault>().deleteAll();
         await sl.get<SharedPrefsUtil>().setFirstLaunch();
+        Navigator.of(context).pushReplacementNamed('/intro_welcome');
       } else if ((await sl.get<Vault>().getPrivateKey() != null) &&
           (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
         Navigator.of(context).pushReplacementNamed('/overview',

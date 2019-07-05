@@ -39,7 +39,6 @@ class _AccountPageState extends State<AccountPage>
   List<DialogListItem> operationsList;
   Account accountState;
   List<PascalOperation> rawOperations;
-  List<Widget> accountHistory;
   // Opacity Animation
   Animation<double> _opacityAnimation;
   AnimationController _opacityAnimationController;
@@ -85,7 +84,7 @@ class _AccountPageState extends State<AccountPage>
   }
 
   void _animationControllerListener() {
-    if (accountState.operationsLoading || accountHistory == null) {
+    if (accountState.operationsLoading || accountState.accountHistory == null) {
       setState(() {});
     } else {
       _disposeAnimations();
@@ -93,9 +92,9 @@ class _AccountPageState extends State<AccountPage>
   }
 
   void _disposeAnimations() {
-    _opacityAnimation.removeStatusListener(_animationStatusListener);
-    _opacityAnimationController.removeListener(_animationControllerListener);
-    _opacityAnimationController.dispose();
+    _opacityAnimation?.removeStatusListener(_animationStatusListener);
+    _opacityAnimationController?.removeListener(_animationControllerListener);
+    try { _opacityAnimationController?.dispose(); } catch (e) {}
   }
 
   @override
@@ -548,7 +547,7 @@ class _AccountPageState extends State<AccountPage>
                                               builder: (BuildContext context) {
                                                 if (accountState
                                                         .operationsLoading ||
-                                                    accountHistory == null) {
+                                                    accountState.accountHistory == null) {
                                                   return ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.only(
@@ -613,7 +612,7 @@ class _AccountPageState extends State<AccountPage>
                                                                 .only(
                                                                     bottom: 24),
                                                         children:
-                                                            accountHistory),
+                                                            accountState.accountHistory),
                                                   );
                                                 }
                                               },
@@ -715,7 +714,7 @@ class _AccountPageState extends State<AccountPage>
           address: type == OperationType.Received
               ? op.senders[0].sendingAccount.toString()
               : op.receivers[0].receivingAccount.toString(),
-          date: UIUtil.formatDateStr(op.time),
+          date: op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
           payload: op.receivers[0].payload,
           onPressed: () {
             AppSheets.showBottomSheet(
@@ -748,8 +747,6 @@ class _AccountPageState extends State<AccountPage>
         date: "May 11 • 11:11",
       ));
     }
-    setState(() {
-      this.accountHistory = history;
-    });
+    accountState.accountHistory = history;
   }
 }

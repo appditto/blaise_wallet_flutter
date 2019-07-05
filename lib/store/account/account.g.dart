@@ -86,4 +86,13 @@ mixin _$Account on AccountBase, Store {
     return _$getAccountOperationsAsyncAction
         .run(() => super.getAccountOperations());
   }
+
+  final _$doSendAsyncAction = AsyncAction('doSend');
+
+  @override
+  Future<RPCResponse> doSend(
+      {String amount, String destination, String payload = ""}) {
+    return _$doSendAsyncAction.run(() => super
+        .doSend(amount: amount, destination: destination, payload: payload));
+  }
 }

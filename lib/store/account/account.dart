@@ -1,5 +1,6 @@
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -25,6 +26,9 @@ abstract class AccountBase with Store {
   @observable
   List<PascalOperation> operations;
 
+  @observable
+  List<Widget> accountHistory;
+
   AccountBase({@required this.rpcClient, @required this.account});
 
   @action
@@ -38,6 +42,20 @@ abstract class AccountBase with Store {
     PascalAccount updatedAccount = resp;
     this.account = updatedAccount;
     return true;
+  }
+
+  void diffAndSortOperations(List<PascalOperation> newOperationList) {
+    // Get pendings
+    List<PascalOperation> pendingOperations = newOperationList.where((op) => op.maturation == null).toList();
+    // Remove pendings that have since been confirmed
+    this.operations.removeWhere((op) => op.maturation == null && !pendingOperations.contains(op));
+    // Add all operations not already in the list and not pending
+    this.operations.addAll(newOperationList.where((op) => (!this.operations.contains(op)) && op.maturation != null));
+    // Sort by time
+    this.operations.sort((a, b) => b.time.compareTo(a.time));
+    // Add all pendings
+    this.operations.removeWhere((op) => pendingOperations.contains(op));
+    this.operations.insertAll(0, pendingOperations);
   }
 
   @action
@@ -56,8 +74,7 @@ abstract class AccountBase with Store {
       this.operations = opResp.operations;
     } else {
       // Diff and update operations
-      this.operations.addAll(opResp.operations.where((op) => !this.operations.contains(op)));
-      this.operations.sort((a, b) => b.time.compareTo(a.time));
+      this.diffAndSortOperations(opResp.operations);
     }
     this.operationsLoading = false;
   }
