@@ -56,6 +56,22 @@ mixin _$Account on AccountBase, Store {
     _$accountAtom.reportChanged();
   }
 
+  final _$accountBalanceAtom = Atom(name: 'AccountBase.accountBalance');
+
+  @override
+  Currency get accountBalance {
+    _$accountBalanceAtom.reportObserved();
+    return super.accountBalance;
+  }
+
+  @override
+  set accountBalance(Currency value) {
+    _$accountBalanceAtom.context
+        .checkIfStateModificationsAreAllowed(_$accountBalanceAtom);
+    super.accountBalance = value;
+    _$accountBalanceAtom.reportChanged();
+  }
+
   final _$operationsAtom = Atom(name: 'AccountBase.operations');
 
   @override
@@ -70,6 +86,22 @@ mixin _$Account on AccountBase, Store {
         .checkIfStateModificationsAreAllowed(_$operationsAtom);
     super.operations = value;
     _$operationsAtom.reportChanged();
+  }
+
+  final _$accountHistoryAtom = Atom(name: 'AccountBase.accountHistory');
+
+  @override
+  List<Widget> get accountHistory {
+    _$accountHistoryAtom.reportObserved();
+    return super.accountHistory;
+  }
+
+  @override
+  set accountHistory(List<Widget> value) {
+    _$accountHistoryAtom.context
+        .checkIfStateModificationsAreAllowed(_$accountHistoryAtom);
+    super.accountHistory = value;
+    _$accountHistoryAtom.reportChanged();
   }
 
   final _$updateAccountAsyncAction = AsyncAction('updateAccount');
@@ -94,5 +126,45 @@ mixin _$Account on AccountBase, Store {
       {String amount, String destination, String payload = ""}) {
     return _$doSendAsyncAction.run(() => super
         .doSend(amount: amount, destination: destination, payload: payload));
+  }
+
+  final _$transferAccountAsyncAction = AsyncAction('transferAccount');
+
+  @override
+  Future<RPCResponse> transferAccount(String strPubkey) {
+    return _$transferAccountAsyncAction
+        .run(() => super.transferAccount(strPubkey));
+  }
+
+  final _$AccountBaseActionController = ActionController(name: 'AccountBase');
+
+  @override
+  void decrementBalance(Currency delta) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.decrementBalance(delta);
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void incrementBalance(Currency delta) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.incrementBalance(delta);
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateAccountHistory(List<Widget> accountHistory) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.updateAccountHistory(accountHistory);
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
   }
 }

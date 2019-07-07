@@ -165,6 +165,7 @@ class _AccountPageState extends State<AccountPage>
         .registerTo<UpdateHistoryEvent>()
         .listen((event) {
       updateAccountHistory();
+      walletState.loadWallet();
     });
   }
 
@@ -327,7 +328,7 @@ class _AccountPageState extends State<AccountPage>
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: AutoSizeText(
-                                        "TOTAL BALANCE",
+                                        "ACCOUNT BALANCE",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
@@ -341,6 +342,7 @@ class _AccountPageState extends State<AccountPage>
                                           12, 4, 12, 4),
                                       child: Observer(
                                         builder: (BuildContext context) {
+                                          Currency bal = accountState.accountBalance;
                                           return AutoSizeText.rich(
                                             TextSpan(
                                               children: [
@@ -355,8 +357,7 @@ class _AccountPageState extends State<AccountPage>
                                                     style: TextStyle(
                                                         fontSize: 12)),
                                                 TextSpan(
-                                                    text: accountState
-                                                        .account.balance
+                                                    text: bal
                                                         .toStringOpt(),
                                                     style: AppStyles.header(
                                                         context))
@@ -803,6 +804,6 @@ class _AccountPageState extends State<AccountPage>
         date: "May 11 • 11:11",
       ));
     }
-    accountState.accountHistory = history;
+    accountState.updateAccountHistory(history);
   }
 }

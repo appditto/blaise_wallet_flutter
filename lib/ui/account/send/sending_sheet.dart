@@ -263,10 +263,11 @@ class _SendingSheetState extends State<SendingSheet> {
                                 Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
                                 AppSheets.showBottomSheet(
                                   context: context,
+                                  closeOnTap: true,
                                   widget: SentSheet(destination: widget.destination, amount: widget.amount)
                                 );
                               } else {
-                                UIUtil.showSnackbar("Invalid: ${op.errors}", context);
+                                UIUtil.showSnackbar("${op.errors}", context);
                               }
                             }
                           });

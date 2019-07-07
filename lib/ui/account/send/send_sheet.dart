@@ -477,7 +477,7 @@ class _SendSheetState extends State<SendSheet> {
   void validateAndSend() {
     bool hasError = false;
     Account accountState = walletState.getAccountState(widget.account);
-    if (accountState.account.balance < Currency(amountController.text)) {
+    if (accountState.accountBalance < Currency(amountController.text)) {
       hasError = true;
       setState(() {
         amountError = "Insufficent Balance";

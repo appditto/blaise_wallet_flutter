@@ -26,12 +26,34 @@ abstract class AccountBase with Store {
   PascalAccount account;
 
   @observable
+  Currency accountBalance;
+
+  @observable
   List<PascalOperation> operations;
 
   @observable
   List<Widget> accountHistory;
 
-  AccountBase({@required this.rpcClient, @required this.account});
+  AccountBase({@required this.rpcClient, @required this.account}) {
+    this.accountBalance = account.balance;
+  }
+
+  @action
+  void decrementBalance(Currency delta) {
+    this.account.balance -= delta;
+    this.accountBalance -= delta;
+  }
+
+  @action
+  void incrementBalance(Currency delta) {
+    this.account.balance += delta;
+    this.accountBalance += delta;
+  }
+
+  @action
+  void updateAccountHistory(List<Widget> accountHistory) {
+    this.accountHistory = accountHistory;
+  }
 
   @action
   Future<bool> updateAccount() async {
@@ -43,6 +65,7 @@ abstract class AccountBase with Store {
     }
     PascalAccount updatedAccount = resp;
     this.account = updatedAccount;
+    this.accountBalance = updatedAccount.balance;
     return true;
   }
 
@@ -105,10 +128,45 @@ abstract class AccountBase with Store {
     }
     OperationsResponse opResp = resp;
     if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
-      this.account.balance-=Currency(amount);
+      this.decrementBalance(Currency(amount));
       this.account.nOperation++;
       this.getAccountOperations();
     }
     return resp;
   }
+
+  @action
+  Future<RPCResponse> transferAccount(String strPubkey) async {
+    PublicKey newPubkey;
+    try {
+      newPubkey = PublicKeyCoder().decodeFromBase58(strPubkey);
+    } catch (e) {
+      try {
+        newPubkey = PublicKeyCoder().decodeFromBytes(PDUtil.hexToBytes(strPubkey));
+      } catch (e) {
+        throw Exception('Invalid Public key');
+      }
+    }
+    // Construct transfer
+    ChangeKeyOperation op = ChangeKeyOperation(
+      signer: account.account,
+      newPublicKey: newPubkey
+    )
+    ..withNOperation(account.nOperation + 1)
+    ..withPayload(PDUtil.stringToBytesUtf8(""))
+    ..withFee(Currency("0"))
+    ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
+    // Construct execute request
+    ExecuteOperationsRequest request = ExecuteOperationsRequest(
+      rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
+    );
+    // Make request
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    return resp;
+    }
 }
+
