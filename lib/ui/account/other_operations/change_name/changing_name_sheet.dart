@@ -2,23 +2,35 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class ChangingNameSheet extends StatefulWidget {
+  final PascalAccount account;
+  final AccountName newName;
+
+  ChangingNameSheet({@required this.account, @required this.newName});
+
   _ChangingNameSheetState createState() => _ChangingNameSheetState();
 }
 
 class _ChangingNameSheetState extends State<ChangingNameSheet> {
-  showOverlay(BuildContext context) async {
+  OverlayEntry _overlay;
+  Account accountState;
+
+  void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
@@ -45,9 +57,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
             ),
           ),
     );
-    overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(milliseconds: 3000));
-    overlayEntry.remove();
+    overlayState.insert(_overlay);
   }
 
   @override
@@ -163,7 +173,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "Appditto",
+                          widget.newName.toString(),
                           maxLines: 2,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -182,12 +192,43 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Authenticate to change account name to \"Appditto\"")) {
-                          await showOverlay(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                              context: context, widget: ChangedNameSheet());
+                        if (await AuthUtil().authenticate("Authenticate to change account name to \"${widget.newName.toString()}\"")) {
+                          try {
+                            showOverlay(context);
+                            accountState.changeAccountName(widget.newName).then((result) {
+                              if (result.isError) {
+                                ErrorResponse errResp = result;
+                                UIUtil.showSnackbar(errResp.errorMessage, context);
+                                _overlay?.remove();
+                                Navigator.of(context).pop();
+                              } else {
+                                _overlay?.remove();
+                                try {
+                                  OperationsResponse resp = result;
+                                  PascalOperation op = resp.operations[0];
+                                  if (op.valid == null || op.valid) {
+                                    // Update name
+                                    accountState.account.name = widget.newName;
+                                    Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+                                    AppSheets.showBottomSheet(
+                                      context: context,
+                                      closeOnTap: true,
+                                      widget: ChangedNameSheet(
+                                        newName: widget.newName,
+                                      )
+                                    );
+                                  } else {
+                                    UIUtil.showSnackbar("${op.errors}", context);
+                                  }
+                                } catch (e) {
+                                  UIUtil.showSnackbar("Something went wrong, try again later.", context);
+                                }
+                              }
+                            });
+                          } catch (e) {
+                            _overlay?.remove();
+                            UIUtil.showSnackbar("Something went wrong, try again later.", context);
+                          }
                         }
                       },
                     ),

@@ -20,6 +20,18 @@ class PascalAccountFormatter extends TextInputFormatter {
   }
 }
 
+/// For Pascal Names
+class PascalNameFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    // Ensure first character is not a number
+    if (newValue.text.startsWith(RegExp(r"[0-9]"))) {
+      return oldValue;
+    }
+    return newValue;
+  }
+}
+
 /// Input formatter for Crpto/Fiat amounts
 class CurrencyFormatter extends TextInputFormatter {
 

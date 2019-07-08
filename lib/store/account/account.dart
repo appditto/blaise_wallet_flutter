@@ -164,5 +164,27 @@ abstract class AccountBase with Store {
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
     return resp;
   }
+
+  @action
+  Future<RPCResponse> changeAccountName(AccountName newName) async {
+    // Construct name change
+    ChangeAccountInfoOperation op = ChangeAccountInfoOperation(
+      accountSigner: account.account,
+      targetSigner: account.account,
+      newName: newName,
+      withNewName: true
+    )
+    ..withNOperation(account.nOperation + 1)
+    ..withPayload(PDUtil.stringToBytesUtf8(""))
+    ..withFee(Currency("0"))
+    ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
+    // Construct execute request
+    ExecuteOperationsRequest request = ExecuteOperationsRequest(
+      rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
+    );
+    // Make request
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    return resp;
+  }
 }
 
