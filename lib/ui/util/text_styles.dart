@@ -445,6 +445,39 @@ class AppStyles {
       fontWeight: FontWeight.w700,
     );
   }
+
+  // Text Dark Small 400
+  static TextStyle textDarkSmall400(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.small,
+      color: StateContainer.of(context).curTheme.textDark,
+      fontWeight: FontWeight.w400,
+    );
+  }
+  // Text Dark Large 400
+  static TextStyle textDarkLarge700(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.large,
+      color: StateContainer.of(context).curTheme.textDark,
+      fontWeight: FontWeight.w700,
+    );
+  }
+  // Text Light Small 400
+  static TextStyle textLightSmall400(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.small,
+      color: StateContainer.of(context).curTheme.textLight,
+      fontWeight: FontWeight.w400,
+    );
+  }
+  // Text Light Large 400
+  static TextStyle textLightLarge700(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.large,
+      color: StateContainer.of(context).curTheme.textLight,
+      fontWeight: FontWeight.w700,
+    );
+  }
 }
 
 class AppFontSizes {
