@@ -142,6 +142,16 @@ mixin _$Wallet on WalletBase, Store {
   }
 
   @override
+  void removeAccount(PascalAccount account) {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.removeAccount(account);
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void reset() {
     final _$actionInfo = _$WalletBaseActionController.startAction();
     try {

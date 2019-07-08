@@ -6,6 +6,10 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class TransferredAccountSheet extends StatefulWidget {
+  final String newAccountPubkey;
+
+  TransferredAccountSheet({@required this.newAccountPubkey});
+
   _TransferredAccountSheetState createState() => _TransferredAccountSheetState();
 }
 
@@ -133,7 +137,7 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "3GhhbopDPbi883HVV6Hxun6q6AN43CB1yUD9km64cDoZMhgM1KkLy3N41vT1H1zqw4kHdqM64NHMSpSNviVkUP7fCrisZwYzb89dDs",
+                          widget.newAccountPubkey,
                           maxLines: 4,
                           stepGranularity: 0.1,
                           minFontSize: 8,

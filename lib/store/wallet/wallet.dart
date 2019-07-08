@@ -86,6 +86,14 @@ abstract class WalletBase with Store {
   }
 
   @action
+  void removeAccount(PascalAccount account) {
+    // Remove account from wallet
+    this.totalWalletBalance -= account.balance;
+    this.walletAccounts.removeWhere((acct) => acct == account);
+    this.accountStateMap.remove(account.account.account);
+  }
+
+  @action
   void reset() {
     // Reset all properties (for when logging out, etc)
     this.walletLoading = true;
