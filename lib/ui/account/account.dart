@@ -11,6 +11,7 @@ import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_accou
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/transaction_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -104,7 +105,9 @@ class _AccountPageState extends State<AccountPage>
   void _disposeAnimations() {
     _opacityAnimation?.removeStatusListener(_animationStatusListener);
     _opacityAnimationController?.removeListener(_animationControllerListener);
-    try { _opacityAnimationController?.dispose(); } catch (e) {}
+    try {
+      _opacityAnimationController?.dispose();
+    } catch (e) {}
   }
 
   @override
@@ -346,7 +349,8 @@ class _AccountPageState extends State<AccountPage>
                                           12, 4, 12, 4),
                                       child: Observer(
                                         builder: (BuildContext context) {
-                                          Currency bal = accountState.accountBalance;
+                                          Currency bal =
+                                              accountState.accountBalance;
                                           return AutoSizeText.rich(
                                             TextSpan(
                                               children: [
@@ -361,8 +365,7 @@ class _AccountPageState extends State<AccountPage>
                                                     style: TextStyle(
                                                         fontSize: 12)),
                                                 TextSpan(
-                                                    text: bal
-                                                        .toStringOpt(),
+                                                    text: bal.toStringOpt(),
                                                     style: AppStyles.header(
                                                         context))
                                               ],
@@ -602,7 +605,9 @@ class _AccountPageState extends State<AccountPage>
                                               builder: (BuildContext context) {
                                                 if (accountState
                                                         .operationsLoading ||
-                                                    accountState.accountHistory == null) {
+                                                    accountState
+                                                            .accountHistory ==
+                                                        null) {
                                                   return ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.only(
@@ -662,18 +667,22 @@ class _AccountPageState extends State<AccountPage>
                                                                 Radius.circular(
                                                                     12)),
                                                     child: ReactiveRefreshIndicator(
-                                                      backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
-                                                      onRefresh: _refresh,
-                                                      isRefreshing: _isRefreshing,
-                                                      child: ListView(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .only(
-                                                                    bottom: 24),
-                                                        children:
-                                                            accountState.accountHistory
-                                                      )
-                                                    ),
+                                                        backgroundColor:
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .curTheme
+                                                                .backgroundPrimary,
+                                                        onRefresh: _refresh,
+                                                        isRefreshing:
+                                                            _isRefreshing,
+                                                        child: ListView(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .only(
+                                                                        bottom:
+                                                                            24),
+                                                            children: accountState
+                                                                .accountHistory)),
                                                   );
                                                 }
                                               },
@@ -775,13 +784,14 @@ class _AccountPageState extends State<AccountPage>
           address: type == OperationType.Received
               ? op.senders[0].sendingAccount.toString()
               : op.receivers[0].receivingAccount.toString(),
-          date: op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+          date:
+              op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
           payload: op.receivers[0].payload,
           onPressed: () {
             AppSheets.showBottomSheet(
                 context: context,
                 animationDurationMs: 200,
-                widget: TransactionDetailsSheet(
+                widget: TransactionSheet(
                   payload: op.receivers[0].payload,
                   ophash: op.ophash,
                   account: type == OperationType.Received
