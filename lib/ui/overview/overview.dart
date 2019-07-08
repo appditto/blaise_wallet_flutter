@@ -10,8 +10,10 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/placeholder_account_card.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/reactive_refresh.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -30,9 +32,13 @@ class _OverviewPageState extends State<OverviewPage>
   Animation<double> _opacityAnimation;
   AnimationController _opacityAnimationController;
 
+  // Pull to refresh
+  bool _isRefreshing;
+
   @override
   void initState() {
     super.initState();
+    _isRefreshing = false;
     // Load the wallet, total balance, etc.
     walletState.loadWallet();
     // Opacity Animation
@@ -87,6 +93,30 @@ class _OverviewPageState extends State<OverviewPage>
     _opacityAnimationController.addListener(_animationControllerListener);
     _opacityAnimation.addStatusListener(_animationStatusListener);
     _opacityAnimationController.forward();
+  }
+
+
+  // Refresh list
+  Future<void> _refresh() async {
+    setState(() {
+      _isRefreshing = true;
+    });
+    HapticUtil.success();
+    // Hide refresh indicator after 3 seconds if no server response
+    Future.delayed(new Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _isRefreshing = false;
+        });
+      }
+    });
+    walletState?.loadWallet()?.whenComplete(() {
+      if (mounted) {
+        setState(() {
+          _isRefreshing = false;
+        });
+      }
+    });
   }
 
   @override
@@ -495,12 +525,18 @@ class _OverviewPageState extends State<OverviewPage>
                                   child: Stack(
                                     children: <Widget>[
                                       // The list
-                                      ListView(
+                                      ReactiveRefreshIndicator(
+                                        backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+                                        onRefresh: _refresh,
+                                        isRefreshing: _isRefreshing,
+                                        child: ListView(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 3, 0, 19),
                                           children: _getAccountCards(
-                                              walletState.walletAccounts)),
+                                              walletState.walletAccounts)
+                                        ),
+                                      ),
                                       // The gradient at the top
                                       Container(
                                         height: 8,
