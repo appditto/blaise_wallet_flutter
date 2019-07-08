@@ -277,6 +277,7 @@ class _SendSheetState extends State<SendSheet> {
                                     label: 'Address',
                                     style: AppStyles.paragraphMedium(context),
                                     maxLines: 1,
+                                    isAddress: true,
                                     inputFormatters: [
                                       WhitelistingTextInputFormatter(
                                           RegExp("[0-9-]")),
