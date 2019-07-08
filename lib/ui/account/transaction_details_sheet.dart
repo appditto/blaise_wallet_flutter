@@ -23,73 +23,6 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
     super.initState();
   }
 
-  bool _copied = false;
-  Widget _buildTransactionDetailListItem(String header, String value) {
-    Timer _copiedTimer;
-    return Container(
-      width: double.maxFinite,
-      color: _copied
-          ? StateContainer.of(context).curTheme.success
-          : StateContainer.of(context).curTheme.backgroundPrimary,
-      child: FlatButton(
-        onPressed: () {
-          setState(() {
-            _copied = true;
-          });
-          if (_copiedTimer != null) {
-            _copiedTimer.cancel();
-          }
-          _copiedTimer = Timer(const Duration(milliseconds: 1000), () {
-            if (mounted) {
-              setState(() {
-                _copied = false;
-              });
-            }
-          });
-        },
-        splashColor: StateContainer.of(context).curTheme.textDark30,
-        highlightColor: StateContainer.of(context).curTheme.textDark15,
-        padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width - 100,
-              child: AutoSizeText(
-                header,
-                style: _copied
-                    ? AppStyles.textLightSmall400(context)
-                    : AppStyles.textDarkSmall400(context),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width - 100,
-              margin: EdgeInsetsDirectional.only(top: 6),
-              child: AutoSizeText(
-                value,
-                style: _copied
-                    ? AppStyles.textLightLarge700(context)
-                    : AppStyles.textDarkLarge700(context),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            _copied?
-            Container(
-              alignment: Alignment(1, 0),
-              margin: EdgeInsetsDirectional.only(end: 16),
-              child: AutoSizeText(
-                "Copied",
-                style: AppStyles.textLightSmall700(context),
-                textAlign: TextAlign.center,
-              ),
-            ):SizedBox()
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -116,74 +49,80 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                           // The List
                           SingleChildScrollView(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
                             child: Column(
                               children: <Widget>[
-                                _buildTransactionDetailListItem(
-                                    "block", "331135"),
+                                TransactionDetailsListItem(
+                                    header: "block", value: "331135"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem("time",
-                                    "Jul 08, 2019 • 13:24:01 (1562592241)"),
+                                TransactionDetailsListItem(
+                                    header: "time",
+                                    value:
+                                        "Jul 08, 2019 • 13:24:01 (1562592241)"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem("opblock", "1"),
+                                TransactionDetailsListItem(
+                                    header: "opblock", value: "1"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem(
-                                    "maturation", "2"),
+                                TransactionDetailsListItem(
+                                    header: "maturation", value: "2"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem(
-                                    "optype", "Delist Account (5)"),
+                                TransactionDetailsListItem(
+                                    header: "optype",
+                                    value: "Delist Account (5)"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem(
-                                    "account", "582406"),
+                                TransactionDetailsListItem(
+                                    header: "account", value: "582406"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem(
-                                    "signer_account", "582406"),
+                                TransactionDetailsListItem(
+                                    header: "signer_account", value: "582406"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem(
-                                    "n_opreation", "5976"),
+                                TransactionDetailsListItem(
+                                    header: "n_opreation", value: "5976"),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                _buildTransactionDetailListItem(
-                                    "ophash", "7D0D050006E3080058170000A316A82C0DAA2122DBB79A7EA37450EB66471BBB"),
+                                TransactionDetailsListItem(
+                                    header: "ophash",
+                                    value:
+                                        "7D0D050006E3080058170000A316A82C0DAA2122DBB79A7EA37450EB66471BBB"),
                               ],
                             ),
                           ),
@@ -252,6 +191,95 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class TransactionDetailsListItem extends StatefulWidget {
+  final String header;
+  final String value;
+  TransactionDetailsListItem({
+    this.header,
+    this.value,
+  });
+  _TransactionDetailsListItemState createState() =>
+      _TransactionDetailsListItemState();
+}
+
+class _TransactionDetailsListItemState
+    extends State<TransactionDetailsListItem> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Timer _copiedTimer;
+  bool _copied = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.maxFinite,
+      color: _copied
+          ? StateContainer.of(context).curTheme.success
+          : StateContainer.of(context).curTheme.backgroundPrimary,
+      child: FlatButton(
+        onPressed: () {
+          setState(() {
+            _copied = true;
+          });
+          if (_copiedTimer != null) {
+            _copiedTimer.cancel();
+          }
+          _copiedTimer = Timer(const Duration(milliseconds: 1000), () {
+            if (mounted) {
+              setState(() {
+                _copied = false;
+              });
+            }
+          });
+        },
+        splashColor: StateContainer.of(context).curTheme.textDark30,
+        highlightColor: StateContainer.of(context).curTheme.textDark15,
+        padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width - 100,
+              child: AutoSizeText(
+                widget.header,
+                style: _copied
+                    ? AppStyles.textLightSmall400(context)
+                    : AppStyles.textDarkSmall400(context),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width - 100,
+              margin: EdgeInsetsDirectional.only(top: 6),
+              child: AutoSizeText(
+                widget.value,
+                style: _copied
+                    ? AppStyles.textLightLarge700(context)
+                    : AppStyles.textDarkLarge700(context),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            _copied
+                ? Container(
+                    alignment: Alignment(1, 0),
+                    margin: EdgeInsetsDirectional.only(end: 16),
+                    child: AutoSizeText(
+                      "Copied",
+                      style: AppStyles.textLightSmall700(context),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : SizedBox()
+          ],
+        ),
+      ),
     );
   }
 }
