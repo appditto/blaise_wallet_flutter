@@ -23,8 +23,8 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
     super.initState();
   }
 
+  bool _copied = false;
   Widget _buildTransactionDetailListItem(String header, String value) {
-    bool _copied = false;
     Timer _copiedTimer;
     return Container(
       width: double.maxFinite,
@@ -73,7 +73,17 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                     : AppStyles.textDarkLarge700(context),
                 textAlign: TextAlign.center,
               ),
-            )
+            ),
+            _copied?
+            Container(
+              alignment: Alignment(1, 0),
+              margin: EdgeInsetsDirectional.only(end: 16),
+              child: AutoSizeText(
+                "Copied",
+                style: AppStyles.textLightSmall700(context),
+                textAlign: TextAlign.center,
+              ),
+            ):SizedBox()
           ],
         ),
       ),
@@ -166,6 +176,14 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
                                 ),
                                 _buildTransactionDetailListItem(
                                     "n_opreation", "5976"),
+                                Divider(
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .textDark10,
+                                  height: 1,
+                                ),
+                                _buildTransactionDetailListItem(
+                                    "ophash", "7D0D050006E3080058170000A316A82C0DAA2122DBB79A7EA37450EB66471BBB"),
                               ],
                             ),
                           ),

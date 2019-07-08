@@ -478,6 +478,14 @@ class AppStyles {
       fontWeight: FontWeight.w700,
     );
   }
+  // Text Light Small 700
+  static TextStyle textLightSmall700(BuildContext context) {
+    return TextStyle(
+      fontSize: AppFontSizes.small,
+      color: StateContainer.of(context).curTheme.textLight,
+      fontWeight: FontWeight.w700,
+    );
+  }
 }
 
 class AppFontSizes {
