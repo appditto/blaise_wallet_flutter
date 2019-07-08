@@ -28,6 +28,12 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
   OverlayEntry _overlay;
   Account accountState;
 
+  @override
+  void initState() {
+    super.initState();
+    this.accountState = walletState.getAccountState(widget.account);
+  }
+
   void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
@@ -208,7 +214,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                                   PascalOperation op = resp.operations[0];
                                   if (op.valid == null || op.valid) {
                                     // Update name
-                                    accountState.account.name = widget.newName;
+                                    walletState.updateAccountName(widget.account, widget.newName);
                                     Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
                                     AppSheets.showBottomSheet(
                                       context: context,
@@ -221,12 +227,14 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                                     UIUtil.showSnackbar("${op.errors}", context);
                                   }
                                 } catch (e) {
+                                  throw e;
                                   UIUtil.showSnackbar("Something went wrong, try again later.", context);
                                 }
                               }
                             });
                           } catch (e) {
                             _overlay?.remove();
+                            throw e;
                             UIUtil.showSnackbar("Something went wrong, try again later.", context);
                           }
                         }

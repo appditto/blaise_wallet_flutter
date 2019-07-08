@@ -130,7 +130,7 @@ class _AccountPageState extends State<AccountPage>
         action: () {
           Navigator.pop(context);
           AppSheets.showBottomSheet(
-              context: context, widget: ChangeNameSheet());
+              context: context, widget: ChangeNameSheet(account: accountState.account));
         },
       ),
       DialogListItem(
