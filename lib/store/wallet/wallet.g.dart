@@ -152,6 +152,16 @@ mixin _$Wallet on WalletBase, Store {
   }
 
   @override
+  void updateAccountName(PascalAccount account, AccountName newName) {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.updateAccountName(account, newName);
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void reset() {
     final _$actionInfo = _$WalletBaseActionController.startAction();
     try {

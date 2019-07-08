@@ -136,6 +136,14 @@ mixin _$Account on AccountBase, Store {
         .run(() => super.transferAccount(strPubkey));
   }
 
+  final _$changeAccountNameAsyncAction = AsyncAction('changeAccountName');
+
+  @override
+  Future<RPCResponse> changeAccountName(AccountName newName) {
+    return _$changeAccountNameAsyncAction
+        .run(() => super.changeAccountName(newName));
+  }
+
   final _$AccountBaseActionController = ActionController(name: 'AccountBase');
 
   @override

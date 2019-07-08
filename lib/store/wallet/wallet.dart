@@ -94,6 +94,16 @@ abstract class WalletBase with Store {
   }
 
   @action
+  void updateAccountName(PascalAccount account, AccountName newName) {
+    this.walletAccounts.where((acct) => acct.account == account.account).forEach((pa) {
+      pa.name = newName;
+    });
+    if (this.accountStateMap.containsKey(account.account.account)) {
+      this.accountStateMap[account.account.account].account.name = newName;
+    }
+  }
+
+  @action
   void reset() {
     // Reset all properties (for when logging out, etc)
     this.walletLoading = true;
