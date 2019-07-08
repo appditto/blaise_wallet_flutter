@@ -164,7 +164,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                         ),
                         child: AutoSizeText(
                           "Appditto",
-                          maxLines: 6,
+                          maxLines: 2,
                           stepGranularity: 0.1,
                           minFontSize: 8,
                           textAlign: TextAlign.center,
