@@ -80,7 +80,7 @@ class _OverviewPageState extends State<OverviewPage>
   void _disposeAnimations() {
     _opacityAnimation?.removeStatusListener(_animationStatusListener);
     _opacityAnimationController?.removeListener(_animationControllerListener);
-    _opacityAnimationController?.dispose();    
+    _opacityAnimationController?.dispose();
   }
 
   @override
@@ -94,7 +94,6 @@ class _OverviewPageState extends State<OverviewPage>
     _opacityAnimation.addStatusListener(_animationStatusListener);
     _opacityAnimationController.forward();
   }
-
 
   // Refresh list
   Future<void> _refresh() async {
@@ -410,26 +409,10 @@ class _OverviewPageState extends State<OverviewPage>
                                     children: <Widget>[
                                       // The list
                                       ListView(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 3, 0, 19),
-                                          children: [
-                                            Opacity(
-                                                opacity:
-                                                    _opacityAnimation.value,
-                                                child:
-                                                    PlaceholderAccountCard()),
-                                            Opacity(
-                                                opacity:
-                                                    _opacityAnimation.value,
-                                                child:
-                                                    PlaceholderAccountCard()),
-                                            Opacity(
-                                                opacity:
-                                                    _opacityAnimation.value,
-                                                child:
-                                                    PlaceholderAccountCard()),
-                                          ]),
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 3, 0, 19),
+                                        children: _getPlaceholderAccountCards(),
+                                      ),
                                       // The gradient at the top
                                       Container(
                                         height: 8,
@@ -526,16 +509,18 @@ class _OverviewPageState extends State<OverviewPage>
                                     children: <Widget>[
                                       // The list
                                       ReactiveRefreshIndicator(
-                                        backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+                                        backgroundColor:
+                                            StateContainer.of(context)
+                                                .curTheme
+                                                .backgroundPrimary,
                                         onRefresh: _refresh,
                                         isRefreshing: _isRefreshing,
                                         child: ListView(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 3, 0, 19),
-                                          children: _getAccountCards(
-                                              walletState.walletAccounts)
-                                        ),
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 3, 0, 19),
+                                            children: _getAccountCards(
+                                                walletState.walletAccounts)),
                                       ),
                                       // The gradient at the top
                                       Container(
@@ -604,6 +589,15 @@ class _OverviewPageState extends State<OverviewPage>
     accounts.forEach((account) {
       ret.add(AccountCard(account: account));
     });
+    return ret;
+  }
+
+  List<Widget> _getPlaceholderAccountCards() {
+    List<Widget> ret = [];
+    for (var i = 0; i < 7; i++) {
+      ret.add(Opacity(
+          opacity: _opacityAnimation.value, child: PlaceholderAccountCard()));
+    }
     return ret;
   }
 }
