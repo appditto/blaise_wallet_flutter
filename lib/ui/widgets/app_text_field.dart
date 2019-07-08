@@ -54,6 +54,7 @@ class AppTextField extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
   final Function onChanged;
   final Function onTap;
+  final bool isAddress;
 
   AppTextField(
       {@required this.label,
@@ -69,12 +70,154 @@ class AppTextField extends StatefulWidget {
       this.inputFormatters,
       this.onChanged,
       this.onTap,
+      this.isAddress = false,
       this.passwordField = false});
 
   _AppTextFieldState createState() => _AppTextFieldState();
 }
 
 class _AppTextFieldState extends State<AppTextField> {
+  OverlayEntry _overlayEntry;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isAddress) {
+      widget.focusNode.addListener(() {
+        if (widget.focusNode.hasFocus) {
+          this._overlayEntry = this._createOverlayEntry();
+          Overlay.of(context).insert(this._overlayEntry);
+        } else {
+          this._overlayEntry.remove();
+        }
+      });
+    }
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    RenderBox renderBox = context.findRenderObject();
+    var size = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
+    return OverlayEntry(
+        builder: (context) => Positioned(
+              left: offset.dx,
+              top: offset.dy + size.height +2,
+              width: size.width,
+              child: Material(
+                color: StateContainer.of(context).curTheme.backgroundPrimary,
+                child: Container(
+                  constraints: BoxConstraints(maxHeight: 138),
+                  decoration: BoxDecoration(
+                      color:
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                      boxShadow: [
+                        StateContainer.of(context).curTheme.shadowAccountCard
+                      ]),
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: double.maxFinite,
+                          height: 46,
+                          child: FlatButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              return null;
+                            },
+                            child: Container(
+                              alignment: Alignment(-1, 0),
+                              margin: EdgeInsetsDirectional.only(
+                                  start: 16, end: 16),
+                              child: AutoSizeText.rich(
+                                TextSpan(children: [
+                                  TextSpan(
+                                    text: "@",
+                                    style: AppStyles.settingsHeader(context),
+                                  ),
+                                  TextSpan(
+                                    text: "bbedward",
+                                    style: AppStyles.contactsItemName(context),
+                                  ),
+                                ]),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          height: 46,
+                          child: FlatButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              return null;
+                            },
+                            child: Container(
+                              alignment: Alignment(-1, 0),
+                              margin: EdgeInsetsDirectional.only(
+                                  start: 16, end: 16),
+                              child: AutoSizeText.rich(
+                                TextSpan(children: [
+                                  TextSpan(
+                                    text: "@",
+                                    style: AppStyles.settingsHeader(context),
+                                  ),
+                                  TextSpan(
+                                    text: "bbedward2",
+                                    style: AppStyles.contactsItemName(context),
+                                  ),
+                                ]),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          height: 46,
+                          child: FlatButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              return null;
+                            },
+                            child: Container(
+                              alignment: Alignment(-1, 0),
+                              margin: EdgeInsetsDirectional.only(
+                                  start: 16, end: 16),
+                              child: AutoSizeText.rich(
+                                TextSpan(children: [
+                                  TextSpan(
+                                    text: "@",
+                                    style: AppStyles.settingsHeader(context),
+                                  ),
+                                  TextSpan(
+                                    text: "bbedward3",
+                                    style: AppStyles.contactsItemName(context),
+                                  ),
+                                ]),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -103,7 +246,8 @@ class _AppTextFieldState extends State<AppTextField> {
               cursorColor: StateContainer.of(context).curTheme.primary,
               keyboardType: widget.inputType,
               autocorrect: false,
-              textCapitalization: widget.textCapitalization ?? TextCapitalization.none,
+              textCapitalization:
+                  widget.textCapitalization ?? TextCapitalization.none,
               textInputAction: TextInputAction.done,
               maxLines: widget.maxLines,
               minLines: 1,
