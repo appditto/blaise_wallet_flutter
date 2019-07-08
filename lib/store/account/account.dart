@@ -162,11 +162,7 @@ abstract class AccountBase with Store {
     );
     // Make request
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
-    if (resp.isError) {
-      return resp;
-    }
-    OperationsResponse opResp = resp;
     return resp;
-    }
+  }
 }
 

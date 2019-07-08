@@ -25,6 +25,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
   FocusNode publicKeyFocusNode;
   TextEditingController publicKeyController;
   Account accountState;
+  String pubkeyError;
 
   @override
   void initState() {
@@ -144,7 +145,15 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                       onPressed: () {
                                         Clipboard.getData("text/plain")
                                             .then((cdata) {
-                                          publicKeyController.text = cdata.text;
+                                          try {
+                                            PublicKey pubKey = PublicKeyCoder().decodeFromBase58(cdata.text);
+                                            publicKeyController.text = cdata.text;
+                                          } catch (e) {
+                                            try {
+                                              PublicKey pubKey = PublicKeyCoder().decodeFromBytes(PDUtil.hexToBytes(cdata.text));
+                                              publicKeyController.text = cdata.text;
+                                            } catch (e) {}
+                                          }
                                         });
                                       },
                                     ),
@@ -153,6 +162,29 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                     ),
                                     focusNode: publicKeyFocusNode,
                                     controller: publicKeyController,
+                                    onChanged: (nt) {
+                                      if (pubkeyError != null) {
+                                        setState(() {
+                                          pubkeyError = null;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                                // Error Text
+                                Container(
+                                  margin: EdgeInsetsDirectional.only(
+                                      start: 30,
+                                      end: 30,
+                                      top: 4,
+                                      bottom: 0),
+                                  child: Text(
+                                    pubkeyError == null
+                                        ? ""
+                                        : pubkeyError,
+                                    style:
+                                        AppStyles.paragraphPrimary(context),
+                                    textAlign: TextAlign.start
                                   ),
                                 ),
                               ],
@@ -169,10 +201,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                         type: AppButtonType.Primary,
                         text: "Transfer",
                         onPressed: () {
-                          AppSheets.showBottomSheet(
-                              context: context,
-                              widget: TransferringAccountSheet(),
-                              noBlur: true);
+                          validateAndTransfer();
                         },
                       ),
                     ],
@@ -184,5 +213,30 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
         ],
       )
     );
+  }
+
+  void validateAndTransfer() {
+    // Validate pubkey
+    // First try base58, then hex
+    try {
+      PublicKeyCoder().decodeFromBase58(publicKeyController.text);
+    } catch (e) {
+      try {
+        PublicKeyCoder().decodeFromBytes(PDUtil.hexToBytes(publicKeyController.text));
+      } catch (e) {
+        setState(() {
+          pubkeyError = "Invalid Public Key";
+        });
+        return;
+      }
+    }
+    AppSheets.showBottomSheet(
+      context: context,
+      widget: TransferringAccountSheet(
+        account: widget.account,
+        publicKeyDisplay: publicKeyController.text,
+      ),
+      noBlur: true)
+    ;
   }
 }

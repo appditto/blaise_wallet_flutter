@@ -275,9 +275,11 @@ class _SendSheetState extends State<SendSheet> {
                                       PascalAccountFormatter()
                                     ],
                                     onChanged: (text) {
-                                      setState(() {
-                                        destinationError = null;
-                                      });
+                                      if (destinationError != null) {
+                                        setState(() {
+                                          destinationError = null;
+                                        });
+                                      }
                                     },
                                     focusNode: addressFocusNode,
                                     controller: addressController,
@@ -335,9 +337,11 @@ class _SendSheetState extends State<SendSheet> {
                                                 .primary,
                                           ),
                                     onChanged: (text) {
-                                      setState(() {
-                                        amountError = null;
-                                      });
+                                      if (amountError != null) {
+                                        setState(() {
+                                          amountError = null;
+                                        });
+                                      }
                                     },
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(13),

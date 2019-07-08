@@ -243,34 +243,39 @@ class _SendingSheetState extends State<SendingSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await AuthUtil().authenticate("Authenticate to send ${widget.amount} Pascal.")) {
-                          showOverlay(context);
-                          // Do send
-                          walletState.getAccountState(widget.source).doSend(
-                            amount: widget.amount,
-                            destination: widget.destination,
-                            payload: widget.payload
-                          ).then((result) {
-                            if (result.isError) {
-                              ErrorResponse errResp = result;
-                              UIUtil.showSnackbar(errResp.errorMessage, context);
-                              _overlay?.remove();
-                              Navigator.of(context).pop();
-                            } else {
-                              _overlay?.remove();
-                              OperationsResponse resp = result;
-                              PascalOperation op = resp.operations[0];
-                              if (op.valid == null || op.valid) {
-                                Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
-                                AppSheets.showBottomSheet(
-                                  context: context,
-                                  closeOnTap: true,
-                                  widget: SentSheet(destination: widget.destination, amount: widget.amount)
-                                );
+                          try {
+                            showOverlay(context);
+                            // Do send
+                            walletState.getAccountState(widget.source).doSend(
+                              amount: widget.amount,
+                              destination: widget.destination,
+                              payload: widget.payload
+                            ).then((result) {
+                              if (result.isError) {
+                                ErrorResponse errResp = result;
+                                UIUtil.showSnackbar(errResp.errorMessage, context);
+                                _overlay?.remove();
+                                Navigator.of(context).pop();
                               } else {
-                                UIUtil.showSnackbar("${op.errors}", context);
+                                _overlay?.remove();
+                                OperationsResponse resp = result;
+                                PascalOperation op = resp.operations[0];
+                                if (op.valid == null || op.valid) {
+                                  Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+                                  AppSheets.showBottomSheet(
+                                    context: context,
+                                    closeOnTap: true,
+                                    widget: SentSheet(destination: widget.destination, amount: widget.amount)
+                                  );
+                                } else {
+                                  UIUtil.showSnackbar("${op.errors}", context);
+                                }
                               }
-                            }
-                          });
+                            });
+                          } catch (e) {
+                            _overlay?.remove();
+                            UIUtil.showSnackbar("Something went wrong, try again later.", context);
+                          }
                         }
                       },
                     ),

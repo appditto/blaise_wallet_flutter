@@ -2,25 +2,42 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferred_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class TransferringAccountSheet extends StatefulWidget {
+  final String publicKeyDisplay;
+  final PascalAccount account;
+
+  TransferringAccountSheet({@required this.publicKeyDisplay, @required this.account});
+
   _TransferringAccountSheetState createState() =>
       _TransferringAccountSheetState();
 }
 
 class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
-  showOverlay(BuildContext context) async {
+  Account accountState;
+  OverlayEntry _overlay;
+
+  @override
+  void initState() {
+    super.initState();
+    this.accountState = walletState.getAccountState(widget.account);
+  }
+
+  void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
@@ -47,9 +64,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
             ),
           ),
     );
-    overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(milliseconds: 2600));
-    overlayEntry.remove();
+    overlayState.insert(_overlay);
   }
 
   @override
@@ -165,7 +180,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "3GhhbopDPbi883HVV6Hxun6q6AN43CB1yUD9km64cDoZMhgM1KkLy3N41vT1H1zqw4kHdqM64NHMSpSNviVkUP7fCrisZwYzb89dDs",
+                          widget.publicKeyDisplay,
                           maxLines: 4,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -185,12 +200,42 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await AuthUtil().authenticate("Authenticate to transfer the account.")) {
-                          await showOverlay(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                              context: context,
-                              widget: TransferredAccountSheet());
+                          try {
+                            showOverlay(context);
+                            accountState.transferAccount(widget.publicKeyDisplay).then((result) {
+                              if (result.isError) {
+                                ErrorResponse errResp = result;
+                                UIUtil.showSnackbar(errResp.errorMessage, context);
+                                _overlay?.remove();
+                                Navigator.of(context).pop();
+                              } else {
+                                _overlay?.remove();
+                                try {
+                                  OperationsResponse resp = result;
+                                  PascalOperation op = resp.operations[0];
+                                  if (op.valid == null || op.valid) {
+                                    // Remove all traces of this account
+                                    walletState.removeAccount(widget.account);
+                                    Navigator.of(context).popUntil(RouteUtils.withNameLike("/overview"));
+                                    AppSheets.showBottomSheet(
+                                      context: context,
+                                      closeOnTap: true,
+                                      widget: TransferredAccountSheet(
+                                        newAccountPubkey: widget.publicKeyDisplay,
+                                      )
+                                    );
+                                  } else {
+                                    UIUtil.showSnackbar("${op.errors}", context);
+                                  }
+                                } catch (e) {
+                                  UIUtil.showSnackbar("Something went wrong, try again later.", context);
+                                }
+                              }
+                            });
+                          } catch (e) {
+                            _overlay?.remove();
+                            UIUtil.showSnackbar("Something went wrong, try again later.", context);
+                          }
                         }
                       },
                     ),

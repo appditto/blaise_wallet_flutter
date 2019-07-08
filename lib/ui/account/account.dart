@@ -135,7 +135,11 @@ class _AccountPageState extends State<AccountPage>
         action: () {
           Navigator.pop(context);
           AppSheets.showBottomSheet(
-              context: context, widget: TransferAccountSheet());
+            context: context,
+            widget: TransferAccountSheet(
+              account: accountState.account,
+            )
+          );
         },
       ),
       DialogListItem(
