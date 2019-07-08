@@ -273,7 +273,7 @@ class _TransactionDetailsListItemState
                     child: AutoSizeText(
                       "Copied",
                       style: AppStyles.textLightSmall700(context),
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.end,
                     ),
                   )
                 : SizedBox()
