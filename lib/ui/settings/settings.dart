@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:share/share.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
@@ -53,22 +54,24 @@ class _SettingsPageState extends State<SettingsPage> {
     DialogListItem(option: "Deutsch (de)"),
     DialogListItem(option: "Español (es)")
   ];
+
+  List<DialogListItem> getThemeList() {
+    List<DialogListItem> ret = [];
+    ThemeOptions.values.forEach((ThemeOptions value) {
+      ThemeSetting theme = ThemeSetting(value);
+      ret.add(DialogListItem(
+        option: theme.getDisplayName(context),
+        action: () {
+          StateContainer.of(context).updateTheme(ThemeSetting(value));
+          Navigator.of(context).pop();
+        }
+      ));
+    });
+    return ret;
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<DialogListItem> themeList = [
-      DialogListItem(
-          option: "Light",
-          action: () {
-            StateContainer.of(context).updateTheme(BlaiseLightTheme());
-            Navigator.pop(context);
-          }),
-      DialogListItem(
-          option: "Dark",
-          action: () {
-            StateContainer.of(context).updateTheme(BlaiseDarkTheme());
-            Navigator.pop(context);
-          })
-    ];
     // The main scaffold that holds everything
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -242,7 +245,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       context: context,
                                       builder: (_) => DialogOverlay(
                                           title: 'Theme',
-                                          optionsList: themeList));
+                                          optionsList: getThemeList()));
                                 },
                               ),
                               Container(

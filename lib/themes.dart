@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 abstract class BaseTheme {
+  int themeID;
+
   Color primary;
   Color primary60;
   Color primary50;
@@ -88,9 +90,15 @@ abstract class BaseTheme {
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
+
+  /// Operator overrides
+  bool operator ==(o) => (o != null && o.hashCode == hashCode);
+  int get hashCode => themeID.hashCode;
 }
 
 class BlaiseLightTheme extends BaseTheme {
+  int themeID = 1;
+
   static const Color orange = Color(0xFFF7941F);
   static const Color yellow = Color(0xFFFCC642);
   static const Color teal = Color(0xFF00C5C3);
@@ -255,6 +263,8 @@ class BlaiseLightTheme extends BaseTheme {
 }
 
 class BlaiseDarkTheme extends BaseTheme {
+  int themeID = 2;
+
   static const Color teal = Color(0xFF61DEFF);
   static const Color tealLight = Color(0xFFA8FDFF);
   static const Color green = Color(0xFF00FFBF);

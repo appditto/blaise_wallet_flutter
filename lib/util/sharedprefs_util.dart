@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:blaise_wallet_flutter/constants.dart';
+import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Singleton wrapper for shared preferences
@@ -10,6 +11,7 @@ class SharedPrefsUtil {
   static const String privkey_backed_up_key = 'pasc_privkey_backedup';
   static const String rpc_url_key = 'pasc_rpc_url';
   static const String free_tx_key = 'pasc_free_tx_key';
+  static const String cur_theme = 'blaise_cur_theme_key';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -102,6 +104,14 @@ class SharedPrefsUtil {
   Future<void> setFreeTransactionDone() async {
     // 5 minute expiration on free transactions
     await setWithExpiry(free_tx_key, 'free', 300);
+  }
+
+  Future<void> setTheme(ThemeSetting theme) async {
+   return await set(cur_theme, theme.getIndex());
+  }
+
+  Future<ThemeSetting> getTheme() async {
+    return ThemeSetting(ThemeOptions.values[await get(cur_theme, defaultValue: ThemeOptions.LIGHT.index)]);
   }
 
   // For logging out

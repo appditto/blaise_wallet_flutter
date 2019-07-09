@@ -12,7 +12,7 @@ class TapOutsideUnfocus extends StatelessWidget {
       GestureDetector(
         onTap: () {
           // Clear focus of our fields when tapped in this empty space
-          FocusScope.of(context).detach();
+          FocusScope.of(context).unfocus();
         },
         child: this.child
       );

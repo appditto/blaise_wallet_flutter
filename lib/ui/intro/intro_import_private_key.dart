@@ -215,13 +215,11 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
     try {
       String salted =
           PDUtil.bytesToUtf8String(PDUtil.hexToBytes(pkText.substring(0, 16)));
-      print(salted);
       if (salted == "Salted__") {
         return true;
       }
       return false;
     } catch (e) {
-      print('exception');
       return false;
     }
   }

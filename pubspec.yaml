@@ -31,13 +31,13 @@ dependencies:
   intl: ^0.15.8
 
   # AutoSizeText widget
-  auto_size_text: ^2.0.0+2
+  auto_size_text: ^2.0.1
 
   # Flare for animations
-  flare_flutter: ^1.5.1
+  flare_flutter: ^1.5.4
 
   # SVG
-  flutter_svg: ^0.12.4
+  flutter_svg: ^0.13.0+2
 
   # Font awesome
   font_awesome_flutter: ^8.4.0
@@ -50,16 +50,16 @@ dependencies:
       ref: master
   
   # Slidable
-  flutter_slidable: "^0.5.3"
+  flutter_slidable: ^0.5.3
 
   # QR Code Generator
-  qr_flutter: ^2.0.0
+  qr_flutter: ^2.1.0+55
 
   # Banner style alerts
-  oktoast: ^2.1.7
+  oktoast: ^2.2.0
 
   # Service locator
-  get_it: ^1.0.3+1
+  get_it: ^1.0.3+2
 
   # To avoid keyboard overlap
   keyboard_avoider: ^0.1.2
@@ -68,17 +68,17 @@ dependencies:
   flutter_secure_storage: ^3.2.1+1
 
   # shared prefs
-  shared_preferences: ^0.5.3
+  shared_preferences: ^0.5.3+2
 
   # Biometrics
-  local_auth: ^0.5.2+2  
+  local_auth: ^0.5.2+3
 
   # mobx for state
-  mobx: ^0.2.1+1
-  flutter_mobx: ^0.2.2
+  mobx: ^0.3.3+2
+  flutter_mobx: ^0.3.0+1
 
   # Nicer logging
-  logger: ^0.6.0
+  logger: ^0.7.0+2
 
   # quiver - various Dart utilities
   quiver: ^2.0.2
@@ -112,7 +112,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.5.0
   intl_translation: ^0.17.5
-  mobx_codegen: ^0.2.1+2
+  mobx_codegen: ^0.3.3+1
   json_serializable: ^3.0.0
 
 # For information on the generic Dart part of this file, see the

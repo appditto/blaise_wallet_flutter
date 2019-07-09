@@ -13,95 +13,102 @@ mixin _$Account on AccountBase, Store {
 
   @override
   bool get operationsLoading {
+    _$operationsLoadingAtom.context.enforceReadPolicy(_$operationsLoadingAtom);
     _$operationsLoadingAtom.reportObserved();
     return super.operationsLoading;
   }
 
   @override
   set operationsLoading(bool value) {
-    _$operationsLoadingAtom.context
-        .checkIfStateModificationsAreAllowed(_$operationsLoadingAtom);
-    super.operationsLoading = value;
-    _$operationsLoadingAtom.reportChanged();
+    _$operationsLoadingAtom.context.conditionallyRunInAction(() {
+      super.operationsLoading = value;
+      _$operationsLoadingAtom.reportChanged();
+    }, _$operationsLoadingAtom, name: '${_$operationsLoadingAtom.name}_set');
   }
 
   final _$rpcClientAtom = Atom(name: 'AccountBase.rpcClient');
 
   @override
   RPCClient get rpcClient {
+    _$rpcClientAtom.context.enforceReadPolicy(_$rpcClientAtom);
     _$rpcClientAtom.reportObserved();
     return super.rpcClient;
   }
 
   @override
   set rpcClient(RPCClient value) {
-    _$rpcClientAtom.context
-        .checkIfStateModificationsAreAllowed(_$rpcClientAtom);
-    super.rpcClient = value;
-    _$rpcClientAtom.reportChanged();
+    _$rpcClientAtom.context.conditionallyRunInAction(() {
+      super.rpcClient = value;
+      _$rpcClientAtom.reportChanged();
+    }, _$rpcClientAtom, name: '${_$rpcClientAtom.name}_set');
   }
 
   final _$accountAtom = Atom(name: 'AccountBase.account');
 
   @override
   PascalAccount get account {
+    _$accountAtom.context.enforceReadPolicy(_$accountAtom);
     _$accountAtom.reportObserved();
     return super.account;
   }
 
   @override
   set account(PascalAccount value) {
-    _$accountAtom.context.checkIfStateModificationsAreAllowed(_$accountAtom);
-    super.account = value;
-    _$accountAtom.reportChanged();
+    _$accountAtom.context.conditionallyRunInAction(() {
+      super.account = value;
+      _$accountAtom.reportChanged();
+    }, _$accountAtom, name: '${_$accountAtom.name}_set');
   }
 
   final _$accountBalanceAtom = Atom(name: 'AccountBase.accountBalance');
 
   @override
   Currency get accountBalance {
+    _$accountBalanceAtom.context.enforceReadPolicy(_$accountBalanceAtom);
     _$accountBalanceAtom.reportObserved();
     return super.accountBalance;
   }
 
   @override
   set accountBalance(Currency value) {
-    _$accountBalanceAtom.context
-        .checkIfStateModificationsAreAllowed(_$accountBalanceAtom);
-    super.accountBalance = value;
-    _$accountBalanceAtom.reportChanged();
+    _$accountBalanceAtom.context.conditionallyRunInAction(() {
+      super.accountBalance = value;
+      _$accountBalanceAtom.reportChanged();
+    }, _$accountBalanceAtom, name: '${_$accountBalanceAtom.name}_set');
   }
 
   final _$operationsAtom = Atom(name: 'AccountBase.operations');
 
   @override
   List<PascalOperation> get operations {
+    _$operationsAtom.context.enforceReadPolicy(_$operationsAtom);
     _$operationsAtom.reportObserved();
     return super.operations;
   }
 
   @override
   set operations(List<PascalOperation> value) {
-    _$operationsAtom.context
-        .checkIfStateModificationsAreAllowed(_$operationsAtom);
-    super.operations = value;
-    _$operationsAtom.reportChanged();
+    _$operationsAtom.context.conditionallyRunInAction(() {
+      super.operations = value;
+      _$operationsAtom.reportChanged();
+    }, _$operationsAtom, name: '${_$operationsAtom.name}_set');
   }
 
   final _$accountHistoryAtom = Atom(name: 'AccountBase.accountHistory');
 
   @override
   List<Widget> get accountHistory {
+    _$accountHistoryAtom.context.enforceReadPolicy(_$accountHistoryAtom);
     _$accountHistoryAtom.reportObserved();
     return super.accountHistory;
   }
 
   @override
   set accountHistory(List<Widget> value) {
-    _$accountHistoryAtom.context
-        .checkIfStateModificationsAreAllowed(_$accountHistoryAtom);
-    super.accountHistory = value;
-    _$accountHistoryAtom.reportChanged();
+    _$accountHistoryAtom.context.conditionallyRunInAction(() {
+      super.accountHistory = value;
+      _$accountHistoryAtom.reportChanged();
+    }, _$accountHistoryAtom, name: '${_$accountHistoryAtom.name}_set');
   }
 
   final _$updateAccountAsyncAction = AsyncAction('updateAccount');

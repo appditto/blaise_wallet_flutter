@@ -1,6 +1,9 @@
 import 'package:blaise_wallet_flutter/model/available_languages.dart';
+import 'package:blaise_wallet_flutter/model/available_themes.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -73,18 +76,26 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void updateTheme(BaseTheme theme) {
-    if (theme != null) {
-      setState(() {
-        this.curTheme = theme;
-      });
+  Future<void> updateTheme(ThemeSetting theme) async {
+    if (theme != null && theme.getTheme() != curTheme) {
+      if (mounted) {
+        setState(() {
+          this.curTheme = theme.getTheme();
+        });
+      }
+      await sl.get<SharedPrefsUtil>().setTheme(theme);
     }
   }
 
   @override
   void initState() {
     super.initState();
+    // Precache SVG Assets
     _precacheSvgs();
+    // Set initial theme
+    sl.get<SharedPrefsUtil>().getTheme().then((themeSetting) {
+      updateTheme(themeSetting);
+    });
   }
 
   @override
