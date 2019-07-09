@@ -98,124 +98,121 @@ class _AppTextFieldState extends State<AppTextField> {
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
     return OverlayEntry(
-        builder: (context) => Positioned(
-              left: offset.dx,
-              top: offset.dy + size.height +2,
-              width: size.width,
-              child: Material(
+      builder: (context) => Positioned(
+        left: offset.dx,
+        top: offset.dy + size.height + 2,
+        width: size.width,
+        child: Material(
+          color: StateContainer.of(context).curTheme.backgroundPrimary,
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 138),
+            decoration: BoxDecoration(
                 color: StateContainer.of(context).curTheme.backgroundPrimary,
-                child: Container(
-                  constraints: BoxConstraints(maxHeight: 138),
-                  decoration: BoxDecoration(
-                      color:
-                          StateContainer.of(context).curTheme.backgroundPrimary,
-                      boxShadow: [
-                        StateContainer.of(context).curTheme.shadowAccountCard
-                      ]),
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: double.maxFinite,
-                          height: 46,
-                          child: FlatButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              return null;
-                            },
-                            child: Container(
-                              alignment: Alignment(-1, 0),
-                              margin: EdgeInsetsDirectional.only(
-                                  start: 16, end: 16),
-                              child: AutoSizeText.rich(
-                                TextSpan(children: [
-                                  TextSpan(
-                                    text: "@",
-                                    style: AppStyles.settingsHeader(context),
-                                  ),
-                                  TextSpan(
-                                    text: "bbedward",
-                                    style: AppStyles.contactsItemName(context),
-                                  ),
-                                ]),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 16),
-                              ),
+                boxShadow: [
+                  StateContainer.of(context).curTheme.shadowAccountCard
+                ]),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.zero,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: double.maxFinite,
+                    height: 46,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        return null;
+                      },
+                      child: Container(
+                        alignment: Alignment(-1, 0),
+                        margin: EdgeInsetsDirectional.only(start: 16, end: 16),
+                        child: AutoSizeText.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "@",
+                              style: AppStyles.settingsHeader(context),
                             ),
-                          ),
-                        ),
-                        Container(
-                          width: double.maxFinite,
-                          height: 46,
-                          child: FlatButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              return null;
-                            },
-                            child: Container(
-                              alignment: Alignment(-1, 0),
-                              margin: EdgeInsetsDirectional.only(
-                                  start: 16, end: 16),
-                              child: AutoSizeText.rich(
-                                TextSpan(children: [
-                                  TextSpan(
-                                    text: "@",
-                                    style: AppStyles.settingsHeader(context),
-                                  ),
-                                  TextSpan(
-                                    text: "bbedward2",
-                                    style: AppStyles.contactsItemName(context),
-                                  ),
-                                ]),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 16),
-                              ),
+                            TextSpan(
+                              text: "bbedward",
+                              style: AppStyles.contactsItemName(context),
                             ),
-                          ),
+                          ]),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 16),
                         ),
-                        Container(
-                          width: double.maxFinite,
-                          height: 46,
-                          child: FlatButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              return null;
-                            },
-                            child: Container(
-                              alignment: Alignment(-1, 0),
-                              margin: EdgeInsetsDirectional.only(
-                                  start: 16, end: 16),
-                              child: AutoSizeText.rich(
-                                TextSpan(children: [
-                                  TextSpan(
-                                    text: "@",
-                                    style: AppStyles.settingsHeader(context),
-                                  ),
-                                  TextSpan(
-                                    text: "bbedward3",
-                                    style: AppStyles.contactsItemName(context),
-                                  ),
-                                ]),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  Container(
+                    width: double.maxFinite,
+                    height: 46,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        return null;
+                      },
+                      child: Container(
+                        alignment: Alignment(-1, 0),
+                        margin: EdgeInsetsDirectional.only(start: 16, end: 16),
+                        child: AutoSizeText.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "@",
+                              style: AppStyles.settingsHeader(context),
+                            ),
+                            TextSpan(
+                              text: "bbedward2",
+                              style: AppStyles.contactsItemName(context),
+                            ),
+                          ]),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.maxFinite,
+                    height: 46,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        return null;
+                      },
+                      child: Container(
+                        alignment: Alignment(-1, 0),
+                        margin: EdgeInsetsDirectional.only(start: 16, end: 16),
+                        child: AutoSizeText.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "@",
+                              style: AppStyles.settingsHeader(context),
+                            ),
+                            TextSpan(
+                              text: "bbedward3",
+                              style: AppStyles.contactsItemName(context),
+                            ),
+                          ]),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override

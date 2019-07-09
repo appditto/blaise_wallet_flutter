@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -53,168 +54,158 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
   @override
   Widget build(BuildContext context) {
     return TapOutsideUnfocus(
-      child: Column(
-        children: <Widget>[
-          Text(_hasFee ? 'fee ${walletState.MIN_FEE.toStringOpt()}' : 'fee ${walletState.NO_FEE.toStringOpt()}',
-          style: TextStyle(color: Colors.red)),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: StateContainer.of(context).curTheme.backgroundPrimary,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                ),
+        child: Column(
+      children: <Widget>[
+        Text(
+            _hasFee
+                ? 'fee ${walletState.MIN_FEE.toStringOpt()}'
+                : 'fee ${walletState.NO_FEE.toStringOpt()}',
+            style: TextStyle(color: Colors.red)),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: StateContainer.of(context).curTheme.backgroundPrimary,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
               ),
-              child: Column(
-                children: <Widget>[
-                  // Sheet header
-                  Container(
-                    height: 60,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      gradient:
-                          StateContainer.of(context).curTheme.gradientPrimary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        // Close Button
-                        Container(
-                          margin: EdgeInsetsDirectional.only(start: 5, end: 10),
-                          height: 50,
-                          width: 50,
-                          child: FlatButton(
-                              highlightColor:
-                                  StateContainer.of(context).curTheme.textLight15,
-                              splashColor:
-                                  StateContainer.of(context).curTheme.textLight30,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Icon(AppIcons.close,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textLight,
-                                  size: 20)),
-                        ),
-                        // Header
-                        Container(
-                          width: MediaQuery.of(context).size.width - 130,
-                          alignment: Alignment(0, 0),
-                          child: AutoSizeText(
-                            "CHANGE NAME",
-                            style: AppStyles.header(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        // Sized Box
-                        SizedBox(
-                          height: 50,
-                          width: 65,
-                        ),
-                      ],
+            ),
+            child: Column(
+              children: <Widget>[
+                // Sheet header
+                Container(
+                  height: 60,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    gradient:
+                        StateContainer.of(context).curTheme.gradientPrimary,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // Paragraph
-                        Container(
-                          width: double.maxFinite,
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 20),
-                          child: AutoSizeText(
-                            "Enter a name below to change your account’s name.",
-                            style: AppStyles.paragraph(context),
-                            stepGranularity: 0.1,
-                            maxLines: 3,
-                            minFontSize: 8,
-                          ),
-                        ),
-                        Expanded(
-                          child: KeyboardAvoider(
-                            duration: Duration(milliseconds: 0),
-                            autoScroll: true,
-                            focusPadding: 40,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // Container for the name text field
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 10, 30, 10),
-                                  child: AppTextField(
-                                    label: 'New Account Name',
-                                    style: AppStyles.paragraphMedium(context),
-                                    maxLines: 1,
-                                    controller: _nameController,
-                                    focusNode: _nameFocus,
-                                    inputFormatters: [
-                                      WhitelistingTextInputFormatter(
-                                          RegExp(r'[0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()\-+{}[\]_:"|<>,\.\?\/~]')), 
-                                      PascalNameFormatter()
-                                    ],
-                                    onChanged: (nt) {
-                                      if (_nameError != null) {
-                                        setState(() {
-                                          _nameError = null;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                                // Error Text
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      start: 30,
-                                      end: 30,
-                                      top: 4,
-                                      bottom: 0),
-                                  child: Text(
-                                    _nameError == null
-                                        ? ""
-                                        : _nameError,
-                                    style:
-                                        AppStyles.paragraphPrimary(context),
-                                    textAlign: TextAlign.start
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // "Change Name" button
-                  Row(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      AppButton(
-                        type: AppButtonType.Primary,
-                        text: "Change Name",
-                        onPressed: () {
-                          validateAndChangeName();
-                        },
+                      // Close Button
+                      Container(
+                        margin: EdgeInsetsDirectional.only(start: 5, end: 10),
+                        height: 50,
+                        width: 50,
+                        child: FlatButton(
+                            highlightColor:
+                                StateContainer.of(context).curTheme.textLight15,
+                            splashColor:
+                                StateContainer.of(context).curTheme.textLight30,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Icon(AppIcons.close,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textLight,
+                                size: 20)),
+                      ),
+                      // Header
+                      Container(
+                        width: MediaQuery.of(context).size.width - 130,
+                        alignment: Alignment(0, 0),
+                        child: AutoSizeText(
+                          "CHANGE NAME",
+                          style: AppStyles.header(context),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      // Sized Box
+                      SizedBox(
+                        height: 50,
+                        width: 65,
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Paragraph
+                      Container(
+                        width: double.maxFinite,
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 20),
+                        child: AutoSizeText(
+                          "Enter a name below to change your account’s name.",
+                          style: AppStyles.paragraph(context),
+                          stepGranularity: 0.1,
+                          maxLines: 3,
+                          minFontSize: 8,
+                        ),
+                      ),
+                      Expanded(
+                        child: KeyboardAvoider(
+                          duration: Duration(milliseconds: 0),
+                          autoScroll: true,
+                          focusPadding: 40,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Container for the name text field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 10),
+                                child: AppTextField(
+                                  label: 'New Account Name',
+                                  style: AppStyles.paragraphMedium(context),
+                                  maxLines: 1,
+                                  controller: _nameController,
+                                  focusNode: _nameFocus,
+                                  inputFormatters: [
+                                    WhitelistingTextInputFormatter(RegExp(
+                                        r'[0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()\-+{}[\]_:"|<>,\.\?\/~]')),
+                                    PascalNameFormatter()
+                                  ],
+                                  onChanged: (nt) {
+                                    if (_nameError != null) {
+                                      setState(() {
+                                        _nameError = null;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+                              // Error Text
+                              ErrorContainer(
+                                errorText: _nameError == null ? "" : _nameError,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // "Change Name" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.Primary,
+                      text: "Change Name",
+                      onPressed: () {
+                        validateAndChangeName();
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
-      )
-    );
+        ),
+      ],
+    ));
   }
 
   void validateAndChangeName() {
@@ -228,7 +219,10 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
       AccountName accountName = AccountName(_nameController.text);
       AppSheets.showBottomSheet(
           context: context,
-          widget: ChangingNameSheet(account: widget.account, newName: accountName, fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE),
+          widget: ChangingNameSheet(
+              account: widget.account,
+              newName: accountName,
+              fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE),
           noBlur: true);
     } catch (e) {
       setState(() {

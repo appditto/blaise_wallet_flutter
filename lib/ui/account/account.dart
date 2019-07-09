@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
@@ -10,8 +9,7 @@ import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/c
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/account/transaction_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/operation_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -791,7 +789,7 @@ class _AccountPageState extends State<AccountPage>
             AppSheets.showBottomSheet(
                 context: context,
                 animationDurationMs: 200,
-                widget: TransactionSheet(
+                widget: OperationSheet(
                   payload: op.receivers[0].payload,
                   ophash: op.ophash,
                   account: type == OperationType.Received

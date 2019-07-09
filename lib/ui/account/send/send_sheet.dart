@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
@@ -70,8 +71,7 @@ class _SendSheetState extends State<SendSheet> {
     this.addressFocusNode = FocusNode();
     this.amountFocusNode = FocusNode();
     this._hasPayload = false;
-    this._payload =
-        "Testing the new payload.";
+    this._payload = "Testing the new payload.";
     this._hasFee = false;
     checkIfFee();
     // TODO this is a placeholder
@@ -93,8 +93,6 @@ class _SendSheetState extends State<SendSheet> {
     return TapOutsideUnfocus(
       child: Column(
         children: <Widget>[
-          Text(_hasFee ? 'fee ${walletState.MIN_FEE.toStringOpt()}' : 'fee ${walletState.NO_FEE.toStringOpt()}',
-          style: TextStyle(color: Colors.red)),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -336,16 +334,10 @@ class _SendSheetState extends State<SendSheet> {
                                   ),
                                 ),
                                 // Error Text
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      start: 30, end: 30, top: 4, bottom: 0),
-                                  child: Text(
-                                      destinationError == null
-                                          ? ""
-                                          : destinationError,
-                                      style:
-                                          AppStyles.paragraphPrimary(context),
-                                      textAlign: TextAlign.start),
+                                ErrorContainer(
+                                  errorText: destinationError == null
+                                      ? ""
+                                      : destinationError,
                                 ),
                                 // Container for the amount text field
                                 Container(
@@ -409,15 +401,41 @@ class _SendSheetState extends State<SendSheet> {
                                         }),
                                   ),
                                 ),
+                                // Fee container
+                                _hasFee
+                                    ? Container(
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            30, 4, 30, 0),
+                                        child: AutoSizeText.rich(
+                                          TextSpan(children: [
+                                            TextSpan(
+                                              text: "Fee: ",
+                                              style: AppStyles.primarySmall600(
+                                                  context),
+                                            ),
+                                            TextSpan(
+                                              text: "",
+                                              style: AppStyles
+                                                  .iconFontPrimaryBalanceSmallPascal(
+                                                      context),
+                                            ),
+                                            TextSpan(
+                                                text: " ",
+                                                style: TextStyle(fontSize: 7)),
+                                            TextSpan(
+                                                text: walletState.MIN_FEE
+                                                    .toStringOpt(),
+                                                style:
+                                                    AppStyles.primarySmall600(
+                                                        context)),
+                                          ]),
+                                        ),
+                                      )
+                                    : SizedBox(),
                                 // Error Text
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      start: 30, end: 30, top: 4, bottom: 0),
-                                  child: Text(
+                                ErrorContainer(
+                                  errorText:
                                       amountError == null ? "" : amountError,
-                                      style:
-                                          AppStyles.paragraphPrimary(context),
-                                      textAlign: TextAlign.start),
                                 ),
                                 // Payload text and edit button
                                 this._hasPayload

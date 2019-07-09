@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
-import 'package:blaise_wallet_flutter/ui/account/transaction_details_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/operation_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
@@ -15,21 +15,21 @@ import 'package:pascaldart/crypto.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
 
-class TransactionSheet extends StatefulWidget {
+class OperationSheet extends StatefulWidget {
   final String payload;
   final String ophash;
   final AccountNumber account;
   final bool isContact;
-  TransactionSheet(
+  OperationSheet(
       {@required this.ophash,
       @required this.account,
       this.payload,
       this.isContact = false});
 
-  _TransactionSheetState createState() => _TransactionSheetState();
+  _OperationSheetState createState() => _OperationSheetState();
 }
 
-class _TransactionSheetState extends State<TransactionSheet> {
+class _OperationSheetState extends State<OperationSheet> {
   bool _addressCopied;
   Timer _addressCopiedTimer;
   String payload;
@@ -110,7 +110,7 @@ class _TransactionSheetState extends State<TransactionSheet> {
                       ),
                     )
                   : SizedBox(),
-              //"Copy Address", "Add to Contacts" and ""Transaction Details" buttons
+              //"Copy Address", "Add to Contacts" and "Operation Details" buttons
               Row(
                 children: <Widget>[
                   AppButton(
@@ -151,16 +151,16 @@ class _TransactionSheetState extends State<TransactionSheet> {
                         ),
                       ],
                     ),
-              // "Transaction Details" button
+              // "Operation Details" button
               Row(
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.PrimaryOutline,
-                    text: "Transaction Details",
+                    text: "Operation Details",
                     onPressed: () {
                       Navigator.pop(context);
                       AppSheets.showBottomSheet(
-                          context: context, widget: TransactionDetailsSheet());
+                          context: context, widget: OperationDetailsSheet());
                     },
                   ),
                 ],

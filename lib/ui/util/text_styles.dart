@@ -14,6 +14,7 @@ class AppStyles {
   // For headers
   static TextStyle header(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         fontSize: AppFontSizes.largest,
         fontWeight: FontWeight.w700,
         color: StateContainer.of(context).curTheme.textLight);
@@ -22,6 +23,7 @@ class AppStyles {
   // For small headers
   static TextStyle headerSmall(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         fontSize: AppFontSizes.medium,
         fontWeight: FontWeight.w500,
         color: StateContainer.of(context).curTheme.primary);
@@ -29,6 +31,7 @@ class AppStyles {
 
   static TextStyle headerSmallBold(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         fontSize: AppFontSizes.medium,
         fontWeight: FontWeight.w700,
         color: StateContainer.of(context).curTheme.primary);
@@ -37,6 +40,7 @@ class AppStyles {
   // For paragraphs
   static TextStyle paragraph(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 14.0,
         height: 1.3,
@@ -45,6 +49,7 @@ class AppStyles {
 
   static TextStyle paragraphMedium(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 14.0,
         height: 1.3,
@@ -54,22 +59,53 @@ class AppStyles {
   // For paragraphs
   static TextStyle paragraphPrimary(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 14.0,
         height: 1.3,
         fontWeight: FontWeight.w700);
   }
 
+  // For paragraphs
+  static TextStyle primarySmall600(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: AppFontSizes.small,
+        height: 1.3,
+        fontWeight: FontWeight.w600);
+  }
+
   static TextStyle primarySmallest400(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 12.0,
         height: 1.3,
         fontWeight: FontWeight.w400);
   }
 
+  static TextStyle primarySmallest500(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
+  }
+
+  static TextStyle primarySmallest600(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w600);
+  }
+
   static TextStyle paragraphDanger(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.danger,
         fontSize: 14.0,
         height: 1.3,
@@ -78,6 +114,7 @@ class AppStyles {
 
   static TextStyle balanceMedium(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 18.0,
         fontWeight: FontWeight.w700);
@@ -85,6 +122,7 @@ class AppStyles {
 
   static TextStyle balanceSmall(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 14.0,
         fontWeight: FontWeight.w600);
@@ -92,6 +130,7 @@ class AppStyles {
 
   static TextStyle balanceSmallSuccess(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.success,
         fontSize: 14.0,
         fontWeight: FontWeight.w600);
@@ -99,6 +138,7 @@ class AppStyles {
 
   static TextStyle balanceSmallTextDark(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 14.0,
         fontWeight: FontWeight.w600);
@@ -106,6 +146,7 @@ class AppStyles {
 
   static TextStyle balanceSmallSecondary(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.secondary,
         fontSize: 14.0,
         fontWeight: FontWeight.w600);
@@ -113,6 +154,7 @@ class AppStyles {
 
   static TextStyle paragraphBig(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 16.0,
         height: 1.3,
@@ -121,6 +163,7 @@ class AppStyles {
 
   static TextStyle paragraphBigDisabled(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark30,
         fontSize: 16.0,
         height: 1.3,
@@ -129,6 +172,7 @@ class AppStyles {
 
   static TextStyle paragraphTextLightSmall(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textLight,
         fontSize: 12.0,
         height: 1.3,
@@ -137,6 +181,7 @@ class AppStyles {
 
   static TextStyle paragraphTextLightSmallSemiBold(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textLight,
         fontSize: 12.0,
         height: 1.3,
@@ -146,6 +191,7 @@ class AppStyles {
   // Modal header
   static TextStyle snackBar(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 14.0,
         fontWeight: FontWeight.w700);
@@ -154,6 +200,7 @@ class AppStyles {
   // Modal header
   static TextStyle modalHeader(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textLight,
         fontSize: 18.0,
         height: 1.3,
@@ -163,6 +210,7 @@ class AppStyles {
   // Settings item header
   static TextStyle settingsItemHeader(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 14.0,
         height: 1.3,
@@ -172,6 +220,7 @@ class AppStyles {
   // Settings item subheader
   static TextStyle settingsItemSubHeader(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 12.0,
         height: 1.3,
@@ -181,6 +230,7 @@ class AppStyles {
   // Date on operations list items
   static TextStyle operationDate(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark50,
         fontSize: 12.0,
         fontWeight: FontWeight.w400);
@@ -189,6 +239,7 @@ class AppStyles {
   // Operation type
   static TextStyle operationType(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textLight,
         fontSize: 13.0,
         fontWeight: FontWeight.w600);
@@ -197,6 +248,7 @@ class AppStyles {
   // Settings header
   static TextStyle settingsHeader(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 16.0,
         fontWeight: FontWeight.w700);
@@ -205,6 +257,7 @@ class AppStyles {
   // Contacts item name
   static TextStyle contactsItemName(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 16.0,
         fontWeight: FontWeight.w700);
@@ -287,6 +340,7 @@ class AppStyles {
   // Primary Button Text
   static TextStyle buttonPrimary(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textLight,
         fontSize: 18,
         fontWeight: FontWeight.w700);
@@ -295,6 +349,7 @@ class AppStyles {
   // Outline Button Text
   static TextStyle buttonPrimaryOutline(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 18,
         fontWeight: FontWeight.w700);
@@ -302,6 +357,7 @@ class AppStyles {
 
   static TextStyle buttonSuccessOutline(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.success,
         fontSize: 18,
         fontWeight: FontWeight.w700);
@@ -310,6 +366,7 @@ class AppStyles {
   // Danger Button Text
   static TextStyle buttonDanger(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       color: StateContainer.of(context).curTheme.textLight,
       fontSize: 12,
       fontWeight: FontWeight.w700,
@@ -320,6 +377,7 @@ class AppStyles {
   // Danger Outline Button Text
   static TextStyle buttonDangerOutline(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       color: StateContainer.of(context).curTheme.danger,
       fontSize: 12,
       fontWeight: FontWeight.w700,
@@ -330,6 +388,7 @@ class AppStyles {
   // Bg Colored Mini Button Text
   static TextStyle buttonMiniBg(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
         fontSize: 14,
         fontWeight: FontWeight.w600);
@@ -338,6 +397,7 @@ class AppStyles {
   // Success Colored Mini Button Text
   static TextStyle buttonMiniSuccess(BuildContext context) {
     return TextStyle(
+        fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.backgroundPrimary,
         fontSize: 14,
         fontWeight: FontWeight.w600);
@@ -414,6 +474,7 @@ class AppStyles {
   // Account Card Name
   static TextStyle accountCardName(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: 14,
       color: StateContainer.of(context).curTheme.textLight,
       fontWeight: FontWeight.w700,
@@ -432,6 +493,7 @@ class AppStyles {
   // PIN Description
   static TextStyle pinDescription(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.small,
       color: StateContainer.of(context).curTheme.textLight,
     );
@@ -440,6 +502,7 @@ class AppStyles {
   // PIN Description
   static TextStyle pinNumberPad(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.larger,
       color: StateContainer.of(context).curTheme.primary,
       fontWeight: FontWeight.w700,
@@ -449,38 +512,47 @@ class AppStyles {
   // Text Dark Small 400
   static TextStyle textDarkSmall400(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.small,
       color: StateContainer.of(context).curTheme.textDark,
       fontWeight: FontWeight.w400,
     );
   }
+
   // Text Dark Large 400
   static TextStyle textDarkLarge700(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.large,
       color: StateContainer.of(context).curTheme.textDark,
       fontWeight: FontWeight.w700,
     );
   }
+
   // Text Light Small 400
   static TextStyle textLightSmall400(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.small,
       color: StateContainer.of(context).curTheme.textLight,
       fontWeight: FontWeight.w400,
     );
   }
+
   // Text Light Large 400
   static TextStyle textLightLarge700(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.large,
       color: StateContainer.of(context).curTheme.textLight,
       fontWeight: FontWeight.w700,
     );
   }
+
   // Text Light Small 700
   static TextStyle textLightSmall700(BuildContext context) {
     return TextStyle(
+      fontFamily: "Metropolis",
       fontSize: AppFontSizes.small,
       color: StateContainer.of(context).curTheme.textLight,
       fontWeight: FontWeight.w700,

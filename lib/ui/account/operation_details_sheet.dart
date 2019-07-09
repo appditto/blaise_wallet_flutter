@@ -1,23 +1,16 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:pascaldart/crypto.dart';
-import 'package:pascaldart/pascaldart.dart';
-import 'package:quiver/strings.dart';
 
-class TransactionDetailsSheet extends StatefulWidget {
-  _TransactionDetailsSheetState createState() =>
-      _TransactionDetailsSheetState();
+class OperationDetailsSheet extends StatefulWidget {
+  _OperationDetailsSheetState createState() =>
+      _OperationDetailsSheetState();
 }
 
-class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
+class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
   @override
   void initState() {
     super.initState();
