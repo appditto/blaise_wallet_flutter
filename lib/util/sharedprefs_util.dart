@@ -112,6 +112,7 @@ class SharedPrefsUtil {
     } else {
       await prefs.remove(privkey_backed_up_key);
       await prefs.remove(rpc_url_key);
+      await prefs.remove(free_tx_key);
     }
   }
 }

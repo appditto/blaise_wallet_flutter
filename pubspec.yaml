@@ -98,12 +98,22 @@ dependencies:
   # Device-specific info
   device_info: ^0.4.0+1
 
+  # Serialization
+  json_annotation: ^2.4.0
+
+  # SQLite
+  sqflite: ^1.1.6+1
+
+  # OS Path Info
+  path_provider: ^1.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^1.5.0
   intl_translation: ^0.17.5
   mobx_codegen: ^0.2.1+2
+  json_serializable: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

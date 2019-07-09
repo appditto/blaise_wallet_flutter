@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/util/pascal_util.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
@@ -10,4 +11,5 @@ void setupServiceLocator() {
   sl.registerLazySingleton<PascalUtil>(() => PascalUtil());
   sl.registerLazySingleton<Vault>(() => Vault());
   sl.registerLazySingleton<SharedPrefsUtil>(() => SharedPrefsUtil());
+  sl.registerLazySingleton<DBHelper>(() => DBHelper());
 }
