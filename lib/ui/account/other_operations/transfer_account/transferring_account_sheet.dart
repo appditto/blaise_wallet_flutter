@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferred_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -10,6 +11,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,9 @@ import 'package:pascaldart/pascaldart.dart';
 class TransferringAccountSheet extends StatefulWidget {
   final String publicKeyDisplay;
   final PascalAccount account;
+  final Currency fee;
 
-  TransferringAccountSheet({@required this.publicKeyDisplay, @required this.account});
+  TransferringAccountSheet({@required this.publicKeyDisplay, @required this.account, @required this.fee});
 
   _TransferringAccountSheetState createState() =>
       _TransferringAccountSheetState();
@@ -199,44 +202,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Authenticate to transfer the account.")) {
-                          try {
-                            showOverlay(context);
-                            accountState.transferAccount(widget.publicKeyDisplay).then((result) {
-                              if (result.isError) {
-                                ErrorResponse errResp = result;
-                                UIUtil.showSnackbar(errResp.errorMessage, context);
-                                _overlay?.remove();
-                                Navigator.of(context).pop();
-                              } else {
-                                _overlay?.remove();
-                                try {
-                                  OperationsResponse resp = result;
-                                  PascalOperation op = resp.operations[0];
-                                  if (op.valid == null || op.valid) {
-                                    // Remove all traces of this account
-                                    walletState.removeAccount(widget.account);
-                                    Navigator.of(context).popUntil(RouteUtils.withNameLike("/overview"));
-                                    AppSheets.showBottomSheet(
-                                      context: context,
-                                      closeOnTap: true,
-                                      widget: TransferredAccountSheet(
-                                        newAccountPubkey: widget.publicKeyDisplay,
-                                      )
-                                    );
-                                  } else {
-                                    UIUtil.showSnackbar("${op.errors}", context);
-                                  }
-                                } catch (e) {
-                                  UIUtil.showSnackbar("Something went wrong, try again later.", context);
-                                }
-                              }
-                            });
-                          } catch (e) {
-                            _overlay?.remove();
-                            UIUtil.showSnackbar("Something went wrong, try again later.", context);
-                          }
-                        }
+                        await doTransfer();
                       },
                     ),
                   ],
@@ -259,5 +225,49 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
         ),
       ],
     );
+  }
+
+  Future<void> doTransfer() async {
+    if (await AuthUtil().authenticate("Authenticate to transfer the account.")) {
+      try {
+        showOverlay(context);
+        RPCResponse result = await accountState.transferAccount(widget.publicKeyDisplay, fee: widget.fee);
+        if (result.isError) {
+          ErrorResponse errResp = result;
+          UIUtil.showSnackbar(errResp.errorMessage, context);
+          _overlay?.remove();
+          Navigator.of(context).pop();
+        } else {
+          _overlay?.remove();
+          try {
+            OperationsResponse resp = result;
+            PascalOperation op = resp.operations[0];
+            if (op.valid == null || op.valid) {
+              // Check if was free
+              if (widget.fee == Currency('0')) {
+                await sl.get<SharedPrefsUtil>().setFreeTransactionDone();
+              }
+              // Remove all traces of this account
+              walletState.removeAccount(widget.account);
+              Navigator.of(context).popUntil(RouteUtils.withNameLike("/overview"));
+              AppSheets.showBottomSheet(
+                context: context,
+                closeOnTap: true,
+                widget: TransferredAccountSheet(
+                  newAccountPubkey: widget.publicKeyDisplay,
+                )
+              );
+            } else {
+              UIUtil.showSnackbar("${op.errors}", context);
+            }
+          } catch (e) {
+            UIUtil.showSnackbar("Something went wrong, try again later.", context);
+          }
+        }
+      } catch (e) {
+        _overlay?.remove();
+        UIUtil.showSnackbar("Something went wrong, try again later.", context);
+      }
+    }
   }
 }

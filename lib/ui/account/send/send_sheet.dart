@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sending_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -11,6 +12,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +22,7 @@ import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
 
 class SendSheet extends StatefulWidget {
-  PascalAccount account;
+  final PascalAccount account;
 
   SendSheet({@required this.account});
 
@@ -47,6 +49,19 @@ class _SendSheetState extends State<SendSheet> {
   bool _hasPayload;
   String _payload;
 
+  // Fee
+  bool _hasFee;
+
+  Future<void> checkIfFee() async {
+    if (!(await sl.get<SharedPrefsUtil>().canDoFreeTransaction())) {
+      if (mounted) {
+        setState(() {
+          _hasFee = true;
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +72,8 @@ class _SendSheetState extends State<SendSheet> {
     this._hasPayload = false;
     this._payload =
         "Testing the new payload.";
+    this._hasFee = false;
+    checkIfFee();
     // TODO this is a placeholder
     _localCurrencyFormat =
         NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
@@ -76,6 +93,8 @@ class _SendSheetState extends State<SendSheet> {
     return TapOutsideUnfocus(
       child: Column(
         children: <Widget>[
+          Text(_hasFee ? 'fee ${walletState.MIN_FEE.toStringOpt()}' : 'fee ${walletState.NO_FEE.toStringOpt()}',
+          style: TextStyle(color: Colors.red)),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -561,7 +580,8 @@ class _SendSheetState extends State<SendSheet> {
           widget: SendingSheet(
               destination: addressController.text,
               amount: amountController.text,
-              source: widget.account),
+              source: widget.account,
+              fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE),
           noBlur: true);
     }
   }

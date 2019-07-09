@@ -106,7 +106,8 @@ abstract class AccountBase with Store {
   }
 
   @action
-  Future<RPCResponse> doSend({@required String amount, @required String destination, String payload = ""}) async {
+  Future<RPCResponse> doSend({@required String amount, @required String destination, Currency fee, String payload = ""}) async {
+    fee = fee == null ? Currency('0') : fee;
     // Construct send
     TransactionOperation op = TransactionOperation(
       sender: this.account.account,
@@ -115,7 +116,7 @@ abstract class AccountBase with Store {
     )
     ..withNOperation(this.account.nOperation + 1)
     ..withPayload(PDUtil.stringToBytesUtf8(payload))
-    ..withFee(Currency('0'))
+    ..withFee(fee)
     ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
     // Construct execute request
     ExecuteOperationsRequest request = ExecuteOperationsRequest(
@@ -136,7 +137,7 @@ abstract class AccountBase with Store {
   }
 
   @action
-  Future<RPCResponse> transferAccount(String strPubkey) async {
+  Future<RPCResponse> transferAccount(String strPubkey, {Currency fee}) async {
     PublicKey newPubkey;
     try {
       newPubkey = PublicKeyCoder().decodeFromBase58(strPubkey);
@@ -147,6 +148,7 @@ abstract class AccountBase with Store {
         throw Exception('Invalid Public key');
       }
     }
+    fee = fee == null ? Currency('0') : fee;
     // Construct transfer
     ChangeKeyOperation op = ChangeKeyOperation(
       signer: account.account,
@@ -154,7 +156,7 @@ abstract class AccountBase with Store {
     )
     ..withNOperation(account.nOperation + 1)
     ..withPayload(PDUtil.stringToBytesUtf8(""))
-    ..withFee(Currency("0"))
+    ..withFee(fee)
     ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
     // Construct execute request
     ExecuteOperationsRequest request = ExecuteOperationsRequest(
@@ -166,7 +168,8 @@ abstract class AccountBase with Store {
   }
 
   @action
-  Future<RPCResponse> changeAccountName(AccountName newName) async {
+  Future<RPCResponse> changeAccountName(AccountName newName, {Currency fee}) async {
+    fee = fee == null ? Currency('0') : fee;
     // Construct name change
     ChangeAccountInfoOperation op = ChangeAccountInfoOperation(
       accountSigner: account.account,
@@ -176,7 +179,7 @@ abstract class AccountBase with Store {
     )
     ..withNOperation(account.nOperation + 1)
     ..withPayload(PDUtil.stringToBytesUtf8(""))
-    ..withFee(Currency("0"))
+    ..withFee(fee)
     ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
     // Construct execute request
     ExecuteOperationsRequest request = ExecuteOperationsRequest(

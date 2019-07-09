@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sent_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -9,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +21,9 @@ class SendingSheet extends StatefulWidget {
   final String amount;
   final String payload;
   final PascalAccount source;
+  final Currency fee;
 
-  SendingSheet({@required this.destination, @required this.amount, @required this.source, this.payload = ""});
+  SendingSheet({@required this.destination, @required this.amount, @required this.source, @required this.fee, this.payload = ""});
 
   _SendingSheetState createState() => _SendingSheetState();
 }
@@ -242,41 +245,7 @@ class _SendingSheetState extends State<SendingSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Authenticate to send ${widget.amount} Pascal.")) {
-                          try {
-                            showOverlay(context);
-                            // Do send
-                            walletState.getAccountState(widget.source).doSend(
-                              amount: widget.amount,
-                              destination: widget.destination,
-                              payload: widget.payload
-                            ).then((result) {
-                              if (result.isError) {
-                                ErrorResponse errResp = result;
-                                UIUtil.showSnackbar(errResp.errorMessage, context);
-                                _overlay?.remove();
-                                Navigator.of(context).pop();
-                              } else {
-                                _overlay?.remove();
-                                OperationsResponse resp = result;
-                                PascalOperation op = resp.operations[0];
-                                if (op.valid == null || op.valid) {
-                                  Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
-                                  AppSheets.showBottomSheet(
-                                    context: context,
-                                    closeOnTap: true,
-                                    widget: SentSheet(destination: widget.destination, amount: widget.amount)
-                                  );
-                                } else {
-                                  UIUtil.showSnackbar("${op.errors}", context);
-                                }
-                              }
-                            });
-                          } catch (e) {
-                            _overlay?.remove();
-                            UIUtil.showSnackbar("Something went wrong, try again later.", context);
-                          }
-                        }
+                        await doSend();
                       },
                     ),
                   ],
@@ -299,5 +268,47 @@ class _SendingSheetState extends State<SendingSheet> {
         ),
       ],
     );
+  }
+
+  Future<void> doSend() async {
+    if (await AuthUtil().authenticate("Authenticate to send ${widget.amount} Pascal.")) {
+      try {
+        showOverlay(context);
+        // Do send
+        RPCResponse result = await walletState.getAccountState(widget.source).doSend(
+          amount: widget.amount,
+          destination: widget.destination,
+          payload: widget.payload,
+          fee: widget.fee
+        );
+        if (result.isError) {
+          ErrorResponse errResp = result;
+          UIUtil.showSnackbar(errResp.errorMessage, context);
+          _overlay?.remove();
+          Navigator.of(context).pop();
+        } else {
+          _overlay?.remove();
+          OperationsResponse resp = result;
+          PascalOperation op = resp.operations[0];
+          if (op.valid == null || op.valid) {
+            // Check if was free
+            if (widget.fee == Currency('0')) {
+              await sl.get<SharedPrefsUtil>().setFreeTransactionDone();
+            }
+            Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+            AppSheets.showBottomSheet(
+              context: context,
+              closeOnTap: true,
+              widget: SentSheet(destination: widget.destination, amount: widget.amount)
+            );
+          } else {
+            UIUtil.showSnackbar("${op.errors}", context);
+          }
+        }
+      } catch (e) {
+        _overlay?.remove();
+        UIUtil.showSnackbar("Something went wrong, try again later.", context);
+      }
+    }    
   }
 }

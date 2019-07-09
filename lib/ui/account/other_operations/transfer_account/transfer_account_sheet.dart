@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferring_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -8,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -27,12 +29,27 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
   Account accountState;
   String pubkeyError;
 
+  // Fee
+  bool _hasFee;
+
+  Future<void> checkIfFee() async {
+    if (!(await sl.get<SharedPrefsUtil>().canDoFreeTransaction())) {
+      if (mounted) {
+        setState(() {
+          _hasFee = true;
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     publicKeyFocusNode = FocusNode();
     publicKeyController = TextEditingController();
     this.accountState = walletState.getAccountState(widget.account);
+    _hasFee = false;
+    checkIfFee();
   }
 
   @override
@@ -40,6 +57,8 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
     return TapOutsideUnfocus(
       child: Column(
         children: <Widget>[
+          Text(_hasFee ? 'fee ${walletState.MIN_FEE.toStringOpt()}' : 'fee ${walletState.NO_FEE.toStringOpt()}',
+          style: TextStyle(color: Colors.red)),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -235,6 +254,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
       widget: TransferringAccountSheet(
         account: widget.account,
         publicKeyDisplay: publicKeyController.text,
+        fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE
       ),
       noBlur: true)
     ;

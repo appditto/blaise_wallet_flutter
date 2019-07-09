@@ -123,25 +123,25 @@ mixin _$Account on AccountBase, Store {
 
   @override
   Future<RPCResponse> doSend(
-      {String amount, String destination, String payload = ""}) {
-    return _$doSendAsyncAction.run(() => super
-        .doSend(amount: amount, destination: destination, payload: payload));
+      {String amount, String destination, Currency fee, String payload = ""}) {
+    return _$doSendAsyncAction.run(() => super.doSend(
+        amount: amount, destination: destination, fee: fee, payload: payload));
   }
 
   final _$transferAccountAsyncAction = AsyncAction('transferAccount');
 
   @override
-  Future<RPCResponse> transferAccount(String strPubkey) {
+  Future<RPCResponse> transferAccount(String strPubkey, {Currency fee}) {
     return _$transferAccountAsyncAction
-        .run(() => super.transferAccount(strPubkey));
+        .run(() => super.transferAccount(strPubkey, fee: fee));
   }
 
   final _$changeAccountNameAsyncAction = AsyncAction('changeAccountName');
 
   @override
-  Future<RPCResponse> changeAccountName(AccountName newName) {
+  Future<RPCResponse> changeAccountName(AccountName newName, {Currency fee}) {
     return _$changeAccountNameAsyncAction
-        .run(() => super.changeAccountName(newName));
+        .run(() => super.changeAccountName(newName, fee: fee));
   }
 
   final _$AccountBaseActionController = ActionController(name: 'AccountBase');
