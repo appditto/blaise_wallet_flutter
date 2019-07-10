@@ -275,6 +275,7 @@ class _PayloadDialogState extends State<PayloadDialog>
                                           Clipboard.getData("text/plain").then((clipboardData) {
                                             if (clipboardData.text.length <= 20) {
                                               widget.onPayloadChanged(clipboardData.text);
+                                              payloadController.text = clipboardData.text;
                                             }
                                           });
                                         }),
