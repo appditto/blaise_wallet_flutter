@@ -103,6 +103,15 @@ class AppStyles {
         fontWeight: FontWeight.w600);
   }
 
+  static TextStyle dangerSmallest600(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.danger,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w600);
+  }
+
   static TextStyle paragraphDanger(BuildContext context) {
     return TextStyle(
         fontFamily: "Metropolis",

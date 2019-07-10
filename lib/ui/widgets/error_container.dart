@@ -10,7 +10,7 @@ class ErrorContainer extends StatelessWidget {
     return Container(
       margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4, bottom: 0),
       child: Text(this.errorText,
-          style: AppStyles.primarySmallest600(context),
+          style: AppStyles.dangerSmallest600(context),
           textAlign: TextAlign.start),
     );
   }

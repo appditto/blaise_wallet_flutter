@@ -256,6 +256,20 @@ class _AppTextFieldState extends State<AppTextField> {
                 }
               },
               decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: StateContainer.of(context).curTheme.primary),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: StateContainer.of(context).curTheme.primary,
+                      width: 2),
+                ),
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: StateContainer.of(context).curTheme.danger,
+                      width: 2),
+                ),
                 prefix: widget.prefix,
                 suffixIcon: widget.firstButton == null &&
                         widget.secondButton == null
