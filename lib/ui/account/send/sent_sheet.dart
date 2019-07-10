@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
+import 'package:quiver/strings.dart';
 
 class SentSheet extends StatefulWidget {
   final String destination;
@@ -187,7 +188,8 @@ class _SentSheetState extends State<SentSheet> {
                                       0, 30, 0, 0),
                                   child: AutoSizeText(
                                     "Amount",
-                                    style: AppStyles.textFieldLabelSuccess(context),
+                                    style: AppStyles.textFieldLabelSuccess(
+                                        context),
                                     maxLines: 1,
                                     stepGranularity: 0.1,
                                     textAlign: TextAlign.start,
@@ -228,8 +230,9 @@ class _SentSheetState extends State<SentSheet> {
                                             style: TextStyle(fontSize: 8)),
                                         TextSpan(
                                             text: widget.amount,
-                                            style: AppStyles.balanceSmallSuccess(
-                                                context)),
+                                            style:
+                                                AppStyles.balanceSmallSuccess(
+                                                    context)),
                                       ],
                                     ),
                                     textAlign: TextAlign.center,
@@ -260,7 +263,8 @@ class _SentSheetState extends State<SentSheet> {
                                         child: AutoSizeText(
                                           "Fee",
                                           style:
-                                              AppStyles.textFieldLabelSuccess(context),
+                                              AppStyles.textFieldLabelSuccess(
+                                                  context),
                                           maxLines: 1,
                                           stepGranularity: 0.1,
                                           textAlign: TextAlign.start,
@@ -305,8 +309,9 @@ class _SentSheetState extends State<SentSheet> {
                                               TextSpan(
                                                   text:
                                                       widget.fee.toStringOpt(),
-                                                  style: AppStyles.balanceSmallSuccess(
-                                                      context)),
+                                                  style: AppStyles
+                                                      .balanceSmallSuccess(
+                                                          context)),
                                             ],
                                           ),
                                           textAlign: TextAlign.center,
@@ -323,7 +328,50 @@ class _SentSheetState extends State<SentSheet> {
                                 : SizedBox(),
                           ],
                         ),
-                      )
+                      ),
+                      // "Payload" header
+                      isNotEmpty(widget.payload)
+                          ? Container(
+                              width: double.maxFinite,
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Payload",
+                                style: AppStyles.textFieldLabelSuccess(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the payload text
+                      isNotEmpty(widget.payload)
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .textDark15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              child: AutoSizeText(
+                                widget.payload,
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                minFontSize: 8,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.paragraph(context),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),

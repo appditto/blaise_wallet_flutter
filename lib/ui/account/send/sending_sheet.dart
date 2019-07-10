@@ -13,6 +13,7 @@ import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
+import 'package:quiver/strings.dart';
 
 class SendingSheet extends StatefulWidget {
   final String destination;
@@ -199,7 +200,10 @@ class _SendingSheetState extends State<SendingSheet> {
                               children: <Widget>[
                                 // "Amount" header
                                 Container(
-                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              76 / 2),
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       0, 30, 0, 0),
                                   child: AutoSizeText(
@@ -212,7 +216,10 @@ class _SendingSheetState extends State<SendingSheet> {
                                 ),
                                 // Container for the Amount
                                 Container(
-                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              76 / 2),
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       0, 12, 0, 0),
                                   padding: EdgeInsetsDirectional.fromSTEB(
@@ -264,7 +271,11 @@ class _SendingSheetState extends State<SendingSheet> {
                                     children: <Widget>[
                                       // "Fee" header
                                       Container(
-                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                76 / 2),
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             16, 30, 0, 0),
                                         child: AutoSizeText(
@@ -278,7 +289,11 @@ class _SendingSheetState extends State<SendingSheet> {
                                       ),
                                       // Container for the fee
                                       Container(
-                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                76 / 2),
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             16, 12, 0, 0),
                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -329,7 +344,50 @@ class _SendingSheetState extends State<SendingSheet> {
                                 : SizedBox(),
                           ],
                         ),
-                      )
+                      ),
+                      // "Payload" header
+                      isNotEmpty(widget.payload)
+                          ? Container(
+                              width: double.maxFinite,
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Payload",
+                                style: AppStyles.textFieldLabel(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the payload text
+                      isNotEmpty(widget.payload)
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .textDark15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              child: AutoSizeText(
+                                widget.payload,
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                minFontSize: 8,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.paragraph(context),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),
@@ -368,8 +426,9 @@ class _SendingSheetState extends State<SendingSheet> {
 
   Future<void> doSend({Currency fee, bool noAuth = false}) async {
     fee = fee == null ? widget.fee : fee;
-    if (noAuth || (await AuthUtil()
-        .authenticate("Authenticate to send ${widget.amount} Pascal."))) {
+    if (noAuth ||
+        (await AuthUtil()
+            .authenticate("Authenticate to send ${widget.amount} Pascal."))) {
       try {
         showOverlay(context);
         // Do send
@@ -395,16 +454,19 @@ class _SendingSheetState extends State<SendingSheet> {
                 context: context,
                 closeOnTap: true,
                 widget: SentSheet(
-                    destination: widget.destination, amount: widget.amount, fee: widget.fee));
+                    destination: widget.destination,
+                    amount: widget.amount,
+                    fee: widget.fee,
+                    payload: widget.payload));
           } else {
-            if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
+            if (op.errors.contains("zero fee") &&
+                widget.fee == walletState.NO_FEE) {
               UIUtil.showFeeDialog(
-                context: context,
-                onConfirm: () async {
-                  Navigator.of(context).pop();
-                  doSend(fee: walletState.MIN_FEE, noAuth: true);
-                }
-              );
+                  context: context,
+                  onConfirm: () async {
+                    Navigator.of(context).pop();
+                    doSend(fee: walletState.MIN_FEE, noAuth: true);
+                  });
             } else {
               UIUtil.showSnackbar("${op.errors}", context);
             }
