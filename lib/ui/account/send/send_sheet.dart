@@ -229,7 +229,7 @@ class _SendSheetState extends State<SendSheet> {
                                               text: " ",
                                               style: TextStyle(fontSize: 7)),
                                           TextSpan(
-                                              text: widget.account.balance
+                                              text: accountState.accountBalance
                                                   .toStringOpt(),
                                               style: AppStyles.balanceSmall(
                                                   context)),
@@ -375,8 +375,7 @@ class _SendSheetState extends State<SendSheet> {
                                     firstButton: TextFieldButton(
                                       icon: AppIcons.max,
                                       onPressed: () {
-                                        amountController.text = widget
-                                            .account.balance
+                                        amountController.text = accountState.accountBalance
                                             .toStringOpt();
                                         amountFocusNode.unfocus();
                                       },
