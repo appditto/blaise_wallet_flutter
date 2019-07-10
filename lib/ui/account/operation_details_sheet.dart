@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class OperationDetailsSheet extends StatefulWidget {
@@ -265,6 +266,9 @@ class _TransactionDetailsListItemState
           : StateContainer.of(context).curTheme.backgroundPrimary,
       child: FlatButton(
         onPressed: () {
+          Clipboard.setData(ClipboardData(
+            text: widget.value.trim()
+          ));
           setState(() {
             _copied = true;
           });
