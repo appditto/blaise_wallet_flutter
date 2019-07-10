@@ -15,7 +15,6 @@ class DialogOverlay extends StatefulWidget {
   final TextSpan body;
   final String confirmButtonText;
   final Function onConfirm;
-  final bool payload;
 
   DialogOverlay(
       {this.title,
@@ -23,7 +22,6 @@ class DialogOverlay extends StatefulWidget {
       this.body,
       this.confirmButtonText,
       this.onConfirm,
-      this.payload = false,
       this.warningStyle = false});
 
   @override
@@ -53,7 +51,13 @@ class _DialogOverlayState extends State<DialogOverlay>
     _controller.forward();
   }
 
-  buildListItems(List<DialogListItem> optionsList) {
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  Widget buildListItems(List<DialogListItem> optionsList) {
     List<Widget> widgets = [];
     for (var option in optionsList) {
       widgets.add(
@@ -92,246 +96,134 @@ class _DialogOverlayState extends State<DialogOverlay>
 
   @override
   Widget build(BuildContext context) {
-    return !widget.payload
-        ? Center(
-            child: Material(
-              color: Colors.transparent,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: FadeTransition(
-                  opacity: _opacityAnimation,
-                  child: ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: Container(
-                      margin: EdgeInsetsDirectional.only(start: 20, end: 20),
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.8,
-                        maxWidth: 280,
-                      ),
-                      decoration: BoxDecoration(
-                        color: StateContainer.of(context)
-                            .curTheme
-                            .backgroundPrimary,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: StateContainer.of(context).curTheme.shadow50,
-                            offset: Offset(0, 30),
-                            blurRadius: 60,
-                            spreadRadius: -10,
+    return Center(
+      child: Material(
+        color: Colors.transparent,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: FadeTransition(
+            opacity: _opacityAnimation,
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              child: Container(
+                margin: EdgeInsetsDirectional.only(start: 20, end: 20),
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  maxWidth: 280,
+                ),
+                decoration: BoxDecoration(
+                  color: StateContainer.of(context)
+                      .curTheme
+                      .backgroundPrimary,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: StateContainer.of(context).curTheme.shadow50,
+                      offset: Offset(0, 30),
+                      blurRadius: 60,
+                      spreadRadius: -10,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          gradient: widget.warningStyle
+                              ? null
+                              : StateContainer.of(context)
+                                  .curTheme
+                                  .gradientPrimary,
+                          color: widget.warningStyle
+                              ? StateContainer.of(context).curTheme.danger
+                              : null,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12)),
+                        ),
+                        child: Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(
+                              24, 16, 24, 16),
+                          child: AutoSizeText(
+                            widget.title,
+                            style: AppStyles.modalHeader(context),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Container(
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                gradient: widget.warningStyle
-                                    ? null
-                                    : StateContainer.of(context)
-                                        .curTheme
-                                        .gradientPrimary,
-                                color: widget.warningStyle
-                                    ? StateContainer.of(context).curTheme.danger
-                                    : null,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    topRight: Radius.circular(12)),
-                              ),
-                              child: Container(
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    24, 16, 24, 16),
-                                child: AutoSizeText(
-                                  widget.title,
-                                  style: AppStyles.modalHeader(context),
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
-                                ),
-                              ),
-                            ),
-                            // Options container
-                            widget.body != null
-                                ? Column(
-                                    children: <Widget>[
-                                      Container(
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            24, 16, 24, 16),
-                                        child: Column(
-                                          children: <Widget>[
-                                            AutoSizeText.rich(
-                                              widget.body,
-                                              stepGranularity: 0.1,
-                                              maxLines: 8,
-                                              minFontSize: 8,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          AppButton(
-                                            type: AppButtonType.Danger,
-                                            text: widget.confirmButtonText,
-                                            buttonTop: true,
-                                            onPressed: () {
-                                              if (widget.onConfirm != null) {
-                                                widget.onConfirm();
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          AppButton(
-                                            type: AppButtonType.DangerOutline,
-                                            text: "CANCEL",
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                : Container(
-                                    constraints: BoxConstraints(
-                                        maxHeight:
-                                            MediaQuery.of(context).size.height *
-                                                    0.6 -
-                                                60,
-                                        minHeight: 0),
-                                    // Options list
-                                    child: SingleChildScrollView(
-                                      padding: EdgeInsetsDirectional.only(
-                                          top: 8, bottom: 8),
-                                      child: buildListItems(widget.optionsList),
-                                    ),
-                                  ),
-                          ],
                         ),
                       ),
-                    ),
+                      // Options container
+                      widget.body != null
+                          ? Column(
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      24, 16, 24, 16),
+                                  child: Column(
+                                    children: <Widget>[
+                                      AutoSizeText.rich(
+                                        widget.body,
+                                        stepGranularity: 0.1,
+                                        maxLines: 8,
+                                        minFontSize: 8,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    AppButton(
+                                      type: AppButtonType.Danger,
+                                      text: widget.confirmButtonText,
+                                      buttonTop: true,
+                                      onPressed: () {
+                                        if (widget.onConfirm != null) {
+                                          widget.onConfirm();
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    AppButton(
+                                      type: AppButtonType.DangerOutline,
+                                      text: "CANCEL",
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          : Container(
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height *
+                                              0.6 -
+                                          60,
+                                  minHeight: 0),
+                              // Options list
+                              child: SingleChildScrollView(
+                                padding: EdgeInsetsDirectional.only(
+                                    top: 8, bottom: 8),
+                                child: buildListItems(widget.optionsList),
+                              ),
+                            ),
+                    ],
                   ),
                 ),
               ),
             ),
-          )
-        : Align(
-            alignment: Alignment(0, 1),
-            child: Material(
-              color: Colors.transparent,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: FadeTransition(
-                  opacity: _opacityAnimation,
-                  child: ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.easeOutQuad,
-                      margin: EdgeInsetsDirectional.only(start: 20, end: 20, bottom: MediaQuery.of(context).viewInsets.bottom+30),
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.4,
-                          maxWidth: MediaQuery.of(context).size.width - 40),
-                      decoration: BoxDecoration(
-                        color: StateContainer.of(context)
-                            .curTheme
-                            .backgroundPrimary,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: StateContainer.of(context).curTheme.shadow50,
-                            offset: Offset(0, 30),
-                            blurRadius: 60,
-                            spreadRadius: -10,
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Container(
-                                constraints: BoxConstraints(
-                                    maxHeight:
-                                        MediaQuery.of(context).size.height *
-                                                0.6 -
-                                            60,
-                                    minHeight: 0),
-                                // Options list
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    // Container for the amount text field
-                                    Container(
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          20, 24, 20, 0),
-                                      child: AppTextField(
-                                        label: 'Payload',
-                                        style: AppStyles.paragraph(context),
-                                        maxLines: 1,
-                                        firstButton: TextFieldButton(
-                                            icon: AppIcons.paste),
-                                        secondButton: TextFieldButton(
-                                            icon: AppIcons.scan),
-                                      ),
-                                    ),
-                                    // Container for the "Add Payload" button
-                                    Row(
-                                      children: <Widget>[
-                                        Container(
-                                          height: 40.0,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(100.0),
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .backgroundPrimary,
-                                            boxShadow: [
-                                              StateContainer.of(context)
-                                                  .curTheme
-                                                  .shadowTextDark,
-                                            ],
-                                          ),
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20, 30, 20, 24),
-                                          child: FlatButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        100.0)),
-                                            child: AutoSizeText(
-                                              "Encrypt the Payload",
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                              stepGranularity: 0.1,
-                                              style: AppStyles.buttonMiniBg(
-                                                  context),
-                                            ),
-                                            onPressed: () async {
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ));
+          ),
+        ),
+      ),
+    );
   }
 }
 
