@@ -737,7 +737,7 @@ class _AccountPageState extends State<AccountPage>
                                     return AppButton(
                                       text: "Send",
                                       type: AppButtonType.PrimaryRight,
-                                      disabled: accountState.account.balance >
+                                      disabled: accountState.accountBalance >
                                               Currency('0')
                                           ? false
                                           : true,
@@ -745,7 +745,7 @@ class _AccountPageState extends State<AccountPage>
                                         AppSheets.showBottomSheet(
                                           context: context,
                                           widget: SendSheet(
-                                            account: widget.account,
+                                            account: accountState.account
                                           ),
                                         );
                                       },
