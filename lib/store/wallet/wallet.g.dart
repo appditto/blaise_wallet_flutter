@@ -169,6 +169,16 @@ mixin _$Wallet on WalletBase, Store {
   }
 
   @override
+  bool shouldHaveFee() {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.shouldHaveFee();
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void reset() {
     final _$actionInfo = _$WalletBaseActionController.startAction();
     try {

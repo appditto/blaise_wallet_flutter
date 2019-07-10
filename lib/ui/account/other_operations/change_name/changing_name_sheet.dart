@@ -286,9 +286,10 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
     );
   }
 
-  Future<void> doChange() async {
-    if (await AuthUtil().authenticate(
-        "Authenticate to change account name to \"${widget.newName.toString()}\"")) {
+  Future<void> doChange({Currency fee, bool noAuth = false}) async {
+    fee = fee == null ? widget.fee : fee;
+    if (noAuth || (await AuthUtil().authenticate(
+        "Authenticate to change account name to \"${widget.newName.toString()}\""))) {
       try {
         showOverlay(context);
         RPCResponse result = await accountState
@@ -304,10 +305,6 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
             OperationsResponse resp = result;
             PascalOperation op = resp.operations[0];
             if (op.valid == null || op.valid) {
-              // Check if was free
-              if (widget.fee == Currency('0')) {
-                await sl.get<SharedPrefsUtil>().setFreeTransactionDone();
-              }
               // Update name
               walletState.updateAccountName(widget.account, widget.newName);
               Navigator.of(context)
@@ -319,7 +316,17 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                     newName: widget.newName,
                   ));
             } else {
-              UIUtil.showSnackbar("${op.errors}", context);
+              if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
+                UIUtil.showFeeDialog(
+                  context: context,
+                  onConfirm: () async {
+                    Navigator.of(context).pop();
+                    doChange(fee: walletState.MIN_FEE, noAuth: true);
+                  }
+                );
+              } else {
+                UIUtil.showSnackbar("${op.errors}", context);
+              }
             }
           } catch (e) {
             UIUtil.showSnackbar(

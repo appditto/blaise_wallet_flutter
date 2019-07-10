@@ -10,7 +10,6 @@ class SharedPrefsUtil {
   static const String first_launch_key = 'pasc_first_launch';
   static const String privkey_backed_up_key = 'pasc_privkey_backedup';
   static const String rpc_url_key = 'pasc_rpc_url';
-  static const String free_tx_key = 'pasc_free_tx_key';
   static const String cur_theme = 'blaise_cur_theme_key';
 
   // For plain-text data
@@ -94,18 +93,6 @@ class SharedPrefsUtil {
         defaultValue: AppConstants.DEFAULT_RPC_HTTP_URL);
   }
 
-  Future<bool> canDoFreeTransaction() async {
-    if ((await getWithExpiry(free_tx_key)) != null) {
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> setFreeTransactionDone() async {
-    // 5 minute expiration on free transactions
-    await setWithExpiry(free_tx_key, 'free', 300);
-  }
-
   Future<void> setTheme(ThemeSetting theme) async {
    return await set(cur_theme, theme.getIndex());
   }
@@ -122,7 +109,6 @@ class SharedPrefsUtil {
     } else {
       await prefs.remove(privkey_backed_up_key);
       await prefs.remove(rpc_url_key);
-      await prefs.remove(free_tx_key);
     }
   }
 }

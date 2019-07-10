@@ -368,9 +368,10 @@ class _SendingSheetState extends State<SendingSheet> {
     );
   }
 
-  Future<void> doSend() async {
-    if (await AuthUtil()
-        .authenticate("Authenticate to send ${widget.amount} Pascal.")) {
+  Future<void> doSend({Currency fee, bool noAuth = false}) async {
+    fee = fee == null ? widget.fee : fee;
+    if (noAuth || (await AuthUtil()
+        .authenticate("Authenticate to send ${widget.amount} Pascal."))) {
       try {
         showOverlay(context);
         // Do send
@@ -380,7 +381,7 @@ class _SendingSheetState extends State<SendingSheet> {
                 amount: widget.amount,
                 destination: widget.destination,
                 payload: widget.payload,
-                fee: widget.fee);
+                fee: fee);
         if (result.isError) {
           ErrorResponse errResp = result;
           UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -391,10 +392,6 @@ class _SendingSheetState extends State<SendingSheet> {
           OperationsResponse resp = result;
           PascalOperation op = resp.operations[0];
           if (op.valid == null || op.valid) {
-            // Check if was free
-            if (widget.fee == Currency('0')) {
-              await sl.get<SharedPrefsUtil>().setFreeTransactionDone();
-            }
             Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
             AppSheets.showBottomSheet(
                 context: context,
@@ -402,7 +399,17 @@ class _SendingSheetState extends State<SendingSheet> {
                 widget: SentSheet(
                     destination: widget.destination, amount: widget.amount));
           } else {
-            UIUtil.showSnackbar("${op.errors}", context);
+            if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
+              UIUtil.showFeeDialog(
+                context: context,
+                onConfirm: () async {
+                  Navigator.of(context).pop();
+                  doSend(fee: walletState.MIN_FEE, noAuth: true);
+                }
+              );
+            } else {
+              UIUtil.showSnackbar("${op.errors}", context);
+            }
           }
         }
       } catch (e) {

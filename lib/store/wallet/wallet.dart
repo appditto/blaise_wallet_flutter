@@ -107,6 +107,16 @@ abstract class WalletBase with Store {
   }
 
   @action
+  bool shouldHaveFee() {
+    for (Account accountState in accountStateMap.values) {
+      if (accountState.operations.indexWhere((operation) => operation.maturation == null && operation.fee == NO_FEE) > -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @action
   void reset() {
     // Reset all properties (for when logging out, etc)
     this.walletLoading = true;

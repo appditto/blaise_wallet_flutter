@@ -289,9 +289,10 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     );
   }
 
-  Future<void> doTransfer() async {
-    if (await AuthUtil()
-        .authenticate("Authenticate to transfer the account.")) {
+  Future<void> doTransfer({Currency fee, bool noAuth = false}) async {
+    fee = fee == null ? widget.fee : fee;
+    if (noAuth || (await AuthUtil()
+        .authenticate("Authenticate to transfer the account."))) {
       try {
         showOverlay(context);
         RPCResponse result = await accountState
@@ -307,10 +308,6 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
             OperationsResponse resp = result;
             PascalOperation op = resp.operations[0];
             if (op.valid == null || op.valid) {
-              // Check if was free
-              if (widget.fee == Currency('0')) {
-                await sl.get<SharedPrefsUtil>().setFreeTransactionDone();
-              }
               // Remove all traces of this account
               walletState.removeAccount(widget.account);
               Navigator.of(context)
@@ -322,7 +319,17 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                     newAccountPubkey: widget.publicKeyDisplay,
                   ));
             } else {
-              UIUtil.showSnackbar("${op.errors}", context);
+              if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
+                UIUtil.showFeeDialog(
+                  context: context,
+                  onConfirm: () async {
+                    Navigator.of(context).pop();
+                    doTransfer(fee: walletState.MIN_FEE, noAuth: true);
+                  }
+                );
+              } else {
+                UIUtil.showSnackbar("${op.errors}", context);
+              }
             }
           } catch (e) {
             UIUtil.showSnackbar(

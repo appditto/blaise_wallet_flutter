@@ -34,24 +34,13 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
   // Fee
   bool _hasFee;
 
-  Future<void> checkIfFee() async {
-    if (!(await sl.get<SharedPrefsUtil>().canDoFreeTransaction())) {
-      if (mounted) {
-        setState(() {
-          _hasFee = true;
-        });
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     publicKeyFocusNode = FocusNode();
     publicKeyController = TextEditingController();
     this.accountState = walletState.getAccountState(widget.account);
-    _hasFee = false;
-    checkIfFee();
+    _hasFee = walletState.shouldHaveFee();
   }
 
   @override

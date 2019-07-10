@@ -54,16 +54,6 @@ class _SendSheetState extends State<SendSheet> {
   // Fee
   bool _hasFee;
 
-  Future<void> checkIfFee() async {
-    if (!(await sl.get<SharedPrefsUtil>().canDoFreeTransaction())) {
-      if (mounted) {
-        setState(() {
-          _hasFee = true;
-        });
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -73,8 +63,7 @@ class _SendSheetState extends State<SendSheet> {
     this.amountFocusNode = FocusNode();
     this._hasPayload = false;
     this._payload = "Testing the new payload.";
-    this._hasFee = false;
-    checkIfFee();
+    this._hasFee = walletState.shouldHaveFee();
     // TODO this is a placeholder
     _localCurrencyFormat =
         NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());

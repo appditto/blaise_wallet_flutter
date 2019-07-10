@@ -1,5 +1,6 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter/material.dart';
@@ -48,5 +49,34 @@ class UIUtil {
       df = DateFormat("MMM dd • HH:mm");
     }
     return  df.format(localTime);
+  }
+
+  /// Show a dialog asking if they want to confirm a fee
+  static void showFeeDialog({@required BuildContext context, @required Function onConfirm}) {
+    showAppDialog(
+        context: context,
+        builder: (_) => DialogOverlay(
+            title: 'Add Fee',
+            warningStyle: false,
+            confirmButtonText: "YES, ADD FEE",
+            body: TextSpan(
+              children: [
+                TextSpan(
+                  text:
+                      "This operation requires a fee. ",
+                  style: AppStyles.paragraph(context),
+                ),
+                TextSpan(
+                  text:
+                      "Would you like to add a 0.0001 PASC fee to this operation?",
+                  style: AppStyles.paragraphPrimary(context),
+                ),
+              ],
+            ),
+            onConfirm: () {
+              onConfirm();
+            }
+        )
+    );
   }
 }

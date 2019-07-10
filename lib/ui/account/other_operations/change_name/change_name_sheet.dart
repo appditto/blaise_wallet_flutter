@@ -33,23 +33,12 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
   // Fee
   bool _hasFee;
 
-  Future<void> checkIfFee() async {
-    if (!(await sl.get<SharedPrefsUtil>().canDoFreeTransaction())) {
-      if (mounted) {
-        setState(() {
-          _hasFee = true;
-        });
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     this._nameFocus = FocusNode();
     this._nameController = TextEditingController();
-    this._hasFee = false;
-    checkIfFee();
+    this._hasFee = walletState.shouldHaveFee();
   }
 
   @override
