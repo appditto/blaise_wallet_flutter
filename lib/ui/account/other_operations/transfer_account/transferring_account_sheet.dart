@@ -22,7 +22,10 @@ class TransferringAccountSheet extends StatefulWidget {
   final PascalAccount account;
   final Currency fee;
 
-  TransferringAccountSheet({@required this.publicKeyDisplay, @required this.account, @required this.fee});
+  TransferringAccountSheet(
+      {@required this.publicKeyDisplay,
+      @required this.account,
+      @required this.fee});
 
   _TransferringAccountSheetState createState() =>
       _TransferringAccountSheetState();
@@ -42,30 +45,30 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationTransfer,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationTransfer,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(_overlay);
   }
@@ -169,7 +172,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the name
+                      // Container for the public key
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
                         padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
@@ -190,7 +193,66 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                           textAlign: TextAlign.center,
                           style: AppStyles.privateKeyTextDark(context),
                         ),
-                      )
+                      ),
+                      // "Fee" header
+                      widget.fee.toStringOpt() != "0"
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Fee",
+                                style: AppStyles.textFieldLabel(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the fee
+                      widget.fee.toStringOpt() != "0"
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .primary10,
+                              ),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "",
+                                      style: AppStyles
+                                          .iconFontPrimaryBalanceSmallPascal(
+                                              context),
+                                    ),
+                                    TextSpan(
+                                        text: " ",
+                                        style: TextStyle(fontSize: 8)),
+                                    TextSpan(
+                                        text: widget.fee.toStringOpt(),
+                                        style: AppStyles.balanceSmall(context)),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                minFontSize: 8,
+                                stepGranularity: 1,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),
@@ -228,10 +290,12 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
   }
 
   Future<void> doTransfer() async {
-    if (await AuthUtil().authenticate("Authenticate to transfer the account.")) {
+    if (await AuthUtil()
+        .authenticate("Authenticate to transfer the account.")) {
       try {
         showOverlay(context);
-        RPCResponse result = await accountState.transferAccount(widget.publicKeyDisplay, fee: widget.fee);
+        RPCResponse result = await accountState
+            .transferAccount(widget.publicKeyDisplay, fee: widget.fee);
         if (result.isError) {
           ErrorResponse errResp = result;
           UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -249,19 +313,20 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
               }
               // Remove all traces of this account
               walletState.removeAccount(widget.account);
-              Navigator.of(context).popUntil(RouteUtils.withNameLike("/overview"));
+              Navigator.of(context)
+                  .popUntil(RouteUtils.withNameLike("/overview"));
               AppSheets.showBottomSheet(
-                context: context,
-                closeOnTap: true,
-                widget: TransferredAccountSheet(
-                  newAccountPubkey: widget.publicKeyDisplay,
-                )
-              );
+                  context: context,
+                  closeOnTap: true,
+                  widget: TransferredAccountSheet(
+                    newAccountPubkey: widget.publicKeyDisplay,
+                  ));
             } else {
               UIUtil.showSnackbar("${op.errors}", context);
             }
           } catch (e) {
-            UIUtil.showSnackbar("Something went wrong, try again later.", context);
+            UIUtil.showSnackbar(
+                "Something went wrong, try again later.", context);
           }
         }
       } catch (e) {

@@ -22,7 +22,8 @@ class ChangingNameSheet extends StatefulWidget {
   final AccountName newName;
   final Currency fee;
 
-  ChangingNameSheet({@required this.account, @required this.newName, @required this.fee});
+  ChangingNameSheet(
+      {@required this.account, @required this.newName, @required this.fee});
 
   _ChangingNameSheetState createState() => _ChangingNameSheetState();
 }
@@ -41,30 +42,30 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationNameChange,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationNameChange,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(_overlay);
   }
@@ -189,7 +190,66 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                           textAlign: TextAlign.center,
                           style: AppStyles.paragraphMedium(context),
                         ),
-                      )
+                      ),
+                      // "Fee" header
+                      widget.fee.toStringOpt() != "0"
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Fee",
+                                style: AppStyles.textFieldLabel(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the fee
+                      widget.fee.toStringOpt() != "0"
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .primary10,
+                              ),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "",
+                                      style: AppStyles
+                                          .iconFontPrimaryBalanceSmallPascal(
+                                              context),
+                                    ),
+                                    TextSpan(
+                                        text: " ",
+                                        style: TextStyle(fontSize: 8)),
+                                    TextSpan(
+                                        text: widget.fee.toStringOpt(),
+                                        style: AppStyles.balanceSmall(context)),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                minFontSize: 8,
+                                stepGranularity: 1,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),
@@ -227,10 +287,12 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
   }
 
   Future<void> doChange() async {
-    if (await AuthUtil().authenticate("Authenticate to change account name to \"${widget.newName.toString()}\"")) {
+    if (await AuthUtil().authenticate(
+        "Authenticate to change account name to \"${widget.newName.toString()}\"")) {
       try {
         showOverlay(context);
-        RPCResponse result = await accountState.changeAccountName(widget.newName, fee: widget.fee);
+        RPCResponse result = await accountState
+            .changeAccountName(widget.newName, fee: widget.fee);
         if (result.isError) {
           ErrorResponse errResp = result;
           UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -248,25 +310,26 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
               }
               // Update name
               walletState.updateAccountName(widget.account, widget.newName);
-              Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+              Navigator.of(context)
+                  .popUntil(RouteUtils.withNameLike("/account"));
               AppSheets.showBottomSheet(
-                context: context,
-                closeOnTap: true,
-                widget: ChangedNameSheet(
-                  newName: widget.newName,
-                )
-              );
+                  context: context,
+                  closeOnTap: true,
+                  widget: ChangedNameSheet(
+                    newName: widget.newName,
+                  ));
             } else {
               UIUtil.showSnackbar("${op.errors}", context);
             }
           } catch (e) {
-            UIUtil.showSnackbar("Something went wrong, try again later.", context);
+            UIUtil.showSnackbar(
+                "Something went wrong, try again later.", context);
           }
         }
       } catch (e) {
         _overlay?.remove();
         UIUtil.showSnackbar("Something went wrong, try again later.", context);
       }
-    }    
+    }
   }
 }
