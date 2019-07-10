@@ -23,7 +23,12 @@ class SendingSheet extends StatefulWidget {
   final PascalAccount source;
   final Currency fee;
 
-  SendingSheet({@required this.destination, @required this.amount, @required this.source, @required this.fee, this.payload = ""});
+  SendingSheet(
+      {@required this.destination,
+      @required this.amount,
+      @required this.source,
+      @required this.fee,
+      this.payload = ""});
 
   _SendingSheetState createState() => _SendingSheetState();
 }
@@ -35,30 +40,30 @@ class _SendingSheetState extends State<SendingSheet> {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationSend,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationSend,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(_overlay);
   }
@@ -185,55 +190,148 @@ class _SendingSheetState extends State<SendingSheet> {
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
-                      // "Amount" header
+                      // Amount and Fee
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Amount",
-                          style: AppStyles.textFieldLabel(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
+                        child: Row(
+                          children: <Widget>[
+                            // Amount
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                // "Amount" header
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      0, 30, 0, 0),
+                                  child: AutoSizeText(
+                                    "Amount",
+                                    style: AppStyles.textFieldLabel(context),
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                // Container for the Amount
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      0, 12, 0, 0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 8, 12, 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .primary15),
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary10,
+                                  ),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "",
+                                          style: AppStyles
+                                              .iconFontPrimaryBalanceSmallPascal(
+                                                  context),
+                                        ),
+                                        TextSpan(
+                                            text: " ",
+                                            style: TextStyle(fontSize: 8)),
+                                        TextSpan(
+                                            text: widget.amount,
+                                            style: AppStyles.balanceSmall(
+                                                context)),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 1,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            widget.fee.toStringOpt() != "0"
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      // "Fee" header
+                                      Container(
+                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            16, 30, 0, 0),
+                                        child: AutoSizeText(
+                                          "Fee",
+                                          style:
+                                              AppStyles.textFieldLabel(context),
+                                          maxLines: 1,
+                                          stepGranularity: 0.1,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                      // Container for the fee
+                                      Container(
+                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-76/2),
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            16, 12, 0, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 8, 12, 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .primary15),
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .primary10,
+                                        ),
+                                        child: AutoSizeText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "",
+                                                style: AppStyles
+                                                    .iconFontPrimaryBalanceSmallPascal(
+                                                        context),
+                                              ),
+                                              TextSpan(
+                                                  text: " ",
+                                                  style:
+                                                      TextStyle(fontSize: 8)),
+                                              TextSpan(
+                                                  text:
+                                                      widget.fee.toStringOpt(),
+                                                  style: AppStyles.balanceSmall(
+                                                      context)),
+                                            ],
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          minFontSize: 8,
+                                          stepGranularity: 1,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
+                          ],
                         ),
-                      ),
-                      // Container for the Amount
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
-                        ),
-                        child: AutoSizeText.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "",
-                                style:
-                                    AppStyles.iconFontPrimaryBalanceSmallPascal(
-                                        context),
-                              ),
-                              TextSpan(
-                                  text: " ", style: TextStyle(fontSize: 8)),
-                              TextSpan(
-                                  text: widget.amount,
-                                  style: AppStyles.balanceSmall(context)),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          minFontSize: 8,
-                          stepGranularity: 1,
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -271,16 +369,18 @@ class _SendingSheetState extends State<SendingSheet> {
   }
 
   Future<void> doSend() async {
-    if (await AuthUtil().authenticate("Authenticate to send ${widget.amount} Pascal.")) {
+    if (await AuthUtil()
+        .authenticate("Authenticate to send ${widget.amount} Pascal.")) {
       try {
         showOverlay(context);
         // Do send
-        RPCResponse result = await walletState.getAccountState(widget.source).doSend(
-          amount: widget.amount,
-          destination: widget.destination,
-          payload: widget.payload,
-          fee: widget.fee
-        );
+        RPCResponse result = await walletState
+            .getAccountState(widget.source)
+            .doSend(
+                amount: widget.amount,
+                destination: widget.destination,
+                payload: widget.payload,
+                fee: widget.fee);
         if (result.isError) {
           ErrorResponse errResp = result;
           UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -297,10 +397,10 @@ class _SendingSheetState extends State<SendingSheet> {
             }
             Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
             AppSheets.showBottomSheet(
-              context: context,
-              closeOnTap: true,
-              widget: SentSheet(destination: widget.destination, amount: widget.amount)
-            );
+                context: context,
+                closeOnTap: true,
+                widget: SentSheet(
+                    destination: widget.destination, amount: widget.amount));
           } else {
             UIUtil.showSnackbar("${op.errors}", context);
           }
@@ -309,6 +409,6 @@ class _SendingSheetState extends State<SendingSheet> {
         _overlay?.remove();
         UIUtil.showSnackbar("Something went wrong, try again later.", context);
       }
-    }    
+    }
   }
 }
