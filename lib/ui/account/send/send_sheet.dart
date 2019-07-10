@@ -11,6 +11,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/payload.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
@@ -48,7 +49,6 @@ class _SendSheetState extends State<SendSheet> {
   String amountError;
 
   // Payload
-  bool _hasPayload;
   String _payload;
 
   // Fee
@@ -61,8 +61,7 @@ class _SendSheetState extends State<SendSheet> {
     this.amountController = TextEditingController();
     this.addressFocusNode = FocusNode();
     this.amountFocusNode = FocusNode();
-    this._hasPayload = false;
-    this._payload = "Testing the new payload.";
+    this._payload = "";
     this._hasFee = walletState.shouldHaveFee();
     // TODO this is a placeholder
     _localCurrencyFormat =
@@ -316,9 +315,7 @@ class _SendSheetState extends State<SendSheet> {
                                     secondButton: TextFieldButton(
                                       icon: AppIcons.scan,
                                       onPressed: () {
-                                        setState(() {
-                                          this._hasPayload = !this._hasPayload;
-                                        });
+                                        
                                       },
                                     ),
                                   ),
@@ -402,103 +399,13 @@ class _SendSheetState extends State<SendSheet> {
                                   errorText:
                                       amountError == null ? "" : amountError,
                                 ),
-                                // Payload text and edit button
-                                this._hasPayload
-                                    ? Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          // Container for the payload
-                                          Container(
-                                            constraints: BoxConstraints(
-                                                maxWidth: MediaQuery.of(context)
-                                                        .size
-                                                        .width -
-                                                    110),
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    30, 20, 12, 0),
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12, 8, 12, 8),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .textDark15),
-                                              color: StateContainer.of(context)
-                                                  .curTheme
-                                                  .textDark10,
-                                            ),
-                                            child: AutoSizeText(
-                                              this._payload,
-                                              maxLines: 3,
-                                              stepGranularity: 0.1,
-                                              minFontSize: 6,
-                                              textAlign: TextAlign.left,
-                                              style: AppStyles.paragraphMedium(
-                                                  context),
-                                            ),
-                                          ),
-                                          // Container for the edit button
-                                          Container(
-                                              margin: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 20, 30, 0),
-                                              child: TextFieldButton(
-                                                icon: Icons.edit,
-                                              ))
-                                        ],
-                                      )
-                                    :
-                                    // "Add Payload" button
-                                    Row(
-                                        children: <Widget>[
-                                          Container(
-                                            height: 40.0,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100.0),
-                                              color: StateContainer.of(context)
-                                                  .curTheme
-                                                  .backgroundPrimary,
-                                              boxShadow: [
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .shadowTextDark,
-                                              ],
-                                            ),
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    30, 20, 30, 40),
-                                            child: FlatButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100.0)),
-                                              child: AutoSizeText(
-                                                "+ Add a Payload",
-                                                textAlign: TextAlign.center,
-                                                maxLines: 1,
-                                                stepGranularity: 0.1,
-                                                style: AppStyles.buttonMiniBg(
-                                                    context),
-                                              ),
-                                              onPressed: () async {
-                                                showAppDialog(
-                                                    context: context,
-                                                    builder: (_) =>
-                                                        DialogOverlay(
-                                                          payload: true,
-                                                        ));
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      )
+                                Payload(
+                                  onPayloadChanged: (newPayload) {
+                                    setState(() {
+                                      _payload = newPayload;
+                                    });
+                                  },
+                                )
                               ],
                             ),
                           ),
@@ -564,7 +471,8 @@ class _SendSheetState extends State<SendSheet> {
               destination: addressController.text,
               amount: amountController.text,
               source: widget.account,
-              fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE),
+              fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE,
+              payload: _payload),
           noBlur: true);
     }
   }

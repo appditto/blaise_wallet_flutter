@@ -109,7 +109,10 @@ abstract class WalletBase with Store {
   @action
   bool shouldHaveFee() {
     for (Account accountState in accountStateMap.values) {
-      if (accountState.operations.indexWhere((operation) => operation.maturation == null && operation.fee == NO_FEE) > -1) {
+      if (accountState.operations == null) {
+        continue;
+      }
+      if (accountState.operations.indexWhere((operation) => operation.maturation == null && operation.fee == NO_FEE && operation.signerAccount == accountState.account.account) > -1) {
         return true;
       }
     }

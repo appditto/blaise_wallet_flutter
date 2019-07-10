@@ -129,11 +129,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                                   style: AppStyles.buttonMiniBg(context),
                                 ),
                                 onPressed: () async {
-                                  showAppDialog(
-                                      context: context,
-                                      builder: (_) => DialogOverlay(
-                                            payload: true,
-                                          ));
+                                  
                                 },
                               ),
                             ),
