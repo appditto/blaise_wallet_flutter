@@ -3,9 +3,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class OperationDetailsSheet extends StatefulWidget {
+  final PascalOperation operation;
+
+  OperationDetailsSheet({@required this.operation});
+
   _OperationDetailsSheetState createState() =>
       _OperationDetailsSheetState();
 }
@@ -14,6 +20,47 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
   @override
   void initState() {
     super.initState();
+  }
+
+  String getOptypeDisplay(int optype) {
+    switch (optype) {
+      case OpType.BLOCKCHAIN_REWARD:
+        return "Blockchain Reward ($optype)";
+      case OpType.TRANSACTION:
+        return "Transaction ($optype)";
+      case OpType.CHANGE_KEY:
+        return "Change Key ($optype)";
+      case OpType.RECOVER_FUNDS:
+        return "Recover Funds ($optype)";
+      case OpType.LIST_FORSALE:
+        return "List Account for Sale ($optype)";
+      case OpType.DELIST_FORSALE:
+        return "Delist Account ($optype)";
+      case OpType.BUY_ACCOUNT:
+        return "Buy account ($optype)";
+      case OpType.CHANGE_KEY_SIGNED:
+        return "Change Key Signed ($optype)";
+      case OpType.CHANGE_ACCOUNT_INFO:
+        return "Change Account Info ($optype)";
+      case OpType.MULTIOPERATION:
+        return "Multioperation ($optype)";
+      default:
+        return "Unknown ($optype)";
+    }
+  }
+
+  int getNOperation() {
+    int nOp;
+    try {
+      if (widget.operation.optype == OpType.TRANSACTION) {
+        nOp = widget.operation.senders[0].nOperation;
+      } else {
+        nOp = widget.operation.changers[0].nOperation;
+      }
+    } catch (e) {
+      nOp = -1;
+    }
+    return nOp;
   }
 
   @override
@@ -46,7 +93,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                             child: Column(
                               children: <Widget>[
                                 TransactionDetailsListItem(
-                                    header: "block", value: "331135"),
+                                    header: "block", value: widget.operation.block.toString()),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
@@ -56,7 +103,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                 TransactionDetailsListItem(
                                     header: "time",
                                     value:
-                                        "Jul 08, 2019 • 13:24:01 (1562592241)"),
+                                        widget.operation.maturation == null ? "N/A" : UIUtil.formatDateStrLong(widget.operation.time)),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
@@ -64,7 +111,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                   height: 1,
                                 ),
                                 TransactionDetailsListItem(
-                                    header: "opblock", value: "1"),
+                                    header: "opblock", value: widget.operation.opblock.toString()),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
@@ -72,16 +119,16 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                   height: 1,
                                 ),
                                 TransactionDetailsListItem(
-                                    header: "maturation", value: "2"),
+                                    header: "maturation", value: widget.operation.maturation == null ? "null" : widget.operation.maturation.toString()),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
-                                      .textDark10,
+                                       .textDark10,
                                   height: 1,
                                 ),
                                 TransactionDetailsListItem(
                                     header: "optype",
-                                    value: "Delist Account (5)"),
+                                    value: getOptypeDisplay(widget.operation.optype)),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
@@ -89,7 +136,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                   height: 1,
                                 ),
                                 TransactionDetailsListItem(
-                                    header: "account", value: "582406"),
+                                    header: "account", value: widget.operation.account.account.toString()),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
@@ -97,16 +144,16 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                   height: 1,
                                 ),
                                 TransactionDetailsListItem(
-                                    header: "signer_account", value: "582406"),
+                                    header: "signer_account", value: widget.operation.signerAccount.toString()),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
                                   height: 1,
                                 ),
-                                TransactionDetailsListItem(
-                                    header: "n_opreation", value: "5976"),
-                                Divider(
+                                getNOperation() == -1 ? SizedBox() : TransactionDetailsListItem(
+                                    header: "n_operation", value: getNOperation().toString()),
+                                getNOperation() == -1 ? SizedBox() : Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
@@ -115,7 +162,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                 TransactionDetailsListItem(
                                     header: "ophash",
                                     value:
-                                        "7D0D050006E3080058170000A316A82C0DAA2122DBB79A7EA37450EB66471BBB"),
+                                        widget.operation.ophash),
                               ],
                             ),
                           ),

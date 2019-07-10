@@ -51,6 +51,15 @@ class UIUtil {
     return  df.format(localTime);
   }
 
+  static String formatDateStrLong(DateTime dt) {
+    //"Jul 08, 2019 • 13:24:01 (1562592241)"    
+    int secondsSinceEpoch = dt.millisecondsSinceEpoch ~/ 1000;
+    DateTime localTime = dt.toLocal();
+    DateFormat df;
+    df = DateFormat("MMM dd, yyyy • HH:mm");
+    return  df.format(localTime) + " ($secondsSinceEpoch)";
+  }
+
   /// Show a dialog asking if they want to confirm a fee
   static void showFeeDialog({@required BuildContext context, @required Function onConfirm}) {
     showAppDialog(

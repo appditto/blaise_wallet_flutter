@@ -792,6 +792,7 @@ class _AccountPageState extends State<AccountPage>
                 widget: OperationSheet(
                   payload: op.receivers[0].payload,
                   ophash: op.ophash,
+                  operation: op,
                   account: type == OperationType.Received
                       ? op.senders[0].sendingAccount
                       : op.receivers[0].receivingAccount,

@@ -20,9 +20,11 @@ class OperationSheet extends StatefulWidget {
   final String ophash;
   final AccountNumber account;
   final bool isContact;
+  final PascalOperation operation;
   OperationSheet(
       {@required this.ophash,
       @required this.account,
+      @required this.operation,
       this.payload,
       this.isContact = false});
 
@@ -160,7 +162,7 @@ class _OperationSheetState extends State<OperationSheet> {
                     onPressed: () {
                       Navigator.pop(context);
                       AppSheets.showBottomSheet(
-                          context: context, widget: OperationDetailsSheet());
+                          context: context, widget: OperationDetailsSheet(operation: widget.operation));
                     },
                   ),
                 ],
