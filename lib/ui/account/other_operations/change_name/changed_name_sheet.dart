@@ -8,8 +8,9 @@ import 'package:pascaldart/pascaldart.dart';
 
 class ChangedNameSheet extends StatefulWidget {
   final AccountName newName;
+  final Currency fee;
 
-  ChangedNameSheet({@required this.newName});
+  ChangedNameSheet({@required this.newName, @required this.fee});
 
   _ChangedNameSheetState createState() => _ChangedNameSheetState();
 }
@@ -145,7 +146,66 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                           textAlign: TextAlign.center,
                           style: AppStyles.paragraphMedium(context),
                         ),
-                      )
+                      ),
+                      // "Fee" header
+                      widget.fee.toStringOpt() != "0"
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Fee",
+                                style: AppStyles.textFieldLabelSuccess(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the fee
+                      widget.fee.toStringOpt() != "0"
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .success15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .success10,
+                              ),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "",
+                                      style: AppStyles
+                                          .iconFontSuccessBalanceSmallPascal(
+                                              context),
+                                    ),
+                                    TextSpan(
+                                        text: " ",
+                                        style: TextStyle(fontSize: 8)),
+                                    TextSpan(
+                                        text: widget.fee.toStringOpt(),
+                                        style: AppStyles.balanceSmallSuccess(context)),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                minFontSize: 8,
+                                stepGranularity: 1,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),
