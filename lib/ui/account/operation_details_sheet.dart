@@ -13,8 +13,7 @@ class OperationDetailsSheet extends StatefulWidget {
 
   OperationDetailsSheet({@required this.operation});
 
-  _OperationDetailsSheetState createState() =>
-      _OperationDetailsSheetState();
+  _OperationDetailsSheetState createState() => _OperationDetailsSheetState();
 }
 
 class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
@@ -94,76 +93,100 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                             child: Column(
                               children: <Widget>[
                                 TransactionDetailsListItem(
-                                    header: "block", value: widget.operation.block.toString()),
-                                Divider(
+                                    header: "block",
+                                    value: widget.operation.block.toString()),
+                                Container(
+                                  width: double.maxFinite,
+                                  height: 1,
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
-                                  height: 1,
                                 ),
                                 TransactionDetailsListItem(
                                     header: "time",
-                                    value:
-                                        widget.operation.maturation == null ? "N/A" : UIUtil.formatDateStrLong(widget.operation.time)),
+                                    value: widget.operation.maturation == null
+                                        ? "N/A"
+                                        : UIUtil.formatDateStrLong(
+                                            widget.operation.time)),
+                                Container(
+                                  width: double.maxFinite,
+                                  height: 1,
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .textDark10,
+                                ),
+                                TransactionDetailsListItem(
+                                    header: "opblock",
+                                    value: widget.operation.opblock.toString()),
+                                Container(
+                                  width: double.maxFinite,
+                                  height: 1,
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .textDark10,
+                                ),
+                                TransactionDetailsListItem(
+                                    header: "maturation",
+                                    value: widget.operation.maturation == null
+                                        ? "null"
+                                        : widget.operation.maturation
+                                            .toString()),
                                 Divider(
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
-                                  height: 1,
-                                ),
-                                TransactionDetailsListItem(
-                                    header: "opblock", value: widget.operation.opblock.toString()),
-                                Divider(
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                  height: 1,
-                                ),
-                                TransactionDetailsListItem(
-                                    header: "maturation", value: widget.operation.maturation == null ? "null" : widget.operation.maturation.toString()),
-                                Divider(
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                       .textDark10,
                                   height: 1,
                                 ),
                                 TransactionDetailsListItem(
                                     header: "optype",
-                                    value: getOptypeDisplay(widget.operation.optype)),
-                                Divider(
+                                    value: getOptypeDisplay(
+                                        widget.operation.optype)),
+                                Container(
+                                  width: double.maxFinite,
+                                  height: 1,
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
-                                  height: 1,
                                 ),
                                 TransactionDetailsListItem(
-                                    header: "account", value: widget.operation.account.account.toString()),
-                                Divider(
+                                    header: "account",
+                                    value: widget.operation.account.account
+                                        .toString()),
+                                Container(
+                                  width: double.maxFinite,
+                                  height: 1,
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
-                                  height: 1,
                                 ),
                                 TransactionDetailsListItem(
-                                    header: "signer_account", value: widget.operation.signerAccount.toString()),
-                                Divider(
+                                    header: "signer_account",
+                                    value: widget.operation.signerAccount
+                                        .toString()),
+                                Container(
+                                  width: double.maxFinite,
+                                  height: 1,
                                   color: StateContainer.of(context)
                                       .curTheme
                                       .textDark10,
-                                  height: 1,
                                 ),
-                                getNOperation() == -1 ? SizedBox() : TransactionDetailsListItem(
-                                    header: "n_operation", value: getNOperation().toString()),
-                                getNOperation() == -1 ? SizedBox() : Divider(
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                  height: 1,
-                                ),
+                                getNOperation() == -1
+                                    ? SizedBox()
+                                    : TransactionDetailsListItem(
+                                        header: "n_operation",
+                                        value: getNOperation().toString()),
+                                getNOperation() == -1
+                                    ? SizedBox()
+                                    : Container(
+                                        width: double.maxFinite,
+                                        height: 1,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .textDark10,
+                                      ),
                                 TransactionDetailsListItem(
                                     header: "ophash",
-                                    value:
-                                        widget.operation.ophash),
+                                    value: widget.operation.ophash),
                               ],
                             ),
                           ),
@@ -266,9 +289,7 @@ class _TransactionDetailsListItemState
           : StateContainer.of(context).curTheme.backgroundPrimary,
       child: FlatButton(
         onPressed: () {
-          Clipboard.setData(ClipboardData(
-            text: widget.value.trim()
-          ));
+          Clipboard.setData(ClipboardData(text: widget.value.trim()));
           setState(() {
             _copied = true;
           });
