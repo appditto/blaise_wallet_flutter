@@ -4,13 +4,19 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class SentSheet extends StatefulWidget {
   final String destination;
   final String amount;
   final String payload;
+  final Currency fee;
 
-  SentSheet({@required this.destination, @required this.amount, this.payload = ""});
+  SentSheet(
+      {@required this.destination,
+      @required this.amount,
+      @required this.fee,
+      this.payload = ""});
 
   _SentSheetState createState() => _SentSheetState();
 }
@@ -162,55 +168,162 @@ class _SentSheetState extends State<SentSheet> {
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
-                      // "Amount" header
+                      // Amount and Fee
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Amount",
-                          style: AppStyles.textFieldLabelSuccess(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
+                        child: Row(
+                          children: <Widget>[
+                            // Amount
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                // "Amount" header
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              76 / 2),
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      0, 30, 0, 0),
+                                  child: AutoSizeText(
+                                    "Amount",
+                                    style: AppStyles.textFieldLabelSuccess(context),
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                // Container for the Amount
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              76 / 2),
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      0, 12, 0, 0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 8, 12, 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .success15),
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .success10,
+                                  ),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "",
+                                          style: AppStyles
+                                              .iconFontSuccessBalanceSmallPascal(
+                                                  context),
+                                        ),
+                                        TextSpan(
+                                            text: " ",
+                                            style: TextStyle(fontSize: 8)),
+                                        TextSpan(
+                                            text: widget.amount,
+                                            style: AppStyles.balanceSmallSuccess(
+                                                context)),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 1,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            widget.fee.toStringOpt() != "0"
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      // "Fee" header
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                76 / 2),
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            16, 30, 0, 0),
+                                        child: AutoSizeText(
+                                          "Fee",
+                                          style:
+                                              AppStyles.textFieldLabelSuccess(context),
+                                          maxLines: 1,
+                                          stepGranularity: 0.1,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                      // Container for the fee
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                76 / 2),
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            16, 12, 0, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 8, 12, 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .success15),
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .success10,
+                                        ),
+                                        child: AutoSizeText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "",
+                                                style: AppStyles
+                                                    .iconFontSuccessBalanceSmallPascal(
+                                                        context),
+                                              ),
+                                              TextSpan(
+                                                  text: " ",
+                                                  style:
+                                                      TextStyle(fontSize: 8)),
+                                              TextSpan(
+                                                  text:
+                                                      widget.fee.toStringOpt(),
+                                                  style: AppStyles.balanceSmallSuccess(
+                                                      context)),
+                                            ],
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          minFontSize: 8,
+                                          stepGranularity: 1,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
+                          ],
                         ),
-                      ),
-                      // Container for the Amount
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .success15),
-                          color: StateContainer.of(context).curTheme.success10,
-                        ),
-                        child: AutoSizeText.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "",
-                                style:
-                                    AppStyles.iconFontSuccessBalanceSmallPascal(
-                                        context),
-                              ),
-                              TextSpan(
-                                  text: " ", style: TextStyle(fontSize: 8)),
-                              TextSpan(
-                                  text: widget.amount,
-                                  style: AppStyles.balanceSmallSuccess(context)),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          minFontSize: 8,
-                          stepGranularity: 1,
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),
