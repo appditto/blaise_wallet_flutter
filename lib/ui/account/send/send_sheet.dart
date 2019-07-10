@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
@@ -403,34 +404,9 @@ class _SendSheetState extends State<SendSheet> {
                                 ),
                                 // Fee container
                                 _hasFee
-                                    ? Container(
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            30, 4, 30, 0),
-                                        child: AutoSizeText.rich(
-                                          TextSpan(children: [
-                                            TextSpan(
-                                              text: "Fee: ",
-                                              style: AppStyles.primarySmall600(
-                                                  context),
-                                            ),
-                                            TextSpan(
-                                              text: "",
-                                              style: AppStyles
-                                                  .iconFontPrimaryBalanceSmallPascal(
-                                                      context),
-                                            ),
-                                            TextSpan(
-                                                text: " ",
-                                                style: TextStyle(fontSize: 7)),
-                                            TextSpan(
-                                                text: walletState.MIN_FEE
-                                                    .toStringOpt(),
-                                                style:
-                                                    AppStyles.primarySmall600(
-                                                        context)),
-                                          ]),
-                                        ),
-                                      )
+                                    ? FeeContainer(
+                                        feeText:
+                                            walletState.MIN_FEE.toStringOpt())
                                     : SizedBox(),
                                 // Error Text
                                 ErrorContainer(

@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -56,11 +57,6 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
     return TapOutsideUnfocus(
         child: Column(
       children: <Widget>[
-        Text(
-            _hasFee
-                ? 'fee ${walletState.MIN_FEE.toStringOpt()}'
-                : 'fee ${walletState.NO_FEE.toStringOpt()}',
-            style: TextStyle(color: Colors.red)),
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -156,7 +152,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                               // Container for the name text field
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
-                                    30, 10, 30, 10),
+                                    30, 10, 30, 0),
                                 child: AppTextField(
                                   label: 'New Account Name',
                                   style: AppStyles.paragraphMedium(context),
@@ -177,6 +173,12 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                                   },
                                 ),
                               ),
+                              // Fee container
+                              _hasFee
+                                  ? FeeContainer(
+                                      feeText:
+                                          walletState.MIN_FEE.toStringOpt())
+                                  : SizedBox(),
                               // Error Text
                               ErrorContainer(
                                 errorText: _nameError == null ? "" : _nameError,
