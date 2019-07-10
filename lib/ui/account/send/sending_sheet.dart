@@ -397,7 +397,7 @@ class _SendingSheetState extends State<SendingSheet> {
                 context: context,
                 closeOnTap: true,
                 widget: SentSheet(
-                    destination: widget.destination, amount: widget.amount));
+                    destination: widget.destination, amount: widget.amount, fee: widget.fee));
           } else {
             if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
               UIUtil.showFeeDialog(
