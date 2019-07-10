@@ -288,8 +288,9 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
 
   Future<void> doChange({Currency fee, bool noAuth = false}) async {
     fee = fee == null ? widget.fee : fee;
-    if (noAuth || (await AuthUtil().authenticate(
-        "Authenticate to change account name to \"${widget.newName.toString()}\""))) {
+    if (noAuth ||
+        (await AuthUtil().authenticate(
+            "Authenticate to change account name to \"${widget.newName.toString()}\""))) {
       try {
         showOverlay(context);
         RPCResponse result = await accountState
@@ -314,16 +315,17 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                   closeOnTap: true,
                   widget: ChangedNameSheet(
                     newName: widget.newName,
+                    fee: widget.fee,
                   ));
             } else {
-              if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
+              if (op.errors.contains("zero fee") &&
+                  widget.fee == walletState.NO_FEE) {
                 UIUtil.showFeeDialog(
-                  context: context,
-                  onConfirm: () async {
-                    Navigator.of(context).pop();
-                    doChange(fee: walletState.MIN_FEE, noAuth: true);
-                  }
-                );
+                    context: context,
+                    onConfirm: () async {
+                      Navigator.of(context).pop();
+                      doChange(fee: walletState.MIN_FEE, noAuth: true);
+                    });
               } else {
                 UIUtil.showSnackbar("${op.errors}", context);
               }

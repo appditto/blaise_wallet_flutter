@@ -291,8 +291,9 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
 
   Future<void> doTransfer({Currency fee, bool noAuth = false}) async {
     fee = fee == null ? widget.fee : fee;
-    if (noAuth || (await AuthUtil()
-        .authenticate("Authenticate to transfer the account."))) {
+    if (noAuth ||
+        (await AuthUtil()
+            .authenticate("Authenticate to transfer the account."))) {
       try {
         showOverlay(context);
         RPCResponse result = await accountState
@@ -317,16 +318,17 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                   closeOnTap: true,
                   widget: TransferredAccountSheet(
                     newAccountPubkey: widget.publicKeyDisplay,
+                    fee: widget.fee,
                   ));
             } else {
-              if (op.errors.contains("zero fee") && widget.fee == walletState.NO_FEE) {
+              if (op.errors.contains("zero fee") &&
+                  widget.fee == walletState.NO_FEE) {
                 UIUtil.showFeeDialog(
-                  context: context,
-                  onConfirm: () async {
-                    Navigator.of(context).pop();
-                    doTransfer(fee: walletState.MIN_FEE, noAuth: true);
-                  }
-                );
+                    context: context,
+                    onConfirm: () async {
+                      Navigator.of(context).pop();
+                      doTransfer(fee: walletState.MIN_FEE, noAuth: true);
+                    });
               } else {
                 UIUtil.showSnackbar("${op.errors}", context);
               }
