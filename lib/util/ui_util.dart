@@ -56,8 +56,8 @@ class UIUtil {
     int secondsSinceEpoch = dt.millisecondsSinceEpoch ~/ 1000;
     DateTime localTime = dt.toLocal();
     DateFormat df;
-    df = DateFormat("MMM dd, yyyy • HH:mm");
-    return  df.format(localTime) + " ($secondsSinceEpoch)";
+    df = DateFormat("MMM dd, yyyy • HH:mm:ss");
+    return  df.format(localTime) + "\n($secondsSinceEpoch)";
   }
 
   /// Show a dialog asking if they want to confirm a fee
