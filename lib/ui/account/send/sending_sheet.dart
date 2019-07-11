@@ -1,17 +1,25 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/authenticated_event.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sent_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
 
@@ -32,8 +40,40 @@ class SendingSheet extends StatefulWidget {
   _SendingSheetState createState() => _SendingSheetState();
 }
 
-class _SendingSheetState extends State<SendingSheet> {
+class _SendingSheetState extends State<SendingSheet>  {
+  final Logger log = Logger();
+
   OverlayEntry _overlay;
+
+  StreamSubscription<AuthenticatedEvent> _authSub;
+
+  void _registerBus() {
+    _authSub = EventTaxiImpl.singleton()
+        .registerTo<AuthenticatedEvent>()
+        .listen((event) {
+      if (event.authType == AUTH_EVENT_TYPE.SEND) {
+        doSend();
+      }
+    });
+  }
+
+  void _destroyBus() {
+    if (_authSub != null) {
+      _authSub.cancel();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _registerBus();
+  }
+
+  @override
+  void dispose() {
+    _destroyBus();
+    super.dispose();
+  }
 
   void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
@@ -399,13 +439,9 @@ class _SendingSheetState extends State<SendingSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        await AuthUtil().authenticate(
-                          context,
-                          message: "Authenticate to send ${widget.amount} Pascal.",
-                          onSuccess: () async {
-                            await doSend();
-                          }
-                        );
+                        if (await authenticate()) {
+                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.SEND));
+                        }
                       },
                     ),
                   ],
@@ -476,8 +512,39 @@ class _SendingSheetState extends State<SendingSheet> {
         }
       }
     } catch (e) {
+      log.e(e.toString());
       _overlay?.remove();
       UIUtil.showSnackbar("Something went wrong, try again later.", context);
     }
+  }
+
+  Future<bool> authenticate() async {
+    String message = "Authenticate to send ${widget.amount} Pascal.";
+    // Authenticate
+    AuthUtil authUtil = AuthUtil();
+    if (await authUtil.useBiometrics()) {
+      // Biometric auth
+      bool authenticated = await authUtil.authenticateWithBiometrics(message);
+      if (authenticated) {
+        HapticUtil.fingerprintSucess();
+      }
+      return authenticated;
+    } else {
+      String expectedPin = await sl.get<Vault>().getPin();
+      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
+          builder: (BuildContext context) {
+        return PinScreen(
+          type: PinOverlayType.ENTER_PIN,
+          onSuccess: (pin) {
+            Navigator.of(context).pop(true);
+          },
+          expectedPin: expectedPin,
+          description:
+              message,
+        );
+      }));
+      await Future.delayed(Duration(milliseconds: 200));
+      return result != null && result;
+    }   
   }
 }

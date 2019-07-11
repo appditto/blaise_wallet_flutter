@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
-import 'package:blaise_wallet_flutter/util/vault.dart';
-import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 
 class AuthUtil {
@@ -43,33 +40,7 @@ class AuthUtil {
     return false;
   }
 
-  ///
-  /// authenticate() - Authenticate with either PIN or Biometrics depending on nwhat's available
-  /// 
-  /// @param [message] Message shown to user in FaceID/TouchID popup
-  /// @param [onSuccess] Callback for when authentication is success
-  Future<void> authenticate(BuildContext context, {@required String message, @required Function onSuccess}) async {
-    if (await hasBiometrics() && (await sl.get<SharedPrefsUtil>().getAuthMethod()).method == AuthMethod.BIOMETRICS) {
-      if (await authenticateWithBiometrics(message)) {
-        onSuccess();
-      }
-    } else {
-      String expectedPin = await sl.get<Vault>().getPin();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return PinScreen(
-              type: PinOverlayType.ENTER_PIN,
-              expectedPin: expectedPin,
-              description: message,
-              onSuccess: (pin) {
-                Navigator.of(context).pop();
-                onSuccess();
-              }
-            );
-          }
-        )
-      );
-    }
+  Future<bool> useBiometrics() async {
+    return await hasBiometrics() && (await sl.get<SharedPrefsUtil>().getAuthMethod()).method == AuthMethod.BIOMETRICS;
   }
 }

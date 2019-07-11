@@ -1,12 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/haptic_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
 class BackupPrivateKeySheet extends StatefulWidget {
@@ -135,16 +139,7 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       text: "Encrypted Key",
                       buttonTop: true,
                       onPressed: () async {
-                        await AuthUtil().authenticate(
-                          context,
-                          message: "Authenticate to backup private key.",
-                          onSuccess: () {
-                            Navigator.of(context).pop();
-                            AppSheets.showBottomSheet(
-                                context: context,
-                                widget: EncryptPrivateKeySheet());                            
-                          }
-                        );
+                        await authenticate(true);
                       },
                     ),
                   ],
@@ -156,16 +151,7 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Unencrypted Key",
                       onPressed: () async {
-                        await AuthUtil().authenticate(
-                          context,
-                          message: "Authenticate to backup private key.",
-                          onSuccess: () {
-                            Navigator.of(context).pop();
-                            AppSheets.showBottomSheet(
-                                context: context,
-                                widget: UnencryptedPrivateKeySheet());                            
-                          }
-                        );
+                        await authenticate(false);
                       },
                     ),
                   ],
@@ -176,5 +162,54 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
         ),
       ],
     );
+  }
+
+  Future<void> authenticate(bool encrypted) async {
+    String message = "Authenticate to backup private key.";
+    // Authenticate
+    AuthUtil authUtil = AuthUtil();
+    if (await authUtil.useBiometrics()) {
+      // Biometric auth
+      bool authenticated = await authUtil.authenticateWithBiometrics(message);
+      if (authenticated) {
+        HapticUtil.fingerprintSucess();
+        Navigator.of(context).pop();
+        if (encrypted) {
+          AppSheets.showBottomSheet(
+              context: context,
+              widget: EncryptPrivateKeySheet());
+        } else {
+          AppSheets.showBottomSheet(
+              context: context,
+              widget: UnencryptedPrivateKeySheet());
+        }        
+      }
+    } else {
+      String expectedPin = await sl.get<Vault>().getPin();
+      await Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+        return PinScreen(
+          type: PinOverlayType.ENTER_PIN,
+          onSuccess: (pin) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            if (encrypted) {
+              AppSheets.showBottomSheet(
+                  context: context,
+                  widget: EncryptPrivateKeySheet());
+            } else {
+              AppSheets.showBottomSheet(
+                  context: context,
+                  widget: UnencryptedPrivateKeySheet());
+            }
+          },
+          expectedPin: expectedPin,
+          description:
+              message,
+        );
+      },
+      fullscreenDialog: true
+      ));
+    }   
   }
 }
