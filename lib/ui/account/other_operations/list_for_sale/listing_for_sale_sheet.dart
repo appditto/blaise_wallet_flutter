@@ -93,7 +93,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -233,13 +233,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Authenticate to list for sale.")) {
-                          await showOverlay(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                              context: context, widget: ListedForSaleSheet());
-                        }
+                        return;
                       },
                     ),
                   ],
@@ -251,7 +245,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "CANCEL",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

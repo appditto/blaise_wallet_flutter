@@ -61,7 +61,7 @@ const Duration _kBaseSettleDuration = Duration(milliseconds: 246);
 ///   title: Text('Change history'),
 ///   onTap: () {
 ///     // change app state...
-///     Navigator.pop(context); // close the drawer
+///     Navigator.of(context).pop(); // close the drawer
 ///   },
 /// );
 /// ```

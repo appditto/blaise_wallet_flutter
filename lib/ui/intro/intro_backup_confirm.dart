@@ -4,8 +4,10 @@ import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
 class IntroBackupConfirmPage extends StatefulWidget {
@@ -105,8 +107,21 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                             .get<SharedPrefsUtil>()
                             .setPrivateKeyBackedUp(true)
                             .then((_) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/overview_new', (Route<dynamic> route) => false);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return PinScreen(
+                                      type: PinOverlayType.NEW_PIN,
+                                      onSuccess: (pin) {
+                                        sl.get<Vault>().setPin(pin).then((_) {
+                                          Navigator.of(context).pushNamedAndRemoveUntil(
+                                              '/overview', (Route<dynamic> route) => false);                      
+                                        });
+                                      }
+                                    );
+                                  }
+                                )
+                              );
                         });
                       },
                     ),
@@ -119,7 +134,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                       type: AppButtonType.PrimaryOutline,
                       text: "NO, GO BACK",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

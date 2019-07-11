@@ -181,7 +181,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                         // TODO
                         /*
                         await showOverlay(context);
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         Navigator.pushNamed(context, '/account_borrowed');
                         */
                       },
@@ -195,7 +195,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Cancel",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

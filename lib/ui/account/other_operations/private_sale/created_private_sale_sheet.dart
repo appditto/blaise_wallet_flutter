@@ -293,7 +293,7 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                       type: AppButtonType.SuccessOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

@@ -159,7 +159,7 @@ class _AppBottomSheetModalRoute<T> extends PopupRoute<T> {
                     delegate: _AppBottomSheetLayout(appSheetAnimation.value),
                     child: BottomSheet(
                       animationController: _animationController,
-                      onClosing: () => Navigator.pop(context),
+                      onClosing: () => Navigator.of(context).pop(),
                       builder: (context) => Container(
                             decoration: BoxDecoration(
                               color: this.color,

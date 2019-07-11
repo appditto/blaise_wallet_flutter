@@ -255,7 +255,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                         type: AppButtonType.PrimaryOutline,
                         text: "Cancel",
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],

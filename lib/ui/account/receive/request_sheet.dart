@@ -218,7 +218,7 @@ class _RequestSheetState extends State<RequestSheet> {
                         type: AppButtonType.PrimaryOutline,
                         text: "Close",
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],

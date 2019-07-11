@@ -76,7 +76,7 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                               splashColor:
                                   StateContainer.of(context).curTheme.textLight30,
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.of(context).pop();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0)),
@@ -213,7 +213,7 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                         type: AppButtonType.PrimaryOutline,
                         text: "Close",
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],

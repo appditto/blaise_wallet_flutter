@@ -126,7 +126,7 @@ class _AccountPageState extends State<AccountPage>
       DialogListItem(
         option: "Change Account Name",
         action: () {
-          Navigator.pop(context);
+          Navigator.of(context).pop();
           AppSheets.showBottomSheet(
               context: context, widget: ChangeNameSheet(account: accountState.account));
         },
@@ -134,7 +134,7 @@ class _AccountPageState extends State<AccountPage>
       DialogListItem(
         option: "Transfer Account",
         action: () {
-          Navigator.pop(context);
+          Navigator.of(context).pop();
           AppSheets.showBottomSheet(
             context: context,
             widget: TransferAccountSheet(
@@ -146,7 +146,7 @@ class _AccountPageState extends State<AccountPage>
       DialogListItem(
         option: "List Account for Sale",
         action: () {
-          Navigator.pop(context);
+          Navigator.of(context).pop();
           AppSheets.showBottomSheet(
               context: context, widget: ListForSaleSheet());
         },
@@ -154,7 +154,7 @@ class _AccountPageState extends State<AccountPage>
       DialogListItem(
         option: "Private Sale",
         action: () {
-          Navigator.pop(context);
+          Navigator.of(context).pop();
           AppSheets.showBottomSheet(
               context: context, widget: CreatePrivateSaleSheet());
         },
@@ -187,7 +187,7 @@ class _AccountPageState extends State<AccountPage>
     });
     HapticUtil.success();
     // Hide refresh indicator after 3 seconds if no server response
-    Future.delayed(new Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           _isRefreshing = false;
@@ -290,7 +290,7 @@ class _AccountPageState extends State<AccountPage>
                                                     .curTheme
                                                     .textLight30,
                                             onPressed: () {
-                                              Navigator.pop(context);
+                                              Navigator.of(context).pop();
                                             },
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:

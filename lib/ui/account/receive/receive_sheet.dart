@@ -72,7 +72,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                           splashColor:
                               StateContainer.of(context).curTheme.textLight30,
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.of(context).pop();
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50.0)),
@@ -237,7 +237,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                     type: AppButtonType.PrimaryOutline,
                     text: "Request",
                     onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         AppSheets.showBottomSheet(
                             context: context,
                             widget: RequestSheet(address: widget.accountNumber.toString()));

@@ -160,7 +160,7 @@ class _OperationSheetState extends State<OperationSheet> {
                     type: AppButtonType.PrimaryOutline,
                     text: "Operation Details",
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop();
                       AppSheets.showBottomSheet(
                           context: context, widget: OperationDetailsSheet(operation: widget.operation));
                     },

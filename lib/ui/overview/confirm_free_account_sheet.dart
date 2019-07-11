@@ -163,8 +163,8 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                           // TODO
                           /*
                           await showOverlay(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                           Navigator.pushNamed(context, '/account_new');
                           */
                         },
@@ -178,7 +178,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                         type: AppButtonType.PrimaryOutline,
                         text: "GO BACK",
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],

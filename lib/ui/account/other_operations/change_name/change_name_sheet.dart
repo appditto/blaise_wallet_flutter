@@ -83,7 +83,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),

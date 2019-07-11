@@ -243,7 +243,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                           type: AppButtonType.PrimaryOutline,
                           text: "Close",
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],

@@ -121,7 +121,7 @@ class _SendSheetState extends State<SendSheet> {
                                   .curTheme
                                   .textLight30,
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.of(context).pop();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0)),
@@ -433,7 +433,7 @@ class _SendSheetState extends State<SendSheet> {
                         type: AppButtonType.PrimaryOutline,
                         text: "Close",
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],

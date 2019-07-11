@@ -204,7 +204,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                       type:AppButtonType.PrimaryOutline,
                       text: "Go Back",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

@@ -68,7 +68,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                         .curTheme
                                         .textLight30,
                                     onPressed: () {
-                                      Navigator.pop(context);
+                                      Navigator.of(context).pop();
                                     },
                                     shape: RoundedRectangleBorder(
                                         borderRadius:

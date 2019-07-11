@@ -109,22 +109,17 @@ class _AppState extends State<App> {
                     encryptedKey: settings.arguments),
                 settings: settings,
               );
-            case '/overview_new':
-              return MaterialPageRoute(
-                builder: (context) => OverviewPage(),
-                settings: settings,
-              );
             case '/overview':
               if (settings.arguments != null &&
                   settings.arguments is TransitionOption &&
                   settings.arguments == TransitionOption.NONE) {
                 return NoTransitionRoute(
-                  builder: (context) => OverviewPage(newWallet: false),
+                  builder: (context) => OverviewPage(),
                   settings: settings,
                 );
               }
               return MaterialPageRoute(
-                builder: (context) => OverviewPage(newWallet: false),
+                builder: (context) => OverviewPage(),
                 settings: settings,
               );
             case '/account':

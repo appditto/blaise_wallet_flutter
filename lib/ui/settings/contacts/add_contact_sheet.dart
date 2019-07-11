@@ -147,7 +147,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                       text: "Add Contact",
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         UIUtil.showSnackbar(
                           "@yekta added to contacts",
                           context,
@@ -163,7 +163,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

@@ -195,7 +195,6 @@ class _PinScreenState extends State<PinScreen>
                           _controller.forward();
                         } else {
                           sl.get<SharedPrefsUtil>().resetLockAttempts().then((_) {
-                            Navigator.of(context).pop();
                             widget.onSuccess(_pin);
                           });
                         }
@@ -210,7 +209,6 @@ class _PinScreenState extends State<PinScreen>
                         } else {
                           // First and second pins match
                           if (_pin == _pinConfirmed) {
-                            Navigator.of(context).pop();
                             widget.onSuccess(_pin);
                           } else {
                             HapticUtil.error();

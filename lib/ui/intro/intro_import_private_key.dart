@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
@@ -186,7 +187,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                     type: AppButtonType.PrimaryOutline,
                     text: "Go Back",
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -247,8 +248,21 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
               .decodeFromBytes(PDUtil.hexToBytes(privateKeyController.text)))
           .then((_) {
         sl.get<SharedPrefsUtil>().setPrivateKeyBackedUp(true).then((_) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/overview', (Route<dynamic> route) => false);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return PinScreen(
+                  type: PinOverlayType.NEW_PIN,
+                  onSuccess: (pin) {
+                    sl.get<Vault>().setPin(pin).then((_) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/overview', (Route<dynamic> route) => false);                      
+                    });
+                  }
+                );
+              }
+            )
+          );
         });
       });
     } else if (privateKeyIsEncrypted(privateKeyController.text)) {

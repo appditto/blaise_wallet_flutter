@@ -216,7 +216,7 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                       type: AppButtonType.SuccessOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

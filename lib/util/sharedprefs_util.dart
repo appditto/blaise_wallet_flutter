@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:blaise_wallet_flutter/constants.dart';
+import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,8 @@ class SharedPrefsUtil {
   // For maximum pin attempts
   static const String pin_attempts = 'blaise_pin_attempts';
   static const String pin_lock_until = 'blaise_lock_duraton';
+  // Using biometrics
+  static const String auth_method = 'blaise_auth_method';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -151,6 +154,14 @@ class SharedPrefsUtil {
     return DateFormat.yMd().add_jms().parseUtc(lockDateStr);
   }
 
+  Future<void> setAuthMethod(AuthenticationMethod method) async {
+   return await set(auth_method, method.getIndex());
+  }
+
+  Future<AuthenticationMethod> getAuthMethod() async {
+    return AuthenticationMethod(AuthMethod.values[await get(auth_method, defaultValue: AuthMethod.BIOMETRICS.index)]);
+  }
+
   // For logging out
   Future<void> deleteAll({bool firstLaunch = false}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -161,6 +172,7 @@ class SharedPrefsUtil {
       await prefs.remove(rpc_url_key);
       await prefs.remove(pin_attempts);
       await prefs.remove(pin_lock_until);
+      await prefs.remove(auth_method);
     }
   }
 }

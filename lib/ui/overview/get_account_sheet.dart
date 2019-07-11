@@ -56,7 +56,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -149,7 +149,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       text: "Get a Free Account",
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         AppSheets.showBottomSheet(
                             context: context, widget: GetFreeAccountSheet());
                       },
@@ -163,7 +163,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Buy An Account",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         AppSheets.showBottomSheet(
                             context: context, widget: BuyAccountSheet());
                       },

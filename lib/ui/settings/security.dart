@@ -1,9 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/model/authentication_method.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
+import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/material.dart';
 
 class SecurityPage extends StatefulWidget {
@@ -12,10 +16,53 @@ class SecurityPage extends StatefulWidget {
 }
 
 class _SecurityPageState extends State<SecurityPage> {
-  List<DialogListItem> methodList = [ DialogListItem(option:"Biometrics"), DialogListItem(option:"PIN")];
   List<DialogListItem> launchList = [DialogListItem(option:"Yes"), DialogListItem(option:"No")];
   List<DialogListItem> lockList = [DialogListItem(option:"Instantly"), DialogListItem(option:"After 1 minute"), DialogListItem(option:"After 5 minutes"), DialogListItem(option:"After 15 minutes"), DialogListItem(option:"After 30 minutes"), DialogListItem(option:"After 60 minutes")];
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool _hasBiometricsEnrolled;
+  AuthenticationMethod curAuthMethod = AuthenticationMethod(AuthMethod.BIOMETRICS);
+
+  List<DialogListItem> _getAuthMethods() {
+    List<DialogListItem> ret = [];
+    AuthMethod.values.forEach((AuthMethod value) {
+      AuthenticationMethod method = AuthenticationMethod(value);
+      ret.add(DialogListItem(
+        option: method.getDisplayName(context),
+        action: () async {
+          await sl.get<SharedPrefsUtil>().setAuthMethod(method);
+          if (mounted) {
+            setState(() {
+              curAuthMethod = method;
+            });
+          }
+          Navigator.of(context).pop();
+        }
+      ));
+    });
+    return ret;    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _hasBiometricsEnrolled = false;
+    AuthUtil().hasBiometrics().then((hasBiometrics) {
+      if (mounted) {
+        setState(() {
+          _hasBiometricsEnrolled = hasBiometrics;
+        });
+      }
+    });
+    sl.get<SharedPrefsUtil>().getAuthMethod().then((authMethod) {
+      if (mounted) {
+        setState(() {
+          curAuthMethod = authMethod;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
@@ -63,7 +110,7 @@ class _SecurityPageState extends State<SecurityPage> {
                                     .curTheme
                                     .textLight30,
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  Navigator.of(context).pop();
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50.0)),
@@ -134,25 +181,24 @@ class _SecurityPageState extends State<SecurityPage> {
                                   .textDark10,
                             ),
                             // List Items
-                            SettingsListItem(
+                            _hasBiometricsEnrolled ? SettingsListItem(
                               header: "Authentication Method",
-                              subheader: "Biometrics",
+                              subheader: curAuthMethod.getDisplayName(context),
                               icon: AppIcons.fingerprint,
                               onPressed: () {
                                showAppDialog(
                                  context: context,
-                                 builder: (_) => DialogOverlay(title: 'Authentication Method', optionsList: methodList)                               
+                                 builder: (_) => DialogOverlay(title: 'Authentication Method', optionsList: _getAuthMethods())
                                ); 
                               },
-                              
-                            ),
-                            Container(
+                            ) : SizedBox(),
+                            _hasBiometricsEnrolled ? Container(
                               width: double.maxFinite,
                               height: 1,
                               color: StateContainer.of(context)
                                   .curTheme
                                   .textDark10,
-                            ),
+                            ) : SizedBox(),
                             SettingsListItem(
                               header: "Authenticate on Launch",
                               subheader: "Yes",

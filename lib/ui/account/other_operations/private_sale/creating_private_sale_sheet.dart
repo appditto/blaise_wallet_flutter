@@ -91,7 +91,7 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -309,13 +309,7 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        if (await AuthUtil().authenticate("Authenticate to create a private sale.")) {
-                          await showOverlay(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                              context: context, widget: CreatedPrivateSaleSheet());
-                        }
+                        return;
                       },
                     ),
                   ],
@@ -327,7 +321,7 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "CANCEL",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

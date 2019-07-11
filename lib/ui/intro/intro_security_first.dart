@@ -139,7 +139,7 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Go Back",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

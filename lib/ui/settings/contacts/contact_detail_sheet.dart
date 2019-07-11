@@ -199,7 +199,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

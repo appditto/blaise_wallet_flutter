@@ -159,7 +159,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
                     type: AppButtonType.PrimaryOutline,
                     text: "Go Back",
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],

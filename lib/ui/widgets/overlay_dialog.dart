@@ -194,7 +194,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                                       type: AppButtonType.DangerOutline,
                                       text: "CANCEL",
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                   ],

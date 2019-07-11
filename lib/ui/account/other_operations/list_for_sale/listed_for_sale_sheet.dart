@@ -200,7 +200,7 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                       type: AppButtonType.SuccessOutline,
                       text: "Close",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

@@ -114,7 +114,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -264,7 +264,13 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        await doTransfer();
+                        await AuthUtil().authenticate(
+                          context,
+                          message: "Authenticate to transfer account",
+                          onSuccess: () async {
+                            await doTransfer();
+                          }
+                        );
                       },
                     ),
                   ],
@@ -276,7 +282,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "CANCEL",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],
@@ -289,59 +295,55 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     );
   }
 
-  Future<void> doTransfer({Currency fee, bool noAuth = false}) async {
+  Future<void> doTransfer({Currency fee}) async {
     fee = fee == null ? widget.fee : fee;
-    if (noAuth ||
-        (await AuthUtil()
-            .authenticate("Authenticate to transfer the account."))) {
-      try {
-        showOverlay(context);
-        RPCResponse result = await accountState
-            .transferAccount(widget.publicKeyDisplay, fee: widget.fee);
-        if (result.isError) {
-          ErrorResponse errResp = result;
-          UIUtil.showSnackbar(errResp.errorMessage, context);
-          _overlay?.remove();
-          Navigator.of(context).pop();
-        } else {
-          _overlay?.remove();
-          try {
-            OperationsResponse resp = result;
-            PascalOperation op = resp.operations[0];
-            if (op.valid == null || op.valid) {
-              // Remove all traces of this account
-              walletState.removeAccount(widget.account);
-              Navigator.of(context)
-                  .popUntil(RouteUtils.withNameLike("/overview"));
-              AppSheets.showBottomSheet(
-                  context: context,
-                  closeOnTap: true,
-                  widget: TransferredAccountSheet(
-                    newAccountPubkey: widget.publicKeyDisplay,
-                    fee: widget.fee,
-                  ));
-            } else {
-              if (op.errors.contains("zero fee") &&
-                  widget.fee == walletState.NO_FEE) {
-                UIUtil.showFeeDialog(
-                    context: context,
-                    onConfirm: () async {
-                      Navigator.of(context).pop();
-                      doTransfer(fee: walletState.MIN_FEE, noAuth: true);
-                    });
-              } else {
-                UIUtil.showSnackbar("${op.errors}", context);
-              }
-            }
-          } catch (e) {
-            UIUtil.showSnackbar(
-                "Something went wrong, try again later.", context);
-          }
-        }
-      } catch (e) {
+    try {
+      showOverlay(context);
+      RPCResponse result = await accountState
+          .transferAccount(widget.publicKeyDisplay, fee: widget.fee);
+      if (result.isError) {
+        ErrorResponse errResp = result;
+        UIUtil.showSnackbar(errResp.errorMessage, context);
         _overlay?.remove();
-        UIUtil.showSnackbar("Something went wrong, try again later.", context);
+        Navigator.of(context).pop();
+      } else {
+        _overlay?.remove();
+        try {
+          OperationsResponse resp = result;
+          PascalOperation op = resp.operations[0];
+          if (op.valid == null || op.valid) {
+            // Remove all traces of this account
+            walletState.removeAccount(widget.account);
+            Navigator.of(context)
+                .popUntil(RouteUtils.withNameLike("/overview"));
+            AppSheets.showBottomSheet(
+                context: context,
+                closeOnTap: true,
+                widget: TransferredAccountSheet(
+                  newAccountPubkey: widget.publicKeyDisplay,
+                  fee: widget.fee,
+                ));
+          } else {
+            if (op.errors.contains("zero fee") &&
+                widget.fee == walletState.NO_FEE) {
+              UIUtil.showFeeDialog(
+                  context: context,
+                  onConfirm: () async {
+                    Navigator.of(context).pop();
+                    doTransfer(fee: walletState.MIN_FEE);
+                  });
+            } else {
+              UIUtil.showSnackbar("${op.errors}", context);
+            }
+          }
+        } catch (e) {
+          UIUtil.showSnackbar(
+              "Something went wrong, try again later.", context);
+        }
       }
+    } catch (e) {
+      _overlay?.remove();
+      UIUtil.showSnackbar("Something went wrong, try again later.", context);
     }
   }
 }

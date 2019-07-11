@@ -55,7 +55,7 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -173,7 +173,7 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                       type: AppButtonType.Primary,
                       text: "CHANGE DAEMON",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                       buttonTop: true,
                     ),
@@ -186,7 +186,7 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "CANCEL",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

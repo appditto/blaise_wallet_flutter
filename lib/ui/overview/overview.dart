@@ -19,8 +19,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class OverviewPage extends StatefulWidget {
-  final bool newWallet;
-  OverviewPage({this.newWallet = true});
+  OverviewPage();
   @override
   _OverviewPageState createState() => _OverviewPageState();
 }
@@ -291,9 +290,7 @@ class _OverviewPageState extends State<OverviewPage>
                                             );
                                           } else {
                                             return AutoSizeText(
-                                              widget.newWallet
-                                                  ? "(\$" + "0.00" + ")"
-                                                  : "(\$" + "2,745.14" + ")",
+                                              "(\$" + "0.00" + ")",
                                               style: AppStyles
                                                   .paragraphTextLightSmall(
                                                       context),
@@ -562,13 +559,10 @@ class _OverviewPageState extends State<OverviewPage>
                                 text: "Get an Account",
                                 type: AppButtonType.Primary,
                                 onPressed: () {
-                                  widget.newWallet
-                                      ? AppSheets.showBottomSheet(
+                                  AppSheets.showBottomSheet(
                                           context: context,
-                                          widget: GetAccountSheet())
-                                      : AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: BuyAccountSheet());
+                                          widget: GetAccountSheet()
+                                  );
                                 },
                               ),
                             ],

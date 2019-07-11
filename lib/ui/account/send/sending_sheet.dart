@@ -108,7 +108,7 @@ class _SendingSheetState extends State<SendingSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -399,7 +399,13 @@ class _SendingSheetState extends State<SendingSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        await doSend();
+                        await AuthUtil().authenticate(
+                          context,
+                          message: "Authenticate to send ${widget.amount} Pascal.",
+                          onSuccess: () async {
+                            await doSend();
+                          }
+                        );
                       },
                     ),
                   ],
@@ -411,7 +417,7 @@ class _SendingSheetState extends State<SendingSheet> {
                       type: AppButtonType.PrimaryOutline,
                       text: "CANCEL",
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],
@@ -424,58 +430,54 @@ class _SendingSheetState extends State<SendingSheet> {
     );
   }
 
-  Future<void> doSend({Currency fee, bool noAuth = false}) async {
+  Future<void> doSend({Currency fee}) async {
     fee = fee == null ? widget.fee : fee;
-    if (noAuth ||
-        (await AuthUtil()
-            .authenticate("Authenticate to send ${widget.amount} Pascal."))) {
-      try {
-        showOverlay(context);
-        // Do send
-        RPCResponse result = await walletState
-            .getAccountState(widget.source)
-            .doSend(
-                amount: widget.amount,
-                destination: widget.destination,
-                payload: widget.payload,
-                fee: fee);
-        if (result.isError) {
-          ErrorResponse errResp = result;
-          UIUtil.showSnackbar(errResp.errorMessage, context);
-          _overlay?.remove();
-          Navigator.of(context).pop();
+    try {
+      showOverlay(context);
+      // Do send
+      RPCResponse result = await walletState
+          .getAccountState(widget.source)
+          .doSend(
+              amount: widget.amount,
+              destination: widget.destination,
+              payload: widget.payload,
+              fee: fee);
+      if (result.isError) {
+        ErrorResponse errResp = result;
+        UIUtil.showSnackbar(errResp.errorMessage, context);
+        _overlay?.remove();
+        Navigator.of(context).pop();
+      } else {
+        _overlay?.remove();
+        OperationsResponse resp = result;
+        PascalOperation op = resp.operations[0];
+        if (op.valid == null || op.valid) {
+          Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+          AppSheets.showBottomSheet(
+              context: context,
+              closeOnTap: true,
+              widget: SentSheet(
+                  destination: widget.destination,
+                  amount: widget.amount,
+                  fee: widget.fee,
+                  payload: widget.payload));
         } else {
-          _overlay?.remove();
-          OperationsResponse resp = result;
-          PascalOperation op = resp.operations[0];
-          if (op.valid == null || op.valid) {
-            Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
-            AppSheets.showBottomSheet(
+          if (op.errors.contains("zero fee") &&
+              widget.fee == walletState.NO_FEE) {
+            UIUtil.showFeeDialog(
                 context: context,
-                closeOnTap: true,
-                widget: SentSheet(
-                    destination: widget.destination,
-                    amount: widget.amount,
-                    fee: widget.fee,
-                    payload: widget.payload));
+                onConfirm: () async {
+                  Navigator.of(context).pop();
+                  doSend(fee: walletState.MIN_FEE);
+                });
           } else {
-            if (op.errors.contains("zero fee") &&
-                widget.fee == walletState.NO_FEE) {
-              UIUtil.showFeeDialog(
-                  context: context,
-                  onConfirm: () async {
-                    Navigator.of(context).pop();
-                    doSend(fee: walletState.MIN_FEE, noAuth: true);
-                  });
-            } else {
-              UIUtil.showSnackbar("${op.errors}", context);
-            }
+            UIUtil.showSnackbar("${op.errors}", context);
           }
         }
-      } catch (e) {
-        _overlay?.remove();
-        UIUtil.showSnackbar("Something went wrong, try again later.", context);
       }
+    } catch (e) {
+      _overlay?.remove();
+      UIUtil.showSnackbar("Something went wrong, try again later.", context);
     }
   }
 }

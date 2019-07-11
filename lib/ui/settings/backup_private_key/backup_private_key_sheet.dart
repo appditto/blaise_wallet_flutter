@@ -55,7 +55,7 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -134,15 +134,17 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                       type: AppButtonType.Primary,
                       text: "Encrypted Key",
                       buttonTop: true,
-                      onPressed: () {
-                        AuthUtil().authenticate("Authenticate to backup private key.").then((authenticated) {
-                          if (authenticated) {
-                            Navigator.pop(context);
+                      onPressed: () async {
+                        await AuthUtil().authenticate(
+                          context,
+                          message: "Authenticate to backup private key.",
+                          onSuccess: () {
+                            Navigator.of(context).pop();
                             AppSheets.showBottomSheet(
                                 context: context,
-                                widget: EncryptPrivateKeySheet());
+                                widget: EncryptPrivateKeySheet());                            
                           }
-                        });
+                        );
                       },
                     ),
                   ],
@@ -153,15 +155,17 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
                       text: "Unencrypted Key",
-                      onPressed: () {
-                        AuthUtil().authenticate("Authenticate to backup private key.").then((authenticated) {
-                          if (authenticated) {
-                            Navigator.pop(context);
+                      onPressed: () async {
+                        await AuthUtil().authenticate(
+                          context,
+                          message: "Authenticate to backup private key.",
+                          onSuccess: () {
+                            Navigator.of(context).pop();
                             AppSheets.showBottomSheet(
                                 context: context,
-                                widget: UnencryptedPrivateKeySheet());
+                                widget: UnencryptedPrivateKeySheet());                            
                           }
-                        });
+                        );
                       },
                     ),
                   ],

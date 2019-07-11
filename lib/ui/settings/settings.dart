@@ -118,7 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     .curTheme
                                     .textLight30,
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  Navigator.of(context).pop();
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50.0)),
@@ -427,7 +427,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               onConfirm: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
                 showAppDialog(
                     context: context,
                     builder: (_) => DialogOverlay(
