@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:share/share.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
@@ -309,7 +310,18 @@ class _SettingsPageState extends State<SettingsPage> {
                                 header: "Contacts",
                                 icon: AppIcons.contacts,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/pin_screen');
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return PinScreen(
+                                          type: PinOverlayType.NEW_PIN,
+                                          onSuccess: (pin) {
+                                            print("Pin Created $pin");
+                                          }
+                                        );
+                                      }
+                                    )
+                                  );
                                 },
                               ),
                               Container(

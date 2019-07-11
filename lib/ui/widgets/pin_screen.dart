@@ -1,22 +1,172 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/util/haptic_util.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+enum PinOverlayType { NEW_PIN, ENTER_PIN }
+
+class ShakeCurve extends Curve {
+  @override
+  double transform(double t) {
+    //t from 0.0 to 1.0
+    return sin(t * 3 * pi);
+  }
+}
+
 class PinScreen extends StatefulWidget {
+  final PinOverlayType type;
+  final String expectedPin;
+  final String description;
+  final Function onSuccess;
+
+  PinScreen({@required this.type, @required this.onSuccess,
+      this.description = "", this.expectedPin = ""});
+
   @override
   _PinScreenState createState() => _PinScreenState();
 }
 
 class _PinScreenState extends State<PinScreen>
     with SingleTickerProviderStateMixin {
-  List<bool> dotStates;
+  static const int MAX_ATTEMPTS = 5;
+  static const int PIN_LENGTH = 6;
+
+  String pinEnterTitle = "";
+  String pinCreateTitle = "";
+
+  // Stateful data
+  List<IconData> _dotStates;
+  String _pin;
+  String _pinConfirmed;
+  bool
+      _awaitingConfirmation; // true if pin has been entered once, false if not entered once
+  String _header;
+  int _failedAttempts = 0;
+
+  // Invalid animation
+  AnimationController _controller;
+  Animation<double> _animation;
+
 
   @override
   void initState() {
     super.initState();
-    dotStates = [true, true, false, false, false, false];
+    // Initialize list all empty
+    if (widget.type == PinOverlayType.ENTER_PIN) {
+      _header = pinEnterTitle;
+    } else {
+      _header = pinCreateTitle;
+    }
+    _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
+    _awaitingConfirmation = false;
+    _pin = "";
+    _pinConfirmed = "";
+    // Get adjusted failed attempts
+    sl.get<SharedPrefsUtil>().getLockAttempts().then((attempts) {
+      setState(() {
+        _failedAttempts = attempts % MAX_ATTEMPTS;
+      });
+    });
+    // Set animation
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 350), vsync: this);
+    final Animation curve =
+        CurvedAnimation(parent: _controller, curve: ShakeCurve());
+    _animation = Tween(begin: 0.0, end: 25.0).animate(curve)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          if (widget.type == PinOverlayType.ENTER_PIN) {
+            sl.get<SharedPrefsUtil>().incrementLockAttempts().then((_) {
+              _failedAttempts++;
+              if (_failedAttempts >= MAX_ATTEMPTS) {
+                setState(() {
+                  _controller.value = 0;
+                });
+                sl.get<SharedPrefsUtil>().updateLockDate().then((_) {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/lock_screen_transition', (Route<dynamic> route) => false);
+                });
+              } else {
+                setState(() {
+                  _pin = "";
+                  _header = "Invalid pin entered";
+                  _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
+                  _controller.value = 0;
+                });
+              }
+            });
+          } else {
+            setState(() {
+              _awaitingConfirmation = false;
+              _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
+              _pin = "";
+              _pinConfirmed = "";
+              _header = "Pins do not match";
+              _controller.value = 0;
+            });
+          }
+        }
+      })
+      ..addListener(() {
+        setState(() {
+          // the animation object’s value is the changed state
+        });
+      });
+  }
+
+  /// Set next character in the pin set
+  /// return true if all characters entered
+  bool _setCharacter(String character) {
+    if (_awaitingConfirmation) {
+      setState(() {
+        _pinConfirmed = _pinConfirmed + character;
+      });
+    } else {
+      setState(() {
+        _pin = _pin + character;
+      });
+    }
+    for (int i = 0; i < _dotStates.length; i++) {
+      if (_dotStates[i] == FontAwesomeIcons.circle) {
+        setState(() {
+          _dotStates[i] = FontAwesomeIcons.solidCircle;
+        });
+        break;
+      }
+    }
+    if (_dotStates.last == FontAwesomeIcons.solidCircle) {
+      return true;
+    }
+    return false;
+  }
+
+  void _backSpace() {
+    if (_dotStates[0] != FontAwesomeIcons.circle) {
+      int lastFilledIndex;
+      for (int i = 0; i < _dotStates.length; i++) {
+        if (_dotStates[i] == FontAwesomeIcons.solidCircle) {
+          if (i == _dotStates.length ||
+              _dotStates[i + 1] == FontAwesomeIcons.circle) {
+            lastFilledIndex = i;
+            break;
+          }
+        }
+      }
+      setState(() {
+        _dotStates[lastFilledIndex] = FontAwesomeIcons.circle;
+        if (_awaitingConfirmation) {
+          _pinConfirmed = _pinConfirmed.substring(0, _pinConfirmed.length - 1);
+        } else {
+          _pin = _pin.substring(0, _pin.length - 1);
+        }
+      });
+    }
   }
 
   Widget buildPINButton(String text) {
@@ -27,7 +177,51 @@ class _PinScreenState extends State<PinScreen>
           ? SizedBox()
           : InkWell(
               // Real tap function
-              onTapDown: null,
+              onTapDown: (details) {
+                if (_controller.status == AnimationStatus.forward ||
+                    _controller.status == AnimationStatus.reverse) {
+                  return;
+                }
+                if (text == "-") {
+                  _backSpace();
+                } else {
+                  if (_setCharacter(text)) {
+                    // Mild delay so they can actually see the last dot get filled
+                    Future.delayed(Duration(milliseconds: 50), () {
+                      if (widget.type == PinOverlayType.ENTER_PIN) {
+                        // Pin is not what was expected
+                        if (_pin != widget.expectedPin) {
+                          HapticUtil.error();
+                          _controller.forward();
+                        } else {
+                          sl.get<SharedPrefsUtil>().resetLockAttempts().then((_) {
+                            Navigator.of(context).pop();
+                            widget.onSuccess(_pin);
+                          });
+                        }
+                      } else {
+                        if (!_awaitingConfirmation) {
+                          // Switch to confirm pin
+                          setState(() {
+                            _awaitingConfirmation = true;
+                            _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
+                            _header = "Confirm your pin";
+                          });
+                        } else {
+                          // First and second pins match
+                          if (_pin == _pinConfirmed) {
+                            Navigator.of(context).pop();
+                            widget.onSuccess(_pin);
+                          } else {
+                            HapticUtil.error();
+                            _controller.forward();
+                          }
+                        }
+                      }
+                    });
+                  } 
+                }     
+              },
               // For the splash effect
               onTap: () {},
               borderRadius:
@@ -49,14 +243,12 @@ class _PinScreenState extends State<PinScreen>
 
   List<Widget> buildPINScreenDots() {
     List<Widget> ret = List();
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < PIN_LENGTH; i++) {
       ret.add(
         Container(
           margin: EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
           child: Icon(
-              dotStates[i]
-                  ? FontAwesomeIcons.solidCircle
-                  : FontAwesomeIcons.circle,
+              _dotStates[i],
               size: 18),
         ),
       );
@@ -66,6 +258,22 @@ class _PinScreenState extends State<PinScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (pinEnterTitle.isEmpty) {
+      setState(() {
+        pinEnterTitle = "Enter pin";
+        if (widget.type == PinOverlayType.ENTER_PIN) {
+          _header = pinEnterTitle;
+        }
+      });
+    }
+    if (pinCreateTitle.isEmpty) {
+      setState(() {
+        pinCreateTitle = "Create a 6-digit pin";
+        if (widget.type == PinOverlayType.NEW_PIN) {
+          _header = pinCreateTitle;
+        }
+      });
+    }
     // Main scaffold that holds everything
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -95,7 +303,7 @@ class _PinScreenState extends State<PinScreen>
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
                           child: AutoSizeText(
-                            "Enter PIN",
+                            _header,
                             style: AppStyles.modalHeader(context),
                             textAlign: TextAlign.center,
                             maxLines: 1,
@@ -107,7 +315,7 @@ class _PinScreenState extends State<PinScreen>
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 4, 30, 0),
                           child: AutoSizeText(
-                            "Enter your PIN to unlock",
+                            widget.description,
                             textAlign: TextAlign.center,
                             style: AppStyles.pinDescription(context),
                             maxLines: 2,
@@ -117,7 +325,13 @@ class _PinScreenState extends State<PinScreen>
                         ),
                         // Dots
                         Container(
-                          margin: EdgeInsetsDirectional.only(top: 16),
+                          margin: EdgeInsetsDirectional.only(
+                            start: MediaQuery.of(context).size.width * 0.25 +
+                            _animation.value,
+                            end: MediaQuery.of(context).size.width * 0.25 -
+                            _animation.value, 
+                            top: 16
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: buildPINScreenDots(),

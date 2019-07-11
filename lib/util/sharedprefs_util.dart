@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Singleton wrapper for shared preferences
@@ -11,6 +12,9 @@ class SharedPrefsUtil {
   static const String privkey_backed_up_key = 'pasc_privkey_backedup';
   static const String rpc_url_key = 'pasc_rpc_url';
   static const String cur_theme = 'blaise_cur_theme_key';
+  // For maximum pin attempts
+  static const String pin_attempts = 'blaise_pin_attempts';
+  static const String pin_lock_until = 'blaise_lock_duraton';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -101,6 +105,52 @@ class SharedPrefsUtil {
     return ThemeSetting(ThemeOptions.values[await get(cur_theme, defaultValue: ThemeOptions.LIGHT.index)]);
   }
 
+// Locking out when max pin attempts exceeded
+  Future<int> getLockAttempts() async {
+    return await get(pin_attempts, defaultValue: 0);
+  }
+
+  Future<void> incrementLockAttempts() async {
+    await set(pin_attempts, await getLockAttempts() + 1);
+  }
+
+  Future<void> resetLockAttempts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(pin_attempts);
+    await prefs.remove(pin_lock_until);
+  }
+
+  Future<bool> shouldLock() async {
+    if (await get(pin_lock_until) != null || await getLockAttempts() >= 5) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> updateLockDate() async {
+    int attempts = await getLockAttempts();
+    if (attempts >= 20) {
+      // 4+ failed attempts
+      await set(pin_lock_until, DateFormat.yMd().add_jms().format(DateTime.now().toUtc().add(Duration(hours: 24))));
+    } else if (attempts >= 15) {
+      // 3 failed attempts
+      await set(pin_lock_until, DateFormat.yMd().add_jms().format(DateTime.now().toUtc().add(Duration(minutes: 15))));
+    } else if (attempts >= 10) {
+      // 2 failed attempts
+      await set(pin_lock_until, DateFormat.yMd().add_jms().format(DateTime.now().toUtc().add(Duration(minutes: 5))));
+    } else if (attempts >= 5) {
+      await set(pin_lock_until, DateFormat.yMd().add_jms().format(DateTime.now().toUtc().add(Duration(minutes: 1))));
+    }
+  }
+
+  Future<DateTime> getLockDate() async {
+    String lockDateStr = await get(pin_lock_until);
+    if (lockDateStr == null) {
+      return null;
+    }
+    return DateFormat.yMd().add_jms().parseUtc(lockDateStr);
+  }
+
   // For logging out
   Future<void> deleteAll({bool firstLaunch = false}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -109,6 +159,8 @@ class SharedPrefsUtil {
     } else {
       await prefs.remove(privkey_backed_up_key);
       await prefs.remove(rpc_url_key);
+      await prefs.remove(pin_attempts);
+      await prefs.remove(pin_lock_until);
     }
   }
 }
