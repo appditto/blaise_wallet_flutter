@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:share/share.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
@@ -206,13 +205,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                           optionsList: currencyList));
                                 },
                               ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
                               SettingsListItem(
                                 header: "Language",
                                 subheader: "System Default",
@@ -224,13 +216,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                           title: 'Language',
                                           optionsList: languageList));
                                 },
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
                               ),
                               SettingsListItem(
                                 header: "Theme",
@@ -249,26 +234,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                           optionsList: getThemeList()));
                                 },
                               ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
                               SettingsListItem(
                                 header: "Security",
                                 icon: AppIcons.security,
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/security');
                                 },
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
                               ),
                               SettingsListItem(
                                 header: "Daemon",
@@ -279,13 +250,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                       context: context,
                                       widget: ChangeDaemonSheet());
                                 },
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
                               ),
                               // Manage text
                               Container(
@@ -299,37 +263,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                   stepGranularity: 0.1,
                                 ),
                               ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
                               SettingsListItem(
                                 header: "Contacts",
                                 icon: AppIcons.contacts,
                                 onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                        return PinScreen(
-                                          type: PinOverlayType.NEW_PIN,
-                                          onSuccess: (pin) {
-                                            print("Pin Created $pin");
-                                          }
-                                        );
-                                      }
-                                    )
-                                  );
+                                  Navigator.pushNamed(context, '/contacts');
                                 },
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
                               ),
                               SettingsListItem(
                                 header: "Backup Private Key",
@@ -340,13 +279,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                       widget: BackupPrivateKeySheet());
                                 },
                               ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
                               SettingsListItem(
                                 header: "View Public Key",
                                 icon: Icons.public,
@@ -356,13 +288,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                       widget: PublicKeySheet());
                                 },
                               ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
                               SettingsListItem(
                                   header: "Share Blaise",
                                   icon: AppIcons.share,
@@ -370,27 +295,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                     Share.share(
                                         "Check out Blaise - Pascal Wallet for iOS and Android");
                                   }),
-
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
                               SettingsListItem(
                                 header: "Logout",
                                 icon: AppIcons.logout,
                                 onPressed: () {
                                   logoutPressed();
                                 },
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
                               ),
                             ],
                           ),

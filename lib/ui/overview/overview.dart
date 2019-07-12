@@ -512,12 +512,15 @@ class _OverviewPageState extends State<OverviewPage>
                                                 .backgroundPrimary,
                                         onRefresh: _refresh,
                                         isRefreshing: _isRefreshing,
-                                        child: ListView(
+                                        child: ListView.builder(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0, 3, 0, 19),
-                                            children: _getAccountCards(
-                                                walletState.walletAccounts)),
+                                            itemCount: walletState.walletAccounts.length,
+                                            itemBuilder: (context, index) {
+                                              return AccountCard(account: walletState.walletAccounts[index]);
+                                            }
+                                        )
                                       ),
                                       // The gradient at the top
                                       Container(
@@ -576,14 +579,6 @@ class _OverviewPageState extends State<OverviewPage>
             ),
       ),
     );
-  }
-
-  List<Widget> _getAccountCards(List<PascalAccount> accounts) {
-    List<Widget> ret = [];
-    accounts.forEach((account) {
-      ret.add(AccountCard(account: account));
-    });
-    return ret;
   }
 
   List<Widget> _getPlaceholderAccountCards() {

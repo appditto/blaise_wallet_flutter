@@ -18,6 +18,8 @@ class SharedPrefsUtil {
   static const String pin_lock_until = 'blaise_lock_duraton';
   // Using biometrics
   static const String auth_method = 'blaise_auth_method';
+  // Donation contact has been added
+  static const String firstcontact_added = 'blaise_first_c_added';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -160,6 +162,14 @@ class SharedPrefsUtil {
 
   Future<AuthenticationMethod> getAuthMethod() async {
     return AuthenticationMethod(AuthMethod.values[await get(auth_method, defaultValue: AuthMethod.BIOMETRICS.index)]);
+  }
+
+  Future<void> setFirstContactAdded(bool value) async {
+    return await set(firstcontact_added, value);
+  }
+
+  Future<bool> getFirstContactAdded() async {
+    return await get(firstcontact_added, defaultValue: false);
   }
 
   // For logging out

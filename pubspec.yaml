@@ -107,6 +107,9 @@ dependencies:
   # OS Path Info
   path_provider: ^1.1.2
 
+  # Native file chooser
+  file_picker: ^1.3.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

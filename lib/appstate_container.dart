@@ -1,5 +1,7 @@
 import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
@@ -7,6 +9,7 @@ import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 final Wallet walletState = Wallet();
 
@@ -87,6 +90,29 @@ class StateContainerState extends State<StateContainer> {
     }
   }
 
+  /// Add donations contact if it hasnt already been added
+  Future<void> _addSampleContact() async {
+    bool contactAdded = await sl.get<SharedPrefsUtil>().getFirstContactAdded();
+    if (!contactAdded) {
+      bool addressExists = await sl.get<DBHelper>().contactExistsWithAccount(
+          AccountNumber.fromInt(1185729));
+      if (addressExists) {
+        return;
+      }
+      bool nameExists = await sl.get<DBHelper>().contactExistsWithName("@BlaiseDonations");
+      if (nameExists) {
+        return;
+      }
+      await sl.get<SharedPrefsUtil>().setFirstContactAdded(true);
+      Contact c = Contact(
+          name: "@BlaiseDonations",
+          account:
+              AccountNumber.fromInt(1185729),
+          payload: "Thanks!");
+      await sl.get<DBHelper>().saveContact(c);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -96,6 +122,8 @@ class StateContainerState extends State<StateContainer> {
     sl.get<SharedPrefsUtil>().getTheme().then((themeSetting) {
       updateTheme(themeSetting);
     });
+    // Add initial contact if not already present
+    _addSampleContact();
   }
 
   @override

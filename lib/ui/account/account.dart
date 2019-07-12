@@ -58,12 +58,7 @@ class _AccountPageState extends State<AccountPage>
     this.operationsList = getOperationsList();
     this.accountState = walletState.getAccountState(widget.account);
     this.accountState.updateAccount();
-    if (!this.accountState.operationsLoading) {
-      updateAccountHistory();
-    }
-    this.accountState.getAccountOperations().then((_) {
-      updateAccountHistory();
-    });
+    this.accountState.getAccountOperations();
     // Opacity Animation
     _opacityAnimationController = new AnimationController(
       duration: const Duration(milliseconds: 500),
@@ -93,7 +88,7 @@ class _AccountPageState extends State<AccountPage>
   }
 
   void _animationControllerListener() {
-    if (accountState.operationsLoading || accountState.accountHistory == null) {
+    if (accountState.operationsLoading || accountState.operationsToDisplay == null) {
       setState(() {});
     } else {
       _disposeAnimations();
@@ -169,7 +164,6 @@ class _AccountPageState extends State<AccountPage>
     _historySub = EventTaxiImpl.singleton()
         .registerTo<UpdateHistoryEvent>()
         .listen((event) {
-      updateAccountHistory();
       walletState.loadWallet();
     });
   }
@@ -602,10 +596,7 @@ class _AccountPageState extends State<AccountPage>
                                             child: Observer(
                                               builder: (BuildContext context) {
                                                 if (accountState
-                                                        .operationsLoading ||
-                                                    accountState
-                                                            .accountHistory ==
-                                                        null) {
+                                                        .operationsLoading || accountState.operations == null) {
                                                   return ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.only(
@@ -673,14 +664,22 @@ class _AccountPageState extends State<AccountPage>
                                                         onRefresh: _refresh,
                                                         isRefreshing:
                                                             _isRefreshing,
-                                                        child: ListView(
+                                                        child: accountState.hasOperationsToDisplay() ? ListView.builder(
                                                             padding:
                                                                 EdgeInsetsDirectional
                                                                     .only(
                                                                         bottom:
                                                                             24),
-                                                            children: accountState
-                                                                .accountHistory)),
+                                                            itemCount: accountState.operationsToDisplay.length,
+                                                            itemBuilder: (context, index) {
+                                                              return _buildAccountHistoryItem(accountState.operationsToDisplay[index]);
+                                                            }
+                                                        )
+                                                        : ListView(
+                                                          padding: EdgeInsetsDirectional.only(bottom: 24),
+                                                          children: getPlaceholderCards(),
+                                                        )
+                                                    ),
                                                   );
                                                 }
                                               },
@@ -766,9 +765,7 @@ class _AccountPageState extends State<AccountPage>
     );
   }
 
-  void updateAccountHistory() {
-    List<Widget> history = [];
-    this.accountState.operations.forEach((op) {
+  Widget _buildAccountHistoryItem(PascalOperation op) {
       if (op.optype == OpType.TRANSACTION) {
         OperationType type;
         if (op.amount.pasc < BigInt.zero) {
@@ -776,7 +773,7 @@ class _AccountPageState extends State<AccountPage>
         } else {
           type = OperationType.Received;
         }
-        history.add(OperationListItem(
+        return OperationListItem(
           type: type,
           amount: op.receivers[0].amount.toStringOpt(),
           address: type == OperationType.Received
@@ -798,25 +795,27 @@ class _AccountPageState extends State<AccountPage>
                       : op.receivers[0].receivingAccount,
                 ));
           },
-        ));
+        );
       }
-    });
-    if (history.length == 0) {
-      // Show welcome
-      history.add(OperationListItem(type: OperationType.Welcome));
-      history.add(OperationListItem(
-        type: OperationType.Sent,
-        amount: "1,111",
-        address: "111111-11",
-        date: "May 11 • 11:11",
-      ));
-      history.add(OperationListItem(
-        type: OperationType.Received,
-        amount: "1,111",
-        address: "111111-11",
-        date: "May 11 • 11:11",
-      ));
-    }
-    accountState.updateAccountHistory(history);
+      return SizedBox();
+  }
+
+  List<Widget> getPlaceholderCards() {
+    List<Widget> history = [];
+    // Show welcome
+    history.add(OperationListItem(type: OperationType.Welcome));
+    history.add(OperationListItem(
+      type: OperationType.Sent,
+      amount: "1,111",
+      address: "111111-11",
+      date: "May 11 • 11:11",
+    ));
+    history.add(OperationListItem(
+      type: OperationType.Received,
+      amount: "1,111",
+      address: "111111-11",
+      date: "May 11 • 11:11",
+    ));
+    return history;
   }
 }

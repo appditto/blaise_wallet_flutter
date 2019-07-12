@@ -1,5 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/add_contact_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/contact_detail_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -7,7 +14,14 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/settings_list_item.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:event_taxi/event_taxi.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:pascaldart/pascaldart.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 
 class ContactsPage extends StatefulWidget {
   @override
@@ -15,13 +29,118 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final Logger log = Logger();
+
+  List<Contact> _contacts;
+  String documentsDirectory;
+
+  @override
+  void initState() {
+    super.initState();
+    // Populate contacts
+    _contacts = [];
+    _updateContacts();
+    // Get FS directory for export
+    getApplicationDocumentsDirectory().then((directory) {
+      documentsDirectory = directory.path;
+      setState(() {
+        documentsDirectory = directory.path;
+      });
+      _updateContacts();
+    });
+  }
+
+  void _updateContacts() {
+    sl.get<DBHelper>().getContacts().then((contacts) {
+      for (Contact c in contacts) {
+        if (!_contacts.contains(c)) {
+          setState(() {
+            _contacts.add(c);
+          });
+        }
+      }
+      // Re-sort list
+      setState(() {
+        _contacts.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      });
+    });
+  }
+
+  Future<void> _exportContacts() async {
+    List<Contact> contacts = await sl.get<DBHelper>().getContacts();
+    if (contacts.length == 0) {
+      UIUtil.showSnackbar(
+          "No contacts to export", context);
+      return;
+    }
+    List<Map<String, dynamic>> jsonList = List();
+    contacts.forEach((contact) {
+      jsonList.add(contact.toJson());
+    });
+    DateTime exportTime = DateTime.now();
+    String filename =
+        "blaisecontacts_${exportTime.year}${exportTime.month}${exportTime.day}${exportTime.hour}${exportTime.minute}${exportTime.second}.txt";
+    Directory baseDirectory = await getApplicationDocumentsDirectory();
+    File contactsFile = File("${baseDirectory.path}/$filename");
+    await contactsFile.writeAsString(json.encode(jsonList));
+    Share.shareFile(contactsFile);
+  }
+
+  Future<void> _importContacts() async {
+    String filePath = await FilePicker.getFilePath(
+        type: FileType.CUSTOM, fileExtension: "txt");
+    File f = File(filePath);
+    if (!await f.exists()) {
+      UIUtil.showSnackbar(
+          "Failed to import contacts", context);
+      return;
+    }
+    try {
+      String contents = await f.readAsString();
+      Iterable contactsJson = json.decode(contents);
+      List<Contact> contacts = List();
+      List<Contact> contactsToAdd = List();
+      contactsJson.forEach((contact) {
+        contacts.add(Contact.fromJson(contact));
+      });
+      for (Contact contact in contacts) {
+        if (!await sl.get<DBHelper>().contactExistsWithName(contact.name) &&
+            !await sl.get<DBHelper>().contactExistsWithAccount(contact.account)) {
+          // Contact doesnt exist, make sure name and address are valid
+          if (contact.account != null && contact.account.toString().length > 0) {
+            if (contact.name.startsWith("@") && contact.name.length <= 20) {
+              contactsToAdd.add(contact);
+            }
+          }
+        }
+      }
+      // Save all the new contacts and update states
+      int numSaved = await sl.get<DBHelper>().saveContacts(contactsToAdd);
+      if (numSaved > 0) {
+        _updateContacts();
+        EventTaxiImpl.singleton().fire(
+            ContactModifiedEvent(contact: Contact(name: "", account: AccountNumber.fromInt(0))));
+        UIUtil.showSnackbar(
+          "Successfully imported ${numSaved.toString()} contacts.",
+            context);
+      } else {
+        UIUtil.showSnackbar(
+            "No contacts to import", context);
+      }
+    } catch (e) {
+      log.e(e.toString());
+      UIUtil.showSnackbar(
+          "Failed to import contacts", context);
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      key: _scaffoldKey,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Stack(
@@ -111,7 +230,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                         .curTheme
                                         .textLight30,
                                     onPressed: () {
-                                      return null;
+                                      _importContacts();
                                     },
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -137,7 +256,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                         .curTheme
                                         .textLight30,
                                     onPressed: () {
-                                      return null;
+                                      _exportContacts();
                                     },
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -181,174 +300,28 @@ class _ContactsPageState extends State<ContactsPage> {
                               topRight: Radius.circular(12)),
                           child: Stack(
                             children: <Widget>[
-                              ListView(
+                              ListView.builder(
                                 padding: EdgeInsetsDirectional.only(
                                     bottom:
                                         MediaQuery.of(context).padding.bottom +
                                             12),
-                                children: <Widget>[
-                                  // List Items
-                                  SettingsListItem(
-                                    contactName: "@bbedward",
-                                    contactAddress: "186418-64",
+                                itemCount: _contacts.length,
+                                itemBuilder: (context, index) {
+                                  return SettingsListItem(
+                                    contactName: _contacts[index].name,
+                                    contactAddress: _contacts[index].account.toString(),
                                     contact: true,
                                     onPressed: () {
                                       AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@bbedward",
-                                            contactAddress: "186418-64",
-                                          ));
+                                        context: context,
+                                        widget: ContactDetailSheet(
+                                          contactName: "@bbedward",
+                                          contactAddress: "1234"
+                                        )
+                                      );
                                     },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@herman",
-                                    contactAddress: "212823-56",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@herman",
-                                            contactAddress: "212823-56",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@hugle",
-                                    contactAddress: "581319-11",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@hugle",
-                                            contactAddress: "581319-11",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@mosu_forge",
-                                    contactAddress: "112131-21",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@mosu_forge",
-                                            contactAddress: "112131-21",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@odm4rk",
-                                    contactAddress: "883103-20",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@odm4rk",
-                                            contactAddress: "883103-20",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@redmonski",
-                                    contactAddress: "102103-95",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@redmonski",
-                                            contactAddress: "102103-95",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@techworker",
-                                    contactAddress: "191919-19",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@techworker",
-                                            contactAddress: "191919-19",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                  SettingsListItem(
-                                    contactName: "@yekta",
-                                    contactAddress: "578706-79",
-                                    contact: true,
-                                    onPressed: () {
-                                      AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: ContactDetailSheet(
-                                            contactName: "@yekta",
-                                            contactAddress: "578706-79",
-                                          ));
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.maxFinite,
-                                    height: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                                  ),
-                                ],
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -397,4 +370,6 @@ class _ContactsPageState extends State<ContactsPage> {
       ),
     );
   }
+
+
 }
