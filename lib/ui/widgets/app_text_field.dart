@@ -95,10 +95,10 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   void dispose() {
-    super.dispose();
     if (widget.isAddress) {
       this._overlayEntry.remove();
     }
+    super.dispose();
   }
 
   OverlayEntry _createOverlayEntry() {
