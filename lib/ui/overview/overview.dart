@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -16,7 +15,6 @@ import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:pascaldart/pascaldart.dart';
 
 class OverviewPage extends StatefulWidget {
   OverviewPage();

@@ -1,11 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changing_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 

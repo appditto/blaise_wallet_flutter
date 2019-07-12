@@ -2,14 +2,9 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';

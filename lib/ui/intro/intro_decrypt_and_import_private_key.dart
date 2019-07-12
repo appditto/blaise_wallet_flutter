@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
