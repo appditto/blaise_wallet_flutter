@@ -268,7 +268,18 @@ class AppStyles {
     return TextStyle(
         fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
-        fontSize: 16.0,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
+  // Contacts item name primary
+  static TextStyle contactsItemNamePrimary(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        height: 1.3,
         fontWeight: FontWeight.w700);
   }
 
@@ -277,7 +288,7 @@ class AppStyles {
     return TextStyle(
         fontFamily: 'SourceCodePro',
         color: StateContainer.of(context).curTheme.textDark,
-        fontSize: 16.0,
+        fontSize: 14.0,
         fontWeight: FontWeight.w400);
   }
 

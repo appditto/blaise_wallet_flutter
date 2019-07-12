@@ -94,12 +94,18 @@ class _AddContactSheetState extends State<AddContactSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        // Sized Box
-                        SizedBox(
-                          height: 50,
-                          width: 65,
-                        ),
-                        // Header
+                        // Container for the name text field
+                        Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                            child: AppTextField(
+                              label: 'Contact Name',
+                              style: AppStyles.contactsItemName(context),
+                              prefix: Text("@",
+                                  style: AppStyles.contactsItemNamePrimary(context)),
+                              maxLines: 1,
+                            )),
+                        // Container for the address text field
                         Container(
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),

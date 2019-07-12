@@ -10,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 class ContactDetailSheet extends StatefulWidget {
   final Contact contact;
@@ -123,8 +124,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                     children: <Widget>[
                       // "Contact Name" header
                       Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 60, 30, 0),
+                        width: double.maxFinite,
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
                           "Contact Name",
                           style: AppStyles.textFieldLabel(context),
@@ -133,15 +134,24 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the contact name
+                      // Container for the Contact Name
                       Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 14, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              width: 1,
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark15),
+                          color: StateContainer.of(context).curTheme.textDark10,
+                        ),
                         child: AutoSizeText.rich(
                           TextSpan(children: [
                             TextSpan(
                               text: widget.contact.name[0],
-                              style: AppStyles.settingsHeader(context),
+                              style: AppStyles.contactsItemNamePrimary(context),
                             ),
                             TextSpan(
                               text: widget.contact.name.substring(1),
@@ -153,16 +163,9 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the underline
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 10, 30, 0),
-                        height: 2,
-                        color: StateContainer.of(context).curTheme.primary,
-                      ),
                       // "Address" header
                       Container(
-                        width: MediaQuery.of(context).size.width - 60,
+                        width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
                           "Address",
@@ -172,25 +175,71 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the contact address
+                      // Container for the address
                       Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 14, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              width: 1,
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark15),
+                          color: StateContainer.of(context).curTheme.textDark10,
+                        ),
                         child: AutoSizeText(
                           widget.contact.account.toString(),
-                          style: AppStyles.contactsItemAddress(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
+                          minFontSize: 8,
+                          textAlign: TextAlign.center,
+                          style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
-                      // Container for the underline
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 10, 30, 0),
-                        height: 2,
-                        color: StateContainer.of(context).curTheme.primary,
-                      ),
+                      // "Payload" header
+                      isNotEmpty(widget.contact.payload)
+                          ? Container(
+                              width: double.maxFinite,
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Payload",
+                                style: AppStyles.textFieldLabel(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the payload text
+                      isNotEmpty(widget.contact.payload)
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .textDark15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark10,
+                              ),
+                              child: AutoSizeText(
+                                widget.contact.payload,
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                minFontSize: 8,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.paragraph(context),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),
