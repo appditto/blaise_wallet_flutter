@@ -93,6 +93,14 @@ class _AppTextFieldState extends State<AppTextField> {
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    if (widget.isAddress) {
+      this._overlayEntry.remove();
+    }
+  }
+
   OverlayEntry _createOverlayEntry() {
     RenderBox renderBox = context.findRenderObject();
     var size = renderBox.size;
