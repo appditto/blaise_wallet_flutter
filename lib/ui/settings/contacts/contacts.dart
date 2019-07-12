@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -34,9 +35,46 @@ class _ContactsPageState extends State<ContactsPage> {
   List<Contact> _contacts;
   String documentsDirectory;
 
+  StreamSubscription<ContactAddedEvent> _contactAddedSub;
+  StreamSubscription<ContactRemovedEvent> _contactRemovedSub;
+
+  void _registerBus() {
+    // Contact added bus event
+    _contactAddedSub = EventTaxiImpl.singleton()
+        .registerTo<ContactAddedEvent>()
+        .listen((event) {
+      setState(() {
+        _contacts.add(event.contact);
+        //Sort by name
+        _contacts.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      });
+      // Full update which includes downloading new monKey
+      _updateContacts();
+    });
+    // Contact removed bus event
+    _contactRemovedSub = EventTaxiImpl.singleton()
+        .registerTo<ContactRemovedEvent>()
+        .listen((event) {
+      setState(() {
+        _contacts.remove(event.contact);
+      });
+    });    
+  }
+
+  void _destroyBus() {
+    if (_contactAddedSub != null) {
+      _contactAddedSub.cancel();
+    }
+    if (_contactRemovedSub != null) {
+      _contactRemovedSub.cancel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _registerBus();
     // Populate contacts
     _contacts = [];
     _updateContacts();
@@ -48,6 +86,12 @@ class _ContactsPageState extends State<ContactsPage> {
       });
       _updateContacts();
     });
+  }
+
+  @override
+  void dispose() {
+    _destroyBus();
+    super.dispose();
   }
 
   void _updateContacts() {
@@ -315,8 +359,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                       AppSheets.showBottomSheet(
                                         context: context,
                                         widget: ContactDetailSheet(
-                                          contactName: "@bbedward",
-                                          contactAddress: "1234"
+                                          contact: _contacts[index]
                                         )
                                       );
                                     },

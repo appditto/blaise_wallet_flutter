@@ -1,17 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 
 class ContactDetailSheet extends StatefulWidget {
-  final String contactName;
-  final String contactAddress;
+  final Contact contact;
   final Function onPressed;
 
-  ContactDetailSheet({this.contactName, this.contactAddress, this.onPressed});
+  ContactDetailSheet({this.contact, this.onPressed});
   _ContactDetailSheetState createState() => _ContactDetailSheetState();
 }
 
@@ -56,8 +60,16 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                 StateContainer.of(context).curTheme.textLight15,
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
-                            onPressed: () {
-                              return null;
+                            onPressed: () async {
+                              bool deleted = await sl.get<DBHelper>().deleteContact(widget.contact);
+                              if (deleted) {
+                                EventTaxiImpl.singleton().fire(ContactRemovedEvent(contact: widget.contact));
+                                EventTaxiImpl.singleton().fire(ContactModifiedEvent(contact: widget.contact));
+                                UIUtil.showSnackbar("Removed ${widget.contact.name} from contacts", context);
+                                Navigator.of(context).pop();
+                              } else {
+                                UIUtil.showSnackbar("Failed to remove ${widget.contact.name} from contacts", context);
+                              }
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -128,11 +140,11 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                         child: AutoSizeText.rich(
                           TextSpan(children: [
                             TextSpan(
-                              text: widget.contactName[0],
+                              text: widget.contact.name[0],
                               style: AppStyles.settingsHeader(context),
                             ),
                             TextSpan(
-                              text: widget.contactName.substring(1),
+                              text: widget.contact.name.substring(1),
                               style: AppStyles.contactsItemName(context),
                             ),
                           ]),
@@ -165,7 +177,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                         width: MediaQuery.of(context).size.width - 60,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 14, 30, 0),
                         child: AutoSizeText(
-                          widget.contactAddress,
+                          widget.contact.account.toString(),
                           style: AppStyles.contactsItemAddress(context),
                           maxLines: 1,
                           stepGranularity: 0.1,

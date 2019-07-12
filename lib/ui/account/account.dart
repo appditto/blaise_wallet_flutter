@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
@@ -50,6 +53,9 @@ class _AccountPageState extends State<AccountPage>
   // Refresh indicator
   bool _isRefreshing;
 
+  // Reference to contacts list
+  List<Contact> _contacts;
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +78,8 @@ class _AccountPageState extends State<AccountPage>
       ),
     );
     _startAnimation();
+    // Contacts
+    _updateContacts();
   }
 
   void _animationStatusListener(AnimationStatus status) {
@@ -114,6 +122,15 @@ class _AccountPageState extends State<AccountPage>
     _opacityAnimationController.addListener(_animationControllerListener);
     _opacityAnimation.addStatusListener(_animationStatusListener);
     _opacityAnimationController.forward();
+  }
+
+  Future<void> _updateContacts() async {
+    List<Contact> contacts = await sl.get<DBHelper>().getContacts();
+    if (mounted) {
+      setState(() {
+        _contacts = contacts;
+      });
+    }
   }
 
   List<DialogListItem> getOperationsList() {
@@ -159,6 +176,7 @@ class _AccountPageState extends State<AccountPage>
   }
 
   StreamSubscription<UpdateHistoryEvent> _historySub;
+  StreamSubscription<ContactModifiedEvent> _contactModifiedSub;
 
   void _registerBus() {
     _historySub = EventTaxiImpl.singleton()
@@ -166,11 +184,19 @@ class _AccountPageState extends State<AccountPage>
         .listen((event) {
       walletState.loadWallet();
     });
+    _contactModifiedSub = EventTaxiImpl.singleton()
+        .registerTo<ContactModifiedEvent>()
+        .listen((event) {
+      _updateContacts();
+    });
   }
 
   void _destroyBus() {
     if (_historySub != null) {
       _historySub.cancel();
+    }
+    if (_contactModifiedSub != null) {
+      _contactModifiedSub.cancel();
     }
   }
 
@@ -773,12 +799,18 @@ class _AccountPageState extends State<AccountPage>
         } else {
           type = OperationType.Received;
         }
+        AccountNumber accountToCheck = type == OperationType.Received ?
+          op.senders[0].sendingAccount
+          : op.receivers[0].receivingAccount;
+        List<Contact> contacts = _contacts.where((c) => c.account == accountToCheck).toList();
+        Contact c;
+        if (contacts.length > 0) {
+          c = contacts[0];
+        }
         return OperationListItem(
           type: type,
           amount: op.receivers[0].amount.toStringOpt(),
-          address: type == OperationType.Received
-              ? op.senders[0].sendingAccount.toString()
-              : op.receivers[0].receivingAccount.toString(),
+          address: c == null ? accountToCheck.toString() : c.name,
           date:
               op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
           payload: op.receivers[0].payload,
@@ -790,6 +822,7 @@ class _AccountPageState extends State<AccountPage>
                   payload: op.receivers[0].payload,
                   ophash: op.ophash,
                   operation: op,
+                  isContact: c != null,
                   account: type == OperationType.Received
                       ? op.senders[0].sendingAccount
                       : op.receivers[0].receivingAccount,
