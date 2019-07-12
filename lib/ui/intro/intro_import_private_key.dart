@@ -114,6 +114,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                             context),
                                     focusNode: privateKeyFocusNode,
                                     controller: privateKeyController,
+                                    maxLines: 1,
                                     firstButton: TextFieldButton(
                                       icon: AppIcons.paste,
                                       onPressed: () {

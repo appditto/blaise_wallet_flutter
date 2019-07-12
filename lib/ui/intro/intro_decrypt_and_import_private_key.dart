@@ -113,6 +113,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
                                       focusNode: _passwordFocusNode,
                                       controller: _passwordController,
                                       onChanged: onPasswordChanged,
+                                      maxLines: 1,
                                     )),
                                 // Error Text
                                 Container(

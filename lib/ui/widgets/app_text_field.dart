@@ -238,84 +238,96 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
         Container(
           child: Theme(
-            data: ThemeData(
-              primaryColor: StateContainer.of(context).curTheme.primary,
-              hintColor: StateContainer.of(context).curTheme.primary,
-              splashColor: StateContainer.of(context).curTheme.primary30,
-              highlightColor: StateContainer.of(context).curTheme.primary15,
-              textSelectionColor: StateContainer.of(context).curTheme.primary30,
-            ),
-            child: TextField(
-              readOnly: widget.readOnly,
-              controller: widget.controller,
-              focusNode: widget.focusNode,
-              obscureText: widget.passwordField,
-              style: widget.style,
-              cursorColor: StateContainer.of(context).curTheme.primary,
-              keyboardType: widget.inputType,
-              autocorrect: false,
-              textCapitalization:
-                  widget.textCapitalization ?? TextCapitalization.none,
-              textInputAction: TextInputAction.done,
-              maxLines: widget.maxLines,
-              minLines: 1,
-              inputFormatters: widget.inputFormatters,
-              onTap: widget.onTap,
-              onChanged: (String newValue) {
-                if (widget.onChanged != null) {
-                  widget.onChanged(newValue);
-                }
-              },
-              decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: StateContainer.of(context).curTheme.primary),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: StateContainer.of(context).curTheme.primary,
-                      width: 2),
-                ),
-                errorBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: StateContainer.of(context).curTheme.danger,
-                      width: 2),
-                ),
-                prefix: widget.prefix,
-                suffixIcon: widget.firstButton == null &&
-                        widget.secondButton == null
-                    ? null
-                    : Container(
-                        width: widget.firstButton == null ||
-                                widget.secondButton == null
-                            ? 50
-                            : 100,
-                        height: 38,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            widget.secondButton != null
-                                ? Container(
-                                    margin:
-                                        EdgeInsetsDirectional.only(start: 12),
-                                    width: 38,
-                                    height: 38,
-                                    child: widget.secondButton)
-                                : SizedBox(),
-                            widget.firstButton != null
-                                ? Container(
-                                    margin:
-                                        EdgeInsetsDirectional.only(start: 12),
-                                    width: 38,
-                                    height: 38,
-                                    child: widget.firstButton)
-                                : SizedBox()
-                          ],
-                        ),
-                      ),
+              data: ThemeData(
+                primaryColor: StateContainer.of(context).curTheme.primary,
+                hintColor: StateContainer.of(context).curTheme.primary,
+                splashColor: StateContainer.of(context).curTheme.primary30,
+                highlightColor: StateContainer.of(context).curTheme.primary15,
+                textSelectionColor:
+                    StateContainer.of(context).curTheme.primary30,
               ),
-            ),
-          ),
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: <Widget>[
+                  TextField(
+                    readOnly: widget.readOnly,
+                    controller: widget.controller,
+                    focusNode: widget.focusNode,
+                    obscureText: widget.passwordField,
+                    style: widget.style,
+                    cursorColor: StateContainer.of(context).curTheme.primary,
+                    keyboardType: widget.inputType,
+                    autocorrect: false,
+                    textCapitalization:
+                        widget.textCapitalization ?? TextCapitalization.none,
+                    textInputAction: TextInputAction.done,
+                    maxLines: widget.maxLines,
+                    minLines: 1,
+                    inputFormatters: widget.inputFormatters,
+                    onTap: widget.onTap,
+                    onChanged: (String newValue) {
+                      if (widget.onChanged != null) {
+                        widget.onChanged(newValue);
+                      }
+                    },
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: StateContainer.of(context).curTheme.primary),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: StateContainer.of(context).curTheme.primary,
+                            width: 2),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: StateContainer.of(context).curTheme.danger,
+                            width: 2),
+                      ),
+                      prefix: widget.prefix,
+                      suffixIcon: widget.firstButton == null &&
+                              widget.secondButton == null
+                          ? Container(
+                            width: 0,
+                            height: 38,
+                          )
+                          : Container(
+                              width: widget.firstButton == null ||
+                                      widget.secondButton == null
+                                  ? 50
+                                  : 100,
+                              height: 38,
+                            ),
+                    ),
+                  ),
+                  // Buttons
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          widget.secondButton != null
+                              ? Container(
+                                  margin: EdgeInsetsDirectional.only(start: 12),
+                                  width: 38,
+                                  height: 38,
+                                  child: widget.secondButton)
+                              : SizedBox(),
+                          widget.firstButton != null
+                              ? Container(
+                                  margin: EdgeInsetsDirectional.only(start: 12),
+                                  width: 38,
+                                  height: 38,
+                                  child: widget.firstButton)
+                              : SizedBox()
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              )),
         ),
       ],
     );

@@ -25,8 +25,11 @@ class PinScreen extends StatefulWidget {
   final String description;
   final Function onSuccess;
 
-  PinScreen({@required this.type, @required this.onSuccess,
-      this.description = "", this.expectedPin = ""});
+  PinScreen(
+      {@required this.type,
+      @required this.onSuccess,
+      this.description = "",
+      this.expectedPin = ""});
 
   @override
   _PinScreenState createState() => _PinScreenState();
@@ -52,7 +55,6 @@ class _PinScreenState extends State<PinScreen>
   // Invalid animation
   AnimationController _controller;
   Animation<double> _animation;
-
 
   @override
   void initState() {
@@ -89,8 +91,9 @@ class _PinScreenState extends State<PinScreen>
                   _controller.value = 0;
                 });
                 sl.get<SharedPrefsUtil>().updateLockDate().then((_) {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/lock_screen_transition', (Route<dynamic> route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/lock_screen_transition',
+                      (Route<dynamic> route) => false);
                 });
               } else {
                 setState(() {
@@ -194,7 +197,10 @@ class _PinScreenState extends State<PinScreen>
                           HapticUtil.error();
                           _controller.forward();
                         } else {
-                          sl.get<SharedPrefsUtil>().resetLockAttempts().then((_) {
+                          sl
+                              .get<SharedPrefsUtil>()
+                              .resetLockAttempts()
+                              .then((_) {
                             widget.onSuccess(_pin);
                           });
                         }
@@ -203,7 +209,8 @@ class _PinScreenState extends State<PinScreen>
                           // Switch to confirm pin
                           setState(() {
                             _awaitingConfirmation = true;
-                            _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
+                            _dotStates = List.filled(
+                                PIN_LENGTH, FontAwesomeIcons.circle);
                             _header = "Confirm your pin";
                           });
                         } else {
@@ -217,8 +224,8 @@ class _PinScreenState extends State<PinScreen>
                         }
                       }
                     });
-                  } 
-                }     
+                  }
+                }
               },
               // For the splash effect
               onTap: () {},
@@ -245,9 +252,7 @@ class _PinScreenState extends State<PinScreen>
       ret.add(
         Container(
           margin: EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-          child: Icon(
-              _dotStates[i],
-              size: 18),
+          child: Icon(_dotStates[i], size: 18),
         ),
       );
     }
@@ -279,135 +284,136 @@ class _PinScreenState extends State<PinScreen>
       // A Stack to achive the overlap between background gradient and number pad
       body: LayoutBuilder(
         builder: (context, constraints) => Stack(
-              children: <Widget>[
-                // Pin Text & Dots
-                Container(
-                  height: MediaQuery.of(context).size.height -
-                      (MediaQuery.of(context).size.width * 5 / 4),
-                  width: double.maxFinite,
-                  padding: EdgeInsetsDirectional.fromSTEB(
-                      0,
-                      MediaQuery.of(context).padding.top,
-                      0,
-                      MediaQuery.of(context).padding.top),
-                  decoration: BoxDecoration(
-                      gradient:
-                          StateContainer.of(context).curTheme.gradientPrimary),
+          children: <Widget>[
+            // Pin Text & Dots
+            Container(
+              height: MediaQuery.of(context).size.height -
+                  (MediaQuery.of(context).size.width * 5 / 4),
+              width: double.maxFinite,
+              padding: EdgeInsetsDirectional.fromSTEB(
+                  0,
+                  MediaQuery.of(context).padding.top,
+                  0,
+                  MediaQuery.of(context).padding.top),
+              decoration: BoxDecoration(
+                  gradient:
+                      StateContainer.of(context).curTheme.gradientPrimary),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    // PIN header
+                    Container(
+                      margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
+                      child: AutoSizeText(
+                        _header,
+                        style: AppStyles.modalHeader(context),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        minFontSize: 10,
+                        stepGranularity: 0.1,
+                      ),
+                    ),
+                    // PIN description
+                    widget.description == null
+                        ? Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 4, 30, 0),
+                            child: AutoSizeText(
+                              widget.description,
+                              textAlign: TextAlign.center,
+                              style: AppStyles.pinDescription(context),
+                              maxLines: 2,
+                              minFontSize: 10,
+                              stepGranularity: 0.1,
+                            ),
+                          )
+                        : SizedBox(),
+                    // Dots
+                    Container(
+                      margin: EdgeInsetsDirectional.only(
+                          start: MediaQuery.of(context).size.width * 0.25 +
+                              _animation.value,
+                          end: MediaQuery.of(context).size.width * 0.25 -
+                              _animation.value,
+                          top: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: buildPINScreenDots(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Number Pad
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.width * 5 / 4 + 16,
+                width: double.maxFinite,
+                padding: EdgeInsetsDirectional.fromSTEB(
+                    MediaQuery.of(context).size.width * 0.075,
+                    MediaQuery.of(context).size.width * 0.075,
+                    MediaQuery.of(context).size.width * 0.075,
+                    MediaQuery.of(context).padding.bottom +
+                        MediaQuery.of(context).size.width * 0.075),
+                decoration: BoxDecoration(
+                  color: StateContainer.of(context).curTheme.backgroundPrimary,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  boxShadow: [
+                    StateContainer.of(context).curTheme.shadowBottomBar,
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
                   child: Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        // PIN header
-                        Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
-                          child: AutoSizeText(
-                            _header,
-                            style: AppStyles.modalHeader(context),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            minFontSize: 10,
-                            stepGranularity: 0.1,
-                          ),
-                        ),
-                        // PIN description
-                        Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 4, 30, 0),
-                          child: AutoSizeText(
-                            widget.description,
-                            textAlign: TextAlign.center,
-                            style: AppStyles.pinDescription(context),
-                            maxLines: 2,
-                            minFontSize: 10,
-                            stepGranularity: 0.1,
-                          ),
-                        ),
-                        // Dots
-                        Container(
-                          margin: EdgeInsetsDirectional.only(
-                            start: MediaQuery.of(context).size.width * 0.25 +
-                            _animation.value,
-                            end: MediaQuery.of(context).size.width * 0.25 -
-                            _animation.value, 
-                            top: 16
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: buildPINScreenDots(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // Number Pad
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: MediaQuery.of(context).size.width * 5 / 4 + 16,
-                    width: double.maxFinite,
-                    padding: EdgeInsetsDirectional.fromSTEB(
-                        MediaQuery.of(context).size.width * 0.075,
-                        MediaQuery.of(context).size.width * 0.075,
-                        MediaQuery.of(context).size.width * 0.075,
-                        MediaQuery.of(context).padding.bottom +
-                            MediaQuery.of(context).size.width * 0.075),
-                    decoration: BoxDecoration(
-                      color:
-                          StateContainer.of(context).curTheme.backgroundPrimary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                      boxShadow: [
-                        StateContainer.of(context).curTheme.shadowBottomBar,
-                      ],
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Center(
-                        child: Column(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                buildPINButton("1"),
-                                buildPINButton("2"),
-                                buildPINButton("3"),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                buildPINButton("4"),
-                                buildPINButton("5"),
-                                buildPINButton("6"),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                buildPINButton("7"),
-                                buildPINButton("8"),
-                                buildPINButton("9"),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                buildPINButton(""),
-                                buildPINButton("0"),
-                                buildPINButton("-"),
-                              ],
-                            ),
+                            buildPINButton("1"),
+                            buildPINButton("2"),
+                            buildPINButton("3"),
                           ],
                         ),
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            buildPINButton("4"),
+                            buildPINButton("5"),
+                            buildPINButton("6"),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            buildPINButton("7"),
+                            buildPINButton("8"),
+                            buildPINButton("9"),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            buildPINButton(""),
+                            buildPINButton("0"),
+                            buildPINButton("-"),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
+          ],
+        ),
       ),
     );
   }
