@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/creating_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
-import 'package:blaise_wallet_flutter/ui/util/ensure_visible.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
