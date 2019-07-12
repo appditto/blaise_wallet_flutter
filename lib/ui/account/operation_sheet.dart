@@ -152,11 +152,12 @@ class _OperationSheetState extends State<OperationSheet> {
                           text: "Add to Contacts",
                           buttonMiddle: true,
                           onPressed: () {
+                            Navigator.pop(context);
                             AppSheets.showBottomSheet(
                                 context: context,
                                 widget: AddContactSheet(
                                   account: widget.account,
-                                ));                            
+                                ));
                           },
                         ),
                       ],
@@ -170,7 +171,9 @@ class _OperationSheetState extends State<OperationSheet> {
                     onPressed: () {
                       Navigator.of(context).pop();
                       AppSheets.showBottomSheet(
-                          context: context, widget: OperationDetailsSheet(operation: widget.operation));
+                          context: context,
+                          widget: OperationDetailsSheet(
+                              operation: widget.operation));
                     },
                   ),
                 ],

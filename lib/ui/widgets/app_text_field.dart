@@ -290,7 +290,7 @@ class _AppTextFieldState extends State<AppTextField> {
                               widget.secondButton == null
                           ? Container(
                             width: 0,
-                            height: 38,
+                            height: 0,
                           )
                           : Container(
                               width: widget.firstButton == null ||
