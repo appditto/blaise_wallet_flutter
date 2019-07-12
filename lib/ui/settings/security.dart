@@ -210,13 +210,6 @@ class _SecurityPageState extends State<SecurityPage> {
                                ); 
                               },
                             ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
-                            ),
                             SettingsListItem(
                               header: "Automatically Lock",
                               subheader: "Instantly",
@@ -227,13 +220,6 @@ class _SecurityPageState extends State<SecurityPage> {
                                  builder: (_) => DialogOverlay(title: 'Automatically Lock', optionsList: lockList)                               
                                ); 
                               },
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              height: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark10,
                             ),
                           ],
                         ),

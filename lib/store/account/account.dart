@@ -32,7 +32,7 @@ abstract class AccountBase with Store {
   List<PascalOperation> operations;
 
   @observable
-  List<Widget> accountHistory;
+  List<PascalOperation> operationsToDisplay;
 
   AccountBase({@required this.rpcClient, @required this.account}) {
     this.accountBalance = account.balance;
@@ -48,11 +48,6 @@ abstract class AccountBase with Store {
   void incrementBalance(Currency delta) {
     this.account.balance += delta;
     this.accountBalance += delta;
-  }
-
-  @action
-  void updateAccountHistory(List<Widget> accountHistory) {
-    this.accountHistory = accountHistory;
   }
 
   @action
@@ -97,12 +92,44 @@ abstract class AccountBase with Store {
     OperationsResponse opResp = resp;
     if (this.operations == null) {
       this.operations = opResp.operations;
+      this.operationsToDisplay = getOperationsToDisplay();
     } else {
       // Diff and update operations
       this.diffAndSortOperations(opResp.operations);
+      this.operationsToDisplay = getOperationsToDisplay();
       EventTaxiImpl.singleton().fire(UpdateHistoryEvent());
     }
     this.operationsLoading = false;
+  }
+
+  @action
+  List<PascalOperation> getOperationsToDisplay() {
+    return this.operations.where((op) => shouldDisplayOperation(op)).toList();
+  }
+
+  @action
+  bool shouldDisplayOperation(PascalOperation op) {
+    if (op.optype == OpType.TRANSACTION) {
+      return true;
+    } else if (op.optype == OpType.CHANGE_ACCOUNT_INFO) {
+      if (op.changers.length > 0 && op.changers[0].newName != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @action
+  bool hasOperationsToDisplay() {
+    if (this.operationsLoading || this.operations == null || this.operations.length == 0) {
+      return false;
+    }
+    for (PascalOperation op in this.operations) {
+      if (shouldDisplayOperation(op)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @action

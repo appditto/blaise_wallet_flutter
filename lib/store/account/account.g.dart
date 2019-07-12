@@ -94,21 +94,24 @@ mixin _$Account on AccountBase, Store {
     }, _$operationsAtom, name: '${_$operationsAtom.name}_set');
   }
 
-  final _$accountHistoryAtom = Atom(name: 'AccountBase.accountHistory');
+  final _$operationsToDisplayAtom =
+      Atom(name: 'AccountBase.operationsToDisplay');
 
   @override
-  List<Widget> get accountHistory {
-    _$accountHistoryAtom.context.enforceReadPolicy(_$accountHistoryAtom);
-    _$accountHistoryAtom.reportObserved();
-    return super.accountHistory;
+  List<PascalOperation> get operationsToDisplay {
+    _$operationsToDisplayAtom.context
+        .enforceReadPolicy(_$operationsToDisplayAtom);
+    _$operationsToDisplayAtom.reportObserved();
+    return super.operationsToDisplay;
   }
 
   @override
-  set accountHistory(List<Widget> value) {
-    _$accountHistoryAtom.context.conditionallyRunInAction(() {
-      super.accountHistory = value;
-      _$accountHistoryAtom.reportChanged();
-    }, _$accountHistoryAtom, name: '${_$accountHistoryAtom.name}_set');
+  set operationsToDisplay(List<PascalOperation> value) {
+    _$operationsToDisplayAtom.context.conditionallyRunInAction(() {
+      super.operationsToDisplay = value;
+      _$operationsToDisplayAtom.reportChanged();
+    }, _$operationsToDisplayAtom,
+        name: '${_$operationsToDisplayAtom.name}_set');
   }
 
   final _$updateAccountAsyncAction = AsyncAction('updateAccount');
@@ -174,10 +177,30 @@ mixin _$Account on AccountBase, Store {
   }
 
   @override
-  void updateAccountHistory(List<Widget> accountHistory) {
+  List<PascalOperation> getOperationsToDisplay() {
     final _$actionInfo = _$AccountBaseActionController.startAction();
     try {
-      return super.updateAccountHistory(accountHistory);
+      return super.getOperationsToDisplay();
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool shouldDisplayOperation(PascalOperation op) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.shouldDisplayOperation(op);
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool hasOperationsToDisplay() {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.hasOperationsToDisplay();
     } finally {
       _$AccountBaseActionController.endAction(_$actionInfo);
     }
