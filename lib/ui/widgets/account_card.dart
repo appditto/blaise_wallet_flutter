@@ -27,84 +27,7 @@ class _AccountCardState extends State<AccountCard> {
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.175,
       movementDuration: Duration(milliseconds: 150),
-      actions: <Widget>[
-        // Receive Icon
-        Container(
-          color: Colors.transparent,
-          margin: EdgeInsetsDirectional.only(
-            start: MediaQuery.of(context).size.width * 0.05,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              height: 48,
-              width: 50,
-              decoration: BoxDecoration(
-                  gradient:
-                      StateContainer.of(context).curTheme.gradientPrimary),
-              child: FlatButton(
-                  highlightColor:
-                      StateContainer.of(context).curTheme.textLight15,
-                  splashColor: StateContainer.of(context).curTheme.textLight30,
-                  onPressed: () {
-                                Navigator.pushNamed(context, '/account', arguments: widget.account);
-                                AppSheets.showBottomSheet(
-                                    context: context,
-                                    widget: ReceiveSheet(
-                                      accountName: widget.account.name.accountName,
-                                      accountNumber: widget.account.account,
-                                    ));
-                              },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                  padding: EdgeInsets.all(0.0),
-                  child: Icon(AppIcons.downarrow,
-                      color: StateContainer.of(context).curTheme.textLight,
-                      size: 24)),
-            ),
-          ),
-        ),
-        widget.account.balance == Currency('0')
-        ? SizedBox()
-        // Send Icon
-        : Container(
-          color: Colors.transparent,
-          padding: EdgeInsetsDirectional.only(
-            start: (MediaQuery.of(context).size.width * 0.05) * 2 / 3,
-            end: (MediaQuery.of(context).size.width * 0.05) * 1 / 3,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              margin: EdgeInsetsDirectional.only(top: 0, end: 0),
-              height: 48,
-              width: 50,
-              decoration: BoxDecoration(
-                  gradient: StateContainer.of(context).curTheme.gradientPrimary,
-                  boxShadow: [
-                    StateContainer.of(context).curTheme.shadowPrimaryOne
-                  ]),
-              child: FlatButton(
-                  highlightColor:
-                      StateContainer.of(context).curTheme.textLight15,
-                  splashColor: StateContainer.of(context).curTheme.textLight30,
-                  onPressed: () {
-                    if (widget.account.balance > Currency('0')) {
-                      Navigator.pushNamed(context, '/account', arguments: widget.account);
-                      AppSheets.showBottomSheet(
-                          context: context, widget: SendSheet(account: widget.account));
-                    }
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                  padding: EdgeInsets.all(0.0),
-                  child: Icon(AppIcons.uparrow,
-                      color: StateContainer.of(context).curTheme.textLight,
-                      size: 24)),
-            ),
-          ),
-        ),
-      ],
+      actions: _getButtons(),
       child: Container(
         width: double.maxFinite,
         margin: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 5),
@@ -127,8 +50,9 @@ class _AccountCardState extends State<AccountCard> {
             ),
             FlatButton(
               onPressed: () {
-                            Navigator.pushNamed(context, '/account', arguments: widget.account);
-                          },
+                Navigator.pushNamed(context, '/account',
+                    arguments: widget.account);
+              },
               padding: EdgeInsets.all(0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -204,5 +128,101 @@ class _AccountCardState extends State<AccountCard> {
         ),
       ),
     );
+  }
+
+  // The function that does nothing
+  void _doNothing() {
+    return null;
+  }
+
+  // Widget that returns the hidden buttons
+  List<Widget> _getButtons() {
+    List<Widget> ret = [];
+    ret.add(
+      // Receive Icon
+      Container(
+        color: Colors.transparent,
+        margin: EdgeInsetsDirectional.only(
+          start: MediaQuery.of(context).size.width * 0.05,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            height: 48,
+            width: 50,
+            decoration: BoxDecoration(
+                gradient: StateContainer.of(context).curTheme.gradientPrimary,
+                boxShadow: [
+                  StateContainer.of(context).curTheme.shadowPrimaryOne
+                ]),
+            child: FlatButton(
+                highlightColor: StateContainer.of(context).curTheme.textLight15,
+                splashColor: StateContainer.of(context).curTheme.textLight30,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/account',
+                      arguments: widget.account);
+                  AppSheets.showBottomSheet(
+                      context: context,
+                      widget: ReceiveSheet(
+                        accountName: widget.account.name.accountName,
+                        accountNumber: widget.account.account,
+                      ));
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0)),
+                padding: EdgeInsets.all(0.0),
+                child: Icon(AppIcons.downarrow,
+                    color: StateContainer.of(context).curTheme.textLight,
+                    size: 24)),
+          ),
+        ),
+      ),
+    );
+    widget.account.balance == Currency('0')
+        ? _doNothing()
+        : ret.add(
+            // Send icon
+            Container(
+            color: Colors.transparent,
+            padding: EdgeInsetsDirectional.only(
+              start: (MediaQuery.of(context).size.width * 0.05) * 2 / 3,
+              end: (MediaQuery.of(context).size.width * 0.05) * 1 / 3,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                margin: EdgeInsetsDirectional.only(top: 0, end: 0),
+                height: 48,
+                width: 50,
+                decoration: BoxDecoration(
+                    gradient:
+                        StateContainer.of(context).curTheme.gradientPrimary,
+                    boxShadow: [
+                      StateContainer.of(context).curTheme.shadowPrimaryOne
+                    ]),
+                child: FlatButton(
+                    highlightColor:
+                        StateContainer.of(context).curTheme.textLight15,
+                    splashColor:
+                        StateContainer.of(context).curTheme.textLight30,
+                    onPressed: () {
+                      if (widget.account.balance > Currency('0')) {
+                        Navigator.pushNamed(context, '/account',
+                            arguments: widget.account);
+                        AppSheets.showBottomSheet(
+                            context: context,
+                            widget: SendSheet(account: widget.account));
+                      }
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                    padding: EdgeInsets.all(0.0),
+                    child: Icon(AppIcons.uparrow,
+                        color: StateContainer.of(context).curTheme.textLight,
+                        size: 24)),
+              ),
+            ),
+          ));
+    return ret;
   }
 }
