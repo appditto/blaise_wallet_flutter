@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'package:pascaldart/common.dart';
 
+enum DataType { ACCOUNT }
+
 class ClipboardUtil {
   static StreamSubscription<dynamic> setStream;
 
@@ -26,5 +28,18 @@ class ClipboardUtil {
         }
       });
     });
+  }
+
+  static Future<String> getClipboardText(DataType type) async {
+    ClipboardData data = await Clipboard.getData("text/plain");
+    if (data == null || data.text == null) {
+      return null;
+    } else if (type == DataType.ACCOUNT) {
+      try {
+        AccountNumber acctNum = AccountNumber(data.text);
+        return acctNum.toString();
+      } catch (e) {}
+    }
+    return null;
   }
 }

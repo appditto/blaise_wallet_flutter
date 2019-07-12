@@ -1,22 +1,22 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 class ContactDetailSheet extends StatefulWidget {
-  final String contactName;
-  final String contactAddress;
-  final String payload;
+  final Contact contact;
   final Function onPressed;
 
-  ContactDetailSheet(
-      {this.contactName,
-      this.contactAddress,
-      this.payload = "test",
-      this.onPressed});
+  ContactDetailSheet({this.contact, this.onPressed});
   _ContactDetailSheetState createState() => _ContactDetailSheetState();
 }
 
@@ -61,8 +61,16 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                 StateContainer.of(context).curTheme.textLight15,
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
-                            onPressed: () {
-                              return null;
+                            onPressed: () async {
+                              bool deleted = await sl.get<DBHelper>().deleteContact(widget.contact);
+                              if (deleted) {
+                                EventTaxiImpl.singleton().fire(ContactRemovedEvent(contact: widget.contact));
+                                EventTaxiImpl.singleton().fire(ContactModifiedEvent(contact: widget.contact));
+                                UIUtil.showSnackbar("Removed ${widget.contact.name} from contacts", context);
+                                Navigator.of(context).pop();
+                              } else {
+                                UIUtil.showSnackbar("Failed to remove ${widget.contact.name} from contacts", context);
+                              }
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -142,11 +150,11 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                         child: AutoSizeText.rich(
                           TextSpan(children: [
                             TextSpan(
-                              text: widget.contactName[0],
+                              text: widget.contact.name[0],
                               style: AppStyles.contactsItemNamePrimary(context),
                             ),
                             TextSpan(
-                              text: widget.contactName.substring(1),
+                              text: widget.contact.name.substring(1),
                               style: AppStyles.contactsItemName(context),
                             ),
                           ]),
@@ -181,7 +189,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.contactAddress,
+                          widget.contact.account.toString(),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -190,7 +198,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                         ),
                       ),
                       // "Payload" header
-                      isNotEmpty(widget.payload)
+                      isNotEmpty(widget.contact.payload)
                           ? Container(
                               width: double.maxFinite,
                               margin:
@@ -205,7 +213,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                             )
                           : SizedBox(),
                       // Container for the payload text
-                      isNotEmpty(widget.payload)
+                      isNotEmpty(widget.contact.payload)
                           ? Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
@@ -223,7 +231,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                     .textDark10,
                               ),
                               child: AutoSizeText(
-                                widget.payload,
+                                widget.contact.payload,
                                 maxLines: 1,
                                 stepGranularity: 0.1,
                                 minFontSize: 8,

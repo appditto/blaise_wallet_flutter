@@ -55,6 +55,7 @@ class AppTextField extends StatefulWidget {
   final Function onChanged;
   final Function onTap;
   final bool isAddress;
+  final bool readOnly;
 
   AppTextField(
       {@required this.label,
@@ -71,7 +72,8 @@ class AppTextField extends StatefulWidget {
       this.onChanged,
       this.onTap,
       this.isAddress = false,
-      this.passwordField = false});
+      this.passwordField = false,
+      this.readOnly = false});
 
   _AppTextFieldState createState() => _AppTextFieldState();
 }
@@ -244,6 +246,7 @@ class _AppTextFieldState extends State<AppTextField> {
               textSelectionColor: StateContainer.of(context).curTheme.primary30,
             ),
             child: TextField(
+              readOnly: widget.readOnly,
               controller: widget.controller,
               focusNode: widget.focusNode,
               obscureText: widget.passwordField,

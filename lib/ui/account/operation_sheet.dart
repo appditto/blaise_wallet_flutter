@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/operation_details_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/settings/contacts/add_contact_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
@@ -150,6 +151,13 @@ class _OperationSheetState extends State<OperationSheet> {
                           type: AppButtonType.PrimaryOutline,
                           text: "Add to Contacts",
                           buttonMiddle: true,
+                          onPressed: () {
+                            AppSheets.showBottomSheet(
+                                context: context,
+                                widget: AddContactSheet(
+                                  account: widget.account,
+                                ));                            
+                          },
                         ),
                       ],
                     ),
