@@ -171,7 +171,7 @@ class _AccountPageState extends State<AccountPage>
         action: () {
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
-              context: context, widget: CreatePrivateSaleSheet());
+              context: context, widget: CreatePrivateSaleSheet(account: accountState.account));
         },
         disabled: accountState == null || accountState.account.state == AccountState.LISTED
       ),

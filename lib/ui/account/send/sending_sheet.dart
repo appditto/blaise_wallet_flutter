@@ -306,7 +306,7 @@ class _SendingSheetState extends State<SendingSheet>  {
                                 ),
                               ],
                             ),
-                            widget.fee.toStringOpt() != "0"
+                            widget.fee != Currency("0")
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

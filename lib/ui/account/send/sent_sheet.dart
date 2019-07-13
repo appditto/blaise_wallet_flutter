@@ -246,7 +246,7 @@ class _SentSheetState extends State<SentSheet> {
                                 ),
                               ],
                             ),
-                            widget.fee.toStringOpt() != "0"
+                            widget.fee != Currency("0")
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

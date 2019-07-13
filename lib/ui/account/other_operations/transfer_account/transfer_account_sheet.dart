@@ -138,7 +138,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              // Container for the name text field
+                              // Container for the public key text field
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),

@@ -148,7 +148,7 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                         ),
                       ),
                       // "Fee" header
-                      widget.fee.toStringOpt() != "0"
+                      widget.fee != Currency("0")
                           ? Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
@@ -162,7 +162,7 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                             )
                           : SizedBox(),
                       // Container for the fee
-                      widget.fee.toStringOpt() != "0"
+                      widget.fee != Currency("0")
                           ? Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),

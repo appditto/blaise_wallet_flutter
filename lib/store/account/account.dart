@@ -229,14 +229,15 @@ abstract class AccountBase with Store {
   }
 
   @action
-  Future<RPCResponse> listAccountForSale(Currency price, AccountNumber accountToPay, {Currency fee}) async {
+  Future<RPCResponse> listAccountForSale(Currency price, AccountNumber accountToPay, {PublicKey newPubKey, Currency fee}) async {
     fee = fee == null ? Currency('0') : fee;
     // Construct list for sale
     ListForSaleOperation op = ListForSaleOperation(
       accountSigner: account.account,
       targetSigner: account.account,
       price: price,
-      accountToPay: accountToPay
+      accountToPay: accountToPay,
+      newPublicKey: newPubKey
     )
     ..withNOperation(account.nOperation + 1)
     ..withPayload(PDUtil.stringToBytesUtf8(""))

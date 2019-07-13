@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pascaldart/common.dart';
 import 'package:validators/validators.dart';
 
-enum DataType { ACCOUNT, URL }
+enum DataType { ACCOUNT, URL, PUBLIC_KEY }
 
 class ClipboardUtil {
   static StreamSubscription<dynamic> setStream;
@@ -45,6 +45,20 @@ class ClipboardUtil {
         return data.text.trim();
       } else if (isURL(data.text.trim())) {
         return data.text.trim();
+      }
+    } else if (type == DataType.PUBLIC_KEY) {
+      try {
+        PublicKeyCoder()
+            .decodeFromBase58(data.text.trim());
+        return data.text.trim();
+      } catch (e) {
+        try {
+          PublicKeyCoder()
+              .decodeFromBytes(
+                  PDUtil.hexToBytes(
+                      data.text.trim()));
+          return data.text.trim();
+        } catch (e) {}
       }
     }
     return null;

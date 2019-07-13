@@ -159,9 +159,10 @@ mixin _$Account on AccountBase, Store {
   @override
   Future<RPCResponse> listAccountForSale(
       Currency price, AccountNumber accountToPay,
-      {Currency fee}) {
-    return _$listAccountForSaleAsyncAction
-        .run(() => super.listAccountForSale(price, accountToPay, fee: fee));
+      {PublicKey newPubKey, Currency fee}) {
+    return _$listAccountForSaleAsyncAction.run(() => super.listAccountForSale(
+        price, accountToPay,
+        newPubKey: newPubKey, fee: fee));
   }
 
   final _$delistAccountForSaleAsyncAction = AsyncAction('delistAccountForSale');
