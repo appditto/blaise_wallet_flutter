@@ -623,54 +623,64 @@ class _AccountPageState extends State<AccountPage>
                                               builder: (BuildContext context) {
                                                 if (accountState
                                                         .operationsLoading || accountState.operations == null) {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft: Radius
-                                                                .circular(12),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    12)),
-                                                    child: Opacity(
-                                                      opacity: _opacityAnimation
-                                                          .value,
-                                                      child: ListView(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .only(
-                                                                      bottom:
-                                                                          24),
-                                                          children: [
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                          ]),
-                                                    ),
+                                                  return ReactiveRefreshIndicator(
+                                                    backgroundColor:
+                                                        StateContainer.of(
+                                                                context)
+                                                            .curTheme
+                                                            .backgroundPrimary,
+                                                    onRefresh: _refresh,
+                                                    isRefreshing:
+                                                        _isRefreshing,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(12),
+                                                              topRight:
+                                                                  Radius.circular(
+                                                                      12)),
+                                                      child: Opacity(
+                                                        opacity: _opacityAnimation
+                                                            .value,
+                                                        child: ListView(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .only(
+                                                                        bottom:
+                                                                            24),
+                                                            children: [
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                            ]),
+                                                      )
+                                                    )
                                                   );
                                                 } else {
                                                   return ClipRRect(

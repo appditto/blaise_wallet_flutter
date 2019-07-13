@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -14,6 +17,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -43,18 +47,35 @@ class _OverviewPageState extends State<OverviewPage>
     }
   }
 
+  StreamSubscription<DaemonChangedEvent> _daemonChangeSub;
+
+  void _registerBus() {
+    _daemonChangeSub = EventTaxiImpl.singleton()
+        .registerTo<DaemonChangedEvent>()
+        .listen((event) {
+      walletLoad();
+    });
+  }
+
+  void _destroyBus() {
+    if (_daemonChangeSub != null) {
+      _daemonChangeSub.cancel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _registerBus();
     _isRefreshing = false;
     // Load the wallet, total balance, etc.
     walletLoad();
     // Opacity Animation
-    _opacityAnimationController = new AnimationController(
+    _opacityAnimationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _opacityAnimation = new Tween(begin: 1.0, end: 0.4).animate(
+    _opacityAnimation = Tween(begin: 1.0, end: 0.4).animate(
       CurvedAnimation(
         parent: _opacityAnimationController,
         curve: Curves.easeIn,
@@ -94,6 +115,7 @@ class _OverviewPageState extends State<OverviewPage>
   @override
   void dispose() {
     _disposeAnimations();
+    _destroyBus();
     super.dispose();
   }
 
@@ -414,10 +436,18 @@ class _OverviewPageState extends State<OverviewPage>
                                   child: Stack(
                                     children: <Widget>[
                                       // The list
-                                      ListView(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 3, 0, 19),
-                                        children: _getPlaceholderAccountCards(),
+                                      ReactiveRefreshIndicator(
+                                        backgroundColor:
+                                            StateContainer.of(context)
+                                                .curTheme
+                                                .backgroundPrimary,
+                                        onRefresh: _refresh,
+                                        isRefreshing: _isRefreshing,
+                                        child: ListView(
+                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                              0, 3, 0, 19),
+                                          children: _getPlaceholderAccountCards(),
+                                        )
                                       ),
                                       // The gradient at the top
                                       Container(
@@ -436,60 +466,68 @@ class _OverviewPageState extends State<OverviewPage>
                           );
                         } else if (walletState.walletAccounts.isEmpty) {
                           return Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                //Container for the paragraph
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 0, 30, 0),
-                                  child: AutoSizeText.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: "Welcome to",
-                                          style: AppStyles.paragraph(context),
-                                        ),
-                                        TextSpan(
-                                          text: " Blaise Wallet",
-                                          style: AppStyles.paragraphPrimary(
-                                              context),
-                                        ),
-                                        TextSpan(
-                                          text: ".\n",
-                                          style: AppStyles.paragraph(context),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              "You can start by getting an account.",
-                                          style: AppStyles.paragraph(context),
-                                        ),
-                                      ],
+                            child: ReactiveRefreshIndicator(
+                              backgroundColor:
+                                  StateContainer.of(context)
+                                      .curTheme
+                                      .backgroundPrimary,
+                              onRefresh: _refresh,
+                              isRefreshing: _isRefreshing,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  //Container for the paragraph
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 0, 30, 0),
+                                    child: AutoSizeText.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "Welcome to",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text: " Blaise Wallet",
+                                            style: AppStyles.paragraphPrimary(
+                                                context),
+                                          ),
+                                          TextSpan(
+                                            text: ".\n",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                "You can start by getting an account.",
+                                            style: AppStyles.paragraph(context),
+                                          ),
+                                        ],
+                                      ),
+                                      stepGranularity: 0.5,
+                                      maxLines: 10,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 14),
                                     ),
-                                    stepGranularity: 0.5,
-                                    maxLines: 10,
-                                    minFontSize: 8,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 14),
                                   ),
-                                ),
-                                // Container for the illustration
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                    top: 24,
+                                  // Container for the illustration
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(
+                                      top: 24,
+                                    ),
+                                    child: SvgRepaintAsset(
+                                        asset: StateContainer.of(context)
+                                            .curTheme
+                                            .illustrationNewWallet,
+                                        width: MediaQuery.of(context).size.width *
+                                            0.55,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.55),
                                   ),
-                                  child: SvgRepaintAsset(
-                                      asset: StateContainer.of(context)
-                                          .curTheme
-                                          .illustrationNewWallet,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.55,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.55),
-                                ),
-                              ],
-                            ),
+                                ],
+                              )
+                            )
                           );
                         } else {
                           // Wallet Cards
