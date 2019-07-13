@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
@@ -319,90 +321,110 @@ class _SendSheetState extends State<SendSheet> {
                                     ),
                                     secondButton: TextFieldButton(
                                       icon: AppIcons.scan,
-                                      onPressed: () {
-                                        
-                                      },
+                                      onPressed: () {},
                                     ),
                                   ),
                                 ),
-                                // Error Text
-                                ErrorContainer(
-                                  errorText: destinationError == null
-                                      ? ""
-                                      : destinationError,
-                                ),
-                                // Container for the amount text field
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 30, 30, 0),
-                                  child: AppTextField(
-                                    label: 'Amount',
-                                    style: AppStyles.paragraphPrimary(context),
-                                    maxLines: 1,
-                                    inputType: TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    prefix: _localCurrencyMode
-                                        ? Text("")
-                                        : Icon(
-                                            AppIcons.pascalsymbol,
-                                            size: 15,
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .primary,
+                                // A stack to display contacts pop up
+                                Stack(
+                                  children: <Widget>[
+                                    // Column for everything else except contacts pop up
+                                    Column(
+                                      children: <Widget>[
+                                        // Error Text
+                                        ErrorContainer(
+                                          errorText: destinationError == null
+                                              ? ""
+                                              : destinationError,
+                                        ),
+                                        // Container for the amount text field
+                                        Container(
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  30, 30, 30, 0),
+                                          child: AppTextField(
+                                            label: 'Amount',
+                                            style: AppStyles.paragraphPrimary(
+                                                context),
+                                            maxLines: 1,
+                                            inputType:
+                                                TextInputType.numberWithOptions(
+                                                    decimal: true),
+                                            prefix: _localCurrencyMode
+                                                ? Text("")
+                                                : Icon(
+                                                    AppIcons.pascalsymbol,
+                                                    size: 15,
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .primary,
+                                                  ),
+                                            onChanged: (text) {
+                                              if (amountError != null) {
+                                                setState(() {
+                                                  amountError = null;
+                                                });
+                                              }
+                                            },
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  13),
+                                              _localCurrencyMode
+                                                  ? CurrencyFormatter(
+                                                      decimalSeparator:
+                                                          _localCurrencyFormat
+                                                              .symbols
+                                                              .DECIMAL_SEP,
+                                                      commaSeparator:
+                                                          _localCurrencyFormat
+                                                              .symbols
+                                                              .GROUP_SEP,
+                                                      maxDecimalDigits: 2)
+                                                  : CurrencyFormatter(
+                                                      maxDecimalDigits:
+                                                          NumberUtil
+                                                              .maxDecimalDigits),
+                                              LocalCurrencyFormatter(
+                                                  active: _localCurrencyMode,
+                                                  currencyFormat:
+                                                      _localCurrencyFormat),
+                                            ],
+                                            focusNode: amountFocusNode,
+                                            controller: amountController,
+                                            firstButton: TextFieldButton(
+                                              icon: AppIcons.max,
+                                              onPressed: () {
+                                                amountController.text = widget
+                                                    .account.balance
+                                                    .toStringOpt();
+                                                amountFocusNode.unfocus();
+                                              },
+                                            ),
+                                            secondButton: TextFieldButton(
+                                                icon: AppIcons.currencyswitch,
+                                                onPressed: () {
+                                                  toggleLocalCurrency();
+                                                }),
                                           ),
-                                    onChanged: (text) {
-                                      if (amountError != null) {
-                                        setState(() {
-                                          amountError = null;
-                                        });
-                                      }
-                                    },
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(13),
-                                      _localCurrencyMode
-                                          ? CurrencyFormatter(
-                                              decimalSeparator:
-                                                  _localCurrencyFormat
-                                                      .symbols.DECIMAL_SEP,
-                                              commaSeparator:
-                                                  _localCurrencyFormat
-                                                      .symbols.GROUP_SEP,
-                                              maxDecimalDigits: 2)
-                                          : CurrencyFormatter(
-                                              maxDecimalDigits:
-                                                  NumberUtil.maxDecimalDigits),
-                                      LocalCurrencyFormatter(
-                                          active: _localCurrencyMode,
-                                          currencyFormat: _localCurrencyFormat),
-                                    ],
-                                    focusNode: amountFocusNode,
-                                    controller: amountController,
-                                    firstButton: TextFieldButton(
-                                      icon: AppIcons.max,
-                                      onPressed: () {
-                                        amountController.text = widget
-                                            .account.balance
-                                            .toStringOpt();
-                                        amountFocusNode.unfocus();
-                                      },
+                                        ),
+                                        // Fee container
+                                        _hasFee
+                                            ? FeeContainer(
+                                                feeText: walletState.MIN_FEE
+                                                    .toStringOpt())
+                                            : SizedBox(),
+                                        // Error Text
+                                        ErrorContainer(
+                                          errorText: amountError == null
+                                              ? ""
+                                              : amountError,
+                                        ),
+                                      ],
                                     ),
-                                    secondButton: TextFieldButton(
-                                        icon: AppIcons.currencyswitch,
-                                        onPressed: () {
-                                          toggleLocalCurrency();
-                                        }),
-                                  ),
-                                ),
-                                // Fee container
-                                _hasFee
-                                    ? FeeContainer(
-                                        feeText:
-                                            walletState.MIN_FEE.toStringOpt())
-                                    : SizedBox(),
-                                // Error Text
-                                ErrorContainer(
-                                  errorText:
-                                      amountError == null ? "" : amountError,
+                                    // Contacts pop up
+                                    _getContactsPopup(),
+                                  ],
                                 ),
                                 Payload(
                                   initialPayload: _payload,
@@ -554,5 +576,124 @@ class _SendSheetState extends State<SendSheet> {
         convertedAmt.replaceAll(".", _localCurrencyFormat.symbols.DECIMAL_SEP);
     convertedAmt = _localCurrencyFormat.currencySymbol + convertedAmt;
     return convertedAmt;
+  }
+
+  Widget _getContactsPopup() {
+    return this.addressFocusNode.hasFocus
+        ? Material(
+            color: StateContainer.of(context).curTheme.backgroundPrimary,
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 138),
+              width: MediaQuery.of(context).size.width - 60,
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 3),
+              decoration: BoxDecoration(
+                  color: StateContainer.of(context).curTheme.backgroundPrimary,
+                  boxShadow: [
+                    StateContainer.of(context).curTheme.shadowAccountCard
+                  ]),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: double.maxFinite,
+                      height: 46,
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          return null;
+                        },
+                        child: Container(
+                          alignment: Alignment(-1, 0),
+                          margin:
+                              EdgeInsetsDirectional.only(start: 16, end: 16),
+                          child: AutoSizeText.rich(
+                            TextSpan(children: [
+                              TextSpan(
+                                text: "@",
+                                style: AppStyles.settingsHeader(context),
+                              ),
+                              TextSpan(
+                                text: "bbedward",
+                                style: AppStyles.contactsItemName(context),
+                              ),
+                            ]),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      height: 46,
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          return null;
+                        },
+                        child: Container(
+                          alignment: Alignment(-1, 0),
+                          margin:
+                              EdgeInsetsDirectional.only(start: 16, end: 16),
+                          child: AutoSizeText.rich(
+                            TextSpan(children: [
+                              TextSpan(
+                                text: "@",
+                                style: AppStyles.settingsHeader(context),
+                              ),
+                              TextSpan(
+                                text: "bbedward2",
+                                style: AppStyles.contactsItemName(context),
+                              ),
+                            ]),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      height: 46,
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          return null;
+                        },
+                        child: Container(
+                          alignment: Alignment(-1, 0),
+                          margin:
+                              EdgeInsetsDirectional.only(start: 16, end: 16),
+                          child: AutoSizeText.rich(
+                            TextSpan(children: [
+                              TextSpan(
+                                text: "@",
+                                style: AppStyles.settingsHeader(context),
+                              ),
+                              TextSpan(
+                                text: "bbedward3",
+                                style: AppStyles.contactsItemName(context),
+                              ),
+                            ]),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : SizedBox();
   }
 }
