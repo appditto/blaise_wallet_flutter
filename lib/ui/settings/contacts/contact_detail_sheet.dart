@@ -11,6 +11,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +110,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              return null;
+                              AppWebView.showWebView(context, 'https://explore.pascalcoin.org/accounts/${widget.contact.account.toString()}');
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
