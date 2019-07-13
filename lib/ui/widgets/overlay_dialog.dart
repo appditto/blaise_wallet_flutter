@@ -66,11 +66,12 @@ class _DialogOverlayState extends State<DialogOverlay>
           width: double.maxFinite,
           height: 50,
           child: FlatButton(
-              onPressed: option.action == null
-                  ? () {
-                      return null;
-                    }
-                  : option.action,
+              onPressed: () {
+                if (option.action == null || option.disabled) {
+                  return;
+                }
+                option.action();
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
               ),

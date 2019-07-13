@@ -159,7 +159,6 @@ class _AccountPageState extends State<AccountPage>
       DialogListItem(
         option: "List Account for Sale",
         action: () {
-          print(accountState.account.state);
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
               context: context, widget: ListForSaleSheet(account: accountState.account));
@@ -810,10 +809,6 @@ class _AccountPageState extends State<AccountPage>
 
   Widget _buildAccountHistoryItem(PascalOperation op) {
     if (op.optype == OpType.TRANSACTION) {
-      if (op.senders.length == 0 || op.receivers.length == 0) {
-        log.i("Operation ${op.ophash} has no senders or receivers but it's a transaction!");
-        return SizedBox();
-      }
       OperationType type;
       if (op.amount.pasc < BigInt.zero) {
         type = OperationType.Sent;
@@ -852,10 +847,6 @@ class _AccountPageState extends State<AccountPage>
       );
     } else if (op.optype == OpType.CHANGE_ACCOUNT_INFO) {
       // Only show change name
-      if (op.changers.length == 0) {
-        log.i("Changers is empty! ${op.ophash}");
-        return SizedBox();
-      }
       if (op.changers[0].newName != null) {
         return OperationListItem(
           type: OperationType.NameChanged,
@@ -877,6 +868,26 @@ class _AccountPageState extends State<AccountPage>
           },
         );            
       }
+    } else if (op.optype == OpType.LIST_FORSALE) {
+      return OperationListItem(
+        type: OperationType.ListedForSale,
+        address: op.changers[0].sellerAccount.toString(),
+        date:
+            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        payload: "",
+        price: op.changers[0].accountPrice.toStringOpt(),
+        onPressed: () {
+          AppSheets.showBottomSheet(
+              context: context,
+              animationDurationMs: 200,
+              widget: OperationSheet(
+                payload: "",
+                ophash: op.ophash,
+                operation: op,
+                account: op.changers[0].sellerAccount,
+              ));
+        },
+      );            
     }
     return SizedBox();
   }

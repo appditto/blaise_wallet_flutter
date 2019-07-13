@@ -115,6 +115,10 @@ abstract class AccountBase with Store {
       if (op.changers.length > 0 && op.changers[0].newName != null) {
         return true;
       }
+    } else if (op.optype == OpType.LIST_FORSALE) {
+      if (op.changers.length >0 && op.changers[0].sellerAccount != null && op.changers[0].accountPrice != null) {
+        return true;
+      }
     }
     return false;
   }
