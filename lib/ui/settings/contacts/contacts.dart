@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/add_contact_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/contact_detail_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -25,6 +26,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 
 class ContactsPage extends StatefulWidget {
+  final Account account;
+
+  ContactsPage({this.account}) : super();
+
   @override
   _ContactsPageState createState() => _ContactsPageState();
 }
@@ -359,7 +364,8 @@ class _ContactsPageState extends State<ContactsPage> {
                                       AppSheets.showBottomSheet(
                                         context: context,
                                         widget: ContactDetailSheet(
-                                          contact: _contacts[index]
+                                          contact: _contacts[index],
+                                          account: widget.account
                                         )
                                       );
                                     },

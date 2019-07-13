@@ -29,13 +29,15 @@ class SendingSheet extends StatefulWidget {
   final String payload;
   final PascalAccount source;
   final Currency fee;
+  final bool fromOverview;
 
   SendingSheet(
       {@required this.destination,
       @required this.amount,
       @required this.source,
       @required this.fee,
-      this.payload = ""});
+      this.payload = "",
+      this.fromOverview = false});
 
   _SendingSheetState createState() => _SendingSheetState();
 }
@@ -488,7 +490,7 @@ class _SendingSheetState extends State<SendingSheet>  {
         OperationsResponse resp = result;
         PascalOperation op = resp.operations[0];
         if (op.valid == null || op.valid) {
-          Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+          Navigator.of(context).popUntil(RouteUtils.withNameLike(widget.fromOverview ? "/overview" : "/account"));
           AppSheets.showBottomSheet(
               context: context,
               closeOnTap: true,

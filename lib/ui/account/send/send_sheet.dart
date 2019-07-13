@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sending_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -23,8 +24,10 @@ import 'package:quiver/strings.dart';
 
 class SendSheet extends StatefulWidget {
   final PascalAccount account;
+  final Contact contact;
+  final bool fromOverview;
 
-  SendSheet({@required this.account});
+  SendSheet({@required this.account, this.contact, this.fromOverview = false});
 
   _SendSheetState createState() => _SendSheetState();
 }
@@ -72,6 +75,11 @@ class _SendSheetState extends State<SendSheet> {
         } catch (e) {}
       }
     });
+    // Initial contact information
+    if (widget.contact != null) {
+      this.addressController.text = widget.contact.name.toString();
+      this._payload = widget.contact.payload;
+    }
   }
 
   @override
@@ -470,7 +478,8 @@ class _SendSheetState extends State<SendSheet> {
               amount: amountController.text,
               source: widget.account,
               fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE,
-              payload: _payload),
+              payload: _payload,
+              fromOverview: widget.fromOverview),
           noBlur: true);
     }
   }

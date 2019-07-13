@@ -230,7 +230,7 @@ class _AccountPageState extends State<AccountPage>
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       endDrawer: SizedBox(
-          width: double.infinity, child: AppDrawer(child: SettingsPage())),
+          width: double.infinity, child: AppDrawer(child: SettingsPage(account: accountState))),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(

@@ -107,6 +107,20 @@ abstract class WalletBase with Store {
   }
 
   @action
+  List<PascalAccount> getNonzeroBalanceAccounts() {
+    if (walletLoading || walletAccounts.length == 0) {
+      return [];
+    }
+    List<PascalAccount> ret = [];
+    walletAccounts.forEach((acct) {
+      if (acct.balance > Currency('0')) {
+        ret.add(acct);
+      }
+    });
+    return ret;
+  }
+
+  @action
   bool shouldHaveFee() {
     for (Account accountState in accountStateMap.values) {
       if (accountState.operations == null) {
