@@ -113,6 +113,9 @@ dependencies:
   # Various string validations
   validators: ^2.0.0+1
 
+  # Webview
+  webview_flutter: ^0.3.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
