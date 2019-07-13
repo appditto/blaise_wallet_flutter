@@ -225,6 +225,14 @@ abstract class AccountBase with Store {
     );
     // Make request
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
     return resp;
   }
 
@@ -249,6 +257,14 @@ abstract class AccountBase with Store {
     );
     // Make request
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
     return resp;
   }
 
@@ -270,6 +286,14 @@ abstract class AccountBase with Store {
     );
     // Make request
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
     return resp;
   }
 }

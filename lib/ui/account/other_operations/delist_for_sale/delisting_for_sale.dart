@@ -321,7 +321,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
             // Update state
             accountState.changeAccountState(AccountState.NORMAL);
             Navigator.of(context)
-                .popUntil(RouteUtils.withNameLike("/account"));
+                .popUntil(RouteUtils.withNameLike("/account"));;
             AppSheets.showBottomSheet(
                 context: context,
                 closeOnTap: true,
