@@ -13,6 +13,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/reactive_refresh.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/haptic_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -32,12 +33,22 @@ class _OverviewPageState extends State<OverviewPage>
   // Pull to refresh
   bool _isRefreshing;
 
+  Future<void> walletLoad() async {
+    try {
+      await walletState?.loadWallet();
+    } catch (e) {
+      if (mounted) {
+        UIUtil.showSnackbar("Did not get a response from server", context);
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _isRefreshing = false;
     // Load the wallet, total balance, etc.
-    walletState.loadWallet();
+    walletLoad();
     // Opacity Animation
     _opacityAnimationController = new AnimationController(
       duration: const Duration(milliseconds: 500),
@@ -106,7 +117,7 @@ class _OverviewPageState extends State<OverviewPage>
         });
       }
     });
-    walletState?.loadWallet()?.whenComplete(() {
+    walletLoad().whenComplete(() {
       if (mounted) {
         setState(() {
           _isRefreshing = false;

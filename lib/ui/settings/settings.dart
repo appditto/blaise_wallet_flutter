@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
@@ -72,6 +73,20 @@ class _SettingsPageState extends State<SettingsPage> {
           }));
     });
     return ret;
+  }
+
+  String daemonURL;
+
+  @override
+  void initState() {
+    super.initState();
+    sl.get<SharedPrefsUtil>().getRpcUrl().then((result) {
+      if (result != AppConstants.DEFAULT_RPC_HTTP_URL && mounted) {
+        setState(() {
+          daemonURL = result;
+        });
+      }
+    });
   }
 
   @override
@@ -239,12 +254,24 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           SettingsListItem(
                             header: "Daemon",
-                            subheader: "Default",
+                            subheader: daemonURL ?? "Default",
                             icon: AppIcons.changedaemon,
                             onPressed: () {
                               AppSheets.showBottomSheet(
                                   context: context,
-                                  widget: ChangeDaemonSheet());
+                                  widget: ChangeDaemonSheet(
+                                    onChanged: (newDaemon) {
+                                      if (newDaemon != AppConstants.DEFAULT_RPC_HTTP_URL) {
+                                        setState(() {
+                                          daemonURL = newDaemon;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          daemonURL = null;
+                                        });
+                                      }
+                                    }
+                                  ));
                             },
                           ),
                           // Manage text

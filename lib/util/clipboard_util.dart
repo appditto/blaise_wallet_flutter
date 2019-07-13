@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import 'package:pascaldart/common.dart';
+import 'package:validators/validators.dart';
 
-enum DataType { ACCOUNT }
+enum DataType { ACCOUNT, URL }
 
 class ClipboardUtil {
   static StreamSubscription<dynamic> setStream;
@@ -36,9 +37,15 @@ class ClipboardUtil {
       return null;
     } else if (type == DataType.ACCOUNT) {
       try {
-        AccountNumber acctNum = AccountNumber(data.text);
+        AccountNumber acctNum = AccountNumber(data.text.trim());
         return acctNum.toString();
       } catch (e) {}
+    } else if (type == DataType.URL) {
+      if (isIP(data.text.trim())) {
+        return data.text.trim();
+      } else if (isURL(data.text.trim())) {
+        return data.text.trim();
+      }
     }
     return null;
   }
