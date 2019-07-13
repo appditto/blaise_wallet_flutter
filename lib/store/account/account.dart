@@ -119,6 +119,8 @@ abstract class AccountBase with Store {
       if (op.changers.length >0 && op.changers[0].sellerAccount != null && op.changers[0].accountPrice != null) {
         return true;
       }
+    } else if (op.optype == OpType.DELIST_FORSALE) {
+      return true;
     }
     return false;
   }
@@ -235,6 +237,27 @@ abstract class AccountBase with Store {
       targetSigner: account.account,
       price: price,
       accountToPay: accountToPay
+    )
+    ..withNOperation(account.nOperation + 1)
+    ..withPayload(PDUtil.stringToBytesUtf8(""))
+    ..withFee(fee)
+    ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
+    // Execute request
+    ExecuteOperationsRequest request = ExecuteOperationsRequest(
+      rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
+    );
+    // Make request
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    return resp;
+  }
+
+  @action
+  Future<RPCResponse> delistAccountForSale({Currency fee}) async {
+    fee = fee == null ? Currency('0') : fee;
+    // Construct list for sale
+    DeListForSaleOperation op = DeListForSaleOperation(
+      accountSigner: account.account,
+      targetSigner: account.account
     )
     ..withNOperation(account.nOperation + 1)
     ..withPayload(PDUtil.stringToBytesUtf8(""))

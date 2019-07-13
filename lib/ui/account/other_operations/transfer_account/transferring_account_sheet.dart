@@ -225,7 +225,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                         ),
                       ),
                       // "Fee" header
-                      widget.fee.toStringOpt() != "0"
+                      widget.fee != Currency('0')
                           ? Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),

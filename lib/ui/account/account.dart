@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/delist_for_sale/delisting_for_sale.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/create_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
@@ -176,6 +177,16 @@ class _AccountPageState extends State<AccountPage>
       ),
       DialogListItem(
         option: "Delist Account",
+        action: () {
+          Navigator.of(context).pop();
+          AppSheets.showBottomSheet(
+            context: context,
+            widget: DelistingForSaleSheet(
+              account: accountState.account,
+              fee: walletState.shouldHaveFee() ? walletState.MIN_FEE : walletState.NO_FEE,
+            )
+          );
+        },
         disabled: accountState == null || accountState.account.state != AccountState.LISTED
       ),
     ];
@@ -888,6 +899,25 @@ class _AccountPageState extends State<AccountPage>
               ));
         },
       );            
+    } else if (op.optype == OpType.DELIST_FORSALE) {
+      return OperationListItem(
+        type: OperationType.DelistedForSale,
+        address: op.signerAccount.toString(),
+        date:
+            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        payload: "",
+        onPressed: () {
+          AppSheets.showBottomSheet(
+              context: context,
+              animationDurationMs: 200,
+              widget: OperationSheet(
+                payload: "",
+                ophash: op.ophash,
+                operation: op,
+                account: op.signerAccount,
+              ));
+        },
+      );      
     }
     return SizedBox();
   }

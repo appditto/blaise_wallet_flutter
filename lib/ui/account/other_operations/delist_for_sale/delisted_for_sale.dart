@@ -6,18 +6,16 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
 
-class TransferredAccountSheet extends StatefulWidget {
-  final String newAccountPubkey;
+class DelistedForSaleSheet extends StatefulWidget {
+  final AccountNumber account;
   final Currency fee;
 
-  TransferredAccountSheet(
-      {@required this.newAccountPubkey, @required this.fee});
+  DelistedForSaleSheet({@required this.account, @required this.fee}) : super();
 
-  _TransferredAccountSheetState createState() =>
-      _TransferredAccountSheetState();
+  _DelistedForSaleSheetState createState() => _DelistedForSaleSheetState();
 }
 
-class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
+class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,20 +36,16 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [
-                          0.0,
-                          0.7,
-                          0.7,
-                          1.0
-                        ],
-                        colors: [
-                          StateContainer.of(context).curTheme.success,
-                          StateContainer.of(context).curTheme.success,
-                          StateContainer.of(context).curTheme.backgroundPrimary,
-                          StateContainer.of(context).curTheme.backgroundPrimary,
-                        ]),
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.0, 0.7, 0.7, 1.0],
+                      colors: [
+                        StateContainer.of(context).curTheme.success,
+                        StateContainer.of(context).curTheme.success,
+                        StateContainer.of(context).curTheme.backgroundPrimary,
+                        StateContainer.of(context).curTheme.backgroundPrimary,
+                      ]
+                    ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
@@ -74,7 +68,7 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                               width: MediaQuery.of(context).size.width - 130,
                               alignment: Alignment(0, 0),
                               child: AutoSizeText(
-                                "TRANSFERRED",
+                                "DELISTED",
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -96,19 +90,9 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: StateContainer.of(context).curTheme.success,
-                            boxShadow: [
-                              StateContainer.of(context)
-                                  .curTheme
-                                  .shadowTextDarkTwo
-                            ],
+                            boxShadow:[StateContainer.of(context).curTheme.shadowTextDarkTwo],
                           ),
-                          child: Icon(
-                            AppIcons.tick,
-                            size: 40,
-                            color: StateContainer.of(context)
-                                .curTheme
-                                .backgroundPrimary,
-                          ),
+                          child: Icon(AppIcons.tick, size: 40, color: StateContainer.of(context).curTheme.backgroundPrimary,),
                         ),
                       ],
                     ),
@@ -121,30 +105,30 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Your account has been transferred successfully to the public key below.",
+                          "Your account has been successfully delisted from sale.",
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
                           minFontSize: 8,
                         ),
                       ),
-                      // "Address" header
+                      // "Account" header
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Public Key",
+                          "Account",
                           style: AppStyles.textFieldLabelSuccess(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the public key
+                      // Container for the account number
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
@@ -155,29 +139,15 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.newAccountPubkey,
-                          maxLines: 4,
+                          widget.account.toString(),
+                          maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
                           textAlign: TextAlign.center,
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
-                      // "Fee" header
-                      widget.fee != Currency('0')
-                          ? Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                              child: AutoSizeText(
-                                "Fee",
-                                style: AppStyles.textFieldLabelSuccess(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                              ),
-                            )
-                          : SizedBox(),
-                      // Container for the fee
+                       // Container for the fee
                       widget.fee != Currency("0")
                           ? Container(
                               margin:

@@ -195,6 +195,52 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
+                       // Container for the fee
+                      widget.fee != Currency("0")
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .success15),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .success10,
+                              ),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "",
+                                      style: AppStyles
+                                          .iconFontSuccessBalanceSmallPascal(
+                                              context),
+                                    ),
+                                    TextSpan(
+                                        text: " ",
+                                        style: TextStyle(fontSize: 8)),
+                                    TextSpan(
+                                        text: widget.fee.toStringOpt(),
+                                        style: AppStyles.balanceSmallSuccess(
+                                            context)),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                minFontSize: 8,
+                                stepGranularity: 1,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),

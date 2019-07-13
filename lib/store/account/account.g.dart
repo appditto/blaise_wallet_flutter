@@ -164,6 +164,14 @@ mixin _$Account on AccountBase, Store {
         .run(() => super.listAccountForSale(price, accountToPay, fee: fee));
   }
 
+  final _$delistAccountForSaleAsyncAction = AsyncAction('delistAccountForSale');
+
+  @override
+  Future<RPCResponse> delistAccountForSale({Currency fee}) {
+    return _$delistAccountForSaleAsyncAction
+        .run(() => super.delistAccountForSale(fee: fee));
+  }
+
   final _$AccountBaseActionController = ActionController(name: 'AccountBase');
 
   @override

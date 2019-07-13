@@ -6,7 +6,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/listed_for_sale_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/delist_for_sale/delisted_for_sale.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -22,18 +22,16 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
 
-class ListingForSaleSheet extends StatefulWidget {
+class DelistingForSaleSheet extends StatefulWidget {
   final PascalAccount account;
-  final Currency price;
-  final AccountNumber receiver;
   final Currency fee;
 
-  ListingForSaleSheet({@required this.account, @required this.price, @required this.receiver, @required this.fee}) : super();
+  DelistingForSaleSheet({@required this.account, @required this.fee}) : super();
 
-  _ListingForSaleSheetState createState() => _ListingForSaleSheetState();
+  _DelistingForSaleSheetState createState() => _DelistingForSaleSheetState();
 }
 
-class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
+class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
   OverlayEntry _overlay;
   Account accountState;
 
@@ -43,8 +41,8 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
     _authSub = EventTaxiImpl.singleton()
         .registerTo<AuthenticatedEvent>()
         .listen((event) {
-      if (event.authType == AUTH_EVENT_TYPE.LIST_FORSALE) {
-        doList();
+      if (event.authType == AUTH_EVENT_TYPE.DELIST_FORSALE) {
+        doDelist();
       }
     });
   }
@@ -157,7 +155,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "LISTING",
+                          "DELISTING",
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -181,67 +179,18 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Confirm the price and the account that will be receiving the payment.",
+                          "Confirm that you would like to delist this account for sale.",
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
                           minFontSize: 8,
                         ),
                       ),
-                      // "Price" header
+                      // "Account" header
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Price",
-                          style: AppStyles.textFieldLabel(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      // Container for the price
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
-                        ),
-                        child: AutoSizeText.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "",
-                                style:
-                                    AppStyles.iconFontPrimaryBalanceSmallPascal(
-                                        context),
-                              ),
-                              TextSpan(
-                                  text: " ", style: TextStyle(fontSize: 8)),
-                              TextSpan(
-                                  text: widget.price.toStringOpt(),
-                                  style: AppStyles.balanceSmall(context)),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          minFontSize: 8,
-                          stepGranularity: 1,
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      // "Receving Account" header
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Receiving Account",
+                          "Account",
                           style: AppStyles.textFieldLabel(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -262,7 +211,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.receiver.toString(),
+                          widget.account.account.toString(),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -327,7 +276,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.LIST_FORSALE));
+                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.DELIST_FORSALE));
                         }
                       },
                     ),
@@ -353,12 +302,11 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
     );
   }
 
-  Future<void> doList({Currency fee}) async {
+  Future<void> doDelist({Currency fee}) async {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result = await accountState
-          .listAccountForSale(widget.price, widget.receiver);
+      RPCResponse result = await accountState.delistAccountForSale();
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -371,15 +319,14 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
           PascalOperation op = resp.operations[0];
           if (op.valid == null || op.valid) {
             // Update state
-            accountState.changeAccountState(AccountState.LISTED);
+            accountState.changeAccountState(AccountState.NORMAL);
             Navigator.of(context)
                 .popUntil(RouteUtils.withNameLike("/account"));
             AppSheets.showBottomSheet(
                 context: context,
                 closeOnTap: true,
-                widget: ListedForSaleSheet(
-                  receiver: widget.receiver,
-                  price: widget.price,
+                widget: DelistedForSaleSheet(
+                  account: widget.account.account,
                   fee: widget.fee,
                 ));
           } else {
@@ -389,7 +336,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                   context: context,
                   onConfirm: () async {
                     Navigator.of(context).pop();
-                    doList(fee: walletState.MIN_FEE);
+                    doDelist(fee: walletState.MIN_FEE);
                   });
             } else {
               UIUtil.showSnackbar("${op.errors}", context);
@@ -407,7 +354,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
   }
 
   Future<bool> authenticate() async {
-    String message = "Authenticate to list account for sale";
+    String message = "Authenticate to delist account for sale";
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {
