@@ -4,8 +4,15 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class ListedForSaleSheet extends StatefulWidget {
+  final Currency price;
+  final AccountNumber receiver;
+  final Currency fee;
+
+  ListedForSaleSheet({@required this.price, @required this.receiver, @required this.fee}) : super();
+
   _ListedForSaleSheetState createState() => _ListedForSaleSheetState();
 }
 
@@ -143,7 +150,7 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                               TextSpan(
                                   text: " ", style: TextStyle(fontSize: 8)),
                               TextSpan(
-                                  text: "19", style: AppStyles.balanceSmallSuccess(context)),
+                                  text: widget.price.toStringOpt(), style: AppStyles.balanceSmallSuccess(context)),
                             ],
                           ),
                           textAlign: TextAlign.center,
@@ -180,7 +187,7 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "578706-79",
+                          widget.receiver.toString(),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,

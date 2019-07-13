@@ -30,6 +30,7 @@ import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:logger/logger.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class AccountPage extends StatefulWidget {
@@ -43,8 +44,9 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage>
     with SingleTickerProviderStateMixin {
+  final Logger log = Logger();
+
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
-  List<DialogListItem> operationsList;
   Account accountState;
   // Opacity Animation
   Animation<double> _opacityAnimation;
@@ -61,7 +63,6 @@ class _AccountPageState extends State<AccountPage>
     super.initState();
     _isRefreshing = false;
     _registerBus();
-    this.operationsList = getOperationsList();
     this.accountState = walletState.getAccountState(widget.account);
     this.accountState.updateAccount();
     this.accountState.getAccountOperations();
@@ -158,10 +159,12 @@ class _AccountPageState extends State<AccountPage>
       DialogListItem(
         option: "List Account for Sale",
         action: () {
+          print(accountState.account.state);
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
-              context: context, widget: ListForSaleSheet());
+              context: context, widget: ListForSaleSheet(account: accountState.account));
         },
+        disabled: accountState == null || accountState.account.state == AccountState.LISTED
       ),
       DialogListItem(
         option: "Private Sale",
@@ -170,8 +173,12 @@ class _AccountPageState extends State<AccountPage>
           AppSheets.showBottomSheet(
               context: context, widget: CreatePrivateSaleSheet());
         },
+        disabled: accountState == null || accountState.account.state == AccountState.LISTED
       ),
-      DialogListItem(option: "Delist Account", disabled: true),
+      DialogListItem(
+        option: "Delist Account",
+        disabled: accountState == null || accountState.account.state != AccountState.LISTED
+      ),
     ];
   }
 
@@ -472,7 +479,7 @@ class _AccountPageState extends State<AccountPage>
                                                   builder: (_) => DialogOverlay(
                                                       title: 'Other Operations',
                                                       optionsList:
-                                                          operationsList));
+                                                          getOperationsList()));
                                             },
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -802,45 +809,76 @@ class _AccountPageState extends State<AccountPage>
   }
 
   Widget _buildAccountHistoryItem(PascalOperation op) {
-      if (op.optype == OpType.TRANSACTION) {
-        OperationType type;
-        if (op.amount.pasc < BigInt.zero) {
-          type = OperationType.Sent;
-        } else {
-          type = OperationType.Received;
-        }
-        AccountNumber accountToCheck = type == OperationType.Received ?
-          op.senders[0].sendingAccount
-          : op.receivers[0].receivingAccount;
-        List<Contact> contacts = _contacts.where((c) => c.account == accountToCheck).toList();
-        Contact c;
-        if (contacts.length > 0) {
-          c = contacts[0];
-        }
+    if (op.optype == OpType.TRANSACTION) {
+      if (op.senders.length == 0 || op.receivers.length == 0) {
+        log.i("Operation ${op.ophash} has no senders or receivers but it's a transaction!");
+        return SizedBox();
+      }
+      OperationType type;
+      if (op.amount.pasc < BigInt.zero) {
+        type = OperationType.Sent;
+      } else {
+        type = OperationType.Received;
+      }
+      AccountNumber accountToCheck = type == OperationType.Received ?
+        op.senders[0].sendingAccount
+        : op.receivers[0].receivingAccount;
+      List<Contact> contacts = _contacts.where((c) => c.account == accountToCheck).toList();
+      Contact c;
+      if (contacts.length > 0) {
+        c = contacts[0];
+      }
+      return OperationListItem(
+        type: type,
+        amount: op.receivers[0].amount.toStringOpt(),
+        address: c == null ? accountToCheck.toString() : c.name,
+        date:
+            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        payload: op.receivers[0].payload,
+        onPressed: () {
+          AppSheets.showBottomSheet(
+              context: context,
+              animationDurationMs: 200,
+              widget: OperationSheet(
+                payload: op.receivers[0].payload,
+                ophash: op.ophash,
+                operation: op,
+                isContact: c != null,
+                account: type == OperationType.Received
+                    ? op.senders[0].sendingAccount
+                    : op.receivers[0].receivingAccount,
+              ));
+        },
+      );
+    } else if (op.optype == OpType.CHANGE_ACCOUNT_INFO) {
+      // Only show change name
+      if (op.changers.length == 0) {
+        log.i("Changers is empty! ${op.ophash}");
+        return SizedBox();
+      }
+      if (op.changers[0].newName != null) {
         return OperationListItem(
-          type: type,
-          amount: op.receivers[0].amount.toStringOpt(),
-          address: c == null ? accountToCheck.toString() : c.name,
+          type: OperationType.NameChanged,
+          address: op.changers[0].changingAccount.toString(),
           date:
               op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
-          payload: op.receivers[0].payload,
+          payload: "",
+          name: op.changers[0].newName.toString(),
           onPressed: () {
             AppSheets.showBottomSheet(
                 context: context,
                 animationDurationMs: 200,
                 widget: OperationSheet(
-                  payload: op.receivers[0].payload,
+                  payload: "",
                   ophash: op.ophash,
                   operation: op,
-                  isContact: c != null,
-                  account: type == OperationType.Received
-                      ? op.senders[0].sendingAccount
-                      : op.receivers[0].receivingAccount,
+                  account: op.changers[0].changingAccount,
                 ));
           },
-        );
+        );            
       }
-      return SizedBox();
+    }
+    return SizedBox();
   }
 
   List<Widget> getPlaceholderCards() {

@@ -1,21 +1,76 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/listed_for_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/authentication.dart';
+import 'package:blaise_wallet_flutter/util/haptic_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class ListingForSaleSheet extends StatefulWidget {
+  final PascalAccount account;
+  final Currency price;
+  final AccountNumber receiver;
+  final Currency fee;
+
+  ListingForSaleSheet({@required this.account, @required this.price, @required this.receiver, @required this.fee}) : super();
+
   _ListingForSaleSheetState createState() => _ListingForSaleSheetState();
 }
 
 class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
-  showOverlay(BuildContext context) async {
+  OverlayEntry _overlay;
+  Account accountState;
+
+  StreamSubscription<AuthenticatedEvent> _authSub;
+
+  void _registerBus() {
+    _authSub = EventTaxiImpl.singleton()
+        .registerTo<AuthenticatedEvent>()
+        .listen((event) {
+      if (event.authType == AUTH_EVENT_TYPE.LIST_FORSALE) {
+        doList();
+      }
+    });
+  }
+
+  void _destroyBus() {
+    if (_authSub != null) {
+      _authSub.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    _destroyBus();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _registerBus();
+    this.accountState = walletState.getAccountState(widget.account);
+  }
+
+  void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
@@ -42,9 +97,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
             ),
           ),
     );
-    overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(milliseconds: 2000));
-    overlayEntry.remove();
+    overlayState.insert(_overlay);
   }
 
   @override
@@ -171,7 +224,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                               TextSpan(
                                   text: " ", style: TextStyle(fontSize: 8)),
                               TextSpan(
-                                  text: "19",
+                                  text: widget.price.toStringOpt(),
                                   style: AppStyles.balanceSmall(context)),
                             ],
                           ),
@@ -209,7 +262,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          "578706-79",
+                          widget.receiver.toString(),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -228,7 +281,9 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                       text: "CONFIRM",
                       buttonTop: true,
                       onPressed: () async {
-                        return;
+                        if (await authenticate()) {
+                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.LIST_FORSALE));
+                        }
                       },
                     ),
                   ],
@@ -251,5 +306,88 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
         ),
       ],
     );
+  }
+
+  Future<void> doList({Currency fee}) async {
+    fee = fee == null ? widget.fee : fee;
+    try {
+      showOverlay(context);
+      RPCResponse result = await accountState
+          .listAccountForSale(widget.price, widget.receiver);
+      if (result.isError) {
+        ErrorResponse errResp = result;
+        UIUtil.showSnackbar(errResp.errorMessage, context);
+        _overlay?.remove();
+        Navigator.of(context).pop();
+      } else {
+        _overlay?.remove();
+        try {
+          OperationsResponse resp = result;
+          PascalOperation op = resp.operations[0];
+          if (op.valid == null || op.valid) {
+            // Update state
+            accountState.changeAccountState(AccountState.LISTED);
+            Navigator.of(context)
+                .popUntil(RouteUtils.withNameLike("/account"));
+            AppSheets.showBottomSheet(
+                context: context,
+                closeOnTap: true,
+                widget: ListedForSaleSheet(
+                  receiver: widget.receiver,
+                  price: widget.price,
+                  fee: widget.fee,
+                ));
+          } else {
+            if (op.errors.contains("zero fee") &&
+                widget.fee == walletState.NO_FEE) {
+              UIUtil.showFeeDialog(
+                  context: context,
+                  onConfirm: () async {
+                    Navigator.of(context).pop();
+                    doList(fee: walletState.MIN_FEE);
+                  });
+            } else {
+              UIUtil.showSnackbar("${op.errors}", context);
+            }
+          }
+        } catch (e) {
+          UIUtil.showSnackbar(
+              "Something went wrong, try again later.", context);
+        }
+      }
+    } catch (e) {
+      _overlay?.remove();
+      UIUtil.showSnackbar("Something went wrong, try again later.", context);
+    }
+  }
+
+  Future<bool> authenticate() async {
+    String message = "Authenticate to list account for sale";
+    // Authenticate
+    AuthUtil authUtil = AuthUtil();
+    if (await authUtil.useBiometrics()) {
+      // Biometric auth
+      bool authenticated = await authUtil.authenticateWithBiometrics(message);
+      if (authenticated) {
+        HapticUtil.fingerprintSucess();
+      }
+      return authenticated;
+    } else {
+      String expectedPin = await sl.get<Vault>().getPin();
+      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
+          builder: (BuildContext context) {
+        return PinScreen(
+          type: PinOverlayType.ENTER_PIN,
+          onSuccess: (pin) {
+            Navigator.of(context).pop(true);
+          },
+          expectedPin: expectedPin,
+          description:
+              message,
+        );
+      }));
+      await Future.delayed(Duration(milliseconds: 200));
+      return result != null && result;
+    }   
   }
 }

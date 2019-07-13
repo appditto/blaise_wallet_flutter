@@ -154,6 +154,16 @@ mixin _$Account on AccountBase, Store {
         .run(() => super.changeAccountName(newName, fee: fee));
   }
 
+  final _$listAccountForSaleAsyncAction = AsyncAction('listAccountForSale');
+
+  @override
+  Future<RPCResponse> listAccountForSale(
+      Currency price, AccountNumber accountToPay,
+      {Currency fee}) {
+    return _$listAccountForSaleAsyncAction
+        .run(() => super.listAccountForSale(price, accountToPay, fee: fee));
+  }
+
   final _$AccountBaseActionController = ActionController(name: 'AccountBase');
 
   @override
@@ -201,6 +211,16 @@ mixin _$Account on AccountBase, Store {
     final _$actionInfo = _$AccountBaseActionController.startAction();
     try {
       return super.hasOperationsToDisplay();
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeAccountState(AccountState accountState) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.changeAccountState(accountState);
     } finally {
       _$AccountBaseActionController.endAction(_$actionInfo);
     }

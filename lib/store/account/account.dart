@@ -133,6 +133,11 @@ abstract class AccountBase with Store {
   }
 
   @action
+  void changeAccountState(AccountState accountState) {
+    this.account.state = accountState;
+  }
+
+  @action
   Future<RPCResponse> doSend({@required String amount, @required String destination, Currency fee, String payload = ""}) async {
     fee = fee == null ? Currency('0') : fee;
     // Construct send
@@ -209,6 +214,29 @@ abstract class AccountBase with Store {
     ..withFee(fee)
     ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
     // Construct execute request
+    ExecuteOperationsRequest request = ExecuteOperationsRequest(
+      rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
+    );
+    // Make request
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    return resp;
+  }
+
+  @action
+  Future<RPCResponse> listAccountForSale(Currency price, AccountNumber accountToPay, {Currency fee}) async {
+    fee = fee == null ? Currency('0') : fee;
+    // Construct list for sale
+    ListForSaleOperation op = ListForSaleOperation(
+      accountSigner: account.account,
+      targetSigner: account.account,
+      price: price,
+      accountToPay: accountToPay
+    )
+    ..withNOperation(account.nOperation + 1)
+    ..withPayload(PDUtil.stringToBytesUtf8(""))
+    ..withFee(fee)
+    ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
+    // Execute request
     ExecuteOperationsRequest request = ExecuteOperationsRequest(
       rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
     );
