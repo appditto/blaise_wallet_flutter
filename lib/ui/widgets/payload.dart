@@ -13,8 +13,9 @@ import 'package:quiver/strings.dart';
 
 class Payload extends StatefulWidget {
   final Function onPayloadChanged;
+  final String initialPayload;
 
-  Payload({@required this.onPayloadChanged}) : super();
+  Payload({@required this.onPayloadChanged, this.initialPayload = ""}) : super();
 
   @override
   _PayloadState createState() => _PayloadState();
@@ -27,8 +28,8 @@ class _PayloadState extends State<Payload> {
   @override
   void initState() {
     super.initState();
-    this._hasPayload = false;
-    this._payload = "";
+    this._hasPayload = isNotEmpty(widget.initialPayload);
+    this._payload = widget.initialPayload;
   }
 
   void handlePayloadChange(String newPayload) {

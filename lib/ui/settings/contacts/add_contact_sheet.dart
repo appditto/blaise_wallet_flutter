@@ -225,11 +225,6 @@ class _AddContactSheetState extends State<AddContactSheet> {
                             EventTaxiImpl.singleton().fire(ContactModifiedEvent(contact: newContact));
                             Navigator.of(context).pop();
                           }
-                          Navigator.of(context).pop();
-                          UIUtil.showSnackbar(
-                            "@yekta added to contacts",
-                            context,
-                          );
                         },
                       ),
                     ],

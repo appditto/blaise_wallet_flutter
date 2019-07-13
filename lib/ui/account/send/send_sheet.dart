@@ -397,6 +397,7 @@ class _SendSheetState extends State<SendSheet> {
                                       amountError == null ? "" : amountError,
                                 ),
                                 Payload(
+                                  initialPayload: _payload,
                                   onPayloadChanged: (newPayload) {
                                     setState(() {
                                       _payload = newPayload;
