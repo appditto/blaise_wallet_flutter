@@ -350,6 +350,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           child: Stack(
                             children: <Widget>[
                               ListView.builder(
+                                physics: AlwaysScrollableScrollPhysics(),
                                 padding: EdgeInsetsDirectional.only(
                                     bottom:
                                         MediaQuery.of(context).padding.bottom +

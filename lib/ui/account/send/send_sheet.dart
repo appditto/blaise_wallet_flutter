@@ -682,6 +682,7 @@ class _SendSheetState extends State<SendSheet> {
               StateContainer.of(context).curTheme.shadowAccountCard
             ]),
         child: ListView.builder(
+          physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           itemCount: _contacts.length,
           itemBuilder: (context, index) {

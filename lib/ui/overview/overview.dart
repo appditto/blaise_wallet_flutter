@@ -587,6 +587,7 @@ class _OverviewPageState extends State<OverviewPage>
                                       onRefresh: _refresh,
                                       isRefreshing: _isRefreshing,
                                       child: ListView.builder(
+                                          physics: AlwaysScrollableScrollPhysics(),
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 3, 0, 19),

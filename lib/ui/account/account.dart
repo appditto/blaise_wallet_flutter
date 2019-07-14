@@ -44,7 +44,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final Logger log = Logger();
 
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
@@ -59,9 +59,13 @@ class _AccountPageState extends State<AccountPage>
   // Reference to contacts list
   List<Contact> _contacts;
 
+  // Last refresh
+  DateTime _lastRefresh;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _isRefreshing = false;
     _registerBus();
     this.accountState = walletState.getAccountState(widget.account);
@@ -117,8 +121,30 @@ class _AccountPageState extends State<AccountPage>
   void dispose() {
     _disposeAnimations();
     _destroyBus();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Account for user changing locale when leaving the app
+    switch (state) {
+      case AppLifecycleState.paused:
+        super.didChangeAppLifecycleState(state);
+        break;
+      case AppLifecycleState.resumed:
+        // Do an auto-refresh
+        if (_lastRefresh == null || DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 30) {
+          _refresh();
+        }
+        super.didChangeAppLifecycleState(state);
+        break;
+      default:
+        super.didChangeAppLifecycleState(state);
+        break;
+    }
+  }
+
 
   void _startAnimation() {
     _opacityAnimationController.addListener(_animationControllerListener);
@@ -219,6 +245,7 @@ class _AccountPageState extends State<AccountPage>
 
   // Refresh list
   Future<void> _refresh() async {
+    _lastRefresh = DateTime.now().toUtc();
     setState(() {
       _isRefreshing = true;
     });
@@ -718,6 +745,7 @@ class _AccountPageState extends State<AccountPage>
                                                         isRefreshing:
                                                             _isRefreshing,
                                                         child: accountState.hasOperationsToDisplay() ? ListView.builder(
+                                                            physics: AlwaysScrollableScrollPhysics(),
                                                             padding:
                                                                 EdgeInsetsDirectional
                                                                     .only(
