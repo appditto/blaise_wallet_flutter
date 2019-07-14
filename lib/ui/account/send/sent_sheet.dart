@@ -3,6 +3,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
@@ -12,11 +13,13 @@ class SentSheet extends StatefulWidget {
   final String amount;
   final String payload;
   final Currency fee;
+  final Contact contact;
 
   SentSheet(
       {@required this.destination,
       @required this.amount,
       @required this.fee,
+      this.contact,
       this.payload = ""});
 
   _SentSheetState createState() => _SentSheetState();
@@ -161,7 +164,7 @@ class _SentSheetState extends State<SentSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.destination,
+                          widget.contact == null ? widget.destination : "${widget.contact.name} (${widget.contact.account.toString()})",
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,

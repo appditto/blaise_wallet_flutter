@@ -49,7 +49,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
     this.addressController = TextEditingController();
     this.payload = "";
     if (widget.account == null) {
-      this.addressController.addListener(() {
+      this.addressFocusNode.addListener(() {
         if (!this.addressFocusNode.hasFocus) {
           try {
             AccountNumber numberFormatted =

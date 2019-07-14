@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -10,6 +12,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/strings.dart';
+import 'package:event_taxi/event_taxi.dart';
 
 class Payload extends StatefulWidget {
   final Function onPayloadChanged;
@@ -25,11 +28,37 @@ class _PayloadState extends State<Payload> {
   bool _hasPayload;
   String _payload;
 
+  StreamSubscription<PayloadChangedEvent> _payloadSub;
+
+  void _registerBus() {
+    _payloadSub = EventTaxiImpl.singleton()
+        .registerTo<PayloadChangedEvent>()
+        .listen((event) {
+      setState(() {
+        _payload = event.payload;
+        _hasPayload = isNotEmpty(event.payload);
+      });
+    });
+  }
+
+  void _destroyBus() {
+    if (_payloadSub != null) {
+      _payloadSub.cancel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _registerBus();
     this._hasPayload = isNotEmpty(widget.initialPayload);
     this._payload = widget.initialPayload;
+  }
+
+  @override
+  void dispose() {
+    _destroyBus();
+    super.dispose();
   }
 
   void handlePayloadChange(String newPayload) {

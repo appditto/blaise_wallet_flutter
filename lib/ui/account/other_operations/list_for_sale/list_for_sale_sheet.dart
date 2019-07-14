@@ -45,7 +45,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
     this.priceController = TextEditingController();
     this.receiverController = TextEditingController();
     this._hasFee = walletState.shouldHaveFee();
-    this.receiverController.addListener(() {
+    this.receiverFocusNode.addListener(() {
       if (!this.receiverFocusNode.hasFocus) {
         try {
           AccountNumber numberFormatted =

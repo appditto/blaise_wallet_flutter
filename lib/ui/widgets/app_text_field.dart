@@ -54,7 +54,6 @@ class AppTextField extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
   final Function onChanged;
   final Function onTap;
-  final bool isAddress;
   final bool readOnly;
 
   AppTextField(
@@ -71,7 +70,6 @@ class AppTextField extends StatefulWidget {
       this.inputFormatters,
       this.onChanged,
       this.onTap,
-      this.isAddress = false,
       this.passwordField = false,
       this.readOnly = false});
 

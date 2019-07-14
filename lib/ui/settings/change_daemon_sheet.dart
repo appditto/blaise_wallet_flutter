@@ -39,7 +39,7 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
         daemonController.text = val;
       }
     });
-    this.daemonController.addListener(() {
+    this.daemonFocusNode.addListener(() {
       if (!this.daemonFocusNode.hasFocus) {
         if (isIP(daemonController.text)) {
           if (!daemonController.text.contains(":")) {

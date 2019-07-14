@@ -1,7 +1,8 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sending_sheet.dart';
@@ -23,6 +24,7 @@ import 'package:decimal/decimal.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
+import 'package:event_taxi/event_taxi.dart';
 
 class SendSheet extends StatefulWidget {
   final PascalAccount account;
@@ -56,6 +58,10 @@ class _SendSheetState extends State<SendSheet> {
   // Fee
   bool _hasFee;
 
+  // Contacts list
+  List<Contact> _contacts;
+  bool _isValidContactAndUnfocused;
+
   @override
   void initState() {
     super.initState();
@@ -65,22 +71,71 @@ class _SendSheetState extends State<SendSheet> {
     this.amountFocusNode = FocusNode();
     this._payload = "";
     this._hasFee = walletState.shouldHaveFee();
+    this._isValidContactAndUnfocused = false;
+    this._contacts = [];
     // TODO this is a placeholder
     _localCurrencyFormat =
         NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
-    this.addressController.addListener(() {
+    this.addressFocusNode.addListener(() {
       if (!this.addressFocusNode.hasFocus) {
-        try {
-          AccountNumber numberFormatted =
-              AccountNumber(this.addressController.text);
-          this.addressController.text = numberFormatted.toString();
-        } catch (e) {}
+        // When unfocused, add checksum to account if applicable
+        if (!this.addressController.text.startsWith("@")) {
+          try {
+            AccountNumber numberFormatted =
+                AccountNumber(this.addressController.text);
+            this.addressController.text = numberFormatted.toString();
+          } catch (e) {}
+        }
+        // Reset contacts list and check if contact is valid
+        if (mounted) {
+          setState(() {
+            _contacts = [];
+          });
+        }
+        sl.get<DBHelper>().getContactWithName(this.addressController.text).then((contact) {
+          if (contact != null && mounted) {
+            this.addressController.text = this.addressController.text.substring(1);
+            setState(() {
+              _isValidContactAndUnfocused = true;
+            });
+            EventTaxiImpl.singleton().fire(PayloadChangedEvent(
+              payload: contact.payload
+            ));
+          }
+        });
+      } else {
+        // When focused
+        if (this._isValidContactAndUnfocused) {
+          setState(() {
+            _isValidContactAndUnfocused = false;
+          });
+          this.addressController.text = "@${addressController.text}";
+        }
+        if (this.addressController.text.length == 0) {
+          // Show contacts list
+          sl.get<DBHelper>().getContacts().then((contacts) {
+            if (mounted) {
+              setState(() {
+                _contacts = contacts;
+              });
+            }
+          });
+        } else if (this.addressController.text.startsWith("@")) {
+          sl.get<DBHelper>().getContactsWithNameLike(this.addressController.text).then((contacts) {
+            if (mounted) {
+              setState(() {
+                _contacts = contacts;
+              });
+            }
+          });
+        }
       }
     });
     // Initial contact information
     if (widget.contact != null) {
-      this.addressController.text = widget.contact.name.toString();
+      this.addressController.text = widget.contact.name.toString().substring(1);
       this._payload = widget.contact.payload;
+      this._isValidContactAndUnfocused = true;
     }
   }
 
@@ -288,20 +343,19 @@ class _SendSheetState extends State<SendSheet> {
                                       30, 10, 30, 0),
                                   child: AppTextField(
                                     label: 'Address',
-                                    style: AppStyles.paragraphMedium(context),
+                                    style: _isValidContactAndUnfocused ? AppStyles.contactsItemName(context) : AppStyles.paragraphMedium(context),
+                                    prefix: _isValidContactAndUnfocused ? 
+                                      Text("@",
+                                      style: AppStyles.settingsHeader(context)) : null,
                                     maxLines: 1,
-                                    isAddress: true,
-                                    inputFormatters: [
-                                      WhitelistingTextInputFormatter(
-                                          RegExp("[0-9-]")),
-                                      PascalAccountFormatter()
-                                    ],
-                                    onChanged: (text) {
-                                      if (destinationError != null) {
+                                    onChanged: (text) async {
+                                      if (destinationError != null && mounted) {
                                         setState(() {
                                           destinationError = null;
                                         });
                                       }
+                                      // Handle contacts
+                                     await _checkAndUpdateContacts();
                                     },
                                     focusNode: addressFocusNode,
                                     controller: addressController,
@@ -315,7 +369,9 @@ class _SendSheetState extends State<SendSheet> {
                                                 AccountNumber(data.text);
                                             addressController.text =
                                                 num.toString();
-                                          } catch (e) {}
+                                          } catch (e) {
+                                            checkAndValidateContact(name: data.text);
+                                          }
                                         });
                                       },
                                     ),
@@ -448,8 +504,8 @@ class _SendSheetState extends State<SendSheet> {
                         type: AppButtonType.Primary,
                         text: "Send",
                         buttonTop: true,
-                        onPressed: () {
-                          validateAndSend();
+                        onPressed: () async {
+                          await validateAndSend();
                         },
                       ),
                     ],
@@ -475,22 +531,43 @@ class _SendSheetState extends State<SendSheet> {
     );
   }
 
-  void validateAndSend() {
+  Future<void> validateAndSend() async {
     bool hasError = false;
+    Contact contact;
     Account accountState = walletState.getAccountState(widget.account);
-    if (accountState.accountBalance < Currency(amountController.text)) {
+    if (amountController.text.length == 0) {
+      hasError = true;
+      setState(() {
+        amountError = "Amount is Required";
+      });
+    } else if (accountState.accountBalance < Currency(amountController.text)) {
       hasError = true;
       setState(() {
         amountError = "Insufficent Balance";
       });
     }
-    try {
-      AccountNumber(addressController.text);
-    } catch (e) {
-      hasError = true;
-      setState(() {
-        destinationError = "Invalid Destination";
-      });
+    String contactNameToCheck;
+    if (addressController.text.startsWith("@")) {
+      contactNameToCheck = addressController.text;
+    } else if (_isValidContactAndUnfocused) {
+      contactNameToCheck = "@${addressController.text}";
+    }
+    if (contactNameToCheck != null) {
+      contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
+      if (contact == null) {
+        setState(() {
+          destinationError = "Contact Does Not Exist";
+        });
+      }
+    } else {
+      try {
+        AccountNumber(addressController.text);
+      } catch (e) {
+        hasError = true;
+        setState(() {
+          destinationError = "Invalid Destination";
+        });
+      }
     }
     if (!hasError) {
       AppSheets.showBottomSheet(
@@ -501,7 +578,8 @@ class _SendSheetState extends State<SendSheet> {
               source: widget.account,
               fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE,
               payload: _payload,
-              fromOverview: widget.fromOverview),
+              fromOverview: widget.fromOverview,
+              contact: contact),
           noBlur: true);
     }
   }
@@ -579,121 +657,100 @@ class _SendSheetState extends State<SendSheet> {
   }
 
   Widget _getContactsPopup() {
-    return this.addressFocusNode.hasFocus
-        ? Material(
+    return _contacts.length > 0 ? Material(
+      color: StateContainer.of(context).curTheme.backgroundPrimary,
+      child: Container(
+        constraints: BoxConstraints(maxHeight: 138),
+        width: MediaQuery.of(context).size.width - 60,
+        margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 3),
+        decoration: BoxDecoration(
             color: StateContainer.of(context).curTheme.backgroundPrimary,
-            child: Container(
-              constraints: BoxConstraints(maxHeight: 138),
-              width: MediaQuery.of(context).size.width - 60,
-              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 3),
-              decoration: BoxDecoration(
-                  color: StateContainer.of(context).curTheme.backgroundPrimary,
-                  boxShadow: [
-                    StateContainer.of(context).curTheme.shadowAccountCard
-                  ]),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.zero,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: double.maxFinite,
-                      height: 46,
-                      child: FlatButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          return null;
-                        },
-                        child: Container(
-                          alignment: Alignment(-1, 0),
-                          margin:
-                              EdgeInsetsDirectional.only(start: 16, end: 16),
-                          child: AutoSizeText.rich(
-                            TextSpan(children: [
-                              TextSpan(
-                                text: "@",
-                                style: AppStyles.settingsHeader(context),
-                              ),
-                              TextSpan(
-                                text: "bbedward",
-                                style: AppStyles.contactsItemName(context),
-                              ),
-                            ]),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: double.maxFinite,
-                      height: 46,
-                      child: FlatButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          return null;
-                        },
-                        child: Container(
-                          alignment: Alignment(-1, 0),
-                          margin:
-                              EdgeInsetsDirectional.only(start: 16, end: 16),
-                          child: AutoSizeText.rich(
-                            TextSpan(children: [
-                              TextSpan(
-                                text: "@",
-                                style: AppStyles.settingsHeader(context),
-                              ),
-                              TextSpan(
-                                text: "bbedward2",
-                                style: AppStyles.contactsItemName(context),
-                              ),
-                            ]),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: double.maxFinite,
-                      height: 46,
-                      child: FlatButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          return null;
-                        },
-                        child: Container(
-                          alignment: Alignment(-1, 0),
-                          margin:
-                              EdgeInsetsDirectional.only(start: 16, end: 16),
-                          child: AutoSizeText.rich(
-                            TextSpan(children: [
-                              TextSpan(
-                                text: "@",
-                                style: AppStyles.settingsHeader(context),
-                              ),
-                              TextSpan(
-                                text: "bbedward3",
-                                style: AppStyles.contactsItemName(context),
-                              ),
-                            ]),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            boxShadow: [
+              StateContainer.of(context).curTheme.shadowAccountCard
+            ]),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          itemCount: _contacts.length,
+          itemBuilder: (context, index) {
+            return _buildContactItem(_contacts[index]);
+          },
+        ),
+      )
+    ) : SizedBox();
+  }
+
+  Widget _buildContactItem(Contact contact) {
+    return Container(
+      width: double.maxFinite,
+      height: 46,
+      child: FlatButton(
+        padding: EdgeInsets.all(0),
+        onPressed: () {
+          checkAndValidateContact(contact: contact);
+        },
+        child: Container(
+          alignment: Alignment(-1, 0),
+          margin:
+              EdgeInsetsDirectional.only(start: 16, end: 16),
+          child: AutoSizeText.rich(
+            TextSpan(children: [
+              TextSpan(
+                text: contact.name[0],
+                style: AppStyles.settingsHeader(context),
               ),
-            ),
-          )
-        : SizedBox();
+              TextSpan(
+                text: contact.name.substring(1),
+                style: AppStyles.contactsItemName(context),
+              ),
+            ]),
+            maxLines: 1,
+            stepGranularity: 0.1,
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
+    );    
+  }
+
+  /// When address text field is changed
+  Future<void> _checkAndUpdateContacts() async {
+    bool isContact = addressController.text.startsWith("@");
+    if (isContact) {
+      List<Contact> matches = await sl.get<DBHelper>().getContactsWithNameLike(addressController.text);
+      if (mounted) {
+        setState(() {
+          _contacts = matches;
+        });      
+      }
+    } else if (addressController.text.isEmpty) {
+      List<Contact> allContacts = await sl.get<DBHelper>().getContacts();
+      if (mounted) {
+        setState(() {
+          _contacts = allContacts;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _contacts = [];
+        });
+      }
+    }
+  }
+
+  /// When checking and validating a contact string (e.g. from paste button)
+  Future<void> checkAndValidateContact({String name, Contact contact}) async {
+    Contact c = name != null ? await sl.get<DBHelper>().getContactWithName(name) : contact;
+    if (c != null && mounted) {
+      addressFocusNode.unfocus();
+      addressController.text = c.name.substring(1);
+      setState(() {
+        _isValidContactAndUnfocused = true;
+      });
+      EventTaxiImpl.singleton().fire(PayloadChangedEvent(
+        payload: c.payload
+      ));
+    }
   }
 }

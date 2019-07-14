@@ -16,6 +16,7 @@ import 'package:blaise_wallet_flutter/util/authentication.dart';
 import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +31,14 @@ class SendingSheet extends StatefulWidget {
   final PascalAccount source;
   final Currency fee;
   final bool fromOverview;
+  final Contact contact;
 
   SendingSheet(
       {@required this.destination,
       @required this.amount,
       @required this.source,
       @required this.fee,
+      this.contact,
       this.payload = "",
       this.fromOverview = false});
 
@@ -223,7 +226,7 @@ class _SendingSheetState extends State<SendingSheet>  {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.destination,
+                          widget.contact == null ? widget.destination : "${widget.contact.name} (${widget.contact.account.toString()})",
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -477,7 +480,7 @@ class _SendingSheetState extends State<SendingSheet>  {
           .getAccountState(widget.source)
           .doSend(
               amount: widget.amount,
-              destination: widget.destination,
+              destination: widget.contact == null ? widget.destination : widget.contact.account.toString(),
               payload: widget.payload,
               fee: fee);
       if (result.isError) {
@@ -495,10 +498,11 @@ class _SendingSheetState extends State<SendingSheet>  {
               context: context,
               closeOnTap: true,
               widget: SentSheet(
-                  destination: widget.destination,
+                  destination: widget.contact == null ? widget.destination : widget.contact.account.toString(),
                   amount: widget.amount,
                   fee: fee,
-                  payload: widget.payload));
+                  payload: widget.payload,
+                  contact: widget.contact));
         } else {
           if (op.errors.contains("zero fee") &&
               widget.fee == walletState.NO_FEE) {
