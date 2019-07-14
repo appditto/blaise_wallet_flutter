@@ -187,13 +187,18 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                     ],
                                   ),
                                 ),
+                                _hasFee
+                                  ? FeeContainer(
+                                      feeText:
+                                          walletState.MIN_FEE.toStringOpt())
+                                  : SizedBox(),
                                 ErrorContainer(
                                   errorText: _priceErr ?? ""
                                 ),
                                 // Container for receving account field
                                 Container(
                                   margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 30, 30, 40),
+                                      30, 30, 30, 0),
                                   child: AppTextField(
                                     label: 'Receiving Account',
                                     style: AppStyles.privateKeyTextDark(context),
@@ -227,13 +232,11 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                     controller: receiverController,
                                   ),
                                 ),
-                                _hasFee
-                                  ? FeeContainer(
-                                      feeText:
-                                          walletState.MIN_FEE.toStringOpt())
-                                  : SizedBox(),
-                                ErrorContainer(
-                                  errorText: _receiverErr ?? ""
+                                Container(
+                                  margin: EdgeInsetsDirectional.only(bottom: 40),
+                                  child: ErrorContainer(
+                                    errorText: _receiverErr ?? ""
+                                  ),
                                 ),
                               ],
                             ),

@@ -258,6 +258,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                       buttonTop: true,
                       onPressed: () {
                         if (widget.account != null) {
+                          Navigator.pop(context);
                           AppSheets.showBottomSheet(
                             context: context,
                             widget: SendSheet(
@@ -310,6 +311,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
       ret.add(DialogListItem(
         option: "${acct.account.toString()} (${acct.balance.toStringOpt()} PASC)",
         action: () {
+          Navigator.of(context).pop();
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
             context: context,

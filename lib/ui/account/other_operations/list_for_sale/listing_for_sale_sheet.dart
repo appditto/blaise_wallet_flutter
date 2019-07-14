@@ -28,7 +28,12 @@ class ListingForSaleSheet extends StatefulWidget {
   final AccountNumber receiver;
   final Currency fee;
 
-  ListingForSaleSheet({@required this.account, @required this.price, @required this.receiver, @required this.fee}) : super();
+  ListingForSaleSheet(
+      {@required this.account,
+      @required this.price,
+      @required this.receiver,
+      @required this.fee})
+      : super();
 
   _ListingForSaleSheetState createState() => _ListingForSaleSheetState();
 }
@@ -72,30 +77,30 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationSale,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationSale,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(_overlay);
   }
@@ -188,53 +193,160 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                           minFontSize: 8,
                         ),
                       ),
-                      // "Price" header
+                      // Price and fee
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Price",
-                          style: AppStyles.textFieldLabel(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      // Container for the price
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
-                        ),
-                        child: AutoSizeText.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "",
-                                style:
-                                    AppStyles.iconFontPrimaryBalanceSmallPascal(
-                                        context),
-                              ),
-                              TextSpan(
-                                  text: " ", style: TextStyle(fontSize: 8)),
-                              TextSpan(
-                                  text: widget.price.toStringOpt(),
-                                  style: AppStyles.balanceSmall(context)),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          minFontSize: 8,
-                          stepGranularity: 1,
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
+                        child: Row(
+                          children: <Widget>[
+                            // Price
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                // "Price" header
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              76 / 2),
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      0, 30, 0, 0),
+                                  child: AutoSizeText(
+                                    "Price",
+                                    style: AppStyles.textFieldLabel(context),
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                // Container for the Price
+                                Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              76 / 2),
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      0, 12, 0, 0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 8, 12, 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .primary15),
+                                    color: StateContainer.of(context)
+                                        .curTheme
+                                        .primary10,
+                                  ),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "",
+                                          style: AppStyles
+                                              .iconFontPrimaryBalanceSmallPascal(
+                                                  context),
+                                        ),
+                                        TextSpan(
+                                            text: " ",
+                                            style: TextStyle(fontSize: 8)),
+                                        TextSpan(
+                                            text: widget.price.toStringOpt(),
+                                            style: AppStyles.balanceSmall(
+                                                context)),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    stepGranularity: 1,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            widget.fee != Currency("0")
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      // "Fee" header
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                76 / 2),
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            16, 30, 0, 0),
+                                        child: AutoSizeText(
+                                          "Fee",
+                                          style:
+                                              AppStyles.textFieldLabel(context),
+                                          maxLines: 1,
+                                          stepGranularity: 0.1,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                      // Container for the fee
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                76 / 2),
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            16, 12, 0, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 8, 12, 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                              width: 1,
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .primary15),
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .primary10,
+                                        ),
+                                        child: AutoSizeText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "",
+                                                style: AppStyles
+                                                    .iconFontPrimaryBalanceSmallPascal(
+                                                        context),
+                                              ),
+                                              TextSpan(
+                                                  text: " ",
+                                                  style:
+                                                      TextStyle(fontSize: 8)),
+                                              TextSpan(
+                                                  text:
+                                                      widget.fee.toStringOpt(),
+                                                  style: AppStyles.balanceSmall(
+                                                      context)),
+                                            ],
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          minFontSize: 8,
+                                          stepGranularity: 1,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
+                          ],
                         ),
                       ),
                       // "Receving Account" header
@@ -270,51 +382,6 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
-                      // Container for the fee
-                      widget.fee != Currency('0')
-                          ? Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    width: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .primary15),
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .primary10,
-                              ),
-                              child: AutoSizeText.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "",
-                                      style: AppStyles
-                                          .iconFontPrimaryBalanceSmallPascal(
-                                              context),
-                                    ),
-                                    TextSpan(
-                                        text: " ",
-                                        style: TextStyle(fontSize: 8)),
-                                    TextSpan(
-                                        text: widget.fee.toStringOpt(),
-                                        style: AppStyles.balanceSmall(context)),
-                                  ],
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                minFontSize: 8,
-                                stepGranularity: 1,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            )
-                          : SizedBox()
                     ],
                   ),
                 ),
@@ -327,7 +394,8 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.LIST_FORSALE));
+                          EventTaxiImpl.singleton().fire(
+                              AuthenticatedEvent(AUTH_EVENT_TYPE.LIST_FORSALE));
                         }
                       },
                     ),
@@ -357,8 +425,8 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result = await accountState
-          .listAccountForSale(widget.price, widget.receiver);
+      RPCResponse result =
+          await accountState.listAccountForSale(widget.price, widget.receiver);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -372,8 +440,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
           if (op.valid == null || op.valid) {
             // Update state
             accountState.changeAccountState(AccountState.LISTED);
-            Navigator.of(context)
-                .popUntil(RouteUtils.withNameLike("/account"));
+            Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
             AppSheets.showBottomSheet(
                 context: context,
                 closeOnTap: true,
@@ -419,20 +486,19 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
       return authenticated;
     } else {
       String expectedPin = await sl.get<Vault>().getPin();
-      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
-          builder: (BuildContext context) {
+      bool result = await Navigator.of(context)
+          .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
         return PinScreen(
           type: PinOverlayType.ENTER_PIN,
           onSuccess: (pin) {
             Navigator.of(context).pop(true);
           },
           expectedPin: expectedPin,
-          description:
-              message,
+          description: message,
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
       return result != null && result;
-    }   
+    }
   }
 }
