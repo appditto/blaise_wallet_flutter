@@ -324,7 +324,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
     try {
       showOverlay(context);
       RPCResponse result =
-          await accountState.changeAccountName(widget.newName, fee: widget.fee);
+          await accountState.changeAccountName(widget.newName, fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -344,7 +344,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                 closeOnTap: true,
                 widget: ChangedNameSheet(
                   newName: widget.newName,
-                  fee: widget.fee,
+                  fee: fee,
                 ));
           } else {
             if (op.errors.contains("zero fee") &&

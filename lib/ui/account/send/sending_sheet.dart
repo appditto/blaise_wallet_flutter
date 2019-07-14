@@ -497,7 +497,7 @@ class _SendingSheetState extends State<SendingSheet>  {
               widget: SentSheet(
                   destination: widget.destination,
                   amount: widget.amount,
-                  fee: widget.fee,
+                  fee: fee,
                   payload: widget.payload));
         } else {
           if (op.errors.contains("zero fee") &&

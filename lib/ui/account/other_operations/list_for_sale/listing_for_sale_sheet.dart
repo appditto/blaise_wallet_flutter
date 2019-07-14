@@ -426,7 +426,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
     try {
       showOverlay(context);
       RPCResponse result =
-          await accountState.listAccountForSale(widget.price, widget.receiver);
+          await accountState.listAccountForSale(widget.price, widget.receiver, fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -447,7 +447,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                 widget: ListedForSaleSheet(
                   receiver: widget.receiver,
                   price: widget.price,
-                  fee: widget.fee,
+                  fee: fee,
                 ));
           } else {
             if (op.errors.contains("zero fee") &&

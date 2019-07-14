@@ -327,7 +327,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     try {
       showOverlay(context);
       RPCResponse result = await accountState
-          .transferAccount(widget.publicKeyDisplay, fee: widget.fee);
+          .transferAccount(widget.publicKeyDisplay, fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -348,7 +348,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                 closeOnTap: true,
                 widget: TransferredAccountSheet(
                   newAccountPubkey: widget.publicKeyDisplay,
-                  fee: widget.fee,
+                  fee: fee,
                 ));
           } else {
             if (op.errors.contains("zero fee") &&

@@ -321,7 +321,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result = await accountState.delistAccountForSale();
+      RPCResponse result = await accountState.delistAccountForSale(fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -342,7 +342,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                 closeOnTap: true,
                 widget: DelistedForSaleSheet(
                   account: widget.account.account,
-                  fee: widget.fee,
+                  fee: fee,
                 ));
           } else {
             if (op.errors.contains("zero fee") &&

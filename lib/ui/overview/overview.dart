@@ -473,59 +473,66 @@ class _OverviewPageState extends State<OverviewPage>
                                       .backgroundPrimary,
                               onRefresh: _refresh,
                               isRefreshing: _isRefreshing,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              child: Stack(
                                 children: <Widget>[
-                                  //Container for the paragraph
-                                  Container(
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 0, 30, 0),
-                                    child: AutoSizeText.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "Welcome to",
-                                            style: AppStyles.paragraph(context),
+                                  ListView(),
+                                  Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        //Container for the paragraph
+                                        Container(
+                                          margin: EdgeInsetsDirectional.fromSTEB(
+                                              30, 0, 30, 0),
+                                          child: AutoSizeText.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Welcome to",
+                                                  style: AppStyles.paragraph(context),
+                                                ),
+                                                TextSpan(
+                                                  text: " Blaise Wallet",
+                                                  style: AppStyles.paragraphPrimary(
+                                                      context),
+                                                ),
+                                                TextSpan(
+                                                  text: ".\n",
+                                                  style: AppStyles.paragraph(context),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      "You can start by getting an account.",
+                                                  style: AppStyles.paragraph(context),
+                                                ),
+                                              ],
+                                            ),
+                                            stepGranularity: 0.5,
+                                            maxLines: 10,
+                                            minFontSize: 8,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 14),
                                           ),
-                                          TextSpan(
-                                            text: " Blaise Wallet",
-                                            style: AppStyles.paragraphPrimary(
-                                                context),
+                                        ),
+                                        // Container for the illustration
+                                        Container(
+                                          margin: EdgeInsetsDirectional.only(
+                                            top: 24,
                                           ),
-                                          TextSpan(
-                                            text: ".\n",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                "You can start by getting an account.",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                        ],
-                                      ),
-                                      stepGranularity: 0.5,
-                                      maxLines: 10,
-                                      minFontSize: 8,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  // Container for the illustration
-                                  Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                      top: 24,
-                                    ),
-                                    child: SvgRepaintAsset(
-                                        asset: StateContainer.of(context)
-                                            .curTheme
-                                            .illustrationNewWallet,
-                                        width: MediaQuery.of(context).size.width *
-                                            0.55,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.55),
-                                  ),
-                                ],
+                                          child: SvgRepaintAsset(
+                                              asset: StateContainer.of(context)
+                                                  .curTheme
+                                                  .illustrationNewWallet,
+                                              width: MediaQuery.of(context).size.width *
+                                                  0.55,
+                                              height:
+                                                  MediaQuery.of(context).size.width *
+                                                      0.55),
+                                        ),
+                                      ],
+                                    )
+                                  )
+                                ]
                               )
                             )
                           );

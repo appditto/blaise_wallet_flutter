@@ -477,7 +477,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
       showOverlay(context);
       RPCResponse result = await accountState.listAccountForSale(
           widget.price, widget.receiver,
-          newPubKey: PascalUtil().decipherPublicKey(widget.publicKey));
+          newPubKey: PascalUtil().decipherPublicKey(widget.publicKey),
+          fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -499,7 +500,7 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                   receiver: widget.receiver,
                   price: widget.price,
                   publicKey: widget.publicKey,
-                  fee: widget.fee,
+                  fee: fee,
                 ));
           } else {
             if (op.errors.contains("zero fee") &&
