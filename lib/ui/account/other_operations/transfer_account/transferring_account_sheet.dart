@@ -295,7 +295,8 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.TRANSFER));
+                          EventTaxiImpl.singleton().fire(
+                              AuthenticatedEvent(AUTH_EVENT_TYPE.TRANSFER));
                         }
                       },
                     ),
@@ -386,20 +387,19 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
       return authenticated;
     } else {
       String expectedPin = await sl.get<Vault>().getPin();
-      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
-          builder: (BuildContext context) {
+      bool result = await Navigator.of(context)
+          .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
         return PinScreen(
           type: PinOverlayType.ENTER_PIN,
           onSuccess: (pin) {
             Navigator.of(context).pop(true);
           },
           expectedPin: expectedPin,
-          description:
-              message,
+          description: message,
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
       return result != null && result;
-    }   
+    }
   }
 }

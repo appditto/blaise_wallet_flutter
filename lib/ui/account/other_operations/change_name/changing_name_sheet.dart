@@ -292,7 +292,8 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.CHANGE));
+                          EventTaxiImpl.singleton()
+                              .fire(AuthenticatedEvent(AUTH_EVENT_TYPE.CHANGE));
                         }
                       },
                     ),
@@ -322,8 +323,8 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result = await accountState
-          .changeAccountName(widget.newName, fee: widget.fee);
+      RPCResponse result =
+          await accountState.changeAccountName(widget.newName, fee: widget.fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -337,8 +338,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
           if (op.valid == null || op.valid) {
             // Update name
             walletState.updateAccountName(widget.account, widget.newName);
-            Navigator.of(context)
-                .popUntil(RouteUtils.withNameLike("/account"));
+            Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
             AppSheets.showBottomSheet(
                 context: context,
                 closeOnTap: true,
@@ -371,7 +371,8 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
   }
 
   Future<bool> authenticate() async {
-    String message = "Authenticate to change account name to \"${widget.newName.toString()}\"";
+    String message =
+        "Authenticate to change account name to \"${widget.newName.toString()}\"";
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {
@@ -383,20 +384,19 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
       return authenticated;
     } else {
       String expectedPin = await sl.get<Vault>().getPin();
-      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
-          builder: (BuildContext context) {
+      bool result = await Navigator.of(context)
+          .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
         return PinScreen(
           type: PinOverlayType.ENTER_PIN,
           onSuccess: (pin) {
             Navigator.of(context).pop(true);
           },
           expectedPin: expectedPin,
-          description:
-              message,
+          description: message,
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
       return result != null && result;
-    }   
+    }
   }
 }

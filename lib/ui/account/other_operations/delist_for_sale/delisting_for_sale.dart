@@ -70,30 +70,30 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationSale,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationSale,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(_overlay);
   }
@@ -290,7 +290,8 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.DELIST_FORSALE));
+                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(
+                              AUTH_EVENT_TYPE.DELIST_FORSALE));
                         }
                       },
                     ),
@@ -334,8 +335,8 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
           if (op.valid == null || op.valid) {
             // Update state
             accountState.changeAccountState(AccountState.NORMAL);
-            Navigator.of(context)
-                .popUntil(RouteUtils.withNameLike("/account"));;
+            Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+            ;
             AppSheets.showBottomSheet(
                 context: context,
                 closeOnTap: true,
@@ -380,20 +381,19 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
       return authenticated;
     } else {
       String expectedPin = await sl.get<Vault>().getPin();
-      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
-          builder: (BuildContext context) {
+      bool result = await Navigator.of(context)
+          .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
         return PinScreen(
           type: PinOverlayType.ENTER_PIN,
           onSuccess: (pin) {
             Navigator.of(context).pop(true);
           },
           expectedPin: expectedPin,
-          description:
-              message,
+          description: message,
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
       return result != null && result;
-    }   
+    }
   }
 }
