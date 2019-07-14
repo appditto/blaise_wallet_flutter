@@ -10,9 +10,9 @@ import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
-import 'package:blaise_wallet_flutter/util/clipboard_util.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
 import 'package:blaise_wallet_flutter/util/pascal_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -211,7 +211,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     icon: AppIcons.paste,
                                     onPressed: () async {
                                       String text =
-                                          await ClipboardUtil.getClipboardText(
+                                          await UserDataUtil.getClipboardText(
                                               DataType.ACCOUNT);
                                       if (text != null) {
                                         receiverFocusNode.unfocus();
@@ -220,7 +220,18 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     },
                                   ),
                                   secondButton:
-                                      TextFieldButton(icon: AppIcons.scan),
+                                      TextFieldButton(
+                                        icon: AppIcons.scan,
+                                        onPressed: () async {
+                                          String text =
+                                              await UserDataUtil.getQRData(
+                                                  DataType.ACCOUNT);
+                                          if (text != null) {
+                                            receiverFocusNode.unfocus();
+                                            receiverController.text = text;
+                                          }                                          
+                                        },
+                                      ),
                                   inputFormatters: [
                                     WhitelistingTextInputFormatter(
                                         RegExp("[0-9-]")),
@@ -250,7 +261,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     icon: AppIcons.paste,
                                     onPressed: () async {
                                       String text =
-                                          await ClipboardUtil.getClipboardText(
+                                          await UserDataUtil.getClipboardText(
                                               DataType.PUBLIC_KEY);
                                       if (text != null) {
                                         publicKeyController.text = text;
@@ -259,6 +270,14 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                   ),
                                   secondButton: TextFieldButton(
                                     icon: AppIcons.scan,
+                                    onPressed: () async {
+                                      String text =
+                                          await UserDataUtil.getClipboardText(
+                                              DataType.PUBLIC_KEY);
+                                      if (text != null) {
+                                        publicKeyController.text = text;
+                                      }                                      
+                                    },
                                   ),
                                   focusNode: publicKeyFocusNode,
                                   controller: publicKeyController,

@@ -12,8 +12,8 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/payload.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
-import 'package:blaise_wallet_flutter/util/clipboard_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -163,14 +163,24 @@ class _AddContactSheetState extends State<AddContactSheet> {
                               firstButton: widget.account == null ? TextFieldButton(
                                 icon: AppIcons.paste,
                                 onPressed: () {
-                                  ClipboardUtil.getClipboardText(DataType.ACCOUNT).then((account) {
+                                  UserDataUtil.getClipboardText(DataType.ACCOUNT).then((account) {
                                     if (account != null) {
                                       addressController.text = account;
                                     }
                                   });
                                 },
                               ) : null,
-                              secondButton: widget.account == null ? TextFieldButton(icon: AppIcons.scan) : null,
+                              secondButton: widget.account == null ? 
+                                TextFieldButton(
+                                  icon: AppIcons.scan,
+                                  onPressed: () async {
+                                    String text = await UserDataUtil.getQRData(DataType.ACCOUNT);
+                                    if (text != null) {
+                                      addressController.text = text;
+                                    }
+                                  }
+                                )
+                               : null,
                               maxLines: 1,
                               textCapitalization: TextCapitalization.characters,
                               controller: addressController,

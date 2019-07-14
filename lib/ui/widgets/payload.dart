@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -332,19 +333,26 @@ class _PayloadDialogState extends State<PayloadDialog>
                                         icon: AppIcons.paste,
                                         onPressed: () {
                                           Clipboard.getData("text/plain").then((clipboardData) {
-                                            if (clipboardData.text.length <= 20) {
+                                            if (clipboardData.text.length <= 80) {
                                               widget.onPayloadChanged(clipboardData.text, _encrypted);
                                               payloadController.text = clipboardData.text;
                                             }
                                           });
                                         }),
                                     secondButton: TextFieldButton(
-                                        icon: AppIcons.scan),
+                                        icon: AppIcons.scan,
+                                        onPressed: () async {
+                                          String text = await UserDataUtil.getQRData(DataType.RAW);
+                                          if (text != null && text.length <= 80) {
+                                            widget.onPayloadChanged(text, _encrypted);
+                                            payloadController.text = text;
+                                          }
+                                        }),
                                     onChanged: (payload) {
                                       widget.onPayloadChanged(payload, _encrypted);
                                     },
                                     inputFormatters: [
-                                      LengthLimitingTextInputFormatter(20)
+                                      LengthLimitingTextInputFormatter(80)
                                     ],
                                   ),
                                 ),

@@ -92,4 +92,9 @@ class UIUtil {
               onConfirm();
             }));
   }
+
+  /// Placeholder TODO
+  static Future<void> cancelLockEvent() async {
+    return;
+  }
 }

@@ -10,8 +10,9 @@ import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
-import 'package:blaise_wallet_flutter/util/clipboard_util.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -207,7 +208,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                         TextFieldButton(
                                           icon: AppIcons.paste,
                                           onPressed: () async {
-                                            String text = await ClipboardUtil.getClipboardText(DataType.ACCOUNT);
+                                            String text = await UserDataUtil.getClipboardText(DataType.ACCOUNT);
                                             if (text != null) {
                                               receiverFocusNode.unfocus();
                                               receiverController.text = text;
@@ -215,7 +216,16 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                           },
                                         ),
                                     secondButton:
-                                        TextFieldButton(icon: AppIcons.scan),
+                                        TextFieldButton(
+                                          icon: AppIcons.scan,
+                                          onPressed: () async {
+                                            String text = await UserDataUtil.getQRData(DataType.ACCOUNT);
+                                            if (text != null) {
+                                              receiverFocusNode.unfocus();
+                                              receiverController.text = text;
+                                            }
+                                          },
+                                        ),
                                     inputFormatters: [
                                       WhitelistingTextInputFormatter(
                                           RegExp("[0-9-]")),

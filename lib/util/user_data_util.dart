@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import 'package:pascaldart/common.dart';
+import 'package:quiver/strings.dart';
 import 'package:validators/validators.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
-enum DataType { ACCOUNT, URL, PUBLIC_KEY }
+enum DataType { RAW, ACCOUNT, URL, PUBLIC_KEY }
 
-class ClipboardUtil {
+class UserDataUtil {
   static StreamSubscription<dynamic> setStream;
 
   /// Set to clear clipboard after 2 minutes, if clipboard contains a pkey
@@ -31,36 +33,56 @@ class ClipboardUtil {
     });
   }
 
-  static Future<String> getClipboardText(DataType type) async {
-    ClipboardData data = await Clipboard.getData("text/plain");
-    if (data == null || data.text == null) {
-      return null;
+  static String _parseData(String data, DataType type) {
+    data = data.trim();
+    if (type == DataType.RAW) {
+      return data;
     } else if (type == DataType.ACCOUNT) {
       try {
-        AccountNumber acctNum = AccountNumber(data.text.trim());
+        AccountNumber acctNum = AccountNumber(data);
         return acctNum.toString();
       } catch (e) {}
     } else if (type == DataType.URL) {
-      if (isIP(data.text.trim())) {
-        return data.text.trim();
-      } else if (isURL(data.text.trim())) {
-        return data.text.trim();
+      if (isIP(data)) {
+        return data;
+      } else if (isURL(data)) {
+        return data;
       }
     } else if (type == DataType.PUBLIC_KEY) {
       try {
         PublicKeyCoder()
-            .decodeFromBase58(data.text.trim());
-        return data.text.trim();
+            .decodeFromBase58(data);
+        return data;
       } catch (e) {
         try {
           PublicKeyCoder()
               .decodeFromBytes(
                   PDUtil.hexToBytes(
-                      data.text.trim()));
-          return data.text.trim();
+                      data));
+          return data;
         } catch (e) {}
       }
     }
     return null;
+  }
+
+  static Future<String> getClipboardText(DataType type) async {
+    ClipboardData data = await Clipboard.getData("text/plain");
+    if (data == null || data.text == null) {
+      return null;
+    }
+    return _parseData(data.text, type);
+  }
+
+  static Future<String> getQRData(DataType type) async {
+    try {
+      String data = await BarcodeScanner.scan();
+      if (isEmpty(data)) {
+        return null;
+      }
+      return _parseData(data, type);
+    } catch (e) {
+      return null;
+    }
   }
 }

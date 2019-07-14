@@ -17,6 +17,8 @@ import 'package:blaise_wallet_flutter/ui/widgets/payload.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -381,7 +383,12 @@ class _SendSheetState extends State<SendSheet> {
                                     ),
                                     secondButton: TextFieldButton(
                                       icon: AppIcons.scan,
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        String text = await UserDataUtil.getQRData(DataType.ACCOUNT);
+                                        if (text != null) {
+                                          addressController.text = text;
+                                        }
+                                      },
                                     ),
                                   ),
                                 ),

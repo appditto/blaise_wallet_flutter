@@ -8,9 +8,9 @@ import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
-import 'package:blaise_wallet_flutter/util/clipboard_util.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:validators/validators.dart';
@@ -159,7 +159,7 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                                         TextFieldButton(
                                           icon: AppIcons.paste,
                                           onPressed: () async {
-                                            String text = await ClipboardUtil.getClipboardText(DataType.URL);
+                                            String text = await UserDataUtil.getClipboardText(DataType.URL);
                                             if (text != null) {
                                               daemonController.text = text;
                                             }
