@@ -134,7 +134,7 @@ class _AccountPageState extends State<AccountPage>
         break;
       case AppLifecycleState.resumed:
         // Do an auto-refresh
-        if (_lastRefresh == null || DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 30) {
+        if (_lastRefresh == null || DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 300) {
           _refresh();
         }
         super.didChangeAppLifecycleState(state);
