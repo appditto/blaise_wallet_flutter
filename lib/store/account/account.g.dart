@@ -133,9 +133,17 @@ mixin _$Account on AccountBase, Store {
 
   @override
   Future<RPCResponse> doSend(
-      {String amount, String destination, Currency fee, String payload = ""}) {
+      {String amount,
+      String destination,
+      Currency fee,
+      Uint8List encryptedPayload,
+      String payload = ""}) {
     return _$doSendAsyncAction.run(() => super.doSend(
-        amount: amount, destination: destination, fee: fee, payload: payload));
+        amount: amount,
+        destination: destination,
+        fee: fee,
+        encryptedPayload: encryptedPayload,
+        payload: payload));
   }
 
   final _$transferAccountAsyncAction = AsyncAction('transferAccount');
@@ -171,6 +179,14 @@ mixin _$Account on AccountBase, Store {
   Future<RPCResponse> delistAccountForSale({Currency fee}) {
     return _$delistAccountForSaleAsyncAction
         .run(() => super.delistAccountForSale(fee: fee));
+  }
+
+  final _$encryptPayloadEciesAsyncAction = AsyncAction('encryptPayloadEcies');
+
+  @override
+  Future<Uint8List> encryptPayloadEcies(String payload, AccountNumber account) {
+    return _$encryptPayloadEciesAsyncAction
+        .run(() => super.encryptPayloadEcies(payload, account));
   }
 
   final _$AccountBaseActionController = ActionController(name: 'AccountBase');

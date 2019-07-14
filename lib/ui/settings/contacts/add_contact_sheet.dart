@@ -200,6 +200,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                                 payload = newPayload;
                               });
                             },
+                            allowEncryption: false,
                           )
                         ],
                       ),

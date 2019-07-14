@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SendingSheet extends StatefulWidget {
   final String destination;
@@ -32,6 +34,7 @@ class SendingSheet extends StatefulWidget {
   final Currency fee;
   final bool fromOverview;
   final Contact contact;
+  final bool encryptPayload;
 
   SendingSheet(
       {@required this.destination,
@@ -40,7 +43,8 @@ class SendingSheet extends StatefulWidget {
       @required this.fee,
       this.contact,
       this.payload = "",
-      this.fromOverview = false});
+      this.fromOverview = false,
+      this.encryptPayload = false});
 
   _SendingSheetState createState() => _SendingSheetState();
 }
@@ -51,6 +55,8 @@ class _SendingSheetState extends State<SendingSheet>  {
   OverlayEntry _overlay;
 
   StreamSubscription<AuthenticatedEvent> _authSub;
+
+  Uint8List encryptedPayload;
 
   void _registerBus() {
     _authSub = EventTaxiImpl.singleton()
@@ -423,14 +429,30 @@ class _SendingSheetState extends State<SendingSheet>  {
                                     .curTheme
                                     .textDark10,
                               ),
-                              child: AutoSizeText(
-                                widget.payload,
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                minFontSize: 8,
-                                textAlign: TextAlign.center,
-                                style: AppStyles.paragraph(context),
-                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  AutoSizeText(
+                                    widget.payload,
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    minFontSize: 8,
+                                    textAlign: TextAlign.center,
+                                    style: AppStyles.paragraph(context),
+                                  ),
+                                  widget.encryptPayload ? Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsetsDirectional.only(start: 3.0),
+                                    child: Icon(
+                                      FontAwesomeIcons.lock,
+                                      size: 12,
+                                      color: StateContainer.of(context)
+                                        .curTheme
+                                        .textDark
+                                    )
+                                  ) : SizedBox()
+                                ]
+                              )
                             )
                           : SizedBox()
                     ],
@@ -475,6 +497,15 @@ class _SendingSheetState extends State<SendingSheet>  {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
+      if (widget.encryptPayload && encryptedPayload == null) {
+        // Try to encrypt the payload with the receivers public key
+        encryptedPayload  =await walletState.getAccountState(widget.source).encryptPayloadEcies(widget.payload, widget.contact == null ? AccountNumber(widget.destination) : widget.contact.account);
+        if (encryptedPayload == null) {
+          _overlay?.remove();
+          UIUtil.showSnackbar("Failed to Encrypt the Payload", context);
+          return;
+        }
+      }
       // Do send
       RPCResponse result = await walletState
           .getAccountState(widget.source)
@@ -482,6 +513,7 @@ class _SendingSheetState extends State<SendingSheet>  {
               amount: widget.amount,
               destination: widget.contact == null ? widget.destination : widget.contact.account.toString(),
               payload: widget.payload,
+              encryptedPayload: encryptedPayload,
               fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
@@ -502,7 +534,8 @@ class _SendingSheetState extends State<SendingSheet>  {
                   amount: widget.amount,
                   fee: fee,
                   payload: widget.payload,
-                  contact: widget.contact));
+                  contact: widget.contact,
+                  encryptedPayload: widget.encryptPayload));
         } else {
           if (op.errors.contains("zero fee") &&
               widget.fee == walletState.NO_FEE) {

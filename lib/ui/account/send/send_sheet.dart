@@ -54,6 +54,7 @@ class _SendSheetState extends State<SendSheet> {
 
   // Payload
   String _payload;
+  bool _encryptedPayload;
 
   // Fee
   bool _hasFee;
@@ -73,6 +74,7 @@ class _SendSheetState extends State<SendSheet> {
     this._hasFee = walletState.shouldHaveFee();
     this._isValidContactAndUnfocused = false;
     this._contacts = [];
+    this._encryptedPayload = false;
     // TODO this is a placeholder
     _localCurrencyFormat =
         NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
@@ -97,6 +99,8 @@ class _SendSheetState extends State<SendSheet> {
             this.addressController.text = this.addressController.text.substring(1);
             setState(() {
               _isValidContactAndUnfocused = true;
+              _payload = contact.payload;
+              _encryptedPayload = false;
             });
             EventTaxiImpl.singleton().fire(PayloadChangedEvent(
               payload: contact.payload
@@ -484,9 +488,10 @@ class _SendSheetState extends State<SendSheet> {
                                 ),
                                 Payload(
                                   initialPayload: _payload,
-                                  onPayloadChanged: (newPayload) {
+                                  onPayloadChanged: (newPayload, encrypted) {
                                     setState(() {
                                       _payload = newPayload;
+                                      _encryptedPayload = encrypted;
                                     });
                                   },
                                 )
@@ -579,7 +584,8 @@ class _SendSheetState extends State<SendSheet> {
               fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE,
               payload: _payload,
               fromOverview: widget.fromOverview,
-              contact: contact),
+              contact: contact,
+              encryptPayload: _encryptedPayload),
           noBlur: true);
     }
   }
@@ -747,6 +753,8 @@ class _SendSheetState extends State<SendSheet> {
       addressController.text = c.name.substring(1);
       setState(() {
         _isValidContactAndUnfocused = true;
+        _payload = c.payload;
+        _encryptedPayload = false;
       });
       EventTaxiImpl.singleton().fire(PayloadChangedEvent(
         payload: c.payload

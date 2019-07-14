@@ -11,14 +11,16 @@ import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quiver/strings.dart';
 import 'package:event_taxi/event_taxi.dart';
 
 class Payload extends StatefulWidget {
   final Function onPayloadChanged;
   final String initialPayload;
+  final bool allowEncryption;
 
-  Payload({@required this.onPayloadChanged, this.initialPayload = ""}) : super();
+  Payload({@required this.onPayloadChanged, this.initialPayload = "", this.allowEncryption = true}) : super();
 
   @override
   _PayloadState createState() => _PayloadState();
@@ -27,6 +29,7 @@ class Payload extends StatefulWidget {
 class _PayloadState extends State<Payload> {
   bool _hasPayload;
   String _payload;
+  bool _encrypted;
 
   StreamSubscription<PayloadChangedEvent> _payloadSub;
 
@@ -36,6 +39,7 @@ class _PayloadState extends State<Payload> {
         .listen((event) {
       setState(() {
         _payload = event.payload;
+        _encrypted = false;
         _hasPayload = isNotEmpty(event.payload);
       });
     });
@@ -53,6 +57,7 @@ class _PayloadState extends State<Payload> {
     _registerBus();
     this._hasPayload = isNotEmpty(widget.initialPayload);
     this._payload = widget.initialPayload;
+    this._encrypted = false;
   }
 
   @override
@@ -61,18 +66,20 @@ class _PayloadState extends State<Payload> {
     super.dispose();
   }
 
-  void handlePayloadChange(String newPayload) {
+  void handlePayloadChange(String newPayload, bool encrypted) {
     if (isNotEmpty(newPayload) && mounted) {
-      widget.onPayloadChanged(newPayload);
+      widget.onPayloadChanged(newPayload, encrypted);
       setState(() {
         _payload = newPayload;
         _hasPayload = true;
+        _encrypted = encrypted;
       });                              
     } else if (mounted) {
-      widget.onPayloadChanged(newPayload);
+      widget.onPayloadChanged(newPayload, encrypted);
       setState(() {
         _payload = "";
         _hasPayload = false;
+        _encrypted = encrypted;
       });
     }    
   }
@@ -111,15 +118,31 @@ class _PayloadState extends State<Payload> {
                       .curTheme
                       .textDark10,
                 ),
-                child: AutoSizeText(
-                  this._payload,
-                  maxLines: 3,
-                  stepGranularity: 0.1,
-                  minFontSize: 6,
-                  textAlign: TextAlign.left,
-                  style: AppStyles.paragraphMedium(
-                      context),
-                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    AutoSizeText(
+                      this._payload,
+                      maxLines: 3,
+                      stepGranularity: 0.1,
+                      minFontSize: 6,
+                      textAlign: TextAlign.left,
+                      style: AppStyles.paragraphMedium(
+                          context),
+                    ),
+                    _encrypted ? Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsetsDirectional.only(start: 3.0),
+                      child: Icon(
+                        FontAwesomeIcons.lock,
+                        size: 12,
+                        color: StateContainer.of(context)
+                          .curTheme
+                          .textDark
+                      )
+                    ) : SizedBox()
+                  ]
+                )
               ),
               // Container for the edit button
               Container(
@@ -133,8 +156,9 @@ class _PayloadState extends State<Payload> {
                         builder: (_) =>
                           PayloadDialog(
                             initialPayload: _payload,
-                            onPayloadChanged: (newPayload) {
-                              handlePayloadChange(newPayload);
+                            encrypted: _encrypted,
+                            onPayloadChanged: (newPayload, encrypted) {
+                              handlePayloadChange(newPayload, encrypted);
                             },
                           )
                       );
@@ -181,9 +205,10 @@ class _PayloadState extends State<Payload> {
                       context: context,
                       builder: (_) =>
                         PayloadDialog(
-                          onPayloadChanged: (newPayload) {
-                            handlePayloadChange(newPayload);
+                          onPayloadChanged: (newPayload, encrypted) {
+                            handlePayloadChange(newPayload, encrypted);
                           },
+                          allowEncryption: widget.allowEncryption,
                         )
                   );
                 },
@@ -198,8 +223,10 @@ class _PayloadState extends State<Payload> {
 class PayloadDialog extends StatefulWidget {
   final Function onPayloadChanged;
   final String initialPayload;
+  final bool encrypted;
+  final bool allowEncryption;
 
-  PayloadDialog({@required this.onPayloadChanged, this.initialPayload = ""}) : super();
+  PayloadDialog({@required this.onPayloadChanged, this.initialPayload = "", this.encrypted = false, this.allowEncryption = true}) : super();
 
   @override
   _PayloadDialogState createState() => _PayloadDialogState();
@@ -213,13 +240,15 @@ class _PayloadDialogState extends State<PayloadDialog>
 
   TextEditingController payloadController;
 
+  bool _encrypted;
+
   @override
   void initState() {
     super.initState();
-
     // Set initial value
     this.payloadController = TextEditingController();
     this.payloadController.text = widget.initialPayload;
+    this._encrypted = widget.encrypted;
 
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
@@ -304,7 +333,7 @@ class _PayloadDialogState extends State<PayloadDialog>
                                         onPressed: () {
                                           Clipboard.getData("text/plain").then((clipboardData) {
                                             if (clipboardData.text.length <= 20) {
-                                              widget.onPayloadChanged(clipboardData.text);
+                                              widget.onPayloadChanged(clipboardData.text, _encrypted);
                                               payloadController.text = clipboardData.text;
                                             }
                                           });
@@ -312,7 +341,7 @@ class _PayloadDialogState extends State<PayloadDialog>
                                     secondButton: TextFieldButton(
                                         icon: AppIcons.scan),
                                     onChanged: (payload) {
-                                      widget.onPayloadChanged(payload);
+                                      widget.onPayloadChanged(payload, _encrypted);
                                     },
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(20)
@@ -320,7 +349,7 @@ class _PayloadDialogState extends State<PayloadDialog>
                                   ),
                                 ),
                                 // Container for the "Add Payload" button
-                                Row(
+                                widget.allowEncryption ? Row(
                                   children: <Widget>[
                                     Container(
                                       height: 40.0,
@@ -345,19 +374,25 @@ class _PayloadDialogState extends State<PayloadDialog>
                                                 BorderRadius.circular(
                                                     100.0)),
                                         child: AutoSizeText(
-                                          "Encrypt the Payload",
+                                          _encrypted ? "Don't Encrypt Payload" : "Encrypt the Payload",
                                           textAlign: TextAlign.center,
                                           maxLines: 1,
                                           stepGranularity: 0.1,
                                           style: AppStyles.buttonMiniBg(
-                                              context),
+                                              context,),
                                         ),
-                                        onPressed: () async {
-                                          return null;
+                                        onPressed: () {
+                                          widget.onPayloadChanged(this.payloadController.text, !_encrypted);
+                                          setState(() {
+                                            _encrypted = !_encrypted;
+                                          });
                                         },
                                       ),
                                     ),
                                   ],
+                                )
+                                : SizedBox(
+                                  height: 40
                                 )
                               ],
                             )),

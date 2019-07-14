@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
@@ -144,7 +146,7 @@ abstract class AccountBase with Store {
   }
 
   @action
-  Future<RPCResponse> doSend({@required String amount, @required String destination, Currency fee, String payload = ""}) async {
+  Future<RPCResponse> doSend({@required String amount, @required String destination, Currency fee, Uint8List encryptedPayload, String payload = ""}) async {
     fee = fee == null ? Currency('0') : fee;
     // Construct send
     TransactionOperation op = TransactionOperation(
@@ -153,7 +155,7 @@ abstract class AccountBase with Store {
       amount: Currency(amount)
     )
     ..withNOperation(this.account.nOperation + 1)
-    ..withPayload(PDUtil.stringToBytesUtf8(payload))
+    ..withPayload(encryptedPayload == null ? PDUtil.stringToBytesUtf8(payload) : encryptedPayload)
     ..withFee(fee)
     ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
     // Construct execute request
@@ -295,6 +297,25 @@ abstract class AccountBase with Store {
       this.getAccountOperations();
     }
     return resp;
+  }
+
+  @action
+  Future<Uint8List> encryptPayloadEcies(String payload, AccountNumber account) async {
+    try {
+      // Do getaccountrequest to get the public key of this account
+      GetAccountRequest req = GetAccountRequest(
+        account: account.account
+      );
+      // Execute request
+      RPCResponse resp = await rpcClient.makeRpcRequest(req);
+      if (resp.isError) {
+        return null;
+      }
+      PascalAccount receiverAcct = resp;
+      return EciesCrypt.encrypt(PDUtil.stringToBytesUtf8(payload), receiverAcct.encPubkey);
+    } catch (e) {
+      return null;
+    }
   }
 }
 
