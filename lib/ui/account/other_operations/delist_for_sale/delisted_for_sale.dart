@@ -36,16 +36,20 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.0, 0.7, 0.7, 1.0],
-                      colors: [
-                        StateContainer.of(context).curTheme.success,
-                        StateContainer.of(context).curTheme.success,
-                        StateContainer.of(context).curTheme.backgroundPrimary,
-                        StateContainer.of(context).curTheme.backgroundPrimary,
-                      ]
-                    ),
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [
+                          0.0,
+                          0.7,
+                          0.7,
+                          1.0
+                        ],
+                        colors: [
+                          StateContainer.of(context).curTheme.success,
+                          StateContainer.of(context).curTheme.success,
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                        ]),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
@@ -90,9 +94,19 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: StateContainer.of(context).curTheme.success,
-                            boxShadow:[StateContainer.of(context).curTheme.shadowTextDarkTwo],
+                            boxShadow: [
+                              StateContainer.of(context)
+                                  .curTheme
+                                  .shadowTextDarkTwo
+                            ],
                           ),
-                          child: Icon(AppIcons.tick, size: 40, color: StateContainer.of(context).curTheme.backgroundPrimary,),
+                          child: Icon(
+                            AppIcons.tick,
+                            size: 40,
+                            color: StateContainer.of(context)
+                                .curTheme
+                                .backgroundPrimary,
+                          ),
                         ),
                       ],
                     ),
@@ -147,7 +161,21 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
-                       // Container for the fee
+                      // "Fee" header
+                      widget.fee != Currency("0")
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Fee",
+                                style: AppStyles.textFieldLabelSuccess(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
+                      // Container for the fee
                       widget.fee != Currency("0")
                           ? Container(
                               margin:

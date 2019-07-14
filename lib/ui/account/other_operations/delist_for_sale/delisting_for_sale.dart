@@ -219,8 +219,22 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                           style: AppStyles.privateKeyTextDark(context),
                         ),
                       ),
+                      // "Fee" header
+                      widget.fee != Currency("0")
+                          ? Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                "Fee",
+                                style: AppStyles.textFieldLabel(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            )
+                          : SizedBox(),
                       // Container for the fee
-                      widget.fee != Currency('0')
+                      widget.fee != Currency("0")
                           ? Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
