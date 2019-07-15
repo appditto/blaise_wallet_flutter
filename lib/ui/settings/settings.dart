@@ -7,7 +7,9 @@ import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:event_taxi/event_taxi.dart';
+import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
@@ -78,6 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String daemonURL;
+  String versionString = "";
 
   @override
   void initState() {
@@ -88,6 +91,12 @@ class _SettingsPageState extends State<SettingsPage> {
           daemonURL = result;
         });
       }
+    });
+    // Version string
+    PackageInfo.fromPlatform().then((packageInfo) {
+      setState(() {
+        versionString = "v${packageInfo.version}";
+      });
     });
   }
 
@@ -333,6 +342,35 @@ class _SettingsPageState extends State<SettingsPage> {
                             onPressed: () {
                               logoutPressed();
                             },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(versionString,
+                                    style: AppStyles.textStyleVersion(context)),
+                                Text(" | ",
+                                    style: AppStyles.textStyleVersion(context)),
+                                GestureDetector(
+                                    onTap: () {
+                                      AppWebView.showWebView(context, AppConstants.PRIVACY_POLICY_URL);
+                                    },
+                                    child: Text(
+                                        "Privacy Policy",
+                                        style: AppStyles.textStyleVersionUnderline(
+                                            context))),
+                                Text(" | ",
+                                    style: AppStyles.textStyleVersion(context)),
+                                GestureDetector(
+                                    onTap: () {
+                                      AppWebView.showWebView(context, AppConstants.PRIVACY_POLICY_URL);
+                                    },
+                                    child: Text("EULA",
+                                        style: AppStyles.textStyleVersionUnderline(
+                                            context))),
+                              ],
+                            ),
                           ),
                         ],
                       ),

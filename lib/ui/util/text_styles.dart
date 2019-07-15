@@ -578,6 +578,23 @@ class AppStyles {
       fontWeight: FontWeight.w700,
     );
   }
+
+  // Version info in settings
+  static TextStyle textStyleVersion(BuildContext context) {
+    return TextStyle(
+      fontFamily: "Metropolis",
+      fontSize: AppFontSizes.small,
+      fontWeight: FontWeight.w100,
+      color: StateContainer.of(context).curTheme.textDark60);
+  }
+  static TextStyle textStyleVersionUnderline(BuildContext context) {
+    return TextStyle(
+      fontFamily: "Metropolis",
+      fontSize: AppFontSizes.small,
+      fontWeight: FontWeight.w100,
+      color: StateContainer.of(context).curTheme.textDark60,
+      decoration: TextDecoration.underline);
+  }
 }
 
 class AppFontSizes {
