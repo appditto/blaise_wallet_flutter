@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -32,7 +33,9 @@ class WebViewFlutterState extends State<WebViewFlutter> {
         return Future<bool>.value(false);
       },
       child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            brightness: StateContainer.of(context).curTheme.brightness,
+          ),
           body: Builder(builder: (co) {
             return WebView(
               initialUrl: widget.initialUrl,
