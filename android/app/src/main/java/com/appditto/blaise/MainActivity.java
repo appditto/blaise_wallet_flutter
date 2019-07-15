@@ -1,4 +1,4 @@
-package com.example.blaise_wallet_flutter;
+package com.appditto.blaise;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterFragmentActivity;
