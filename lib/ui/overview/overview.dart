@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -616,35 +617,43 @@ class _OverviewPageState extends State<OverviewPage>
                     }
                   }),
                   // Bottom bar
-                  Container(
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      color:
-                          StateContainer.of(context).curTheme.backgroundPrimary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                      boxShadow: [
-                        StateContainer.of(context).curTheme.shadowBottomBar,
-                      ],
-                    ),
-                    child: Container(
-                      margin: EdgeInsetsDirectional.only(top: 4),
-                      child: Row(
-                        children: <Widget>[
-                          AppButton(
-                            text: "Get an Account",
-                            type: AppButtonType.Primary,
-                            onPressed: () {
-                              AppSheets.showBottomSheet(
-                                  context: context, widget: GetAccountSheet());
-                            },
+                  Observer(
+                    builder: (BuildContext context) {
+                      if (walletState.walletLoading || walletState.walletAccounts.length > 0) {
+                        return SizedBox();
+                      } else {
+                        return Container(
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            color:
+                                StateContainer.of(context).curTheme.backgroundPrimary,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                            boxShadow: [
+                              StateContainer.of(context).curTheme.shadowBottomBar,
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                          child: Container(
+                            margin: EdgeInsetsDirectional.only(top: 4),
+                            child: Row(
+                              children: <Widget>[
+                                AppButton(
+                                  text: "Get an Account",
+                                  type: AppButtonType.Primary,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                        context: context, widget: GetAccountSheetBeta());
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  )
                 ],
               ),
             ),

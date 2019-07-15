@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -255,6 +256,29 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
 
   void validateAndSubmit() {
     if (privateKeyIsValid(privateKeyController.text)) {
+      if (!PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(privateKeyController.text)).curve.supported) {
+        showAppDialog(
+          context: context,
+          builder: (_) => DialogOverlay(
+            title: 'Key Not Supported',
+            warningStyle: true,
+            confirmButtonText: "OK",
+            body: TextSpan(
+              children: [
+                TextSpan(
+                  text:
+                      "This type of private key is not yet supported by Blaise. You may create a new private key and transfer your accounts to it using a different wallet.",
+                  style: AppStyles.paragraph(context),
+                )
+              ],
+            ),
+            onConfirm: () {
+              Navigator.of(context).pop();
+            },
+          )
+        );
+        return;
+      }
       sl
           .get<Vault>()
           .setPrivateKey(PrivateKeyCoder()
