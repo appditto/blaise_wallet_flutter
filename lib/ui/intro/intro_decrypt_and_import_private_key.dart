@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
@@ -9,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -201,7 +203,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
         builder: (_) => DialogOverlay(
           title: 'Key Not Supported',
           warningStyle: true,
-          confirmButtonText: "OK",
+          confirmButtonText: "Okay, take me back",
           body: TextSpan(
             children: [
               TextSpan(
@@ -212,8 +214,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
             ],
           ),
           onConfirm: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil(RouteUtils.withNameLike('/intro_welcome'));
           },
         )
       );

@@ -4,6 +4,7 @@ import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
@@ -262,7 +263,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
           builder: (_) => DialogOverlay(
             title: 'Key Not Supported',
             warningStyle: true,
-            confirmButtonText: "OK",
+            confirmButtonText: "Okay, take me back",
             body: TextSpan(
               children: [
                 TextSpan(
@@ -273,7 +274,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
               ],
             ),
             onConfirm: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).popUntil(RouteUtils.withNameLike('/intro_welcome'));
             },
           )
         );

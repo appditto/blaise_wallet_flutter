@@ -2,16 +2,12 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/overview/get_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class GetAccountSheetBeta extends StatefulWidget {
@@ -19,13 +15,9 @@ class GetAccountSheetBeta extends StatefulWidget {
 }
 
 class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
-  bool _addressCopied;
-  Timer _addressCopiedTimer;
-
   @override
   void initState() {
     super.initState();
-    _addressCopied = false;
   }
 
   @override
@@ -141,34 +133,6 @@ class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
                     minFontSize: 8,
                   ),
                 ),
-                //"Get a Free Account" and "Buy An Account" buttons
-                Row(
-                  children: <Widget>[
-                    AppButton(
-                      type: _addressCopied ? AppButtonType.Success : AppButtonType.Primary,
-                      text: _addressCopied ? "Copied" : "Copy Public Key",
-                      buttonTop: true,
-                      onPressed: () {
-                        Clipboard.setData(
-                            ClipboardData(text: PublicKeyCoder().encodeToBase58(walletState.publicKey)));
-                        setState(() {
-                          _addressCopied = true;
-                        });
-                        if (_addressCopiedTimer != null) {
-                          _addressCopiedTimer.cancel();
-                        }
-                        _addressCopiedTimer =
-                            Timer(const Duration(milliseconds: 1500), () {
-                          if (mounted) {
-                            setState(() {
-                              _addressCopied = false;
-                            });
-                          }
-                        });
-                      },
-                    ),
-                  ],
-                ),
                 // "Buy An Account" button
                 Row(
                   children: <Widget>[
@@ -176,7 +140,7 @@ class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
                       type: AppButtonType.PrimaryOutline,
                       text: "Visit freepasa.org",
                       onPressed: () {
-                        AppWebView.showWebView(context, 'https://freepasa.org');
+                        AppWebView.showWebView(context, 'https://freepasa.org?public_key=${PublicKeyCoder().encodeToBase58(walletState.publicKey)}');
                       },
                     ),
                   ],
