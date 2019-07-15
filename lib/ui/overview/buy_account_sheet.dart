@@ -2,14 +2,10 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/themes.dart';
-import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/encrypt_private_key_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/unencrypted_private_key_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
@@ -22,35 +18,36 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationGetAccount,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationGetAccount,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(overlayEntry);
     await Future.delayed(Duration(milliseconds: 1500));
     overlayEntry.remove();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -115,10 +112,13 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                           top: 30,
                         ),
                         child: SvgRepaintAsset(
-                            asset: StateContainer.of(context).curTheme.illustrationBorrowed,
-                            width: MediaQuery.of(context).size.width * 0.8,
+                            asset: StateContainer.of(context)
+                                .curTheme
+                                .illustrationBorrowed,
+                            width: MediaQuery.of(context).size.width *
+                                (UIUtil.smallScreen(context) ? 0.6 : 0.8),
                             height: MediaQuery.of(context).size.width *
-                                0.8 *
+                                (UIUtil.smallScreen(context) ? 0.6 : 0.8) *
                                 132 /
                                 295),
                       ),

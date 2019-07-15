@@ -8,6 +8,7 @@ class ErrorContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment(-1, 0),
       margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4, bottom: 0),
       child: Text(this.errorText,
           style: AppStyles.dangerSmallest600(context),

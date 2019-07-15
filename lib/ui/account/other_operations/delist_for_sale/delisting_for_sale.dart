@@ -3,10 +3,10 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/bus/authenticated_event.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
-import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferred_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/delist_for_sale/delisted_for_sale.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -22,23 +22,18 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
 
-class TransferringAccountSheet extends StatefulWidget {
-  final String publicKeyDisplay;
+class DelistingForSaleSheet extends StatefulWidget {
   final PascalAccount account;
   final Currency fee;
 
-  TransferringAccountSheet(
-      {@required this.publicKeyDisplay,
-      @required this.account,
-      @required this.fee});
+  DelistingForSaleSheet({@required this.account, @required this.fee}) : super();
 
-  _TransferringAccountSheetState createState() =>
-      _TransferringAccountSheetState();
+  _DelistingForSaleSheetState createState() => _DelistingForSaleSheetState();
 }
 
-class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
-  Account accountState;
+class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
   OverlayEntry _overlay;
+  Account accountState;
 
   StreamSubscription<AuthenticatedEvent> _authSub;
 
@@ -46,8 +41,8 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     _authSub = EventTaxiImpl.singleton()
         .registerTo<AuthenticatedEvent>()
         .listen((event) {
-      if (event.authType == AUTH_EVENT_TYPE.TRANSFER) {
-        doTransfer();
+      if (event.authType == AUTH_EVENT_TYPE.DELIST_FORSALE) {
+        doDelist();
       }
     });
   }
@@ -90,7 +85,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
               height: MediaQuery.of(context).size.width,
               child: Center(
                 child: FlareActor(
-                  StateContainer.of(context).curTheme.animationTransfer,
+                  StateContainer.of(context).curTheme.animationSale,
                   animation: "main",
                   fit: BoxFit.contain,
                 ),
@@ -160,7 +155,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "TRANSFERRING",
+                          "DELISTING",
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -182,30 +177,30 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       // Paragraph
                       Container(
                         width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Confirm the public key to transfer the ownership of this account.",
+                          "Confirm that you would like to delist this account for sale.",
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
                           minFontSize: 8,
                         ),
                       ),
-                      // "Public Key" header
+                      // "Account" header
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Public Key",
+                          "Account",
                           style: AppStyles.textFieldLabel(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      // Container for the public key
+                      // Container for the account number
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
@@ -216,8 +211,8 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.publicKeyDisplay,
-                          maxLines: 4,
+                          widget.account.account.toString(),
+                          maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
                           textAlign: TextAlign.center,
@@ -225,7 +220,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                         ),
                       ),
                       // "Fee" header
-                      widget.fee != Currency('0')
+                      widget.fee != Currency("0")
                           ? Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
@@ -295,8 +290,8 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(
-                              AuthenticatedEvent(AUTH_EVENT_TYPE.TRANSFER));
+                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(
+                              AUTH_EVENT_TYPE.DELIST_FORSALE));
                         }
                       },
                     ),
@@ -322,12 +317,11 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     );
   }
 
-  Future<void> doTransfer({Currency fee}) async {
+  Future<void> doDelist({Currency fee}) async {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result = await accountState
-          .transferAccount(widget.publicKeyDisplay, fee: fee);
+      RPCResponse result = await accountState.delistAccountForSale(fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);
@@ -339,15 +333,15 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
           OperationsResponse resp = result;
           PascalOperation op = resp.operations[0];
           if (op.valid == null || op.valid) {
-            // Remove all traces of this account
-            walletState.removeAccount(widget.account);
-            Navigator.of(context)
-                .popUntil(RouteUtils.withNameLike("/overview"));
+            // Update state
+            accountState.changeAccountState(AccountState.NORMAL);
+            Navigator.of(context).popUntil(RouteUtils.withNameLike("/account"));
+            ;
             AppSheets.showBottomSheet(
                 context: context,
                 closeOnTap: true,
-                widget: TransferredAccountSheet(
-                  newAccountPubkey: widget.publicKeyDisplay,
+                widget: DelistedForSaleSheet(
+                  account: widget.account.account,
                   fee: fee,
                 ));
           } else {
@@ -357,7 +351,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                   context: context,
                   onConfirm: () async {
                     Navigator.of(context).pop();
-                    doTransfer(fee: walletState.MIN_FEE);
+                    doDelist(fee: walletState.MIN_FEE);
                   });
             } else {
               UIUtil.showSnackbar("${op.errors}", context);
@@ -375,7 +369,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
   }
 
   Future<bool> authenticate() async {
-    String message = "Authenticate to transfer account";
+    String message = "Authenticate to delist account for sale";
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {

@@ -4,7 +4,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-enum OperationType { Received, Sent, NameChanged, ListedForSale, Welcome }
+enum OperationType { Received, Sent, NameChanged, ListedForSale, DelistedForSale, Welcome }
 
 /// A widget for displaying a mnemonic phrase
 class OperationListItem extends StatefulWidget {
@@ -111,7 +111,9 @@ class _OperationListItemState extends State<OperationListItem> {
                                         : widget.type ==
                                                 OperationType.ListedForSale
                                             ? "Listed For Sale"
-                                            : "Undefined",
+                                              : widget.type == OperationType.DelistedForSale
+                                                ? "Delisted From Sale"
+                                                  : "Undefined",
                             style: AppStyles.operationType(context),
                           ),
                         ),

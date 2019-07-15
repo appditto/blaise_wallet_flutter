@@ -208,7 +208,6 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
               message,
         );
       },
-      fullscreenDialog: true
       ));
     }   
   }

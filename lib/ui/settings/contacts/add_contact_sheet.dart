@@ -12,8 +12,8 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/payload.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
-import 'package:blaise_wallet_flutter/util/clipboard_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +49,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
     this.addressController = TextEditingController();
     this.payload = "";
     if (widget.account == null) {
-      this.addressController.addListener(() {
+      this.addressFocusNode.addListener(() {
         if (!this.addressFocusNode.hasFocus) {
           try {
             AccountNumber numberFormatted =
@@ -94,17 +94,11 @@ class _AddContactSheetState extends State<AddContactSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        // Container for the name text field
-                        Container(
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
-                            child: AppTextField(
-                              label: 'Contact Name',
-                              style: AppStyles.contactsItemName(context),
-                              prefix: Text("@",
-                                  style: AppStyles.contactsItemNamePrimary(context)),
-                              maxLines: 1,
-                            )),
+                        // Sized Box
+                        SizedBox(
+                          height: 50,
+                          width: 65,
+                        ),
                         // Container for the address text field
                         Container(
                           width: MediaQuery.of(context).size.width - 130,
@@ -169,14 +163,24 @@ class _AddContactSheetState extends State<AddContactSheet> {
                               firstButton: widget.account == null ? TextFieldButton(
                                 icon: AppIcons.paste,
                                 onPressed: () {
-                                  ClipboardUtil.getClipboardText(DataType.ACCOUNT).then((account) {
+                                  UserDataUtil.getClipboardText(DataType.ACCOUNT).then((account) {
                                     if (account != null) {
                                       addressController.text = account;
                                     }
                                   });
                                 },
                               ) : null,
-                              secondButton: widget.account == null ? TextFieldButton(icon: AppIcons.scan) : null,
+                              secondButton: widget.account == null ? 
+                                TextFieldButton(
+                                  icon: AppIcons.scan,
+                                  onPressed: () async {
+                                    String text = await UserDataUtil.getQRData(DataType.ACCOUNT);
+                                    if (text != null) {
+                                      addressController.text = text;
+                                    }
+                                  }
+                                )
+                               : null,
                               maxLines: 1,
                               textCapitalization: TextCapitalization.characters,
                               controller: addressController,
@@ -206,6 +210,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                                 payload = newPayload;
                               });
                             },
+                            allowEncryption: false,
                           )
                         ],
                       ),
@@ -231,11 +236,6 @@ class _AddContactSheetState extends State<AddContactSheet> {
                             EventTaxiImpl.singleton().fire(ContactModifiedEvent(contact: newContact));
                             Navigator.of(context).pop();
                           }
-                          Navigator.of(context).pop();
-                          UIUtil.showSnackbar(
-                            "@yekta added to contacts",
-                            context,
-                          );
                         },
                       ),
                     ],

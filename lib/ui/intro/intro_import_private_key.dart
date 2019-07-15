@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -114,6 +115,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                             context),
                                     focusNode: privateKeyFocusNode,
                                     controller: privateKeyController,
+                                    maxLines: 1,
                                     firstButton: TextFieldButton(
                                       icon: AppIcons.paste,
                                       onPressed: () {
@@ -133,8 +135,19 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                     ),
                                     secondButton: TextFieldButton(
                                       icon: AppIcons.scan,
-                                      onPressed: () {
-                                        // Scan private key TODO
+                                      onPressed: () async {
+                                        String text = await UserDataUtil.getQRData(DataType.RAW);
+                                        if (text != null) {
+                                          if (privateKeyIsValid(
+                                                  text) ||
+                                              privateKeyIsEncrypted(
+                                                  text)) {
+                                            privateKeyController.text =
+                                                text;
+                                            onKeyTextChanged(
+                                                privateKeyController.text);
+                                          }                                          
+                                        }
                                       },
                                     ),
                                     inputFormatters: [

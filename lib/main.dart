@@ -134,7 +134,7 @@ class _AppState extends State<App> {
               );
             case '/contacts':
               return MaterialPageRoute(
-                builder: (context) => ContactsPage(),
+                builder: (context) => ContactsPage(account: settings.arguments),
                 settings: settings,
               );
             default:

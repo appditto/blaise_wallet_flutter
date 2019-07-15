@@ -6,6 +6,12 @@ import 'package:oktoast/oktoast.dart';
 import 'package:flutter/material.dart';
 
 class UIUtil {
+  static bool smallScreen(BuildContext context) {
+    if (MediaQuery.of(context).size.height < 667)
+      return true;
+    else
+      return false;
+  }
   static void showSnackbar(String content, BuildContext context) {
     showToastWidget(
       Align(
@@ -48,20 +54,21 @@ class UIUtil {
     } else {
       df = DateFormat("MMM dd • HH:mm");
     }
-    return  df.format(localTime);
+    return df.format(localTime);
   }
 
   static String formatDateStrLong(DateTime dt) {
-    //"Jul 08, 2019 • 13:24:01 (1562592241)"    
+    //"Jul 08, 2019 • 13:24:01 (1562592241)"
     int secondsSinceEpoch = dt.millisecondsSinceEpoch ~/ 1000;
     DateTime localTime = dt.toLocal();
     DateFormat df;
     df = DateFormat("MMM dd, yyyy • HH:mm:ss");
-    return  df.format(localTime) + "\n($secondsSinceEpoch)";
+    return df.format(localTime) + "\n($secondsSinceEpoch)";
   }
 
   /// Show a dialog asking if they want to confirm a fee
-  static void showFeeDialog({@required BuildContext context, @required Function onConfirm}) {
+  static void showFeeDialog(
+      {@required BuildContext context, @required Function onConfirm}) {
     showAppDialog(
         context: context,
         builder: (_) => DialogOverlay(
@@ -71,8 +78,7 @@ class UIUtil {
             body: TextSpan(
               children: [
                 TextSpan(
-                  text:
-                      "This operation requires a fee. ",
+                  text: "This operation requires a fee. ",
                   style: AppStyles.paragraph(context),
                 ),
                 TextSpan(
@@ -84,8 +90,11 @@ class UIUtil {
             ),
             onConfirm: () {
               onConfirm();
-            }
-        )
-    );
+            }));
+  }
+
+  /// Placeholder TODO
+  static Future<void> cancelLockEvent() async {
+    return;
   }
 }

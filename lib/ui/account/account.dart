@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/change_name_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/account/other_operations/delist_for_sale/delisting_for_sale.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/list_for_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/create_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transfer_account_sheet.dart';
@@ -30,6 +31,7 @@ import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:logger/logger.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class AccountPage extends StatefulWidget {
@@ -42,9 +44,10 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  final Logger log = Logger();
+
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
-  List<DialogListItem> operationsList;
   Account accountState;
   // Opacity Animation
   Animation<double> _opacityAnimation;
@@ -56,12 +59,15 @@ class _AccountPageState extends State<AccountPage>
   // Reference to contacts list
   List<Contact> _contacts;
 
+  // Last refresh
+  DateTime _lastRefresh;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _isRefreshing = false;
     _registerBus();
-    this.operationsList = getOperationsList();
     this.accountState = walletState.getAccountState(widget.account);
     this.accountState.updateAccount();
     this.accountState.getAccountOperations();
@@ -115,8 +121,30 @@ class _AccountPageState extends State<AccountPage>
   void dispose() {
     _disposeAnimations();
     _destroyBus();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Account for user changing locale when leaving the app
+    switch (state) {
+      case AppLifecycleState.paused:
+        super.didChangeAppLifecycleState(state);
+        break;
+      case AppLifecycleState.resumed:
+        // Do an auto-refresh
+        if (_lastRefresh == null || DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 300) {
+          _refresh();
+        }
+        super.didChangeAppLifecycleState(state);
+        break;
+      default:
+        super.didChangeAppLifecycleState(state);
+        break;
+    }
+  }
+
 
   void _startAnimation() {
     _opacityAnimationController.addListener(_animationControllerListener);
@@ -160,18 +188,33 @@ class _AccountPageState extends State<AccountPage>
         action: () {
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
-              context: context, widget: ListForSaleSheet());
+              context: context, widget: ListForSaleSheet(account: accountState.account));
         },
+        disabled: accountState == null || accountState.account.state == AccountState.LISTED
       ),
       DialogListItem(
         option: "Private Sale",
         action: () {
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
-              context: context, widget: CreatePrivateSaleSheet());
+              context: context, widget: CreatePrivateSaleSheet(account: accountState.account));
         },
+        disabled: accountState == null || accountState.account.state == AccountState.LISTED
       ),
-      DialogListItem(option: "Delist Account", disabled: true),
+      DialogListItem(
+        option: "Delist Account",
+        action: () {
+          Navigator.of(context).pop();
+          AppSheets.showBottomSheet(
+            context: context,
+            widget: DelistingForSaleSheet(
+              account: accountState.account,
+              fee: walletState.shouldHaveFee() ? walletState.MIN_FEE : walletState.NO_FEE,
+            )
+          );
+        },
+        disabled: accountState == null || accountState.account.state != AccountState.LISTED
+      ),
     ];
   }
 
@@ -202,6 +245,7 @@ class _AccountPageState extends State<AccountPage>
 
   // Refresh list
   Future<void> _refresh() async {
+    _lastRefresh = DateTime.now().toUtc();
     setState(() {
       _isRefreshing = true;
     });
@@ -230,7 +274,7 @@ class _AccountPageState extends State<AccountPage>
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       endDrawer: SizedBox(
-          width: double.infinity, child: AppDrawer(child: SettingsPage())),
+          width: double.infinity, child: AppDrawer(child: SettingsPage(account: accountState))),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
@@ -472,7 +516,7 @@ class _AccountPageState extends State<AccountPage>
                                                   builder: (_) => DialogOverlay(
                                                       title: 'Other Operations',
                                                       optionsList:
-                                                          operationsList));
+                                                          getOperationsList()));
                                             },
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -623,54 +667,64 @@ class _AccountPageState extends State<AccountPage>
                                               builder: (BuildContext context) {
                                                 if (accountState
                                                         .operationsLoading || accountState.operations == null) {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft: Radius
-                                                                .circular(12),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    12)),
-                                                    child: Opacity(
-                                                      opacity: _opacityAnimation
-                                                          .value,
-                                                      child: ListView(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .only(
-                                                                      bottom:
-                                                                          24),
-                                                          children: [
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                            PlaceholderOperationListItem(
-                                                                type: PlaceholderOperationType
-                                                                    .Received),
-                                                            PlaceholderOperationListItem(
-                                                                type:
-                                                                    PlaceholderOperationType
-                                                                        .Sent),
-                                                          ]),
-                                                    ),
+                                                  return ReactiveRefreshIndicator(
+                                                    backgroundColor:
+                                                        StateContainer.of(
+                                                                context)
+                                                            .curTheme
+                                                            .backgroundPrimary,
+                                                    onRefresh: _refresh,
+                                                    isRefreshing:
+                                                        _isRefreshing,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(12),
+                                                              topRight:
+                                                                  Radius.circular(
+                                                                      12)),
+                                                      child: Opacity(
+                                                        opacity: _opacityAnimation
+                                                            .value,
+                                                        child: ListView(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .only(
+                                                                        bottom:
+                                                                            24),
+                                                            children: [
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                              PlaceholderOperationListItem(
+                                                                  type: PlaceholderOperationType
+                                                                      .Received),
+                                                              PlaceholderOperationListItem(
+                                                                  type:
+                                                                      PlaceholderOperationType
+                                                                          .Sent),
+                                                            ]),
+                                                      )
+                                                    )
                                                   );
                                                 } else {
                                                   return ClipRRect(
@@ -691,6 +745,7 @@ class _AccountPageState extends State<AccountPage>
                                                         isRefreshing:
                                                             _isRefreshing,
                                                         child: accountState.hasOperationsToDisplay() ? ListView.builder(
+                                                            physics: AlwaysScrollableScrollPhysics(),
                                                             padding:
                                                                 EdgeInsetsDirectional
                                                                     .only(
@@ -792,45 +847,107 @@ class _AccountPageState extends State<AccountPage>
   }
 
   Widget _buildAccountHistoryItem(PascalOperation op) {
-      if (op.optype == OpType.TRANSACTION) {
-        OperationType type;
-        if (op.amount.pasc < BigInt.zero) {
-          type = OperationType.Sent;
-        } else {
-          type = OperationType.Received;
-        }
-        AccountNumber accountToCheck = type == OperationType.Received ?
-          op.senders[0].sendingAccount
-          : op.receivers[0].receivingAccount;
-        List<Contact> contacts = _contacts.where((c) => c.account == accountToCheck).toList();
-        Contact c;
-        if (contacts.length > 0) {
-          c = contacts[0];
-        }
+    if (op.optype == OpType.TRANSACTION) {
+      OperationType type;
+      if (op.amount.pasc < BigInt.zero) {
+        type = OperationType.Sent;
+      } else {
+        type = OperationType.Received;
+      }
+      AccountNumber accountToCheck = type == OperationType.Received ?
+        op.senders[0].sendingAccount
+        : op.receivers[0].receivingAccount;
+      List<Contact> contacts = _contacts.where((c) => c.account == accountToCheck).toList();
+      Contact c;
+      if (contacts.length > 0) {
+        c = contacts[0];
+      }
+      return OperationListItem(
+        type: type,
+        amount: op.receivers[0].amount.toStringOpt(),
+        address: c == null ? accountToCheck.toString() : c.name,
+        date:
+            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        payload: op.receivers[0].payload,
+        onPressed: () {
+          AppSheets.showBottomSheet(
+              context: context,
+              animationDurationMs: 200,
+              widget: OperationSheet(
+                payload: op.receivers[0].payload,
+                ophash: op.ophash,
+                operation: op,
+                isContact: c != null,
+                account: type == OperationType.Received
+                    ? op.senders[0].sendingAccount
+                    : op.receivers[0].receivingAccount,
+              ));
+        },
+      );
+    } else if (op.optype == OpType.CHANGE_ACCOUNT_INFO) {
+      // Only show change name
+      if (op.changers[0].newName != null) {
         return OperationListItem(
-          type: type,
-          amount: op.receivers[0].amount.toStringOpt(),
-          address: c == null ? accountToCheck.toString() : c.name,
+          type: OperationType.NameChanged,
+          address: op.changers[0].changingAccount.toString(),
           date:
               op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
-          payload: op.receivers[0].payload,
+          payload: "",
+          name: op.changers[0].newName.toString(),
           onPressed: () {
             AppSheets.showBottomSheet(
                 context: context,
                 animationDurationMs: 200,
                 widget: OperationSheet(
-                  payload: op.receivers[0].payload,
+                  payload: "",
                   ophash: op.ophash,
                   operation: op,
-                  isContact: c != null,
-                  account: type == OperationType.Received
-                      ? op.senders[0].sendingAccount
-                      : op.receivers[0].receivingAccount,
+                  account: op.changers[0].changingAccount,
                 ));
           },
-        );
+        );            
       }
-      return SizedBox();
+    } else if (op.optype == OpType.LIST_FORSALE) {
+      return OperationListItem(
+        type: OperationType.ListedForSale,
+        address: op.changers[0].sellerAccount.toString(),
+        date:
+            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        payload: "",
+        price: op.changers[0].accountPrice.toStringOpt(),
+        onPressed: () {
+          AppSheets.showBottomSheet(
+              context: context,
+              animationDurationMs: 200,
+              widget: OperationSheet(
+                payload: "",
+                ophash: op.ophash,
+                operation: op,
+                account: op.changers[0].sellerAccount,
+              ));
+        },
+      );            
+    } else if (op.optype == OpType.DELIST_FORSALE) {
+      return OperationListItem(
+        type: OperationType.DelistedForSale,
+        address: op.signerAccount.toString(),
+        date:
+            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        payload: "",
+        onPressed: () {
+          AppSheets.showBottomSheet(
+              context: context,
+              animationDurationMs: 200,
+              widget: OperationSheet(
+                payload: "",
+                ophash: op.ophash,
+                operation: op,
+                account: op.signerAccount,
+              ));
+        },
+      );      
+    }
+    return SizedBox();
   }
 
   List<Widget> getPlaceholderCards() {

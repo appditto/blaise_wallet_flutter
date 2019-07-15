@@ -110,6 +110,15 @@ dependencies:
   # Native file chooser
   file_picker: ^1.3.7
 
+  # Various string validations
+  validators: ^2.0.0+1
+
+  # Webview
+  webview_flutter: ^0.3.10
+
+  # QR scanning
+  barcode_scan: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

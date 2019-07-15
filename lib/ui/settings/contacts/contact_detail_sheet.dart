@@ -4,19 +4,25 @@ import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
+import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
 
 class ContactDetailSheet extends StatefulWidget {
   final Contact contact;
-  final Function onPressed;
+  final Account account;
 
-  ContactDetailSheet({this.contact, this.onPressed});
+  ContactDetailSheet({this.contact, this.account});
   _ContactDetailSheetState createState() => _ContactDetailSheetState();
 }
 
@@ -104,7 +110,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              return null;
+                              AppWebView.showWebView(context, 'https://explore.pascalcoin.org/accounts/${widget.contact.account.toString()}');
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -244,15 +250,33 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                   ),
                 ),
                 //"Add Contact" and "Close" buttons
-                Row(
+                _showSendButton() ? Row(
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
                       text: "Send",
                       buttonTop: true,
+                      onPressed: () {
+                        if (widget.account != null) {
+                          Navigator.pop(context);
+                          AppSheets.showBottomSheet(
+                            context: context,
+                            widget: SendSheet(
+                              account: widget.account.account,
+                              contact: widget.contact
+                            ),
+                          );
+                        } else {
+                          showAppDialog(
+                              context: context,
+                              builder: (_) => DialogOverlay(
+                                  title: 'Choose Account to Send From',
+                                  optionsList: _getAccountsList()));
+                        }
+                      },
                     ),
                   ],
-                ),
+                ) : SizedBox(),
                 // "Close" button
                 Row(
                   children: <Widget>[
@@ -271,5 +295,35 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
         ),
       ],
     );
+  }
+
+  bool _showSendButton() {
+    return (
+      (widget.account != null && widget.account.accountBalance > Currency('0')) ||
+      (widget.account == null && !walletState.walletLoading && walletState.totalWalletBalance > Currency('0') && walletState.getNonzeroBalanceAccounts().length > 0)
+    );
+  }
+
+  List<DialogListItem> _getAccountsList() {
+    /// Get a list of accounts we can send from
+    List<DialogListItem> ret = [];
+    walletState.getNonzeroBalanceAccounts().forEach((acct) {
+      ret.add(DialogListItem(
+        option: "${acct.account.toString()} (${acct.balance.toStringOpt()} PASC)",
+        action: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          AppSheets.showBottomSheet(
+            context: context,
+            widget: SendSheet(
+              account: acct,
+              contact: widget.contact,
+              fromOverview: true,
+            ),
+          );
+        }
+      ));
+    });
+    return ret;
   }
 }

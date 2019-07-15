@@ -2,8 +2,12 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/daemon_changed_event.dart';
+import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/store/account/account.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:share/share.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/settings/backup_private_key/backup_private_key_sheet.dart';
@@ -19,6 +23,10 @@ import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
+  final Account account;
+
+  SettingsPage({this.account}) : super();
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -67,6 +75,20 @@ class _SettingsPageState extends State<SettingsPage> {
           }));
     });
     return ret;
+  }
+
+  String daemonURL;
+
+  @override
+  void initState() {
+    super.initState();
+    sl.get<SharedPrefsUtil>().getRpcUrl().then((result) {
+      if (result != AppConstants.DEFAULT_RPC_HTTP_URL && mounted) {
+        setState(() {
+          daemonURL = result;
+        });
+      }
+    });
   }
 
   @override
@@ -234,12 +256,25 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           SettingsListItem(
                             header: "Daemon",
-                            subheader: "Default",
+                            subheader: daemonURL ?? "Default",
                             icon: AppIcons.changedaemon,
                             onPressed: () {
                               AppSheets.showBottomSheet(
                                   context: context,
-                                  widget: ChangeDaemonSheet());
+                                  widget: ChangeDaemonSheet(
+                                    onChanged: (newDaemon) {
+                                      EventTaxiImpl.singleton().fire(DaemonChangedEvent(newDaemon: newDaemon));
+                                      if (newDaemon != AppConstants.DEFAULT_RPC_HTTP_URL) {
+                                        setState(() {
+                                          daemonURL = newDaemon;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          daemonURL = null;
+                                        });
+                                      }
+                                    }
+                                  ));
                             },
                           ),
                           // Manage text
@@ -265,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             header: "Contacts",
                             icon: AppIcons.contacts,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/contacts');
+                              Navigator.pushNamed(context, '/contacts', arguments: widget.account);
                             },
                           ),
                           SettingsListItem(

@@ -2,36 +2,70 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/creating_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
-import 'package:blaise_wallet_flutter/ui/util/ensure_visible.dart';
+import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/number_util.dart';
+import 'package:blaise_wallet_flutter/util/pascal_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class CreatePrivateSaleSheet extends StatefulWidget {
+  final PascalAccount account;
+
+  CreatePrivateSaleSheet({@required this.account}) : super();
+
   _CreatePrivateSaleSheetState createState() => _CreatePrivateSaleSheetState();
 }
 
 class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
+  FocusNode priceFocusNode;
+  FocusNode receiverFocusNode;
   FocusNode publicKeyFocusNode;
+  TextEditingController priceController;
+  TextEditingController receiverController;
   TextEditingController publicKeyController;
+
+  String _priceErr;
+  String _receiverErr;
+  String _publicKeyErr;
+
+  // Fee
+  bool _hasFee;
 
   @override
   void initState() {
     super.initState();
-    publicKeyFocusNode = FocusNode();
-    publicKeyController = TextEditingController();
+    this.priceFocusNode = FocusNode();
+    this.receiverFocusNode = FocusNode();
+    this.publicKeyFocusNode = FocusNode();
+    this.priceController = TextEditingController();
+    this.receiverController = TextEditingController();
+    this.publicKeyController = TextEditingController();
+    this._hasFee = walletState.shouldHaveFee();
+    this.receiverController.addListener(() {
+      if (!this.receiverFocusNode.hasFocus) {
+        try {
+          AccountNumber numberFormatted =
+              AccountNumber(this.receiverController.text);
+          this.receiverController.text = numberFormatted.toString();
+        } catch (e) {}
+      }
+    });
   }
 
-  FocusNode _focusNodePrice = FocusNode();
-  FocusNode _focusNodeReceivingAccount = FocusNode();
-  FocusNode _focusNodePublicKey = FocusNode();
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return TapOutsideUnfocus(
+        child: Column(
       children: <Widget>[
         Expanded(
           child: Container(
@@ -142,9 +176,29 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                         .curTheme
                                         .primary,
                                   ),
-                                  focusNode: _focusNodePrice,
+                                  focusNode: priceFocusNode,
+                                  controller: priceController,
+                                  onChanged: (text) {
+                                    if (_priceErr != null) {
+                                      setState(() {
+                                        _priceErr = null;
+                                      });
+                                    }
+                                  },
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(13),
+                                    CurrencyFormatter(
+                                        maxDecimalDigits:
+                                            NumberUtil.maxDecimalDigits)
+                                  ],
                                 ),
                               ),
+                              _hasFee
+                                  ? FeeContainer(
+                                      feeText:
+                                          walletState.MIN_FEE.toStringOpt())
+                                  : SizedBox(),
+                              ErrorContainer(errorText: _priceErr ?? ""),
                               // Container for receving account field
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
@@ -153,73 +207,128 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                   label: 'Receiving Account',
                                   style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 1,
-                                  firstButton:
-                                      TextFieldButton(icon: AppIcons.paste),
-                                  secondButton:
-                                      TextFieldButton(icon: AppIcons.scan),
-                                  focusNode: _focusNodeReceivingAccount,
-                                ),
-                              ),
-                              // Container for public key field
-                              Container(
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    30, 30, 30, 0),
-                                child: AppTextField(
-                                  label: 'Public Key',
-                                  style: AppStyles.privateKeyTextDark(context),
-                                  maxLines: 1,
                                   firstButton: TextFieldButton(
                                     icon: AppIcons.paste,
-                                    onPressed: () {
-                                      Clipboard.getData("text/plain")
-                                          .then((cdata) {
-                                        publicKeyController.text = cdata.text;
-                                      });
+                                    onPressed: () async {
+                                      String text =
+                                          await UserDataUtil.getClipboardText(
+                                              DataType.ACCOUNT);
+                                      if (text != null) {
+                                        receiverFocusNode.unfocus();
+                                        receiverController.text = text;
+                                      }
                                     },
                                   ),
                                   secondButton:
-                                      TextFieldButton(icon: AppIcons.scan),
-                                  focusNode: publicKeyFocusNode,
-                                  controller: publicKeyController,
+                                      TextFieldButton(
+                                        icon: AppIcons.scan,
+                                        onPressed: () async {
+                                          String text =
+                                              await UserDataUtil.getQRData(
+                                                  DataType.ACCOUNT);
+                                          if (text != null) {
+                                            receiverFocusNode.unfocus();
+                                            receiverController.text = text;
+                                          }                                          
+                                        },
+                                      ),
+                                  inputFormatters: [
+                                    WhitelistingTextInputFormatter(
+                                        RegExp("[0-9-]")),
+                                    PascalAccountFormatter()
+                                  ],
+                                  onChanged: (text) {
+                                    if (_receiverErr != null) {
+                                      setState(() {
+                                        _receiverErr = null;
+                                      });
+                                    }
+                                  },
+                                  focusNode: receiverFocusNode,
+                                  controller: receiverController,
                                 ),
                               ),
-                              // Container for the "Add Payload" button
-                              Row(
-                                children: <Widget>[
-                                  Container(
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(100.0),
-                                      color: StateContainer.of(context)
-                                          .curTheme
-                                          .backgroundPrimary,
-                                      boxShadow: [
-                                        StateContainer.of(context)
-                                            .curTheme
-                                            .shadowTextDark,
-                                      ],
-                                    ),
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 30, 30, 40),
-                                    child: FlatButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(100.0)),
-                                      child: AutoSizeText(
-                                        "+ Add a Duration",
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        stepGranularity: 0.1,
-                                        style: AppStyles.buttonMiniBg(context),
-                                      ),
-                                      onPressed: () async {
-                                        return null;
-                                      },
-                                    ),
+                              ErrorContainer(errorText: _receiverErr ?? ""),
+                              // Container for public key field
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 10, 30, 0),
+                                child: AppTextField(
+                                  label: 'Public Key',
+                                  style: AppStyles.privateKeyTextDark(context),
+                                  maxLines: 4,
+                                  firstButton: TextFieldButton(
+                                    icon: AppIcons.paste,
+                                    onPressed: () async {
+                                      String text =
+                                          await UserDataUtil.getClipboardText(
+                                              DataType.PUBLIC_KEY);
+                                      if (text != null) {
+                                        publicKeyController.text = text;
+                                      }
+                                    },
                                   ),
-                                ],
-                              )
+                                  secondButton: TextFieldButton(
+                                    icon: AppIcons.scan,
+                                    onPressed: () async {
+                                      String text =
+                                          await UserDataUtil.getClipboardText(
+                                              DataType.PUBLIC_KEY);
+                                      if (text != null) {
+                                        publicKeyController.text = text;
+                                      }                                      
+                                    },
+                                  ),
+                                  focusNode: publicKeyFocusNode,
+                                  controller: publicKeyController,
+                                  onChanged: (text) {
+                                    if (_publicKeyErr != null) {
+                                      setState(() {
+                                        _publicKeyErr = null;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+                              ErrorContainer(errorText: _publicKeyErr ?? ""),
+                              // TODO Implement duration
+                              /*
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100.0),
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .backgroundPrimary,
+                                        boxShadow: [
+                                          StateContainer.of(context)
+                                              .curTheme
+                                              .shadowTextDark,
+                                        ],
+                                      ),
+                                      margin: EdgeInsetsDirectional.fromSTEB(
+                                          30, 30, 30, 40),
+                                      child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100.0)),
+                                        child: AutoSizeText(
+                                          "+ Add a Duration",
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          stepGranularity: 0.1,
+                                          style: AppStyles.buttonMiniBg(context),
+                                        ),
+                                        onPressed: () async {
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )*/
                             ],
                           ),
                         ),
@@ -234,10 +343,20 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                       type: AppButtonType.Primary,
                       text: "Create Private Sale",
                       onPressed: () {
-                        AppSheets.showBottomSheet(
-                            context: context,
-                            widget: CreatingPrivateSaleSheet(),
-                            noBlur: true);
+                        if (validateFormData()) {
+                          AppSheets.showBottomSheet(
+                              context: context,
+                              widget: CreatingPrivateSaleSheet(
+                                  account: widget.account,
+                                  price: Currency(priceController.text),
+                                  receiver:
+                                      AccountNumber(receiverController.text),
+                                  publicKey: publicKeyController.text,
+                                  fee: _hasFee
+                                      ? walletState.MIN_FEE
+                                      : walletState.NO_FEE),
+                              noBlur: true);
+                        }
                       },
                     ),
                   ],
@@ -247,6 +366,49 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
           ),
         ),
       ],
-    );
+    ));
+  }
+
+  bool validateFormData() {
+    bool isValid = true;
+    // Validate receiver
+    if (receiverController.text.trim().length == 0) {
+      isValid = false;
+      setState(() {
+        _receiverErr = "Invalid Receiving Account";
+      });
+    } else {
+      try {
+        AccountNumber(receiverController.text);
+      } catch (e) {
+        isValid = false;
+        setState(() {
+          _receiverErr = "Invalid Receiving Account";
+        });
+      }
+    }
+    // Validate price
+    if (priceController.text.trim().length == 0) {
+      isValid = false;
+      setState(() {
+        _priceErr = "Price is required";
+      });
+    } else {
+      Currency price = Currency(priceController.text);
+      if (price == Currency('0')) {
+        isValid = false;
+        setState(() {
+          _priceErr = "Price cannot be 0";
+        });
+      }
+    }
+    // Validate public key
+    if (PascalUtil().decipherPublicKey(publicKeyController.text) == null) {
+      isValid = false;
+      setState(() {
+        _publicKeyErr = "Invalid Public Key";
+      });
+    }
+    return isValid;
   }
 }

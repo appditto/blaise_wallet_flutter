@@ -3,21 +3,27 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SentSheet extends StatefulWidget {
   final String destination;
   final String amount;
   final String payload;
   final Currency fee;
+  final Contact contact;
+  final bool encryptedPayload;
 
   SentSheet(
       {@required this.destination,
       @required this.amount,
       @required this.fee,
-      this.payload = ""});
+      this.contact,
+      this.payload = "",
+      this.encryptedPayload = false});
 
   _SentSheetState createState() => _SentSheetState();
 }
@@ -161,7 +167,7 @@ class _SentSheetState extends State<SentSheet> {
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
                         child: AutoSizeText(
-                          widget.destination,
+                          widget.contact == null ? widget.destination : "${widget.contact.name} (${widget.contact.account.toString()})",
                           maxLines: 1,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -246,7 +252,7 @@ class _SentSheetState extends State<SentSheet> {
                                 ),
                               ],
                             ),
-                            widget.fee.toStringOpt() != "0"
+                            widget.fee != Currency("0")
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -362,14 +368,30 @@ class _SentSheetState extends State<SentSheet> {
                                     .curTheme
                                     .textDark10,
                               ),
-                              child: AutoSizeText(
-                                widget.payload,
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                minFontSize: 8,
-                                textAlign: TextAlign.center,
-                                style: AppStyles.paragraph(context),
-                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  AutoSizeText(
+                                    widget.payload,
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    minFontSize: 8,
+                                    textAlign: TextAlign.center,
+                                    style: AppStyles.paragraph(context),
+                                  ),
+                                  widget.encryptedPayload ? Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsetsDirectional.only(start: 3.0),
+                                    child: Icon(
+                                      FontAwesomeIcons.lock,
+                                      size: 12,
+                                      color: StateContainer.of(context)
+                                        .curTheme
+                                        .textDark
+                                    )
+                                  ) : SizedBox()
+                                ]
+                              )
                             )
                           : SizedBox()
                     ],

@@ -169,6 +169,16 @@ mixin _$Wallet on WalletBase, Store {
   }
 
   @override
+  List<PascalAccount> getNonzeroBalanceAccounts() {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.getNonzeroBalanceAccounts();
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   bool shouldHaveFee() {
     final _$actionInfo = _$WalletBaseActionController.startAction();
     try {

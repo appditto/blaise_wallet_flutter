@@ -133,9 +133,17 @@ mixin _$Account on AccountBase, Store {
 
   @override
   Future<RPCResponse> doSend(
-      {String amount, String destination, Currency fee, String payload = ""}) {
+      {String amount,
+      String destination,
+      Currency fee,
+      Uint8List encryptedPayload,
+      String payload = ""}) {
     return _$doSendAsyncAction.run(() => super.doSend(
-        amount: amount, destination: destination, fee: fee, payload: payload));
+        amount: amount,
+        destination: destination,
+        fee: fee,
+        encryptedPayload: encryptedPayload,
+        payload: payload));
   }
 
   final _$transferAccountAsyncAction = AsyncAction('transferAccount');
@@ -152,6 +160,33 @@ mixin _$Account on AccountBase, Store {
   Future<RPCResponse> changeAccountName(AccountName newName, {Currency fee}) {
     return _$changeAccountNameAsyncAction
         .run(() => super.changeAccountName(newName, fee: fee));
+  }
+
+  final _$listAccountForSaleAsyncAction = AsyncAction('listAccountForSale');
+
+  @override
+  Future<RPCResponse> listAccountForSale(
+      Currency price, AccountNumber accountToPay,
+      {PublicKey newPubKey, Currency fee}) {
+    return _$listAccountForSaleAsyncAction.run(() => super.listAccountForSale(
+        price, accountToPay,
+        newPubKey: newPubKey, fee: fee));
+  }
+
+  final _$delistAccountForSaleAsyncAction = AsyncAction('delistAccountForSale');
+
+  @override
+  Future<RPCResponse> delistAccountForSale({Currency fee}) {
+    return _$delistAccountForSaleAsyncAction
+        .run(() => super.delistAccountForSale(fee: fee));
+  }
+
+  final _$encryptPayloadEciesAsyncAction = AsyncAction('encryptPayloadEcies');
+
+  @override
+  Future<Uint8List> encryptPayloadEcies(String payload, AccountNumber account) {
+    return _$encryptPayloadEciesAsyncAction
+        .run(() => super.encryptPayloadEcies(payload, account));
   }
 
   final _$AccountBaseActionController = ActionController(name: 'AccountBase');
@@ -201,6 +236,16 @@ mixin _$Account on AccountBase, Store {
     final _$actionInfo = _$AccountBaseActionController.startAction();
     try {
       return super.hasOperationsToDisplay();
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeAccountState(AccountState accountState) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.changeAccountState(accountState);
     } finally {
       _$AccountBaseActionController.endAction(_$actionInfo);
     }

@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferring_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -11,7 +10,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
-import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -140,7 +139,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              // Container for the name text field
+                              // Container for the public key text field
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),
@@ -150,28 +149,21 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                   maxLines: 4,
                                   firstButton: TextFieldButton(
                                     icon: AppIcons.paste,
-                                    onPressed: () {
-                                      Clipboard.getData("text/plain")
-                                          .then((cdata) {
-                                        try {
-                                          PublicKey pubKey = PublicKeyCoder()
-                                              .decodeFromBase58(cdata.text);
-                                          publicKeyController.text = cdata.text;
-                                        } catch (e) {
-                                          try {
-                                            PublicKey pubKey = PublicKeyCoder()
-                                                .decodeFromBytes(
-                                                    PDUtil.hexToBytes(
-                                                        cdata.text));
-                                            publicKeyController.text =
-                                                cdata.text;
-                                          } catch (e) {}
-                                        }
-                                      });
+                                    onPressed: () async {
+                                      String text = await UserDataUtil.getClipboardText(DataType.PUBLIC_KEY);
+                                      if (text != null) {
+                                        publicKeyController.text = text;
+                                      }
                                     },
                                   ),
                                   secondButton: TextFieldButton(
                                     icon: AppIcons.scan,
+                                    onPressed: () async {
+                                      String text = await UserDataUtil.getQRData(DataType.PUBLIC_KEY);
+                                      if (text != null) {
+                                        publicKeyController.text = text;
+                                      }                                      
+                                    },
                                   ),
                                   focusNode: publicKeyFocusNode,
                                   controller: publicKeyController,

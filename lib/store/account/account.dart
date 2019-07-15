@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
@@ -115,6 +117,12 @@ abstract class AccountBase with Store {
       if (op.changers.length > 0 && op.changers[0].newName != null) {
         return true;
       }
+    } else if (op.optype == OpType.LIST_FORSALE) {
+      if (op.changers.length >0 && op.changers[0].sellerAccount != null && op.changers[0].accountPrice != null) {
+        return true;
+      }
+    } else if (op.optype == OpType.DELIST_FORSALE) {
+      return true;
     }
     return false;
   }
@@ -133,7 +141,12 @@ abstract class AccountBase with Store {
   }
 
   @action
-  Future<RPCResponse> doSend({@required String amount, @required String destination, Currency fee, String payload = ""}) async {
+  void changeAccountState(AccountState accountState) {
+    this.account.state = accountState;
+  }
+
+  @action
+  Future<RPCResponse> doSend({@required String amount, @required String destination, Currency fee, Uint8List encryptedPayload, String payload = ""}) async {
     fee = fee == null ? Currency('0') : fee;
     // Construct send
     TransactionOperation op = TransactionOperation(
@@ -142,7 +155,7 @@ abstract class AccountBase with Store {
       amount: Currency(amount)
     )
     ..withNOperation(this.account.nOperation + 1)
-    ..withPayload(PDUtil.stringToBytesUtf8(payload))
+    ..withPayload(encryptedPayload == null ? PDUtil.stringToBytesUtf8(payload) : encryptedPayload)
     ..withFee(fee)
     ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
     // Construct execute request
@@ -214,7 +227,95 @@ abstract class AccountBase with Store {
     );
     // Make request
     RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
     return resp;
+  }
+
+  @action
+  Future<RPCResponse> listAccountForSale(Currency price, AccountNumber accountToPay, {PublicKey newPubKey, Currency fee}) async {
+    fee = fee == null ? Currency('0') : fee;
+    // Construct list for sale
+    ListForSaleOperation op = ListForSaleOperation(
+      accountSigner: account.account,
+      targetSigner: account.account,
+      price: price,
+      accountToPay: accountToPay,
+      newPublicKey: newPubKey
+    )
+    ..withNOperation(account.nOperation + 1)
+    ..withPayload(PDUtil.stringToBytesUtf8(""))
+    ..withFee(fee)
+    ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
+    // Execute request
+    ExecuteOperationsRequest request = ExecuteOperationsRequest(
+      rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
+    );
+    // Make request
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
+    return resp;
+  }
+
+  @action
+  Future<RPCResponse> delistAccountForSale({Currency fee}) async {
+    fee = fee == null ? Currency('0') : fee;
+    // Construct list for sale
+    DeListForSaleOperation op = DeListForSaleOperation(
+      accountSigner: account.account,
+      targetSigner: account.account
+    )
+    ..withNOperation(account.nOperation + 1)
+    ..withPayload(PDUtil.stringToBytesUtf8(""))
+    ..withFee(fee)
+    ..sign(PrivateKeyCoder().decodeFromBytes(PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey())));
+    // Execute request
+    ExecuteOperationsRequest request = ExecuteOperationsRequest(
+      rawOperations: PDUtil.byteToHex(RawOperationCoder.encodeToBytes(op))
+    );
+    // Make request
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    if (resp.isError) {
+      return resp;
+    }
+    OperationsResponse opResp = resp;
+    if (opResp.operations[0].valid == null || opResp.operations[0].valid) {
+      this.account.nOperation++;
+      this.getAccountOperations();
+    }
+    return resp;
+  }
+
+  @action
+  Future<Uint8List> encryptPayloadEcies(String payload, AccountNumber account) async {
+    try {
+      // Do getaccountrequest to get the public key of this account
+      GetAccountRequest req = GetAccountRequest(
+        account: account.account
+      );
+      // Execute request
+      RPCResponse resp = await rpcClient.makeRpcRequest(req);
+      if (resp.isError) {
+        return null;
+      }
+      PascalAccount receiverAcct = resp;
+      return EciesCrypt.encrypt(PDUtil.stringToBytesUtf8(payload), receiverAcct.encPubkey);
+    } catch (e) {
+      return null;
+    }
   }
 }
 
