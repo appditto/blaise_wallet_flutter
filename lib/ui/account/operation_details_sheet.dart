@@ -113,15 +113,14 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
         return SizedBox();
       }
     }
-    return SizedBox();    
+    return SizedBox();
   }
 
   Widget getPayload() {
     if (widget.operation.optype == OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Payload",
-            value: widget.operation.senders[0].payload);
+            header: "Payload", value: widget.operation.senders[0].payload);
       } catch (e) {
         return SizedBox();
       }
@@ -134,7 +133,8 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
       try {
         return TransactionDetailsListItem(
             header: "New Public Key",
-            value: PublicKeyCoder().encodeToBase58(widget.operation.changers[0].newEncPubkey));
+            value: PublicKeyCoder()
+                .encodeToBase58(widget.operation.changers[0].newEncPubkey));
       } catch (e) {
         return SizedBox();
       }
@@ -235,12 +235,19 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                         ? "N/A"
                                         : UIUtil.formatDateStrLong(
                                             widget.operation.time)),
+                                getSendingAccount(),
+                                getSendAmount(),
+                                getPayload(),
+                                getReceivingAccount(),
+                                getNewName(),
                                 TransactionDetailsListItem(
-                                    header: "fee",
-                                    value: widget.operation.fee.toPositive().toStringOpt()),
+                                    header: "ophash",
+                                    value: widget.operation.ophash,
+                                    withDivider: false),
                                 TransactionDetailsListItem(
-                                    header: "opblock",
-                                    value: widget.operation.opblock.toString()),
+                                    header: "optype",
+                                    value: getOptypeDisplay(
+                                        widget.operation.optype)),
                                 TransactionDetailsListItem(
                                     header: "maturation",
                                     value: widget.operation.maturation == null
@@ -248,34 +255,28 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                         : widget.operation.maturation
                                             .toString()),
                                 TransactionDetailsListItem(
-                                    header: "optype",
-                                    value: getOptypeDisplay(
-                                        widget.operation.optype)),
+                                    header: "fee",
+                                    value: widget.operation.fee
+                                        .toPositive()
+                                        .toStringOpt()),
+                                TransactionDetailsListItem(
+                                    header: "opblock",
+                                    value: widget.operation.opblock.toString()),
+                                TransactionDetailsListItem(
+                                    header: "n_operation",
+                                    value: getNOperation().toString()),
+                                getSeller(),
+                                getAccountPrice(),
+                                getLockedUntilBlock(),
+                                getNewPublickey(),
+                                getChangingAccount(),
                                 TransactionDetailsListItem(
                                     header: "account",
-                                    value: widget.operation.account
-                                        .toString()),
+                                    value: widget.operation.account.toString()),
                                 TransactionDetailsListItem(
                                     header: "signer_account",
                                     value: widget.operation.signerAccount
                                         .toString()),
-                                TransactionDetailsListItem(
-                                    header: "n_operation",
-                                    value: getNOperation().toString()),
-                                getSendingAccount(),
-                                getReceivingAccount(),
-                                getChangingAccount(),
-                                getSendAmount(),
-                                getPayload(),
-                                getNewPublickey(),
-                                getNewName(),
-                                getSeller(),
-                                getAccountPrice(),
-                                getLockedUntilBlock(),
-                                TransactionDetailsListItem(
-                                    header: "ophash",
-                                    value: widget.operation.ophash,
-                                    withDivider: false),                                
                               ],
                             ),
                           ),
@@ -320,7 +321,8 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                           text: "Open in Explorer",
                           buttonTop: true,
                           onPressed: () {
-                            AppWebView.showWebView(context, 'https://explore.pascalcoin.org/operations/${widget.operation.ophash}');
+                            AppWebView.showWebView(context,
+                                'https://explore.pascalcoin.org/operations/${widget.operation.ophash}');
                           },
                         ),
                       ],
@@ -353,11 +355,8 @@ class TransactionDetailsListItem extends StatefulWidget {
   final String value;
   final bool withDivider;
 
-  TransactionDetailsListItem({
-    this.header,
-    this.value,
-    this.withDivider = true
-  });
+  TransactionDetailsListItem(
+      {this.header, this.value, this.withDivider = true});
 
   _TransactionDetailsListItemState createState() =>
       _TransactionDetailsListItemState();
@@ -375,82 +374,78 @@ class _TransactionDetailsListItemState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: double.maxFinite,
-          color: _copied
-              ? StateContainer.of(context).curTheme.success
-              : StateContainer.of(context).curTheme.backgroundPrimary,
-          child: FlatButton(
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: widget.value.trim()));
-              setState(() {
-                _copied = true;
-              });
-              if (_copiedTimer != null) {
-                _copiedTimer.cancel();
+    return Column(children: <Widget>[
+      Container(
+        width: double.maxFinite,
+        color: _copied
+            ? StateContainer.of(context).curTheme.success
+            : StateContainer.of(context).curTheme.backgroundPrimary,
+        child: FlatButton(
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: widget.value.trim()));
+            setState(() {
+              _copied = true;
+            });
+            if (_copiedTimer != null) {
+              _copiedTimer.cancel();
+            }
+            _copiedTimer = Timer(const Duration(milliseconds: 1000), () {
+              if (mounted) {
+                setState(() {
+                  _copied = false;
+                });
               }
-              _copiedTimer = Timer(const Duration(milliseconds: 1000), () {
-                if (mounted) {
-                  setState(() {
-                    _copied = false;
-                  });
-                }
-              });
-            },
-            splashColor: StateContainer.of(context).curTheme.textDark30,
-            highlightColor: StateContainer.of(context).curTheme.textDark15,
-            padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width - 100,
-                  child: AutoSizeText(
-                    widget.header,
-                    style: _copied
-                        ? AppStyles.textLightSmall400(context)
-                        : AppStyles.textDarkSmall400(context),
-                    textAlign: TextAlign.center,
-                  ),
+            });
+          },
+          splashColor: StateContainer.of(context).curTheme.textDark30,
+          highlightColor: StateContainer.of(context).curTheme.textDark15,
+          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width - 100,
+                child: AutoSizeText(
+                  widget.header,
+                  style: _copied
+                      ? AppStyles.textLightSmall400(context)
+                      : AppStyles.textDarkSmall400(context),
+                  textAlign: TextAlign.center,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width - 100,
-                  margin: EdgeInsetsDirectional.only(top: 6),
-                  child: AutoSizeText(
-                    widget.value,
-                    style: _copied
-                        ? AppStyles.textLightLarge700(context)
-                        : AppStyles.textDarkLarge700(context),
-                    textAlign: TextAlign.center,
-                  ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 100,
+                margin: EdgeInsetsDirectional.only(top: 6),
+                child: AutoSizeText(
+                  widget.value,
+                  style: _copied
+                      ? AppStyles.textLightLarge700(context)
+                      : AppStyles.textDarkLarge700(context),
+                  textAlign: TextAlign.center,
                 ),
-                _copied
-                    ? Container(
-                        alignment: Alignment(1, 0),
-                        margin: EdgeInsetsDirectional.only(end: 16),
-                        child: AutoSizeText(
-                          "Copied",
-                          style: AppStyles.textLightSmall700(context),
-                          textAlign: TextAlign.end,
-                        ),
-                      )
-                    : SizedBox()
-              ],
-            ),
+              ),
+              _copied
+                  ? Container(
+                      alignment: Alignment(1, 0),
+                      margin: EdgeInsetsDirectional.only(end: 16),
+                      child: AutoSizeText(
+                        "Copied",
+                        style: AppStyles.textLightSmall700(context),
+                        textAlign: TextAlign.end,
+                      ),
+                    )
+                  : SizedBox()
+            ],
           ),
         ),
-        widget.withDivider
+      ),
+      widget.withDivider
           ? Container(
               width: double.maxFinite,
               height: 1,
-              color: StateContainer.of(context)
-                  .curTheme
-                  .textDark10,
+              color: StateContainer.of(context).curTheme.textDark10,
             )
-          : SizedBox()       
-      ]
-    );
+          : SizedBox()
+    ]);
   }
 }
