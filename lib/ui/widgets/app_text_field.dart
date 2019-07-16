@@ -115,6 +115,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     textInputAction: TextInputAction.done,
                     maxLines: widget.maxLines,
                     minLines: 1,
+                    
                     inputFormatters: widget.inputFormatters,
                     onTap: widget.onTap,
                     onChanged: (String newValue) {

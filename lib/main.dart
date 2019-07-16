@@ -3,6 +3,7 @@ import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_security_first.dart';
+import 'package:blaise_wallet_flutter/ui/lockscreen/lock_screen.dart';
 import 'package:blaise_wallet_flutter/ui/overview/overview.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_backup_confirm.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_decrypt_and_import_private_key.dart';
@@ -76,6 +77,11 @@ class _AppState extends State<App> {
             case '/':
               return NoTransitionRoute(
                 builder: (context) => Splash(),
+                settings: settings,
+              );
+            case '/lock_screen':
+              return NoTransitionRoute(
+                builder: (context) => LockScreenPage(),
                 settings: settings,
               );
             case '/intro_welcome':
