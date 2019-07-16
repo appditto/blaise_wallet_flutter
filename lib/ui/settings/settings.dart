@@ -193,7 +193,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 StateContainer.of(context).curTheme.textDark10,
                           ),
                           // List Items
-                          SettingsListItem(
+                          false ? SettingsListItem(
                             header: "Currency",
                             subheader: "\$ US Dollar",
                             icon: AppIcons.currency,
@@ -204,7 +204,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       title: 'Currency',
                                       optionsList: currencyList));
                             },
-                          ),
+                          ) : SizedBox(),
                           SettingsListItem(
                             header: "Language",
                             subheader: "System Default",
