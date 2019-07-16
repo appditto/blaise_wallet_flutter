@@ -123,7 +123,7 @@ class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
                         ),
                         TextSpan(
                           text:
-                              "Only 1 account per phone number is allowed.\n\n",
+                              "Only 1 account per phone number is allowed.",
                           style: AppStyles.paragraphPrimary(context),
                         ),
                       ],
