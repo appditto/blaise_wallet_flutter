@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter/material.dart';
@@ -93,8 +97,19 @@ class UIUtil {
             }));
   }
 
-  /// Placeholder TODO
+  static StreamSubscription<dynamic> _lockDisableSub;
   static Future<void> cancelLockEvent() async {
-    return;
+    // Cancel auto-lock event, usually if we are launching another intent
+    if (_lockDisableSub != null) {
+      _lockDisableSub.cancel();
+    }
+    EventTaxiImpl.singleton().fire(DisableLockTimeoutEvent(disable: true));
+    Future<dynamic> delayed = Future.delayed(Duration(seconds: 10));
+    delayed.then((_) {
+      return true;
+    });
+    _lockDisableSub = delayed.asStream().listen((_) {
+      EventTaxiImpl.singleton().fire(DisableLockTimeoutEvent(disable: false));
+    });
   }
 }

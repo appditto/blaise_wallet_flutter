@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta_with_accounts.dart';
@@ -18,6 +19,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/reactive_refresh.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/haptic_util.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,7 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
   // Opacity Animation
   Animation<double> _opacityAnimation;
@@ -38,6 +40,8 @@ class _OverviewPageState extends State<OverviewPage>
 
   // Pull to refresh
   bool _isRefreshing;
+  // Whether to lock app
+  bool _lockDisabled;
 
   Future<void> walletLoad() async {
     try {
@@ -50,6 +54,7 @@ class _OverviewPageState extends State<OverviewPage>
   }
 
   StreamSubscription<DaemonChangedEvent> _daemonChangeSub;
+  StreamSubscription<DisableLockTimeoutEvent> _disableLockSub;
 
   void _registerBus() {
     _daemonChangeSub = EventTaxiImpl.singleton()
@@ -57,11 +62,64 @@ class _OverviewPageState extends State<OverviewPage>
         .listen((event) {
       walletLoad();
     });
+    // Hackish event to block auto-lock functionality
+    _disableLockSub = EventTaxiImpl.singleton()
+        .registerTo<DisableLockTimeoutEvent>()
+        .listen((event) {
+      if (event.disable) {
+        cancelLockEvent();
+      }
+      _lockDisabled = event.disable;
+    });
   }
 
   void _destroyBus() {
     if (_daemonChangeSub != null) {
       _daemonChangeSub.cancel();
+    }
+    if (_disableLockSub != null) {
+      _disableLockSub.cancel();
+    }    
+  }
+
+  // To lock and unlock the app
+  StreamSubscription<dynamic> lockStreamListener;
+
+  Future<void> setAppLockEvent() async {
+    if (await sl.get<SharedPrefsUtil>().getLock() && !_lockDisabled) {
+      if (lockStreamListener != null) {
+        lockStreamListener.cancel();
+      }
+      Future<dynamic> delayed = new Future.delayed(
+          (await sl.get<SharedPrefsUtil>().getLockTimeout()).getDuration());
+      delayed.then((_) {
+        return true;
+      });
+      lockStreamListener = delayed.asStream().listen((_) {
+        Navigator.of(context).pushReplacementNamed('/');
+      });
+    }
+  }
+
+  Future<void> cancelLockEvent() async {
+    if (lockStreamListener != null) {
+      lockStreamListener.cancel();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.paused:
+        setAppLockEvent();
+        break;
+      case AppLifecycleState.resumed:
+        cancelLockEvent();
+        super.didChangeAppLifecycleState(state);
+        break;
+      default:
+        super.didChangeAppLifecycleState(state);
+        break;
     }
   }
 
@@ -69,7 +127,9 @@ class _OverviewPageState extends State<OverviewPage>
   void initState() {
     super.initState();
     _registerBus();
+    WidgetsBinding.instance.addObserver(this);
     _isRefreshing = false;
+    _lockDisabled = false;
     // Load the wallet, total balance, etc.
     walletLoad();
     // Opacity Animation
@@ -109,13 +169,16 @@ class _OverviewPageState extends State<OverviewPage>
   }
 
   void _disposeAnimations() {
-    _opacityAnimation?.removeStatusListener(_animationStatusListener);
-    _opacityAnimationController?.removeListener(_animationControllerListener);
-    _opacityAnimationController?.dispose();
+    try {
+      _opacityAnimation?.removeStatusListener(_animationStatusListener);
+      _opacityAnimationController?.removeListener(_animationControllerListener);
+      _opacityAnimationController?.dispose();
+    } catch (e) {}
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _disposeAnimations();
     _destroyBus();
     super.dispose();

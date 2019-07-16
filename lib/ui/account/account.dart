@@ -110,24 +110,23 @@ class _AccountPageState extends State<AccountPage>
   }
 
   void _disposeAnimations() {
-    _opacityAnimation?.removeStatusListener(_animationStatusListener);
-    _opacityAnimationController?.removeListener(_animationControllerListener);
     try {
+      _opacityAnimation?.removeStatusListener(_animationStatusListener);
+      _opacityAnimationController?.removeListener(_animationControllerListener);
       _opacityAnimationController?.dispose();
     } catch (e) {}
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _disposeAnimations();
     _destroyBus();
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Account for user changing locale when leaving the app
     switch (state) {
       case AppLifecycleState.paused:
         super.didChangeAppLifecycleState(state);

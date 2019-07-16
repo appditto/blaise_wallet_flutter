@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
@@ -333,6 +334,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               header: "Share Blaise",
                               icon: AppIcons.share,
                               onPressed: () {
+                                UIUtil.cancelLockEvent();
                                 Share.share(
                                     "Check out Blaise - Pascal Wallet for iOS and Android");
                               }),

@@ -44,8 +44,8 @@ class _SettingsListItemState extends State<SettingsListItem> {
               }
               return;
             },
-            splashColor: StateContainer.of(context).curTheme.primary30,
-            highlightColor: StateContainer.of(context).curTheme.primary15,
+            splashColor: widget.disabled ? Colors.transparent : StateContainer.of(context).curTheme.primary30,
+            highlightColor: widget.disabled ? Colors.transparent : StateContainer.of(context).curTheme.primary15,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             child: widget.contact
                 ? Row(
@@ -88,7 +88,7 @@ class _SettingsListItemState extends State<SettingsListItem> {
                       Container(
                         child: Icon(widget.icon,
                             size: 24,
-                            color: StateContainer.of(context).curTheme.primary),
+                            color: widget.disabled ? StateContainer.of(context).curTheme.primary60 : StateContainer.of(context).curTheme.primary),
                       ),
                       Container(
                         margin: EdgeInsetsDirectional.only(start: 16),
@@ -100,7 +100,7 @@ class _SettingsListItemState extends State<SettingsListItem> {
                               width: MediaQuery.of(context).size.width - 130,
                               child: AutoSizeText(
                                 widget.header,
-                                style: AppStyles.settingsItemHeader(context),
+                                style: widget.disabled ? AppStyles.settingsItemHeaderDisabled(context) : AppStyles.settingsItemHeader(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
                               ),
@@ -112,7 +112,7 @@ class _SettingsListItemState extends State<SettingsListItem> {
                                     child: AutoSizeText(
                                       widget.subheader,
                                       style:
-                                          AppStyles.settingsItemSubHeader(context),
+                                          widget.disabled ? AppStyles.settingsItemSubHeaderDisabled(context) : AppStyles.settingsItemSubHeader(context),
                                       maxLines: 1,
                                       stepGranularity: 0.1,
                                     ),
