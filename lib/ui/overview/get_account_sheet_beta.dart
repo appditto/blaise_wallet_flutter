@@ -129,7 +129,7 @@ class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
                       ],
                     ),
                     stepGranularity: 0.1,
-                    maxLines: 9,
+                    maxLines: 12,
                     minFontSize: 8,
                   ),
                 ),
@@ -137,8 +137,8 @@ class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
                 Row(
                   children: <Widget>[
                     AppButton(
-                      type: AppButtonType.PrimaryOutline,
-                      text: "Visit freepasa.org",
+                      type: AppButtonType.Primary,
+                      text: "Visit Freepasa.org",
                       onPressed: () {
                         AppWebView.showWebView(context, 'https://freepasa.org?public_key=${PublicKeyCoder().encodeToBase58(walletState.publicKey)}');
                       },

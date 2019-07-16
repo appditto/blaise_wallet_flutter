@@ -10,6 +10,7 @@ class FeeContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsetsDirectional.fromSTEB(30, 4, 30, 0),
+      alignment: Alignment(-1, 0),
       child: AutoSizeText.rich(
         TextSpan(children: [
           TextSpan(

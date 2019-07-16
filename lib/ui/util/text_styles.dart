@@ -47,6 +47,16 @@ class AppStyles {
         fontWeight: FontWeight.w400);
   }
 
+  // For paragraphs
+  static TextStyle paragraphSuccess(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.success,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w400);
+  }
+
   static TextStyle paragraphMedium(BuildContext context) {
     return TextStyle(
         fontFamily: "Metropolis",
@@ -278,6 +288,16 @@ class AppStyles {
     return TextStyle(
         fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
+  // Contacts item name primary
+  static TextStyle contactsItemNameSuccess(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.success,
         fontSize: 14.0,
         height: 1.3,
         fontWeight: FontWeight.w700);

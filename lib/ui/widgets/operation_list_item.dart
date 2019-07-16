@@ -4,7 +4,14 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-enum OperationType { Received, Sent, NameChanged, ListedForSale, DelistedForSale, Welcome }
+enum OperationType {
+  Received,
+  Sent,
+  NameChanged,
+  ListedForSale,
+  DelistedForSale,
+  Welcome
+}
 
 /// A widget for displaying a mnemonic phrase
 class OperationListItem extends StatefulWidget {
@@ -111,16 +118,20 @@ class _OperationListItemState extends State<OperationListItem> {
                                         : widget.type ==
                                                 OperationType.ListedForSale
                                             ? "Listed For Sale"
-                                              : widget.type == OperationType.DelistedForSale
+                                            : widget.type ==
+                                                    OperationType
+                                                        .DelistedForSale
                                                 ? "Delisted From Sale"
-                                                  : "Undefined",
+                                                : "Undefined",
                             style: AppStyles.operationType(context),
                           ),
                         ),
                         // Amount & Payload indicator or New Account Name
+                        widget.type == OperationType.DelistedForSale?SizedBox():
                         Container(
                           width: MediaQuery.of(context).size.width / 2 - 72,
-                          margin: EdgeInsetsDirectional.only(top: 4),
+                          margin: EdgeInsetsDirectional.only(
+                              top: 4),
                           child: widget.type == OperationType.Received ||
                                   widget.type == OperationType.Sent ||
                                   widget.type == OperationType.ListedForSale

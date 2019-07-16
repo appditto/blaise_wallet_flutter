@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
@@ -15,6 +17,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
 
@@ -27,6 +30,21 @@ class ContactDetailSheet extends StatefulWidget {
 }
 
 class _ContactDetailSheetState extends State<ContactDetailSheet> {
+  bool contactNameCopied;
+  Timer contactNameCopiedTimer;
+  bool contactAddressCopied;
+  Timer contactAddressCopiedTimer;
+  bool contactPayloadCopied;
+  Timer contactPayloadCopiedTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    contactNameCopied = false;
+    contactAddressCopied = false;
+    contactPayloadCopied = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,14 +86,24 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () async {
-                              bool deleted = await sl.get<DBHelper>().deleteContact(widget.contact);
+                              bool deleted = await sl
+                                  .get<DBHelper>()
+                                  .deleteContact(widget.contact);
                               if (deleted) {
-                                EventTaxiImpl.singleton().fire(ContactRemovedEvent(contact: widget.contact));
-                                EventTaxiImpl.singleton().fire(ContactModifiedEvent(contact: widget.contact));
-                                UIUtil.showSnackbar("Removed ${widget.contact.name} from contacts", context);
+                                EventTaxiImpl.singleton().fire(
+                                    ContactRemovedEvent(
+                                        contact: widget.contact));
+                                EventTaxiImpl.singleton().fire(
+                                    ContactModifiedEvent(
+                                        contact: widget.contact));
+                                UIUtil.showSnackbar(
+                                    "Removed ${widget.contact.name} from contacts",
+                                    context);
                                 Navigator.of(context).pop();
                               } else {
-                                UIUtil.showSnackbar("Failed to remove ${widget.contact.name} from contacts", context);
+                                UIUtil.showSnackbar(
+                                    "Failed to remove ${widget.contact.name} from contacts",
+                                    context);
                               }
                             },
                             shape: RoundedRectangleBorder(
@@ -110,7 +138,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                             splashColor:
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
-                              AppWebView.showWebView(context, 'https://explore.pascalcoin.org/accounts/${widget.contact.account.toString()}');
+                              AppWebView.showWebView(context,
+                                  'https://explore.pascalcoin.org/accounts/${widget.contact.account.toString()}');
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),
@@ -128,99 +157,33 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      // "Contact Name" header
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
-                        child: AutoSizeText(
-                          "Contact Name",
-                          style: AppStyles.textFieldLabel(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      // Container for the Contact Name
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark15),
-                          color: StateContainer.of(context).curTheme.textDark10,
-                        ),
-                        child: AutoSizeText.rich(
-                          TextSpan(children: [
-                            TextSpan(
-                              text: widget.contact.name[0],
-                              style: AppStyles.contactsItemNamePrimary(context),
-                            ),
-                            TextSpan(
-                              text: widget.contact.name.substring(1),
-                              style: AppStyles.contactsItemName(context),
-                            ),
-                          ]),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      // "Address" header
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Address",
-                          style: AppStyles.textFieldLabel(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      // Container for the address
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark15),
-                          color: StateContainer.of(context).curTheme.textDark10,
-                        ),
-                        child: AutoSizeText(
-                          widget.contact.account.toString(),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          minFontSize: 8,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.privateKeyTextDark(context),
-                        ),
-                      ),
-                      // "Payload" header
-                      isNotEmpty(widget.contact.payload)
-                          ? Container(
+                      // Contact name gesture detector
+                      GestureDetector(
+                        onTapDown: (details) {
+                          _copyToClipboard("Contact Name");
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            // "Contact Name" header
+                            Container(
                               width: double.maxFinite,
                               margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                                  EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                               child: AutoSizeText(
-                                "Payload",
-                                style: AppStyles.textFieldLabel(context),
+                                contactNameCopied
+                                    ? "Copied to Clipboard"
+                                    : "Contact Name",
+                                style: contactNameCopied
+                                    ? AppStyles.textFieldLabelSuccess(context)
+                                    : AppStyles.textFieldLabel(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
                                 textAlign: TextAlign.start,
                               ),
-                            )
-                          : SizedBox(),
-                      // Container for the payload text
-                      isNotEmpty(widget.contact.payload)
-                          ? Container(
+                            ),
+                            // Container for the Contact Name
+                            Container(
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
                               padding:
@@ -229,54 +192,208 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                     width: 1,
-                                    color: StateContainer.of(context)
+                                    color: contactNameCopied
+                                        ? StateContainer.of(context)
+                                            .curTheme
+                                            .success15
+                                        : StateContainer.of(context)
+                                            .curTheme
+                                            .textDark15),
+                                color: contactNameCopied
+                                    ? StateContainer.of(context)
                                         .curTheme
-                                        .textDark15),
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
+                                        .success10
+                                    : StateContainer.of(context)
+                                        .curTheme
+                                        .textDark10,
+                              ),
+                              child: AutoSizeText.rich(
+                                TextSpan(children: [
+                                  TextSpan(
+                                    text: widget.contact.name[0],
+                                    style: contactNameCopied
+                                        ? AppStyles.contactsItemNameSuccess(
+                                            context)
+                                        : AppStyles.contactsItemNamePrimary(
+                                            context),
+                                  ),
+                                  TextSpan(
+                                    text: widget.contact.name.substring(1),
+                                    style: contactNameCopied
+                                        ? AppStyles.contactsItemNameSuccess(
+                                            context)
+                                        : AppStyles.contactsItemName(context),
+                                  ),
+                                ]),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTapDown: (details) {
+                          _copyToClipboard("Address");
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            // "Address" header
+                            Container(
+                              width: double.maxFinite,
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                              child: AutoSizeText(
+                                contactAddressCopied
+                                    ? "Copied to Clipboard"
+                                    : "Address",
+                                style: contactAddressCopied
+                                    ? AppStyles.textFieldLabelSuccess(context)
+                                    : AppStyles.textFieldLabel(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            // Container for the address
+                            Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1,
+                                    color: contactAddressCopied
+                                        ? StateContainer.of(context)
+                                            .curTheme
+                                            .success15
+                                        : StateContainer.of(context)
+                                            .curTheme
+                                            .textDark15),
+                                color: contactAddressCopied
+                                    ? StateContainer.of(context)
+                                        .curTheme
+                                        .success10
+                                    : StateContainer.of(context)
+                                        .curTheme
+                                        .textDark10,
                               ),
                               child: AutoSizeText(
-                                widget.contact.payload,
+                                widget.contact.account.toString(),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
                                 minFontSize: 8,
                                 textAlign: TextAlign.center,
-                                style: AppStyles.paragraph(context),
+                                style: contactAddressCopied
+                                    ? AppStyles.privateKeySuccess(context)
+                                    : AppStyles.privateKeyTextDark(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      isNotEmpty(widget.contact.payload)
+                          ? GestureDetector(
+                              onTapDown: (details) {
+                                _copyToClipboard("Payload");
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // "Payload" header
+                                  Container(
+                                    width: double.maxFinite,
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 30, 30, 0),
+                                    child: AutoSizeText(
+                                      contactPayloadCopied
+                                          ? "Copied to Clipboard"
+                                          : "Payload",
+                                      style: contactPayloadCopied
+                                          ? AppStyles.textFieldLabelSuccess(
+                                              context)
+                                          : AppStyles.textFieldLabel(context),
+                                      maxLines: 1,
+                                      stepGranularity: 0.1,
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                  // Container for the payload text
+                                  Container(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        30, 12, 30, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        12, 8, 12, 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: contactPayloadCopied
+                                              ? StateContainer.of(context)
+                                                  .curTheme
+                                                  .success15
+                                              : StateContainer.of(context)
+                                                  .curTheme
+                                                  .textDark15),
+                                      color: contactPayloadCopied
+                                          ? StateContainer.of(context)
+                                              .curTheme
+                                              .success10
+                                          : StateContainer.of(context)
+                                              .curTheme
+                                              .textDark10,
+                                    ),
+                                    child: AutoSizeText(
+                                      widget.contact.payload,
+                                      maxLines: 1,
+                                      stepGranularity: 0.1,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                      style: contactPayloadCopied
+                                          ? AppStyles.paragraphSuccess(context)
+                                          : AppStyles.paragraph(context),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
-                          : SizedBox()
+                          : SizedBox(),
                     ],
                   ),
                 ),
                 //"Add Contact" and "Close" buttons
-                _showSendButton() ? Row(
-                  children: <Widget>[
-                    AppButton(
-                      type: AppButtonType.Primary,
-                      text: "Send",
-                      buttonTop: true,
-                      onPressed: () {
-                        if (widget.account != null) {
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                            context: context,
-                            widget: SendSheet(
-                              account: widget.account.account,
-                              contact: widget.contact
-                            ),
-                          );
-                        } else {
-                          showAppDialog(
-                              context: context,
-                              builder: (_) => DialogOverlay(
-                                  title: 'Choose Account to Send From',
-                                  optionsList: _getAccountsList()));
-                        }
-                      },
-                    ),
-                  ],
-                ) : SizedBox(),
+                _showSendButton()
+                    ? Row(
+                        children: <Widget>[
+                          AppButton(
+                            type: AppButtonType.Primary,
+                            text: "Send",
+                            buttonTop: true,
+                            onPressed: () {
+                              if (widget.account != null) {
+                                Navigator.pop(context);
+                                AppSheets.showBottomSheet(
+                                  context: context,
+                                  widget: SendSheet(
+                                      account: widget.account.account,
+                                      contact: widget.contact),
+                                );
+                              } else {
+                                showAppDialog(
+                                    context: context,
+                                    builder: (_) => DialogOverlay(
+                                        title: 'Choose Account to Send From',
+                                        optionsList: _getAccountsList()));
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
                 // "Close" button
                 Row(
                   children: <Widget>[
@@ -298,10 +415,12 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
   }
 
   bool _showSendButton() {
-    return (
-      (widget.account != null && widget.account.accountBalance > Currency('0')) ||
-      (widget.account == null && !walletState.walletLoading && walletState.totalWalletBalance > Currency('0') && walletState.getNonzeroBalanceAccounts().length > 0)
-    );
+    return ((widget.account != null &&
+            widget.account.accountBalance > Currency('0')) ||
+        (widget.account == null &&
+            !walletState.walletLoading &&
+            walletState.totalWalletBalance > Currency('0') &&
+            walletState.getNonzeroBalanceAccounts().length > 0));
   }
 
   List<DialogListItem> _getAccountsList() {
@@ -309,21 +428,72 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
     List<DialogListItem> ret = [];
     walletState.getNonzeroBalanceAccounts().forEach((acct) {
       ret.add(DialogListItem(
-        option: "${acct.account.toString()} (${acct.balance.toStringOpt()} PASC)",
-        action: () {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-          AppSheets.showBottomSheet(
-            context: context,
-            widget: SendSheet(
-              account: acct,
-              contact: widget.contact,
-              fromOverview: true,
-            ),
-          );
-        }
-      ));
+          option:
+              "${acct.account.toString()} (${acct.balance.toStringOpt()} PASC)",
+          action: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            AppSheets.showBottomSheet(
+              context: context,
+              widget: SendSheet(
+                account: acct,
+                contact: widget.contact,
+                fromOverview: true,
+              ),
+            );
+          }));
     });
     return ret;
+  }
+
+  void _copyToClipboard(String toCopy) {
+    if (toCopy == "Contact Name") {
+      Clipboard.setData(ClipboardData(text: widget.contact.name.toString()));
+      setState(() {
+        contactNameCopied = true;
+      });
+      if (contactNameCopiedTimer != null) {
+        contactNameCopiedTimer.cancel();
+      }
+      contactNameCopiedTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (mounted) {
+          setState(() {
+            contactNameCopied = false;
+          });
+        }
+      });
+    }
+    if (toCopy == "Address") {
+      Clipboard.setData(ClipboardData(text: widget.contact.account.toString()));
+      setState(() {
+        contactAddressCopied = true;
+      });
+      if (contactAddressCopiedTimer != null) {
+        contactAddressCopiedTimer.cancel();
+      }
+      contactAddressCopiedTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (mounted) {
+          setState(() {
+            contactAddressCopied = false;
+          });
+        }
+      });
+    }
+    if (toCopy == "Payload") {
+      Clipboard.setData(ClipboardData(text: widget.contact.payload));
+      setState(() {
+        contactPayloadCopied = true;
+      });
+      if (contactPayloadCopiedTimer != null) {
+        contactPayloadCopiedTimer.cancel();
+      }
+      contactPayloadCopiedTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (mounted) {
+          setState(() {
+            contactPayloadCopied = false;
+          });
+        }
+      });
+    }
   }
 }

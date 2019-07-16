@@ -684,6 +684,7 @@ class _SendSheetState extends State<SendSheet> {
         child: ListView.builder(
           physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
+          shrinkWrap: true,
           itemCount: _contacts.length,
           itemBuilder: (context, index) {
             return _buildContactItem(_contacts[index]);
