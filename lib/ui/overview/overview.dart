@@ -350,7 +350,7 @@ class _OverviewPageState extends State<OverviewPage>
                                       }
                                     })),
                                 // Container for the fiat conversion
-                                Container(
+                                false ? Container(
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       24, 0, 24, 0),
                                   child: Observer(
@@ -377,7 +377,7 @@ class _OverviewPageState extends State<OverviewPage>
                                         );
                                       } else {
                                         return AutoSizeText(
-                                          false ? "(\$" + "0.00" + ")" : "",
+                                          "(\$" + "0.00" + ")",
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -385,7 +385,7 @@ class _OverviewPageState extends State<OverviewPage>
                                       }
                                     },
                                   ),
-                                )
+                                ) : SizedBox()
                               ],
                             ),
                             // Column for settings icon and price text

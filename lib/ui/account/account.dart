@@ -443,16 +443,16 @@ class _AccountPageState extends State<AccountPage>
                                       ),
                                     ),
                                     // Container for the fiat conversion
-                                    Container(
+                                    false ? Container(
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: AutoSizeText(
-                                        false ? "(\$0.00)" : "",
+                                        "(\$0.00)",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
                                       ),
-                                    ),
+                                    ) : SizedBox(),
                                   ],
                                 ),
                                 // Column for settings icon and other operations icon
