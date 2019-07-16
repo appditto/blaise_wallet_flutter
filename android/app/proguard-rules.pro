@@ -9,3 +9,5 @@
 -keep class com.appditto.** { *; }
 ## QR Scanner
 -keep class com.apptreesoftware.** { *; }
+## Webview plugin
+-keep class com.flutter_webview_plugin.** { *; }

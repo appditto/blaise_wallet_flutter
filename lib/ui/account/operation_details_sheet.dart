@@ -64,6 +64,136 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     return nOp;
   }
 
+  Widget getSendingAccount() {
+    if (widget.operation.optype == OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Sending Account",
+            value: widget.operation.senders[0].sendingAccount.toString());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getReceivingAccount() {
+    if (widget.operation.optype == OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Receiving Account",
+            value: widget.operation.receivers[0].receivingAccount.toString());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getChangingAccount() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Changing Account",
+            value: widget.operation.changers[0].changingAccount.toString());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getSendAmount() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Send Amount",
+            value: widget.operation.senders[0].amount.toStringOpt());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();    
+  }
+
+  Widget getPayload() {
+    if (widget.operation.optype == OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Payload",
+            value: widget.operation.senders[0].payload);
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getNewPublickey() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "New Public Key",
+            value: PublicKeyCoder().encodeToBase58(widget.operation.changers[0].newEncPubkey));
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getNewName() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "New Name",
+            value: widget.operation.changers[0].newName.toString());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getSeller() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Seller Account",
+            value: widget.operation.changers[0].sellerAccount.toString());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getAccountPrice() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Account Price",
+            value: widget.operation.changers[0].accountPrice.toStringOpt());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
+  Widget getLockedUntilBlock() {
+    if (widget.operation.optype != OpType.TRANSACTION) {
+      try {
+        return TransactionDetailsListItem(
+            header: "Locked Until Block",
+            value: widget.operation.changers[0].lockedUntilBlock.toString());
+      } catch (e) {
+        return SizedBox();
+      }
+    }
+    return SizedBox();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -96,98 +226,56 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                 TransactionDetailsListItem(
                                     header: "block",
                                     value: widget.operation.block.toString()),
-                                Container(
-                                  width: double.maxFinite,
-                                  height: 1,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                ),
+                                TransactionDetailsListItem(
+                                    header: "optxt",
+                                    value: widget.operation.optxt),
                                 TransactionDetailsListItem(
                                     header: "time",
                                     value: widget.operation.maturation == null
                                         ? "N/A"
                                         : UIUtil.formatDateStrLong(
                                             widget.operation.time)),
-                                Container(
-                                  width: double.maxFinite,
-                                  height: 1,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                ),
+                                TransactionDetailsListItem(
+                                    header: "fee",
+                                    value: widget.operation.fee.toStringOpt()),
                                 TransactionDetailsListItem(
                                     header: "opblock",
                                     value: widget.operation.opblock.toString()),
-                                Container(
-                                  width: double.maxFinite,
-                                  height: 1,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                ),
                                 TransactionDetailsListItem(
                                     header: "maturation",
                                     value: widget.operation.maturation == null
                                         ? "null"
                                         : widget.operation.maturation
                                             .toString()),
-                                Divider(
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                  height: 1,
-                                ),
                                 TransactionDetailsListItem(
                                     header: "optype",
                                     value: getOptypeDisplay(
                                         widget.operation.optype)),
-                                Container(
-                                  width: double.maxFinite,
-                                  height: 1,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                ),
                                 TransactionDetailsListItem(
                                     header: "account",
-                                    value: widget.operation.account.account
+                                    value: widget.operation.account
                                         .toString()),
-                                Container(
-                                  width: double.maxFinite,
-                                  height: 1,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                ),
                                 TransactionDetailsListItem(
                                     header: "signer_account",
                                     value: widget.operation.signerAccount
                                         .toString()),
-                                Container(
-                                  width: double.maxFinite,
-                                  height: 1,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textDark10,
-                                ),
-                                getNOperation() == -1
-                                    ? SizedBox()
-                                    : TransactionDetailsListItem(
-                                        header: "n_operation",
-                                        value: getNOperation().toString()),
-                                getNOperation() == -1
-                                    ? SizedBox()
-                                    : Container(
-                                        width: double.maxFinite,
-                                        height: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .textDark10,
-                                      ),
+                                TransactionDetailsListItem(
+                                    header: "n_operation",
+                                    value: getNOperation().toString()),
+                                getSendingAccount(),
+                                getReceivingAccount(),
+                                getChangingAccount(),
+                                getSendAmount(),
+                                getPayload(),
+                                getNewPublickey(),
+                                getNewName(),
+                                getSeller(),
+                                getAccountPrice(),
+                                getLockedUntilBlock(),
                                 TransactionDetailsListItem(
                                     header: "ophash",
-                                    value: widget.operation.ophash),
+                                    value: widget.operation.ophash,
+                                    withDivider: false),                                
                               ],
                             ),
                           ),
@@ -263,10 +351,14 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
 class TransactionDetailsListItem extends StatefulWidget {
   final String header;
   final String value;
+  final bool withDivider;
+
   TransactionDetailsListItem({
     this.header,
     this.value,
+    this.withDivider = true
   });
+
   _TransactionDetailsListItemState createState() =>
       _TransactionDetailsListItemState();
 }
@@ -283,69 +375,82 @@ class _TransactionDetailsListItemState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      color: _copied
-          ? StateContainer.of(context).curTheme.success
-          : StateContainer.of(context).curTheme.backgroundPrimary,
-      child: FlatButton(
-        onPressed: () {
-          Clipboard.setData(ClipboardData(text: widget.value.trim()));
-          setState(() {
-            _copied = true;
-          });
-          if (_copiedTimer != null) {
-            _copiedTimer.cancel();
-          }
-          _copiedTimer = Timer(const Duration(milliseconds: 1000), () {
-            if (mounted) {
+    return Column(
+      children: <Widget>[
+        Container(
+          width: double.maxFinite,
+          color: _copied
+              ? StateContainer.of(context).curTheme.success
+              : StateContainer.of(context).curTheme.backgroundPrimary,
+          child: FlatButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: widget.value.trim()));
               setState(() {
-                _copied = false;
+                _copied = true;
               });
-            }
-          });
-        },
-        splashColor: StateContainer.of(context).curTheme.textDark30,
-        highlightColor: StateContainer.of(context).curTheme.textDark15,
-        padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width - 100,
-              child: AutoSizeText(
-                widget.header,
-                style: _copied
-                    ? AppStyles.textLightSmall400(context)
-                    : AppStyles.textDarkSmall400(context),
-                textAlign: TextAlign.center,
-              ),
+              if (_copiedTimer != null) {
+                _copiedTimer.cancel();
+              }
+              _copiedTimer = Timer(const Duration(milliseconds: 1000), () {
+                if (mounted) {
+                  setState(() {
+                    _copied = false;
+                  });
+                }
+              });
+            },
+            splashColor: StateContainer.of(context).curTheme.textDark30,
+            highlightColor: StateContainer.of(context).curTheme.textDark15,
+            padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: AutoSizeText(
+                    widget.header,
+                    style: _copied
+                        ? AppStyles.textLightSmall400(context)
+                        : AppStyles.textDarkSmall400(context),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 100,
+                  margin: EdgeInsetsDirectional.only(top: 6),
+                  child: AutoSizeText(
+                    widget.value,
+                    style: _copied
+                        ? AppStyles.textLightLarge700(context)
+                        : AppStyles.textDarkLarge700(context),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                _copied
+                    ? Container(
+                        alignment: Alignment(1, 0),
+                        margin: EdgeInsetsDirectional.only(end: 16),
+                        child: AutoSizeText(
+                          "Copied",
+                          style: AppStyles.textLightSmall700(context),
+                          textAlign: TextAlign.end,
+                        ),
+                      )
+                    : SizedBox()
+              ],
             ),
-            Container(
-              width: MediaQuery.of(context).size.width - 100,
-              margin: EdgeInsetsDirectional.only(top: 6),
-              child: AutoSizeText(
-                widget.value,
-                style: _copied
-                    ? AppStyles.textLightLarge700(context)
-                    : AppStyles.textDarkLarge700(context),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            _copied
-                ? Container(
-                    alignment: Alignment(1, 0),
-                    margin: EdgeInsetsDirectional.only(end: 16),
-                    child: AutoSizeText(
-                      "Copied",
-                      style: AppStyles.textLightSmall700(context),
-                      textAlign: TextAlign.end,
-                    ),
-                  )
-                : SizedBox()
-          ],
+          ),
         ),
-      ),
+        widget.withDivider
+          ? Container(
+              width: double.maxFinite,
+              height: 1,
+              color: StateContainer.of(context)
+                  .curTheme
+                  .textDark10,
+            )
+          : SizedBox()       
+      ]
     );
   }
 }
