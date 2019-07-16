@@ -126,299 +126,318 @@ class _SentSheetState extends State<SentSheet> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Paragraph
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
-                        child: AutoSizeText(
-                          "Transaction has been sent successfully.",
-                          style: AppStyles.paragraph(context),
-                          stepGranularity: 0.1,
-                          maxLines: 3,
-                          minFontSize: 8,
-                        ),
-                      ),
-                      // "Address" header
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Address",
-                          style: AppStyles.textFieldLabelSuccess(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      // Container for the account number
-                      Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                                width: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark15),
-                            color:
-                                StateContainer.of(context).curTheme.textDark10,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Paragraph
+                        Container(
+                          width: double.maxFinite,
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                          child: AutoSizeText(
+                            "Transaction has been sent successfully.",
+                            style: AppStyles.paragraph(context),
+                            stepGranularity: 0.1,
+                            maxLines: 3,
+                            minFontSize: 8,
                           ),
-                          child: widget.contact == null
-                              ? AutoSizeText(
-                                  widget.destination,
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
-                                  minFontSize: 8,
-                                  textAlign: TextAlign.center,
-                                  style: AppStyles.privateKeyTextDark(context),
-                                )
-                              : AutoSizeText.rich(
-                                  TextSpan(children: [
-                                    TextSpan(
-                                      text: widget.contact.name[0],
-                                      style:
-                                          AppStyles.privateKeySuccess(context),
-                                    ),
-                                    TextSpan(
-                                        text: widget.contact.name.substring(1),
-                                        style: AppStyles.privateKeyTextDark(
-                                            context)),
-                                    TextSpan(
-                                        text: " (" +
-                                            widget.contact.account.toString() +
-                                            ")",
-                                        style:
-                                            AppStyles.privateKeyTextDarkFaded(
-                                                context)),
-                                  ]),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'SourceCodePro'),
-                                  minFontSize: 8,
-                                  stepGranularity: 0.1)),
-                      // Amount and Fee
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
-                        child: Row(
-                          children: <Widget>[
-                            // Amount
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // "Amount" header
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth:
-                                          MediaQuery.of(context).size.width -
-                                              76 / 2),
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      0, 30, 0, 0),
-                                  child: AutoSizeText(
-                                    "Amount",
-                                    style: AppStyles.textFieldLabelSuccess(
-                                        context),
+                        ),
+                        // "Address" header
+                        Container(
+                          width: double.maxFinite,
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                          child: AutoSizeText(
+                            "Address",
+                            style: AppStyles.textFieldLabelSuccess(context),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        // Container for the account number
+                        Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  width: 1,
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .textDark15),
+                              color: StateContainer.of(context)
+                                  .curTheme
+                                  .textDark10,
+                            ),
+                            child: widget.contact == null
+                                ? AutoSizeText(
+                                    widget.destination,
                                     maxLines: 1,
                                     stepGranularity: 0.1,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                // Container for the Amount
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth:
-                                          MediaQuery.of(context).size.width -
-                                              76 / 2),
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      0, 12, 0, 0),
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12, 8, 12, 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .success15),
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .success10,
-                                  ),
-                                  child: AutoSizeText.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: "",
-                                          style: AppStyles
-                                              .iconFontSuccessBalanceSmallPascal(
-                                                  context),
-                                        ),
-                                        TextSpan(
-                                            text: " ",
-                                            style: TextStyle(fontSize: 8)),
-                                        TextSpan(
-                                            text: widget.amount,
-                                            style:
-                                                AppStyles.balanceSmallSuccess(
-                                                    context)),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
                                     minFontSize: 8,
-                                    stepGranularity: 1,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            widget.fee != Currency("0")
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      // "Fee" header
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                76 / 2),
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            16, 30, 0, 0),
-                                        child: AutoSizeText(
-                                          "Fee",
-                                          style:
-                                              AppStyles.textFieldLabelSuccess(
-                                                  context),
-                                          maxLines: 1,
-                                          stepGranularity: 0.1,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ),
-                                      // Container for the fee
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                76 / 2),
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            16, 12, 0, 0),
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 8, 12, 8),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                              width: 1,
-                                              color: StateContainer.of(context)
-                                                  .curTheme
-                                                  .success15),
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .success10,
-                                        ),
-                                        child: AutoSizeText.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: "",
-                                                style: AppStyles
-                                                    .iconFontSuccessBalanceSmallPascal(
-                                                        context),
-                                              ),
-                                              TextSpan(
-                                                  text: " ",
-                                                  style:
-                                                      TextStyle(fontSize: 8)),
-                                              TextSpan(
-                                                  text:
-                                                      widget.fee.toStringOpt(),
-                                                  style: AppStyles
-                                                      .balanceSmallSuccess(
-                                                          context)),
-                                            ],
-                                          ),
-                                          textAlign: TextAlign.center,
-                                          maxLines: 1,
-                                          minFontSize: 8,
-                                          stepGranularity: 1,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        AppStyles.privateKeyTextDark(context),
                                   )
-                                : SizedBox(),
-                          ],
-                        ),
-                      ),
-                      // "Payload" header
-                      isNotEmpty(widget.payload)
-                          ? Container(
-                              width: double.maxFinite,
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                              child: AutoSizeText(
-                                "Payload",
-                                style: AppStyles.textFieldLabelSuccess(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                              ),
-                            )
-                          : SizedBox(),
-                      // Container for the payload text
-                      isNotEmpty(widget.payload)
-                          ? Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    width: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark15),
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    AutoSizeText(
-                                      widget.payload,
+                                : AutoSizeText.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                        text: widget.contact.name[0],
+                                        style: AppStyles.privateKeySuccess(
+                                            context),
+                                      ),
+                                      TextSpan(
+                                          text:
+                                              widget.contact.name.substring(1),
+                                          style: AppStyles.privateKeyTextDark(
+                                              context)),
+                                      TextSpan(
+                                          text: " (" +
+                                              widget.contact.account
+                                                  .toString() +
+                                              ")",
+                                          style:
+                                              AppStyles.privateKeyTextDarkFaded(
+                                                  context)),
+                                    ]),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'SourceCodePro'),
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1)),
+                        // Amount and Fee
+                        Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
+                          child: Row(
+                            children: <Widget>[
+                              // Amount
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // "Amount" header
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width -
+                                                76 / 2),
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        0, 30, 0, 0),
+                                    child: AutoSizeText(
+                                      "Amount",
+                                      style: AppStyles.textFieldLabelSuccess(
+                                          context),
                                       maxLines: 1,
                                       stepGranularity: 0.1,
-                                      minFontSize: 8,
-                                      textAlign: TextAlign.center,
-                                      style: AppStyles.paragraph(context),
+                                      textAlign: TextAlign.start,
                                     ),
-                                    widget.encryptedPayload
-                                        ? Container(
-                                            alignment: Alignment.center,
-                                            margin: EdgeInsetsDirectional.only(
-                                                start: 3.0),
-                                            child: Icon(FontAwesomeIcons.lock,
-                                                size: 12,
+                                  ),
+                                  // Container for the Amount
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width -
+                                                76 / 2),
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        0, 12, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        12, 8, 12, 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .success15),
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .success10,
+                                    ),
+                                    child: AutoSizeText.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "",
+                                            style: AppStyles
+                                                .iconFontSuccessBalanceSmallPascal(
+                                                    context),
+                                          ),
+                                          TextSpan(
+                                              text: " ",
+                                              style: TextStyle(fontSize: 8)),
+                                          TextSpan(
+                                              text: widget.amount,
+                                              style:
+                                                  AppStyles.balanceSmallSuccess(
+                                                      context)),
+                                        ],
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      minFontSize: 8,
+                                      stepGranularity: 1,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              widget.fee != Currency("0")
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        // "Fee" header
+                                        Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  76 / 2),
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  16, 30, 0, 0),
+                                          child: AutoSizeText(
+                                            "Fee",
+                                            style:
+                                                AppStyles.textFieldLabelSuccess(
+                                                    context),
+                                            maxLines: 1,
+                                            stepGranularity: 0.1,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
+                                        // Container for the fee
+                                        Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  76 / 2),
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  16, 12, 0, 0),
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 8, 12, 8),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                                width: 1,
                                                 color:
                                                     StateContainer.of(context)
                                                         .curTheme
-                                                        .textDark))
-                                        : SizedBox()
-                                  ]))
-                          : SizedBox()
-                    ],
+                                                        .success15),
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .success10,
+                                          ),
+                                          child: AutoSizeText.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "",
+                                                  style: AppStyles
+                                                      .iconFontSuccessBalanceSmallPascal(
+                                                          context),
+                                                ),
+                                                TextSpan(
+                                                    text: " ",
+                                                    style:
+                                                        TextStyle(fontSize: 8)),
+                                                TextSpan(
+                                                    text: widget.fee
+                                                        .toStringOpt(),
+                                                    style: AppStyles
+                                                        .balanceSmallSuccess(
+                                                            context)),
+                                              ],
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            minFontSize: 8,
+                                            stepGranularity: 1,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
+                            ],
+                          ),
+                        ),
+                        // "Payload" header
+                        isNotEmpty(widget.payload)
+                            ? Container(
+                                width: double.maxFinite,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 0),
+                                child: AutoSizeText(
+                                  "Payload",
+                                  style:
+                                      AppStyles.textFieldLabelSuccess(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  textAlign: TextAlign.start,
+                                ),
+                              )
+                            : SizedBox(),
+                        // Container for the payload text
+                        isNotEmpty(widget.payload)
+                            ? Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 12, 30, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    12, 8, 12, 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textDark15),
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .textDark10,
+                                ),
+                                child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                86,
+                                        child: AutoSizeText(
+                                          widget.payload,
+                                          maxLines: 3,
+                                          stepGranularity: 0.1,
+                                          minFontSize: 8,
+                                          textAlign: TextAlign.center,
+                                          style: AppStyles.paragraph(context),
+                                        ),
+                                      ),
+                                      widget.encryptedPayload
+                                          ? Container(
+                                              alignment: Alignment.center,
+                                              margin:
+                                                  EdgeInsetsDirectional.only(
+                                                      start: 3.0),
+                                              child: Icon(FontAwesomeIcons.lock,
+                                                  size: 12,
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textDark))
+                                          : SizedBox()
+                                    ]))
+                            : SizedBox()
+                      ],
+                    ),
                   ),
                 ),
                 // "CANCEL" button
