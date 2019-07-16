@@ -11,9 +11,9 @@ class AppWebView {
           WebviewScaffold(
             url: url,
             appBar: AppBar(
-                backgroundColor: StateContainer.of(context).curTheme.primary,
+                backgroundColor: StateContainer.of(context).curTheme.primary,         
                 brightness: StateContainer.of(context).curTheme.brightness,
-                iconTheme: IconThemeData(color: StateContainer.of(context).curTheme.textDark)
+                iconTheme: IconThemeData(color: StateContainer.of(context).curTheme.textLight)
               )
           )
       )
