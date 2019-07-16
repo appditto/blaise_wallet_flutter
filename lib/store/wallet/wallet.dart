@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/network/price/price_client.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -35,6 +36,18 @@ abstract class WalletBase with Store {
   @observable
   Map<int, Account> accountStateMap = Map();
 
+  @observable
+  double usdPrice;
+
+  @action
+  Future<void> updatePriceData() async {
+    double newPrice = await PriceAPI.getPrice();
+    if (newPrice == null) {
+      newPrice = await PriceAPI.getCachedPrice();
+    }
+    this.usdPrice = newPrice ?? this.usdPrice;
+  }
+
   @action
   Future<void> initializeRpc() async {
     this.rpcClient =
@@ -53,6 +66,8 @@ abstract class WalletBase with Store {
     if (this.rpcClient == null) {
       await initializeRpc();
     }
+    // Update price
+    this.updatePriceData();
     // Get total balance and list of accounts
     // TODO - pagination?
     FindAccountsRequest findAccountsRequest = FindAccountsRequest(
@@ -131,6 +146,15 @@ abstract class WalletBase with Store {
       }
     }
     return false;
+  }
+
+  @action
+  String totalBalanceUsd() {
+    try {
+      return (double.parse(this.totalWalletBalance.toStringOpt()) * usdPrice).toStringAsFixed(2);
+    } catch (e) {
+      return null;
+    }
   }
 
   @action

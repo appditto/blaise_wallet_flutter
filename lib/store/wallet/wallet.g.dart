@@ -112,6 +112,30 @@ mixin _$Wallet on WalletBase, Store {
     }, _$accountStateMapAtom, name: '${_$accountStateMapAtom.name}_set');
   }
 
+  final _$usdPriceAtom = Atom(name: 'WalletBase.usdPrice');
+
+  @override
+  double get usdPrice {
+    _$usdPriceAtom.context.enforceReadPolicy(_$usdPriceAtom);
+    _$usdPriceAtom.reportObserved();
+    return super.usdPrice;
+  }
+
+  @override
+  set usdPrice(double value) {
+    _$usdPriceAtom.context.conditionallyRunInAction(() {
+      super.usdPrice = value;
+      _$usdPriceAtom.reportChanged();
+    }, _$usdPriceAtom, name: '${_$usdPriceAtom.name}_set');
+  }
+
+  final _$updatePriceDataAsyncAction = AsyncAction('updatePriceData');
+
+  @override
+  Future<void> updatePriceData() {
+    return _$updatePriceDataAsyncAction.run(() => super.updatePriceData());
+  }
+
   final _$initializeRpcAsyncAction = AsyncAction('initializeRpc');
 
   @override
@@ -183,6 +207,16 @@ mixin _$Wallet on WalletBase, Store {
     final _$actionInfo = _$WalletBaseActionController.startAction();
     try {
       return super.shouldHaveFee();
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String totalBalanceUsd() {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.totalBalanceUsd();
     } finally {
       _$WalletBaseActionController.endAction(_$actionInfo);
     }

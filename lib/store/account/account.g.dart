@@ -250,4 +250,14 @@ mixin _$Account on AccountBase, Store {
       _$AccountBaseActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  String usdBalance() {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.usdBalance();
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
 }
