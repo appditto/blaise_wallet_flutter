@@ -212,14 +212,14 @@ class BlaiseLightTheme extends BaseTheme {
   BoxShadow shadowMainCard = BoxShadow(
       color: grayDark.withOpacity(0.2),
       offset: Offset(0, 10),
-      blurRadius: 30,
-      spreadRadius: -3.0);
+      blurRadius: 20,
+      spreadRadius: -3.3);
 
   BoxShadow shadowAccountCard = BoxShadow(
       color: grayDark.withOpacity(0.15),
       offset: Offset(0, 8),
       blurRadius: 16,
-      spreadRadius: -4.0);
+      spreadRadius: -2.6);
 
   BoxShadow shadowBottomBar = BoxShadow(
       color: grayDark.withOpacity(0.2),
@@ -374,14 +374,14 @@ class BlaiseDarkTheme extends BaseTheme {
   BoxShadow shadowMainCard = BoxShadow(
       color: black.withOpacity(0.25),
       offset: Offset(0, 10),
-      blurRadius: 30,
-      spreadRadius: -3.0);
+      blurRadius: 20,
+      spreadRadius: -3.3);
 
   BoxShadow shadowAccountCard = BoxShadow(
       color: black.withOpacity(0.25),
       offset: Offset(0, 8),
-      blurRadius: 24,
-      spreadRadius: -4.0);
+      blurRadius: 16,
+      spreadRadius: -2.6);
 
   BoxShadow shadowBottomBar = BoxShadow(
       color: black.withOpacity(0.25),
