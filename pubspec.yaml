@@ -117,7 +117,7 @@ dependencies:
   validators: ^2.0.0+1
 
   # Webview
-  webview_flutter: ^0.3.10
+  flutter_webview_plugin: ^0.3.5
 
   # QR scanning
   barcode_scan: ^1.0.0
