@@ -451,6 +451,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
       Clipboard.setData(ClipboardData(text: widget.contact.name.toString()));
       setState(() {
         contactNameCopied = true;
+        contactAddressCopied = false;
+        contactPayloadCopied = false;
       });
       if (contactNameCopiedTimer != null) {
         contactNameCopiedTimer.cancel();
@@ -467,6 +469,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
       Clipboard.setData(ClipboardData(text: widget.contact.account.toString()));
       setState(() {
         contactAddressCopied = true;
+        contactNameCopied = false;
+        contactPayloadCopied = false;
       });
       if (contactAddressCopiedTimer != null) {
         contactAddressCopiedTimer.cancel();
@@ -483,6 +487,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
       Clipboard.setData(ClipboardData(text: widget.contact.payload));
       setState(() {
         contactPayloadCopied = true;
+        contactNameCopied = false;
+        contactAddressCopied = false;
       });
       if (contactPayloadCopiedTimer != null) {
         contactPayloadCopiedTimer.cancel();
