@@ -5,3 +5,4 @@ export 'contact_removed_event.dart';
 export 'update_history_event.dart';
 export 'daemon_changed_event.dart';
 export 'payload_changed_event.dart';
+export 'disable_lock_timeout_event.dart';

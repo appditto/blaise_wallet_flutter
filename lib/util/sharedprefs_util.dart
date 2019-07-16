@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
+import 'package:blaise_wallet_flutter/model/lock_timeout.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,9 @@ class SharedPrefsUtil {
   // For maximum pin attempts
   static const String pin_attempts = 'blaise_pin_attempts';
   static const String pin_lock_until = 'blaise_lock_duraton';
+  // Lock screen
+  static const String lock_app = 'app_lock_screen';
+  static const String app_lock_timeout = 'app_lock_timeout';
   // Using biometrics
   static const String auth_method = 'blaise_auth_method';
   // Donation contact has been added
@@ -110,7 +114,23 @@ class SharedPrefsUtil {
     return ThemeSetting(ThemeOptions.values[await get(cur_theme, defaultValue: ThemeOptions.LIGHT.index)]);
   }
 
-// Locking out when max pin attempts exceeded
+  Future<void> setLock(bool value) async {
+    return await set(lock_app, value);
+  }
+
+  Future<bool> getLock() async {
+    return await get(lock_app, defaultValue: false);
+  }
+
+  Future<void> setLockTimeout(LockTimeoutSetting setting) async {
+   return await set(app_lock_timeout, setting.getIndex());
+  }
+
+  Future<LockTimeoutSetting> getLockTimeout() async {
+    return LockTimeoutSetting(LockTimeoutOption.values[await get(app_lock_timeout, defaultValue: LockTimeoutOption.ONE.index)]);
+  }
+
+  // Locking out when max pin attempts exceeded
   Future<int> getLockAttempts() async {
     return await get(pin_attempts, defaultValue: 0);
   }
@@ -183,6 +203,8 @@ class SharedPrefsUtil {
       await prefs.remove(pin_attempts);
       await prefs.remove(pin_lock_until);
       await prefs.remove(auth_method);
+      await prefs.remove(app_lock_timeout);
+      await prefs.remove(lock_app);
     }
   }
 }

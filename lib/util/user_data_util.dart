@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/services.dart';
 
 import 'package:pascaldart/common.dart';
@@ -75,6 +76,7 @@ class UserDataUtil {
   }
 
   static Future<String> getQRData(DataType type) async {
+    UIUtil.cancelLockEvent();
     try {
       String data = await BarcodeScanner.scan();
       if (isEmpty(data)) {

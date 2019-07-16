@@ -80,7 +80,15 @@ class _AppState extends State<App> {
                 settings: settings,
               );
             case '/lock_screen':
-              return NoTransitionRoute(
+              if (settings.arguments != null &&
+                  settings.arguments is TransitionOption &&
+                  settings.arguments == TransitionOption.NONE) {
+                return NoTransitionRoute(
+                  builder: (context) => LockScreenPage(),
+                  settings: settings,
+                );
+              }
+              return MaterialPageRoute(
                 builder: (context) => LockScreenPage(),
                 settings: settings,
               );
@@ -171,8 +179,12 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         Navigator.of(context).pushReplacementNamed('/intro_welcome');
       } else if ((await sl.get<Vault>().getPrivateKey() != null) &&
           (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
-        Navigator.of(context).pushReplacementNamed('/overview',
-            arguments: TransitionOption.NONE);
+        if (await sl.get<SharedPrefsUtil>().getLock() || await sl.get<SharedPrefsUtil>().shouldLock()) {
+          Navigator.of(context).pushReplacementNamed('/lock_screen', arguments: TransitionOption.NONE);
+        } else {
+          Navigator.of(context).pushReplacementNamed('/overview',
+             arguments: TransitionOption.NONE);
+        }
       } else {
         Navigator.of(context).pushReplacementNamed('/intro_welcome');
       }

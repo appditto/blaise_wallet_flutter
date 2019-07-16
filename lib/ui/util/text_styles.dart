@@ -236,11 +236,29 @@ class AppStyles {
         fontWeight: FontWeight.w700);
   }
 
+  static TextStyle settingsItemHeaderDisabled(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.textDark60,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
   // Settings item subheader
   static TextStyle settingsItemSubHeader(BuildContext context) {
     return TextStyle(
         fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 12.0,
+        height: 1.3,
+        fontWeight: FontWeight.w400);
+  }
+
+  static TextStyle settingsItemSubHeaderDisabled(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.textDark60,
         fontSize: 12.0,
         height: 1.3,
         fontWeight: FontWeight.w400);

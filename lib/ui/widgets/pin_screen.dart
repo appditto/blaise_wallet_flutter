@@ -92,7 +92,7 @@ class _PinScreenState extends State<PinScreen>
                 });
                 sl.get<SharedPrefsUtil>().updateLockDate().then((_) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/lock_screen_transition',
+                      '/lock_screen',
                       (Route<dynamic> route) => false);
                 });
               } else {

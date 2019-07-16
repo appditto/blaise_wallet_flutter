@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
+import 'package:blaise_wallet_flutter/model/lock_timeout.dart';
+import 'package:blaise_wallet_flutter/model/unlock_setting.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -16,12 +18,12 @@ class SecurityPage extends StatefulWidget {
 }
 
 class _SecurityPageState extends State<SecurityPage> {
-  List<DialogListItem> launchList = [DialogListItem(option:"Yes"), DialogListItem(option:"No")];
-  List<DialogListItem> lockList = [DialogListItem(option:"Instantly"), DialogListItem(option:"After 1 minute"), DialogListItem(option:"After 5 minutes"), DialogListItem(option:"After 15 minutes"), DialogListItem(option:"After 30 minutes"), DialogListItem(option:"After 60 minutes")];
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _hasBiometricsEnrolled;
   AuthenticationMethod curAuthMethod = AuthenticationMethod(AuthMethod.BIOMETRICS);
+  LockTimeoutSetting curTimeoutSetting = LockTimeoutSetting(LockTimeoutOption.ONE);
+  UnlockSetting curAuthOnLaunch = UnlockSetting(UnlockOption.NO);
 
   List<DialogListItem> _getAuthMethods() {
     List<DialogListItem> ret = [];
@@ -43,6 +45,46 @@ class _SecurityPageState extends State<SecurityPage> {
     return ret;    
   }
 
+  List<DialogListItem> _authOnLaunchOptions() {
+    List<DialogListItem> ret = [];
+    UnlockOption.values.forEach((UnlockOption value) {
+      UnlockSetting setting = UnlockSetting(value);
+      ret.add(DialogListItem(
+        option: setting.getDisplayName(context),
+        action: () async {
+          await sl.get<SharedPrefsUtil>().setLock(setting.setting == UnlockOption.YES);
+          if (mounted) {
+            setState(() {
+              curAuthOnLaunch = setting;
+            });
+          }
+          Navigator.of(context).pop();
+        }
+      ));
+    });
+    return ret;      
+  }
+
+  List<DialogListItem> _getLockTimeoutList() {
+    List<DialogListItem> ret = [];
+    LockTimeoutOption.values.forEach((LockTimeoutOption value) {
+      LockTimeoutSetting setting = LockTimeoutSetting(value);
+      ret.add(DialogListItem(
+        option: setting.getDisplayName(context),
+        action: () async {
+          await sl.get<SharedPrefsUtil>().setLockTimeout(setting);
+          if (mounted) {
+            setState(() {
+              curTimeoutSetting = setting;
+            });
+          }
+          Navigator.of(context).pop();
+        }
+      ));
+    });
+    return ret;      
+  }
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +101,28 @@ class _SecurityPageState extends State<SecurityPage> {
         setState(() {
           curAuthMethod = authMethod;
         });
+      }
+    });
+    sl.get<SharedPrefsUtil>().getLockTimeout().then((result) {
+      if (mounted) {
+        setState(() {
+          curTimeoutSetting = result;
+        });
+      }
+    });
+    sl.get<SharedPrefsUtil>().getLock().then((result) {
+      if (result) {
+        if (mounted) {
+          setState(() {
+            curAuthOnLaunch = UnlockSetting(UnlockOption.YES);
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            curAuthOnLaunch = UnlockSetting(UnlockOption.NO);
+          });
+        }
       }
     });
   }
@@ -201,24 +265,30 @@ class _SecurityPageState extends State<SecurityPage> {
                             ) : SizedBox(),
                             SettingsListItem(
                               header: "Authenticate on Launch",
-                              subheader: "Yes",
+                              subheader: curAuthOnLaunch.getDisplayName(context),
                               icon: AppIcons.lock,
                               onPressed: () {
                                showAppDialog(
                                  context: context,
-                                 builder: (_) => DialogOverlay(title: 'Authenticate on Launch', optionsList: launchList)                               
+                                 builder: (_) => DialogOverlay(
+                                   title: 'Authenticate on Launch',
+                                   optionsList: _authOnLaunchOptions()
+                                 )                               
                                ); 
                               },
                             ),
                             SettingsListItem(
                               header: "Automatically Lock",
-                              subheader: "Instantly",
+                              subheader: curTimeoutSetting.getDisplayName(context),
                               icon: AppIcons.timer,
+                              disabled: curAuthOnLaunch.setting == UnlockOption.NO,
                               onPressed: () {
-                               showAppDialog(
-                                 context: context,
-                                 builder: (_) => DialogOverlay(title: 'Automatically Lock', optionsList: lockList)                               
-                               ); 
+                                if (curAuthOnLaunch.setting == UnlockOption.YES) {
+                                showAppDialog(
+                                  context: context,
+                                  builder: (_) => DialogOverlay(title: 'Automatically Lock', optionsList: _getLockTimeoutList())                               
+                                ); 
+                                }
                               },
                             ),
                           ],
