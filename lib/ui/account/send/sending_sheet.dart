@@ -466,13 +466,13 @@ class _SendingSheetState extends State<SendingSheet> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Container(
-                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-86),
+                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-(widget.encryptPayload?101:86)),
                                         child: AutoSizeText(
                                           widget.payload,
                                           maxLines: 3,
                                           stepGranularity: 0.1,
                                           minFontSize: 8,
-                                          textAlign: TextAlign.center,
+                                          textAlign: TextAlign.left,
                                           style: AppStyles.paragraph(context),
                                         ),
                                       ),
