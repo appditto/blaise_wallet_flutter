@@ -218,7 +218,7 @@ class BlaiseLightTheme extends BaseTheme {
   BoxShadow shadowAccountCard = BoxShadow(
       color: grayDark.withOpacity(0.15),
       offset: Offset(0, 8),
-      blurRadius: 24,
+      blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowBottomBar = BoxShadow(
