@@ -375,9 +375,11 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
+                                      } else if (walletState.usdPrice == null || walletState.totalBalanceUsd() == null) {
+                                        return SizedBox();
                                       } else {
                                         return AutoSizeText(
-                                          "(\$" + "0.00" + ")",
+                                          "(\$" + walletState.totalBalanceUsd() + ")",
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -445,9 +447,11 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
+                                      } else if (walletState.usdPrice == null) {
+                                        return SizedBox();
                                       } else {
                                         return AutoSizeText(
-                                          "\$" + "0.000",
+                                          "\$" + walletState.usdPrice.toStringAsFixed(4),
                                           style: AppStyles
                                               .paragraphTextLightSmallSemiBold(
                                                   context),

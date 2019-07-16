@@ -369,20 +369,28 @@ class _AccountPageState extends State<AccountPage>
                                                 size: 22)),
                                       ),
                                       // Price text
-                                      Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            start: 16, bottom: 12),
-                                        child: AutoSizeText(
-                                          "\$" + "0.000",
-                                          maxLines: 1,
-                                          stepGranularity: 0.1,
-                                          minFontSize: 8,
-                                          textAlign: TextAlign.start,
-                                          style: AppStyles
-                                              .paragraphTextLightSmallSemiBold(
-                                                  context),
-                                        ),
-                                      ),
+                                      Observer(
+                                        builder: (BuildContext context) {
+                                          if (walletState.usdPrice == null) {
+                                            return SizedBox();
+                                          } else {
+                                            return Container(
+                                              margin: EdgeInsetsDirectional.only(
+                                                  start: 16, bottom: 12),
+                                              child: AutoSizeText(
+                                                "\$" + walletState.usdPrice.toStringAsFixed(2),
+                                                maxLines: 1,
+                                                stepGranularity: 0.1,
+                                                minFontSize: 8,
+                                                textAlign: TextAlign.start,
+                                                style: AppStyles
+                                                    .paragraphTextLightSmallSemiBold(
+                                                        context),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      )
                                     ],
                                   ),
                                 ),
@@ -443,16 +451,24 @@ class _AccountPageState extends State<AccountPage>
                                       ),
                                     ),
                                     // Container for the fiat conversion
-                                    false ? Container(
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: AutoSizeText(
-                                        "(\$0.00)",
-                                        style:
-                                            AppStyles.paragraphTextLightSmall(
-                                                context),
-                                      ),
-                                    ) : SizedBox(),
+                                    Observer(
+                                      builder: (BuildContext context) {
+                                        if (walletState.usdPrice == null) {
+                                          return SizedBox();
+                                        } else {
+                                          return Container(
+                                            margin: EdgeInsetsDirectional.fromSTEB(
+                                                12, 0, 12, 0),
+                                            child: AutoSizeText(
+                                              "(\$${accountState.usdBalance()})",
+                                              style:
+                                                  AppStyles.paragraphTextLightSmall(
+                                                      context),
+                                            ),
+                                          );                                        
+                                        }
+                                      },
+                                    )
                                   ],
                                 ),
                                 // Column for settings icon and other operations icon

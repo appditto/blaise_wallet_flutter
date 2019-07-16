@@ -24,6 +24,8 @@ class SharedPrefsUtil {
   static const String auth_method = 'blaise_auth_method';
   // Donation contact has been added
   static const String firstcontact_added = 'blaise_first_c_added';
+  // Caching price API response
+  static const String price_api_cache = 'price_api_cache_v1';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -190,6 +192,14 @@ class SharedPrefsUtil {
 
   Future<bool> getFirstContactAdded() async {
     return await get(firstcontact_added, defaultValue: false);
+  }
+
+  Future<String> getPriceAPICache() async {
+    return await get(price_api_cache, defaultValue: null);
+  }
+
+  Future<void> setPriceAPICache(String data) async {
+    await set(price_api_cache, data);
   }
 
   // For logging out

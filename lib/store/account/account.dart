@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
@@ -313,6 +314,15 @@ abstract class AccountBase with Store {
       }
       PascalAccount receiverAcct = resp;
       return EciesCrypt.encrypt(PDUtil.stringToBytesUtf8(payload), receiverAcct.encPubkey);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @action
+  String usdBalance() {
+    try {
+      return (double.parse(this.accountBalance.toStringOpt()) * walletState.usdPrice).toStringAsFixed(2);
     } catch (e) {
       return null;
     }
