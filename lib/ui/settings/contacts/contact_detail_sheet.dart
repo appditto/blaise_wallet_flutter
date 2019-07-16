@@ -349,7 +349,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                                 .textDark10,
                                       ),
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width-86,
+                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-86),
                                         child: AutoSizeText(
                                           widget.contact.payload,
                                           maxLines: 3,

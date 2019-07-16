@@ -466,7 +466,7 @@ class _SendingSheetState extends State<SendingSheet> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Container(
-                                        width: MediaQuery.of(context).size.width-86,
+                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-86),
                                         child: AutoSizeText(
                                           widget.payload,
                                           maxLines: 3,
