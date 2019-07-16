@@ -377,7 +377,7 @@ class _OverviewPageState extends State<OverviewPage>
                                         );
                                       } else {
                                         return AutoSizeText(
-                                          "(\$" + "0.00" + ")",
+                                          false ? "(\$" + "0.00" + ")" : "",
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -447,7 +447,7 @@ class _OverviewPageState extends State<OverviewPage>
                                         );
                                       } else {
                                         return AutoSizeText(
-                                          "\$" + "0.269",
+                                          false ? "\$" + "0.269" : "",
                                           style: AppStyles
                                               .paragraphTextLightSmallSemiBold(
                                                   context),

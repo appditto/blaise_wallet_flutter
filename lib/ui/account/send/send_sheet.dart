@@ -468,11 +468,11 @@ class _SendSheetState extends State<SendSheet> {
                                                 amountFocusNode.unfocus();
                                               },
                                             ),
-                                            secondButton: TextFieldButton(
+                                            secondButton: false ? TextFieldButton(
                                                 icon: AppIcons.currencyswitch,
                                                 onPressed: () {
                                                   toggleLocalCurrency();
-                                                }),
+                                                }) : null,
                                           ),
                                         ),
                                         // Fee container

@@ -38,32 +38,9 @@ class _SettingsPageState extends State<SettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   List<DialogListItem> currencyList = [
     DialogListItem(option: "\$ US Dollar"),
-    DialogListItem(option: "\$ Argentine Peso"),
-    DialogListItem(option: "\$ Australian Dollar"),
-    DialogListItem(option: "R\$ Brazilian Real"),
-    DialogListItem(option: "\$ Canadian Dollar"),
-    DialogListItem(option: "CHF Swiss Franc"),
-    DialogListItem(option: "\$ Chilean Peso"),
-    DialogListItem(option: "¥ Chinese Yuan"),
-    DialogListItem(option: "Kč Czech Koruna"),
-    DialogListItem(option: "kr. Danish Krone"),
-    DialogListItem(option: "€ Euro"),
-    DialogListItem(option: "£ Great Britain Pound"),
-    DialogListItem(option: "HK\$ Hong Kong Dollar"),
-    DialogListItem(option: "Ft Hungarian Forint"),
-    DialogListItem(option: "Rp Indonesian Rupiah"),
-    DialogListItem(option: "₪ Israeli Shekel"),
-    DialogListItem(option: "₹ Indian Rupee"),
-    DialogListItem(option: "¥ Japanese Yen")
   ];
   List<DialogListItem> languageList = [
-    DialogListItem(option: "System Default"),
     DialogListItem(option: "English (en)"),
-    DialogListItem(option: "简体字 (zh-Hans)"),
-    DialogListItem(option: "繁體字 (zh-Hant)"),
-    DialogListItem(option: "Français (fr)"),
-    DialogListItem(option: "Deutsch (de)"),
-    DialogListItem(option: "Español (es)")
   ];
 
   List<DialogListItem> getThemeList() {

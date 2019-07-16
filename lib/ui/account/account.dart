@@ -373,7 +373,7 @@ class _AccountPageState extends State<AccountPage>
                                         margin: EdgeInsetsDirectional.only(
                                             start: 16, bottom: 12),
                                         child: AutoSizeText(
-                                          "\$" + "0.269",
+                                          false ? "\$" + "0.269" : "",
                                           maxLines: 1,
                                           stepGranularity: 0.1,
                                           minFontSize: 8,
@@ -447,7 +447,7 @@ class _AccountPageState extends State<AccountPage>
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: AutoSizeText(
-                                        "(\$0.00)",
+                                        false ? "(\$0.00)" : "",
                                         style:
                                             AppStyles.paragraphTextLightSmall(
                                                 context),
