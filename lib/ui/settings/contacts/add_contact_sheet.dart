@@ -205,7 +205,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                           ),
                           // Container for the "Add Payload" button
                           Payload(
-                            onPayloadChanged: (newPayload) {
+                            onPayloadChanged: (newPayload, encrypted) {
                               setState(() {
                                 payload = newPayload;
                               });
