@@ -36,12 +36,8 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<DialogListItem> currencyList = [
-    DialogListItem(option: "\$ US Dollar"),
-  ];
-  List<DialogListItem> languageList = [
-    DialogListItem(option: "English (en)"),
-  ];
+  List<DialogListItem> currencyList = [];
+  List<DialogListItem> languageList = [];
 
   List<DialogListItem> getThemeList() {
     List<DialogListItem> ret = [];
@@ -76,6 +72,20 @@ class _SettingsPageState extends State<SettingsPage> {
         versionString = "v${packageInfo.version}";
       });
     });
+    currencyList = [
+      DialogListItem(
+          option: "\$ US Dollar",
+          action: () {
+            Navigator.pop(context);
+          }),
+    ];
+    languageList = [
+      DialogListItem(
+          option: "English (en)",
+          action: () {
+            Navigator.pop(context);
+          }),
+    ];
   }
 
   @override
@@ -193,7 +203,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 StateContainer.of(context).curTheme.textDark10,
                           ),
                           // List Items
-                          false ? SettingsListItem(
+                          SettingsListItem(
                             header: "Currency",
                             subheader: "\$ US Dollar",
                             icon: AppIcons.currency,
@@ -204,7 +214,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       title: 'Currency',
                                       optionsList: currencyList));
                             },
-                          ) : SizedBox(),
+                          ),
                           SettingsListItem(
                             header: "Language",
                             subheader: "System Default",
@@ -248,20 +258,22 @@ class _SettingsPageState extends State<SettingsPage> {
                             onPressed: () {
                               AppSheets.showBottomSheet(
                                   context: context,
-                                  widget: ChangeDaemonSheet(
-                                    onChanged: (newDaemon) {
-                                      EventTaxiImpl.singleton().fire(DaemonChangedEvent(newDaemon: newDaemon));
-                                      if (newDaemon != AppConstants.DEFAULT_RPC_HTTP_URL) {
-                                        setState(() {
-                                          daemonURL = newDaemon;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          daemonURL = null;
-                                        });
-                                      }
+                                  widget:
+                                      ChangeDaemonSheet(onChanged: (newDaemon) {
+                                    EventTaxiImpl.singleton().fire(
+                                        DaemonChangedEvent(
+                                            newDaemon: newDaemon));
+                                    if (newDaemon !=
+                                        AppConstants.DEFAULT_RPC_HTTP_URL) {
+                                      setState(() {
+                                        daemonURL = newDaemon;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        daemonURL = null;
+                                      });
                                     }
-                                  ));
+                                  }));
                             },
                           ),
                           // Manage text
@@ -287,7 +299,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             header: "Contacts",
                             icon: AppIcons.contacts,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/contacts', arguments: widget.account);
+                              Navigator.pushNamed(context, '/contacts',
+                                  arguments: widget.account);
                             },
                           ),
                           SettingsListItem(
@@ -333,21 +346,24 @@ class _SettingsPageState extends State<SettingsPage> {
                                     style: AppStyles.textStyleVersion(context)),
                                 GestureDetector(
                                     onTap: () {
-                                      AppWebView.showWebView(context, AppConstants.PRIVACY_POLICY_URL);
+                                      AppWebView.showWebView(context,
+                                          AppConstants.PRIVACY_POLICY_URL);
                                     },
-                                    child: Text(
-                                        "Privacy Policy",
-                                        style: AppStyles.textStyleVersionUnderline(
-                                            context))),
+                                    child: Text("Privacy Policy",
+                                        style:
+                                            AppStyles.textStyleVersionUnderline(
+                                                context))),
                                 Text(" | ",
                                     style: AppStyles.textStyleVersion(context)),
                                 GestureDetector(
                                     onTap: () {
-                                      AppWebView.showWebView(context, AppConstants.PRIVACY_POLICY_URL);
+                                      AppWebView.showWebView(context,
+                                          AppConstants.PRIVACY_POLICY_URL);
                                     },
                                     child: Text("EULA",
-                                        style: AppStyles.textStyleVersionUnderline(
-                                            context))),
+                                        style:
+                                            AppStyles.textStyleVersionUnderline(
+                                                context))),
                               ],
                             ),
                           ),
