@@ -237,7 +237,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                             widget.operation.time)),
                                 TransactionDetailsListItem(
                                     header: "fee",
-                                    value: widget.operation.fee.toStringOpt()),
+                                    value: widget.operation.fee.toPositive().toStringOpt()),
                                 TransactionDetailsListItem(
                                     header: "opblock",
                                     value: widget.operation.opblock.toString()),
