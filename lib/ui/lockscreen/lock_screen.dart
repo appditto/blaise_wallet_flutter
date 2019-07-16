@@ -21,18 +21,18 @@ class _LockScreenPageState extends State<LockScreenPage> {
   String _countDownTxt = "";
 
   void _goHome() {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        '/overview', (Route<dynamic> route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/overview', (Route<dynamic> route) => false);
   }
 
   Widget _buildPinScreen(BuildContext context, String expectedPin) {
     return PinScreen(
-      type: PinOverlayType.ENTER_PIN,
-      expectedPin: expectedPin,
-      description: "Enter PIN to Unlock Blaise",
-      onSuccess: (pin) {
-        _goHome();
-      });
+        type: PinOverlayType.ENTER_PIN,
+        expectedPin: expectedPin,
+        description: "Enter PIN to Unlock Blaise",
+        onSuccess: (pin) {
+          _goHome();
+        });
   }
 
   String _formatCountDisplay(int count) {
@@ -132,7 +132,8 @@ class _LockScreenPageState extends State<LockScreenPage> {
           setState(() {
             _showUnlockButton = true;
           });
-          AuthUtil().authenticateWithBiometrics("Authenticate to Unlock Blaise")
+          AuthUtil()
+              .authenticateWithBiometrics("Authenticate to Unlock Blaise")
               .then((authenticated) {
             if (authenticated) {
               _goHome();
@@ -244,35 +245,39 @@ class _LockScreenPageState extends State<LockScreenPage> {
                       ),
                     ],
                   ),
-                  _lockedOut
-                    ? Container(
-                      width: MediaQuery.of(context).size.width-100,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
+                ],
+              ),
+            ),
+            _lockedOut
+                ? Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width-60,
                       child: Text(
                         "Too many failed unlock attempts",
                         style: AppStyles.paragraphDanger(context),
                         textAlign: TextAlign.center,
                       ),
-                    )
-                    : SizedBox(),
-                ],
-              ),
-            ),
+                    ),
+                  )
+                : SizedBox(),
             // "Unlock" button
-            _showUnlockButton ? Row(
-              children: <Widget>[
-                AppButton(
-                  type: AppButtonType.Primary,
-                  text: _lockedOut ? _countDownTxt : "Unlock",
-                  onPressed: () {
-                    if (!_lockedOut) {
-                      _authenticate(transitions: true);
-                    }
-                  },
-                  disabled: _lockedOut,
-                ),
-              ],
-            ) : SizedBox(),
+            _showUnlockButton
+                ? Row(
+                    children: <Widget>[
+                      AppButton(
+                        type: AppButtonType.Primary,
+                        text: _lockedOut ? _countDownTxt : "Unlock",
+                        onPressed: () {
+                          if (!_lockedOut) {
+                            _authenticate(transitions: true);
+                          }
+                        },
+                        disabled: _lockedOut,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
           ],
         ),
       ),
