@@ -7,15 +7,16 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
-import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
 
-class GetAccountSheetBeta extends StatefulWidget {
-  _GetAccountSheetBetaState createState() => _GetAccountSheetBetaState();
+class GetAccountSheetBetaWithAccounts extends StatefulWidget {
+  _GetAccountSheetBetaWithAccountsState createState() =>
+      _GetAccountSheetBetaWithAccountsState();
 }
 
-class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
+class _GetAccountSheetBetaWithAccountsState
+    extends State<GetAccountSheetBetaWithAccounts> {
   @override
   void initState() {
     super.initState();
@@ -93,51 +94,56 @@ class _GetAccountSheetBetaState extends State<GetAccountSheetBeta> {
                   ],
                 ),
               ),
-              Container(
-                  margin: EdgeInsetsDirectional.only(top: 30, bottom: 16),
-                  child: SvgRepaintAsset(
-              asset: StateContainer.of(context).curTheme.illustrationTwoOptions,
-              width: MediaQuery.of(context).size.width * (UIUtil.smallScreen(context)?0.4:0.6),
-              height:
-                  MediaQuery.of(context).size.width * (142 / 180) * (UIUtil.smallScreen(context)?0.4:0.6),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsetsDirectional.only(top: 30, bottom: 16),
+                    child: SvgRepaintAsset(
+                      asset: StateContainer.of(context)
+                          .curTheme
+                          .illustrationTwoOptions,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.width *
+                          (142 / 180) *
+                          0.6,
+                    ),
                   ),
-              ),
-              // Paragraph
-              Container(
-                margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 24),
-                child: AutoSizeText.rich(
-                  TextSpan(
-                    children: [
+                  // Paragraph
+                  Container(
+                    margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 24),
+                    child: AutoSizeText.rich(
                       TextSpan(
-                        text:
-                            "Thank you for trying the Blaise Wallet Beta!\n\n",
-                        style: AppStyles.paragraphPrimary(context),
+                        children: [
+                          TextSpan(
+                            text:
+                                "Thank you for trying the Blaise Wallet Beta!\n\n",
+                            style: AppStyles.paragraphPrimary(context),
+                          ),
+                          TextSpan(
+                            text:
+                                "Ways to obtain an account easily (such as borrowing an account) will be added in a later release.",
+                            style: AppStyles.paragraph(context),
+                          ),
+                        ],
                       ),
-                      TextSpan(
-                        text:
-                            "More ways to obtain an account will be added in a later release, but in the meantime you may get a free account using freepasa.org using your phone number and public key\n\n",
-                        style: AppStyles.paragraph(context),
-                      ),
-                      TextSpan(
-                        text:
-                            "Only 1 account per phone number is allowed.",
-                        style: AppStyles.paragraphPrimary(context),
-                      ),
-                    ],
+                      stepGranularity: 0.1,
+                      maxLines: 10,
+                      minFontSize: 8,
+                    ),
                   ),
-                  stepGranularity: 0.1,
-                  maxLines: 11,
-                  minFontSize: 8,
-                ),
+                ],
               ),
               // "Buy An Account" button
               Row(
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.Primary,
-                    text: "Visit Freepasa.org",
+                    text: "Borrow an Account",
+                    disabled: true,
                     onPressed: () {
-                      AppWebView.showWebView(context, 'https://freepasa.org?public_key=${PublicKeyCoder().encodeToBase58(walletState.publicKey)}');
+                      AppWebView.showWebView(context,
+                          'https://freepasa.org?public_key=${PublicKeyCoder().encodeToBase58(walletState.publicKey)}');
                     },
                   ),
                 ],

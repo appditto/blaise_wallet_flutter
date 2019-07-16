@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta.dart';
+import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta_with_accounts.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -462,99 +463,93 @@ class _OverviewPageState extends State<OverviewPage>
                                 child: SingleChildScrollView(
                                   physics: AlwaysScrollableScrollPhysics(),
                                   padding: EdgeInsets.all(0),
-                                  child: 
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height -
-                                              (130 +
-                                                  ((MediaQuery.of(context)
-                                                      .padding
-                                                      .top) +
-                                                  (20 -
-                                                      (MediaQuery.of(context)
-                                                              .padding
-                                                              .bottom) /
-                                                          2))) -
-                                              ((MediaQuery.of(context)
-                                                      .padding
-                                                      .bottom) +
-                                                  (24 -
-                                                      (MediaQuery.of(context)
-                                                              .padding
-                                                              .bottom) /
-                                                          2)) -
-                                              50 -
-                                              20,
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              margin: EdgeInsetsDirectional
-                                                  .fromSTEB(30, 0, 30, 0),
-                                              child: AutoSizeText.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "Welcome to",
-                                                      style:
-                                                          AppStyles.paragraph(
-                                                              context),
-                                                    ),
-                                                    TextSpan(
-                                                      text: " Blaise Wallet",
-                                                      style: AppStyles
-                                                          .paragraphPrimary(
-                                                              context),
-                                                    ),
-                                                    TextSpan(
-                                                      text: ".\n",
-                                                      style:
-                                                          AppStyles.paragraph(
-                                                              context),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          "You can start by getting an account.",
-                                                      style:
-                                                          AppStyles.paragraph(
-                                                              context),
-                                                    ),
-                                                  ],
-                                                ),
-                                                stepGranularity: 0.5,
-                                                maxLines: 10,
-                                                minFontSize: 8,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(fontSize: 14),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height -
+                                        (130 +
+                                            ((MediaQuery.of(context)
+                                                    .padding
+                                                    .top) +
+                                                (20 -
+                                                    (MediaQuery.of(context)
+                                                            .padding
+                                                            .bottom) /
+                                                        2))) -
+                                        ((MediaQuery.of(context)
+                                                .padding
+                                                .bottom) +
+                                            (24 -
+                                                (MediaQuery.of(context)
+                                                        .padding
+                                                        .bottom) /
+                                                    2)) -
+                                        50 -
+                                        20,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            margin:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    30, 0, 30, 0),
+                                            child: AutoSizeText.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "Welcome to",
+                                                    style: AppStyles.paragraph(
+                                                        context),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " Blaise Wallet",
+                                                    style: AppStyles
+                                                        .paragraphPrimary(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                    text: ".\n",
+                                                    style: AppStyles.paragraph(
+                                                        context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "You can start by getting an account.",
+                                                    style: AppStyles.paragraph(
+                                                        context),
+                                                  ),
+                                                ],
                                               ),
+                                              stepGranularity: 0.5,
+                                              maxLines: 10,
+                                              minFontSize: 8,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(fontSize: 14),
                                             ),
-                                            // Container for the illustration
-                                            Container(
-                                              margin:
-                                                  EdgeInsetsDirectional.only(
-                                                top: 24,
-                                              ),
-                                              child: SvgRepaintAsset(
-                                                  asset: StateContainer.of(
-                                                          context)
-                                                      .curTheme
-                                                      .illustrationNewWallet,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.55,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.55),
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          // Container for the illustration
+                                          Container(
+                                            margin: EdgeInsetsDirectional.only(
+                                              top: 24,
+                                            ),
+                                            child: SvgRepaintAsset(
+                                                asset:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .illustrationNewWallet,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.55,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.55),
+                                          )
+                                        ],
                                       ),
                                     ),
-                          
+                                  ),
                                 ),
                               )));
                     } else {
@@ -588,7 +583,8 @@ class _OverviewPageState extends State<OverviewPage>
                                       onRefresh: _refresh,
                                       isRefreshing: _isRefreshing,
                                       child: ListView.builder(
-                                          physics: AlwaysScrollableScrollPhysics(),
+                                          physics:
+                                              AlwaysScrollableScrollPhysics(),
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 3, 0, 19),
@@ -617,43 +613,73 @@ class _OverviewPageState extends State<OverviewPage>
                     }
                   }),
                   // Bottom bar
-                  Observer(
-                    builder: (BuildContext context) {
-                      if (walletState.walletLoading || walletState.walletAccounts.length > 0) {
-                        return SizedBox();
-                      } else {
-                        return Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            color:
-                                StateContainer.of(context).curTheme.backgroundPrimary,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
-                            ),
-                            boxShadow: [
-                              StateContainer.of(context).curTheme.shadowBottomBar,
+                  Observer(builder: (BuildContext context) {
+                    if (walletState.walletAccounts.length > 0) {
+                      return Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          boxShadow: [
+                            StateContainer.of(context).curTheme.shadowBottomBar,
+                          ],
+                        ),
+                        child: Container(
+                          margin: EdgeInsetsDirectional.only(top: 4),
+                          child: Row(
+                            children: <Widget>[
+                              AppButton(
+                                text: "Get an Account",
+                                type: AppButtonType.Primary,
+                                onPressed: () {
+                                  AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: GetAccountSheetBetaWithAccounts());
+                                },
+                              ),
                             ],
                           ),
-                          child: Container(
-                            margin: EdgeInsetsDirectional.only(top: 4),
-                            child: Row(
-                              children: <Widget>[
-                                AppButton(
-                                  text: "Get an Account",
-                                  type: AppButtonType.Primary,
-                                  onPressed: () {
-                                    AppSheets.showBottomSheet(
-                                        context: context, widget: GetAccountSheetBeta());
-                                  },
-                                ),
-                              ],
-                            ),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
                           ),
-                        );
-                      }
+                          boxShadow: [
+                            StateContainer.of(context).curTheme.shadowBottomBar,
+                          ],
+                        ),
+                        child: Container(
+                          margin: EdgeInsetsDirectional.only(top: 4),
+                          child: Row(
+                            children: <Widget>[
+                              AppButton(
+                                text: "Get an Account",
+                                type: AppButtonType.Primary,
+                                onPressed: () {
+                                  AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: GetAccountSheetBeta());
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     }
-                  )
+                  })
                 ],
               ),
             ),
