@@ -154,215 +154,221 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Contact name gesture detector
-                      GestureDetector(
-                        onTapDown: (details) {
-                          _copyToClipboard("Contact Name");
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // "Contact Name" header
-                            Container(
-                              width: double.maxFinite,
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
-                              child: AutoSizeText(
-                                contactNameCopied
-                                    ? "Copied to Clipboard"
-                                    : "Contact Name",
-                                style: contactNameCopied
-                                    ? AppStyles.textFieldLabelSuccess(context)
-                                    : AppStyles.textFieldLabel(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Contact name gesture detector
+                        GestureDetector(
+                          onTapDown: (details) {
+                            _copyToClipboard("Contact Name");
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // "Contact Name" header
+                              Container(
+                                width: double.maxFinite,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 40, 30, 0),
+                                child: AutoSizeText(
+                                  contactNameCopied
+                                      ? "Copied to Clipboard"
+                                      : "Contact Name",
+                                  style: contactNameCopied
+                                      ? AppStyles.textFieldLabelSuccess(context)
+                                      : AppStyles.textFieldLabel(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  textAlign: TextAlign.start,
+                                ),
                               ),
-                            ),
-                            // Container for the Contact Name
-                            Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    width: 1,
-                                    color: contactNameCopied
-                                        ? StateContainer.of(context)
-                                            .curTheme
-                                            .success15
-                                        : StateContainer.of(context)
-                                            .curTheme
-                                            .textDark15),
-                                color: contactNameCopied
-                                    ? StateContainer.of(context)
-                                        .curTheme
-                                        .success10
-                                    : StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                              ),
-                              child: AutoSizeText.rich(
-                                TextSpan(children: [
-                                  TextSpan(
-                                    text: widget.contact.name[0],
-                                    style: contactNameCopied
-                                        ? AppStyles.contactsItemNameSuccess(
-                                            context)
-                                        : AppStyles.contactsItemNamePrimary(
-                                            context),
-                                  ),
-                                  TextSpan(
-                                    text: widget.contact.name.substring(1),
-                                    style: contactNameCopied
-                                        ? AppStyles.contactsItemNameSuccess(
-                                            context)
-                                        : AppStyles.contactsItemName(context),
-                                  ),
-                                ]),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTapDown: (details) {
-                          _copyToClipboard("Address");
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // "Address" header
-                            Container(
-                              width: double.maxFinite,
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                              child: AutoSizeText(
-                                contactAddressCopied
-                                    ? "Copied to Clipboard"
-                                    : "Address",
-                                style: contactAddressCopied
-                                    ? AppStyles.textFieldLabelSuccess(context)
-                                    : AppStyles.textFieldLabel(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                            // Container for the address
-                            Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    width: 1,
-                                    color: contactAddressCopied
-                                        ? StateContainer.of(context)
-                                            .curTheme
-                                            .success15
-                                        : StateContainer.of(context)
-                                            .curTheme
-                                            .textDark15),
-                                color: contactAddressCopied
-                                    ? StateContainer.of(context)
-                                        .curTheme
-                                        .success10
-                                    : StateContainer.of(context)
-                                        .curTheme
-                                        .textDark10,
-                              ),
-                              child: AutoSizeText(
-                                widget.contact.account.toString(),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                minFontSize: 8,
-                                textAlign: TextAlign.center,
-                                style: contactAddressCopied
-                                    ? AppStyles.privateKeySuccess(context)
-                                    : AppStyles.privateKeyTextDark(context),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      isNotEmpty(widget.contact.payload)
-                          ? GestureDetector(
-                              onTapDown: (details) {
-                                _copyToClipboard("Payload");
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  // "Payload" header
-                                  Container(
-                                    width: double.maxFinite,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 30, 30, 0),
-                                    child: AutoSizeText(
-                                      contactPayloadCopied
-                                          ? "Copied to Clipboard"
-                                          : "Payload",
-                                      style: contactPayloadCopied
-                                          ? AppStyles.textFieldLabelSuccess(
-                                              context)
-                                          : AppStyles.textFieldLabel(context),
-                                      maxLines: 1,
-                                      stepGranularity: 0.1,
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                  // Container for the payload text
-                                  Container(
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 12, 30, 0),
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12, 8, 12, 8),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: contactPayloadCopied
-                                              ? StateContainer.of(context)
-                                                  .curTheme
-                                                  .success15
-                                              : StateContainer.of(context)
-                                                  .curTheme
-                                                  .textDark15),
-                                      color: contactPayloadCopied
+                              // Container for the Contact Name
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 12, 30, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    12, 8, 12, 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: contactNameCopied
                                           ? StateContainer.of(context)
                                               .curTheme
-                                              .success10
+                                              .success15
                                           : StateContainer.of(context)
                                               .curTheme
-                                              .textDark10,
+                                              .textDark15),
+                                  color: contactNameCopied
+                                      ? StateContainer.of(context)
+                                          .curTheme
+                                          .success10
+                                      : StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                ),
+                                child: AutoSizeText.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text: widget.contact.name[0],
+                                      style: contactNameCopied
+                                          ? AppStyles.contactsItemNameSuccess(
+                                              context)
+                                          : AppStyles.contactsItemNamePrimary(
+                                              context),
                                     ),
-                                    child: AutoSizeText(
-                                      widget.contact.payload,
-                                      maxLines: 1,
-                                      stepGranularity: 0.1,
-                                      minFontSize: 8,
-                                      textAlign: TextAlign.center,
-                                      style: contactPayloadCopied
-                                          ? AppStyles.paragraphSuccess(context)
-                                          : AppStyles.paragraph(context),
+                                    TextSpan(
+                                      text: widget.contact.name.substring(1),
+                                      style: contactNameCopied
+                                          ? AppStyles.contactsItemNameSuccess(
+                                              context)
+                                          : AppStyles.contactsItemName(context),
                                     ),
-                                  )
-                                ],
+                                  ]),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  textAlign: TextAlign.start,
+                                ),
                               ),
-                            )
-                          : SizedBox(),
-                    ],
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTapDown: (details) {
+                            _copyToClipboard("Address");
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // "Address" header
+                              Container(
+                                width: double.maxFinite,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 0),
+                                child: AutoSizeText(
+                                  contactAddressCopied
+                                      ? "Copied to Clipboard"
+                                      : "Address",
+                                  style: contactAddressCopied
+                                      ? AppStyles.textFieldLabelSuccess(context)
+                                      : AppStyles.textFieldLabel(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              // Container for the address
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 12, 30, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    12, 8, 12, 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: contactAddressCopied
+                                          ? StateContainer.of(context)
+                                              .curTheme
+                                              .success15
+                                          : StateContainer.of(context)
+                                              .curTheme
+                                              .textDark15),
+                                  color: contactAddressCopied
+                                      ? StateContainer.of(context)
+                                          .curTheme
+                                          .success10
+                                      : StateContainer.of(context)
+                                          .curTheme
+                                          .textDark10,
+                                ),
+                                child: AutoSizeText(
+                                  widget.contact.account.toString(),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  minFontSize: 8,
+                                  textAlign: TextAlign.center,
+                                  style: contactAddressCopied
+                                      ? AppStyles.privateKeySuccess(context)
+                                      : AppStyles.privateKeyTextDark(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        isNotEmpty(widget.contact.payload)
+                            ? GestureDetector(
+                                onTapDown: (details) {
+                                  _copyToClipboard("Payload");
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    // "Payload" header
+                                    Container(
+                                      width: double.maxFinite,
+                                      margin: EdgeInsetsDirectional.fromSTEB(
+                                          30, 30, 30, 0),
+                                      child: AutoSizeText(
+                                        contactPayloadCopied
+                                            ? "Copied to Clipboard"
+                                            : "Payload",
+                                        style: contactPayloadCopied
+                                            ? AppStyles.textFieldLabelSuccess(
+                                                context)
+                                            : AppStyles.textFieldLabel(context),
+                                        maxLines: 1,
+                                        stepGranularity: 0.1,
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ),
+                                    // Container for the payload text
+                                    Container(
+                                      margin: EdgeInsetsDirectional.fromSTEB(
+                                          30, 12, 30, 0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12, 8, 12, 8),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                            width: 1,
+                                            color: contactPayloadCopied
+                                                ? StateContainer.of(context)
+                                                    .curTheme
+                                                    .success15
+                                                : StateContainer.of(context)
+                                                    .curTheme
+                                                    .textDark15),
+                                        color: contactPayloadCopied
+                                            ? StateContainer.of(context)
+                                                .curTheme
+                                                .success10
+                                            : StateContainer.of(context)
+                                                .curTheme
+                                                .textDark10,
+                                      ),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width-86,
+                                        child: AutoSizeText(
+                                          widget.contact.payload,
+                                          maxLines: 3,
+                                          stepGranularity: 0.1,
+                                          minFontSize: 8,
+                                          textAlign: TextAlign.center,
+                                          style: contactPayloadCopied
+                                              ? AppStyles.paragraphSuccess(
+                                                  context)
+                                              : AppStyles.paragraph(context),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
                   ),
                 ),
                 //"Add Contact" and "Close" buttons

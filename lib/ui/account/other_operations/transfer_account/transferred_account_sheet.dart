@@ -115,115 +115,120 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Paragraph
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
-                        child: AutoSizeText(
-                          "Your account has been transferred successfully to the public key below.",
-                          style: AppStyles.paragraph(context),
-                          stepGranularity: 0.1,
-                          maxLines: 3,
-                          minFontSize: 8,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Paragraph
+                        Container(
+                          width: double.maxFinite,
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
+                          child: AutoSizeText(
+                            "Your account has been transferred successfully to the public key below.",
+                            style: AppStyles.paragraph(context),
+                            stepGranularity: 0.1,
+                            maxLines: 3,
+                            minFontSize: 8,
+                          ),
                         ),
-                      ),
-                      // "Address" header
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                        child: AutoSizeText(
-                          "Public Key",
-                          style: AppStyles.textFieldLabelSuccess(context),
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          textAlign: TextAlign.start,
+                        // "Address" header
+                        Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                          child: AutoSizeText(
+                            "Public Key",
+                            style: AppStyles.textFieldLabelSuccess(context),
+                            maxLines: 1,
+                            stepGranularity: 0.1,
+                            textAlign: TextAlign.start,
+                          ),
                         ),
-                      ),
-                      // Container for the public key
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark15),
-                          color: StateContainer.of(context).curTheme.textDark10,
-                        ),
-                        child: AutoSizeText(
-                          widget.newAccountPubkey,
-                          maxLines: 4,
-                          stepGranularity: 0.1,
-                          minFontSize: 8,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.privateKeyTextDark(context),
-                        ),
-                      ),
-                      // "Fee" header
-                      widget.fee != Currency('0')
-                          ? Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                              child: AutoSizeText(
-                                "Fee",
-                                style: AppStyles.textFieldLabelSuccess(context),
-                                maxLines: 1,
-                                stepGranularity: 0.1,
-                                textAlign: TextAlign.start,
-                              ),
-                            )
-                          : SizedBox(),
-                      // Container for the fee
-                      widget.fee != Currency("0")
-                          ? Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    width: 1,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .success15),
+                        // Container for the public key
+                        Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                width: 1,
                                 color: StateContainer.of(context)
                                     .curTheme
-                                    .success10,
-                              ),
-                              child: AutoSizeText.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "",
-                                      style: AppStyles
-                                          .iconFontSuccessBalanceSmallPascal(
-                                              context),
-                                    ),
-                                    TextSpan(
-                                        text: " ",
-                                        style: TextStyle(fontSize: 8)),
-                                    TextSpan(
-                                        text: widget.fee.toStringOpt(),
-                                        style: AppStyles.balanceSmallSuccess(
-                                            context)),
-                                  ],
+                                    .textDark15),
+                            color:
+                                StateContainer.of(context).curTheme.textDark10,
+                          ),
+                          child: AutoSizeText(
+                            widget.newAccountPubkey,
+                            maxLines: 4,
+                            stepGranularity: 0.1,
+                            minFontSize: 8,
+                            textAlign: TextAlign.center,
+                            style: AppStyles.privateKeyTextDark(context),
+                          ),
+                        ),
+                        // "Fee" header
+                        widget.fee != Currency('0')
+                            ? Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 0),
+                                child: AutoSizeText(
+                                  "Fee",
+                                  style:
+                                      AppStyles.textFieldLabelSuccess(context),
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  textAlign: TextAlign.start,
                                 ),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                minFontSize: 8,
-                                stepGranularity: 1,
-                                style: TextStyle(
-                                  fontSize: 14,
+                              )
+                            : SizedBox(),
+                        // Container for the fee
+                        widget.fee != Currency("0")
+                            ? Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 12, 30, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    12, 8, 12, 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .success15),
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .success10,
                                 ),
-                              ),
-                            )
-                          : SizedBox()
-                    ],
+                                child: AutoSizeText.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "",
+                                        style: AppStyles
+                                            .iconFontSuccessBalanceSmallPascal(
+                                                context),
+                                      ),
+                                      TextSpan(
+                                          text: " ",
+                                          style: TextStyle(fontSize: 8)),
+                                      TextSpan(
+                                          text: widget.fee.toStringOpt(),
+                                          style: AppStyles.balanceSmallSuccess(
+                                              context)),
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  minFontSize: 8,
+                                  stepGranularity: 1,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )
+                            : SizedBox()
+                      ],
+                    ),
                   ),
                 ),
                 // "CANCEL" button

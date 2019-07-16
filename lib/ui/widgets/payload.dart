@@ -111,13 +111,17 @@ class _PayloadState extends State<Payload> {
                     color: StateContainer.of(context).curTheme.textDark10,
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    AutoSizeText(
-                      this._payload,
-                      maxLines: 3,
-                      stepGranularity: 0.1,
-                      minFontSize: 6,
-                      textAlign: TextAlign.left,
-                      style: AppStyles.paragraphMedium(context),
+                    Container(
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width - (_encrypted?151:136)),
+                      child: AutoSizeText(
+                        this._payload,
+                        maxLines: 3,
+                        stepGranularity: 0.1,
+                        minFontSize: 6,
+                        textAlign: TextAlign.left,
+                        style: AppStyles.paragraphMedium(context),
+                      ),
                     ),
                     _encrypted
                         ? Container(
@@ -349,7 +353,12 @@ class _PayloadDialogState extends State<PayloadDialog>
                                         ? Row(
                                             children: <Widget>[
                                               Container(
-                                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-152),
+                                                  constraints: BoxConstraints(
+                                                      maxWidth:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width -
+                                                              152),
                                                   margin: EdgeInsetsDirectional
                                                       .fromSTEB(20, 16, 0, 20),
                                                   child: AutoSizeText(
