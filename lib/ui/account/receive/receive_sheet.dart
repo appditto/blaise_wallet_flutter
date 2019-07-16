@@ -120,8 +120,8 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                         ],
                       ),
                     ),
-                    // Share Button
-                    Container(
+                    // Share Button is removed for beta
+                    /*Container(
                       margin: EdgeInsetsDirectional.only(start: 10, end: 5),
                       height: 50,
                       width: 50,
@@ -140,7 +140,8 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                               color:
                                   StateContainer.of(context).curTheme.textLight,
                               size: 22)),
-                    ),
+                    ),*/
+                    SizedBox(width: 65, height: 50),
                   ],
                 ),
               ),
@@ -209,7 +210,6 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                         ? AppButtonType.Success
                         : AppButtonType.Primary,
                     text: _addressCopied ? "Address Copied" : "Copy Address",
-                    buttonTop: true,
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: widget.accountNumber.toString()));
                       setState(() {
@@ -231,7 +231,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                 ],
               ),
               // "Request" button
-              Row(
+              /*Row(
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.PrimaryOutline,
@@ -244,7 +244,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                       },
                   ),
                 ],
-              ),
+              ),*/
             ],
           ),
         ),

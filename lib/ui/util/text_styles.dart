@@ -367,6 +367,16 @@ class AppStyles {
         fontFamily: 'SourceCodePro');
   }
 
+  // For neutral Private Key
+  static TextStyle privateKeyTextDarkFaded(BuildContext context) {
+    return TextStyle(
+        color: StateContainer.of(context).curTheme.textDark.withOpacity(0.5),
+        fontSize: 14.0,
+        height: 1,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'SourceCodePro');
+  }
+
   // For success Private Key
   static TextStyle privateKeySuccess(BuildContext context) {
     return TextStyle(

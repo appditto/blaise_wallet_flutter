@@ -49,7 +49,7 @@ class SendingSheet extends StatefulWidget {
   _SendingSheetState createState() => _SendingSheetState();
 }
 
-class _SendingSheetState extends State<SendingSheet>  {
+class _SendingSheetState extends State<SendingSheet> {
   final Logger log = Logger();
 
   OverlayEntry _overlay;
@@ -231,14 +231,36 @@ class _SendingSheetState extends State<SendingSheet>  {
                                   .textDark15),
                           color: StateContainer.of(context).curTheme.textDark10,
                         ),
-                        child: AutoSizeText(
-                          widget.contact == null ? widget.destination : "${widget.contact.name} (${widget.contact.account.toString()})",
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          minFontSize: 8,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.privateKeyTextDark(context),
-                        ),
+                        child: widget.contact == null
+                            ? AutoSizeText(
+                                widget.destination,
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                minFontSize: 8,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.privateKeyTextDark(context),
+                              )
+                            : AutoSizeText.rich(
+                                TextSpan(children: [
+                                  TextSpan(
+                                    text: widget.contact.name[0],
+                                    style: AppStyles.privateKeyPrimary(context),
+                                  ),
+                                  TextSpan(
+                                      text: widget.contact.name.substring(1),
+                                      style: AppStyles.privateKeyTextDark(
+                                          context)),
+                                  TextSpan(
+                                    text: " (" +
+                                        widget.contact.account.toString() +
+                                        ")",
+                                    style: AppStyles.privateKeyTextDarkFaded(context)
+                                  ),
+                                ]),
+                                style: TextStyle(fontSize: 14, fontFamily: 'SourceCodePro'),
+                                minFontSize: 8,
+                                stepGranularity: 0.1,
+                              ),
                       ),
                       // Amount and Fee
                       Container(
@@ -430,30 +452,29 @@ class _SendingSheetState extends State<SendingSheet>  {
                                     .textDark10,
                               ),
                               child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  AutoSizeText(
-                                    widget.payload,
-                                    maxLines: 1,
-                                    stepGranularity: 0.1,
-                                    minFontSize: 8,
-                                    textAlign: TextAlign.center,
-                                    style: AppStyles.paragraph(context),
-                                  ),
-                                  widget.encryptPayload ? Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsetsDirectional.only(start: 3.0),
-                                    child: Icon(
-                                      FontAwesomeIcons.lock,
-                                      size: 12,
-                                      color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark
-                                    )
-                                  ) : SizedBox()
-                                ]
-                              )
-                            )
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    AutoSizeText(
+                                      widget.payload,
+                                      maxLines: 1,
+                                      stepGranularity: 0.1,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                      style: AppStyles.paragraph(context),
+                                    ),
+                                    widget.encryptPayload
+                                        ? Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsetsDirectional.only(
+                                                start: 3.0),
+                                            child: Icon(FontAwesomeIcons.lock,
+                                                size: 12,
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textDark))
+                                        : SizedBox()
+                                  ]))
                           : SizedBox()
                     ],
                   ),
@@ -467,7 +488,8 @@ class _SendingSheetState extends State<SendingSheet>  {
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
-                          EventTaxiImpl.singleton().fire(AuthenticatedEvent(AUTH_EVENT_TYPE.SEND));
+                          EventTaxiImpl.singleton()
+                              .fire(AuthenticatedEvent(AUTH_EVENT_TYPE.SEND));
                         }
                       },
                     ),
@@ -499,7 +521,13 @@ class _SendingSheetState extends State<SendingSheet>  {
       showOverlay(context);
       if (widget.encryptPayload && encryptedPayload == null) {
         // Try to encrypt the payload with the receivers public key
-        encryptedPayload  =await walletState.getAccountState(widget.source).encryptPayloadEcies(widget.payload, widget.contact == null ? AccountNumber(widget.destination) : widget.contact.account);
+        encryptedPayload = await walletState
+            .getAccountState(widget.source)
+            .encryptPayloadEcies(
+                widget.payload,
+                widget.contact == null
+                    ? AccountNumber(widget.destination)
+                    : widget.contact.account);
         if (encryptedPayload == null) {
           _overlay?.remove();
           UIUtil.showSnackbar("Failed to Encrypt the Payload", context);
@@ -511,7 +539,9 @@ class _SendingSheetState extends State<SendingSheet>  {
           .getAccountState(widget.source)
           .doSend(
               amount: widget.amount,
-              destination: widget.contact == null ? widget.destination : widget.contact.account.toString(),
+              destination: widget.contact == null
+                  ? widget.destination
+                  : widget.contact.account.toString(),
               payload: widget.payload,
               encryptedPayload: encryptedPayload,
               fee: fee);
@@ -525,12 +555,15 @@ class _SendingSheetState extends State<SendingSheet>  {
         OperationsResponse resp = result;
         PascalOperation op = resp.operations[0];
         if (op.valid == null || op.valid) {
-          Navigator.of(context).popUntil(RouteUtils.withNameLike(widget.fromOverview ? "/overview" : "/account"));
+          Navigator.of(context).popUntil(RouteUtils.withNameLike(
+              widget.fromOverview ? "/overview" : "/account"));
           AppSheets.showBottomSheet(
               context: context,
               closeOnTap: true,
               widget: SentSheet(
-                  destination: widget.contact == null ? widget.destination : widget.contact.account.toString(),
+                  destination: widget.contact == null
+                      ? widget.destination
+                      : widget.contact.account.toString(),
                   amount: widget.amount,
                   fee: fee,
                   payload: widget.payload,
@@ -570,20 +603,19 @@ class _SendingSheetState extends State<SendingSheet>  {
       return authenticated;
     } else {
       String expectedPin = await sl.get<Vault>().getPin();
-      bool result = await Navigator.of(context).push(MaterialPageRoute<bool>(
-          builder: (BuildContext context) {
+      bool result = await Navigator.of(context)
+          .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
         return PinScreen(
           type: PinOverlayType.ENTER_PIN,
           onSuccess: (pin) {
             Navigator.of(context).pop(true);
           },
           expectedPin: expectedPin,
-          description:
-              message,
+          description: message,
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
       return result != null && result;
-    }   
+    }
   }
 }

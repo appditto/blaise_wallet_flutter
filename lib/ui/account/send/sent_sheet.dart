@@ -155,26 +155,51 @@ class _SentSheetState extends State<SentSheet> {
                       ),
                       // Container for the account number
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .textDark15),
-                          color: StateContainer.of(context).curTheme.textDark10,
-                        ),
-                        child: AutoSizeText(
-                          widget.contact == null ? widget.destination : "${widget.contact.name} (${widget.contact.account.toString()})",
-                          maxLines: 1,
-                          stepGranularity: 0.1,
-                          minFontSize: 8,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.privateKeyTextDark(context),
-                        ),
-                      ),
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 0),
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                width: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .textDark15),
+                            color:
+                                StateContainer.of(context).curTheme.textDark10,
+                          ),
+                          child: widget.contact == null
+                              ? AutoSizeText(
+                                  widget.destination,
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  minFontSize: 8,
+                                  textAlign: TextAlign.center,
+                                  style: AppStyles.privateKeyTextDark(context),
+                                )
+                              : AutoSizeText.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text: widget.contact.name[0],
+                                      style:
+                                          AppStyles.privateKeySuccess(context),
+                                    ),
+                                    TextSpan(
+                                        text: widget.contact.name.substring(1),
+                                        style: AppStyles.privateKeyTextDark(
+                                            context)),
+                                    TextSpan(
+                                        text: " (" +
+                                            widget.contact.account.toString() +
+                                            ")",
+                                        style:
+                                            AppStyles.privateKeyTextDarkFaded(
+                                                context)),
+                                  ]),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'SourceCodePro'),
+                                  minFontSize: 8,
+                                  stepGranularity: 0.1)),
                       // Amount and Fee
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
@@ -369,30 +394,29 @@ class _SentSheetState extends State<SentSheet> {
                                     .textDark10,
                               ),
                               child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  AutoSizeText(
-                                    widget.payload,
-                                    maxLines: 1,
-                                    stepGranularity: 0.1,
-                                    minFontSize: 8,
-                                    textAlign: TextAlign.center,
-                                    style: AppStyles.paragraph(context),
-                                  ),
-                                  widget.encryptedPayload ? Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsetsDirectional.only(start: 3.0),
-                                    child: Icon(
-                                      FontAwesomeIcons.lock,
-                                      size: 12,
-                                      color: StateContainer.of(context)
-                                        .curTheme
-                                        .textDark
-                                    )
-                                  ) : SizedBox()
-                                ]
-                              )
-                            )
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    AutoSizeText(
+                                      widget.payload,
+                                      maxLines: 1,
+                                      stepGranularity: 0.1,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                      style: AppStyles.paragraph(context),
+                                    ),
+                                    widget.encryptedPayload
+                                        ? Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsetsDirectional.only(
+                                                start: 3.0),
+                                            child: Icon(FontAwesomeIcons.lock,
+                                                size: 12,
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textDark))
+                                        : SizedBox()
+                                  ]))
                           : SizedBox()
                     ],
                   ),
