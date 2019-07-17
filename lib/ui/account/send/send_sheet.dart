@@ -21,6 +21,7 @@ import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:decimal/decimal.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -65,6 +66,9 @@ class _SendSheetState extends State<SendSheet> {
   List<Contact> _contacts;
   bool _isValidContactAndUnfocused;
 
+  // Account State
+  Account accountState;
+
   @override
   void initState() {
     super.initState();
@@ -77,6 +81,7 @@ class _SendSheetState extends State<SendSheet> {
     this._isValidContactAndUnfocused = false;
     this._contacts = [];
     this._encryptedPayload = false;
+    this.accountState = walletState.getAccountState(widget.account);
     // TODO this is a placeholder
     _localCurrencyFormat =
         NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
@@ -313,23 +318,30 @@ class _SendSheetState extends State<SendSheet> {
                                     ),
                                   ),
                                   // Balance in fiat
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                45),
-                                    margin: EdgeInsetsDirectional.only(top: 2),
-                                    child: AutoSizeText(
-                                      "(\$2448.91)",
-                                      style:
-                                          AppStyles.primarySmallest400(context),
-                                      maxLines: 1,
-                                      minFontSize: 8,
-                                      stepGranularity: 0.1,
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ),
+                                  Observer(
+                                    builder: (BuildContext context) {
+                                      if (walletState.usdPrice != null) {
+                                        return Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth:
+                                                  MediaQuery.of(context).size.width /
+                                                          2 -
+                                                      45),
+                                          margin: EdgeInsetsDirectional.only(top: 2),
+                                          child: AutoSizeText(
+                                            "(\$${accountState.usdBalance()})",
+                                            style:
+                                                AppStyles.primarySmallest400(context),
+                                            maxLines: 1,
+                                            minFontSize: 8,
+                                            stepGranularity: 0.1,
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        );
+                                      }
+                                      return SizedBox();
+                                    },
+                                  )
                                 ],
                               ),
                             ],
@@ -546,7 +558,6 @@ class _SendSheetState extends State<SendSheet> {
   Future<void> validateAndSend() async {
     bool hasError = false;
     Contact contact;
-    Account accountState = walletState.getAccountState(widget.account);
     if (amountController.text.length == 0) {
       hasError = true;
       setState(() {
