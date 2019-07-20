@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -386,10 +387,16 @@ class _PayloadDialogState extends State<PayloadDialog>
                                                     });
                                                   },
                                                   inactiveThumbColor:
+                                                      StateContainer.of(context).curTheme == BlaiseDarkTheme()?
+                                                      Color(0xFF444556):
                                                       StateContainer.of(context)
                                                           .curTheme
                                                           .backgroundPrimary,
                                                   inactiveTrackColor:
+                                                    StateContainer.of(context).curTheme == BlaiseDarkTheme()?
+                                                    StateContainer.of(context)
+                                                          .curTheme
+                                                          .overlay20:
                                                       StateContainer.of(context)
                                                           .curTheme
                                                           .overlay10,
