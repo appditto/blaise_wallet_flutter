@@ -116,34 +116,38 @@ class _OperationSheetState extends State<OperationSheet> {
               //"Copy Address", "Add to Contacts" and "Operation Details" buttons
               Row(
                 children: <Widget>[
-                  AppButton(
-                    type: _addressCopied
-                        ? AppButtonType.Success
-                        : AppButtonType.Primary,
-                    text: _addressCopied ? "Address Copied" : "Copy Address",
-                    buttonTop: true,
-                    onPressed: () {
-                      Clipboard.setData(
-                          ClipboardData(text: widget.account.toString()));
-                      setState(() {
-                        _addressCopied = true;
-                      });
-                      if (_addressCopiedTimer != null) {
-                        _addressCopiedTimer.cancel();
-                      }
-                      _addressCopiedTimer =
-                          Timer(const Duration(milliseconds: 1500), () {
-                        if (mounted) {
-                          setState(() {
-                            _addressCopied = false;
-                          });
-                        }
-                      });
-                    },
-                  ),
+                  widget.operation.optype == OpType.TRANSACTION
+                      ? AppButton(
+                          type: _addressCopied
+                              ? AppButtonType.Success
+                              : AppButtonType.Primary,
+                          text: _addressCopied
+                              ? "Address Copied"
+                              : "Copy Address",
+                          buttonTop: true,
+                          onPressed: () {
+                            Clipboard.setData(
+                                ClipboardData(text: widget.account.toString()));
+                            setState(() {
+                              _addressCopied = true;
+                            });
+                            if (_addressCopiedTimer != null) {
+                              _addressCopiedTimer.cancel();
+                            }
+                            _addressCopiedTimer =
+                                Timer(const Duration(milliseconds: 1500), () {
+                              if (mounted) {
+                                setState(() {
+                                  _addressCopied = false;
+                                });
+                              }
+                            });
+                          },
+                        )
+                      : SizedBox(),
                 ],
               ),
-              widget.isContact
+              widget.isContact || widget.operation.optype != OpType.TRANSACTION
                   ? SizedBox()
                   : Row(
                       children: <Widget>[

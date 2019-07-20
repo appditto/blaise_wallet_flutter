@@ -101,17 +101,20 @@ class _SendSheetState extends State<SendSheet> {
             _contacts = [];
           });
         }
-        sl.get<DBHelper>().getContactWithName(this.addressController.text).then((contact) {
+        sl
+            .get<DBHelper>()
+            .getContactWithName(this.addressController.text)
+            .then((contact) {
           if (contact != null && mounted) {
-            this.addressController.text = this.addressController.text.substring(1);
+            this.addressController.text =
+                this.addressController.text.substring(1);
             setState(() {
               _isValidContactAndUnfocused = true;
               _payload = contact.payload;
               _encryptedPayload = false;
             });
-            EventTaxiImpl.singleton().fire(PayloadChangedEvent(
-              payload: contact.payload
-            ));
+            EventTaxiImpl.singleton()
+                .fire(PayloadChangedEvent(payload: contact.payload));
           }
         });
       } else {
@@ -132,7 +135,10 @@ class _SendSheetState extends State<SendSheet> {
             }
           });
         } else if (this.addressController.text.startsWith("@")) {
-          sl.get<DBHelper>().getContactsWithNameLike(this.addressController.text).then((contacts) {
+          sl
+              .get<DBHelper>()
+              .getContactsWithNameLike(this.addressController.text)
+              .then((contacts) {
             if (mounted) {
               setState(() {
                 _contacts = contacts;
@@ -300,15 +306,17 @@ class _SendSheetState extends State<SendSheet> {
                                       if (walletState.usdPrice != null) {
                                         return Container(
                                           constraints: BoxConstraints(
-                                              maxWidth:
-                                                  MediaQuery.of(context).size.width /
-                                                          2 -
-                                                      45),
-                                          margin: EdgeInsetsDirectional.only(top: 2),
+                                              maxWidth: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2 -
+                                                  45),
+                                          margin: EdgeInsetsDirectional.only(
+                                              top: 2),
                                           child: AutoSizeText(
                                             "(\$${accountState.usdBalance()})",
-                                            style:
-                                                AppStyles.primarySmallest400(context),
+                                            style: AppStyles.primarySmallest400(
+                                                context),
                                             maxLines: 1,
                                             minFontSize: 8,
                                             stepGranularity: 0.1,
@@ -338,10 +346,14 @@ class _SendSheetState extends State<SendSheet> {
                                       30, 10, 30, 0),
                                   child: AppTextField(
                                     label: 'Address',
-                                    style: _isValidContactAndUnfocused ? AppStyles.contactsItemName(context) : AppStyles.paragraphMedium(context),
-                                    prefix: _isValidContactAndUnfocused ? 
-                                      Text("@",
-                                      style: AppStyles.settingsHeader(context)) : null,
+                                    style: _isValidContactAndUnfocused
+                                        ? AppStyles.contactsItemName(context)
+                                        : AppStyles.paragraphMedium(context),
+                                    prefix: _isValidContactAndUnfocused
+                                        ? Text("@",
+                                            style: AppStyles.settingsHeader(
+                                                context))
+                                        : null,
                                     maxLines: 1,
                                     onChanged: (text) async {
                                       if (destinationError != null && mounted) {
@@ -350,7 +362,7 @@ class _SendSheetState extends State<SendSheet> {
                                         });
                                       }
                                       // Handle contacts
-                                     await _checkAndUpdateContacts();
+                                      await _checkAndUpdateContacts();
                                     },
                                     focusNode: addressFocusNode,
                                     controller: addressController,
@@ -365,7 +377,8 @@ class _SendSheetState extends State<SendSheet> {
                                             addressController.text =
                                                 num.toString();
                                           } catch (e) {
-                                            checkAndValidateContact(name: data.text);
+                                            checkAndValidateContact(
+                                                name: data.text);
                                           }
                                         });
                                       },
@@ -373,7 +386,9 @@ class _SendSheetState extends State<SendSheet> {
                                     secondButton: TextFieldButton(
                                       icon: AppIcons.scan,
                                       onPressed: () async {
-                                        String text = await UserDataUtil.getQRData(DataType.ACCOUNT);
+                                        String text =
+                                            await UserDataUtil.getQRData(
+                                                DataType.ACCOUNT);
                                         if (text != null) {
                                           addressController.text = text;
                                         }
@@ -457,11 +472,14 @@ class _SendSheetState extends State<SendSheet> {
                                                 amountFocusNode.unfocus();
                                               },
                                             ),
-                                            secondButton: false ? TextFieldButton(
-                                                icon: AppIcons.currencyswitch,
-                                                onPressed: () {
-                                                  toggleLocalCurrency();
-                                                }) : null,
+                                            secondButton: false
+                                                ? TextFieldButton(
+                                                    icon:
+                                                        AppIcons.currencyswitch,
+                                                    onPressed: () {
+                                                      toggleLocalCurrency();
+                                                    })
+                                                : null,
                                           ),
                                         ),
                                         // Fee container
@@ -543,25 +561,37 @@ class _SendSheetState extends State<SendSheet> {
     } else if (accountState.accountBalance < Currency(amountController.text)) {
       hasError = true;
       setState(() {
-        amountError = "Insufficent Balance";
+        amountError = "Insufficient Balance";
+      });
+    } else if (Currency(amountController.text) <= Currency("0")) {
+      hasError = true;
+      setState(() {
+        amountError = "Amount Can't be 0";
       });
     }
     String contactNameToCheck;
-    if (addressController.text.startsWith("@")) {
-      contactNameToCheck = addressController.text;
-    } else if (_isValidContactAndUnfocused) {
+    if (_isValidContactAndUnfocused) {
       contactNameToCheck = "@${addressController.text}";
+    } else if (addressController.text.startsWith("@")) {
+      contactNameToCheck = addressController.text;
     }
     if (contactNameToCheck != null) {
       contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
       if (contact == null) {
+        hasError = true;
         setState(() {
           destinationError = "Contact Does Not Exist";
         });
       }
     } else {
       try {
-        AccountNumber(addressController.text);
+        AccountNumber destination = AccountNumber(addressController.text);
+        if (destination == accountState.account.account) {
+          hasError = true;
+          setState(() {
+            destinationError = "Can't Send to Yourself";
+          });
+        }
       } catch (e) {
         hasError = true;
         setState(() {
@@ -658,28 +688,29 @@ class _SendSheetState extends State<SendSheet> {
   }
 
   Widget _getContactsPopup() {
-    return _contacts.length > 0 ? Material(
-      color: StateContainer.of(context).curTheme.backgroundPrimary,
-      child: Container(
-        constraints: BoxConstraints(maxHeight: 138),
-        width: MediaQuery.of(context).size.width - 60,
-        margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 3),
-        decoration: BoxDecoration(
+    return _contacts.length > 0
+        ? Material(
             color: StateContainer.of(context).curTheme.backgroundPrimary,
-            boxShadow: [
-              StateContainer.of(context).curTheme.shadowAccountCard
-            ]),
-        child: ListView.builder(
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          itemCount: _contacts.length,
-          itemBuilder: (context, index) {
-            return _buildContactItem(_contacts[index]);
-          },
-        ),
-      )
-    ) : SizedBox();
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 138),
+              width: MediaQuery.of(context).size.width - 60,
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 3),
+              decoration: BoxDecoration(
+                  color: StateContainer.of(context).curTheme.backgroundPrimary,
+                  boxShadow: [
+                    StateContainer.of(context).curTheme.shadowAccountCard
+                  ]),
+              child: ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: _contacts.length,
+                itemBuilder: (context, index) {
+                  return _buildContactItem(_contacts[index]);
+                },
+              ),
+            ))
+        : SizedBox();
   }
 
   Widget _buildContactItem(Contact contact) {
@@ -693,8 +724,7 @@ class _SendSheetState extends State<SendSheet> {
         },
         child: Container(
           alignment: Alignment(-1, 0),
-          margin:
-              EdgeInsetsDirectional.only(start: 16, end: 16),
+          margin: EdgeInsetsDirectional.only(start: 16, end: 16),
           child: AutoSizeText.rich(
             TextSpan(children: [
               TextSpan(
@@ -713,18 +743,20 @@ class _SendSheetState extends State<SendSheet> {
           ),
         ),
       ),
-    );    
+    );
   }
 
   /// When address text field is changed
   Future<void> _checkAndUpdateContacts() async {
     bool isContact = addressController.text.startsWith("@");
     if (isContact) {
-      List<Contact> matches = await sl.get<DBHelper>().getContactsWithNameLike(addressController.text);
+      List<Contact> matches = await sl
+          .get<DBHelper>()
+          .getContactsWithNameLike(addressController.text);
       if (mounted) {
         setState(() {
           _contacts = matches;
-        });      
+        });
       }
     } else if (addressController.text.isEmpty) {
       List<Contact> allContacts = await sl.get<DBHelper>().getContacts();
@@ -744,7 +776,9 @@ class _SendSheetState extends State<SendSheet> {
 
   /// When checking and validating a contact string (e.g. from paste button)
   Future<void> checkAndValidateContact({String name, Contact contact}) async {
-    Contact c = name != null ? await sl.get<DBHelper>().getContactWithName(name) : contact;
+    Contact c = name != null
+        ? await sl.get<DBHelper>().getContactWithName(name)
+        : contact;
     if (c != null && mounted) {
       addressFocusNode.unfocus();
       addressController.text = c.name.substring(1);
@@ -753,9 +787,7 @@ class _SendSheetState extends State<SendSheet> {
         _payload = c.payload;
         _encryptedPayload = false;
       });
-      EventTaxiImpl.singleton().fire(PayloadChangedEvent(
-        payload: c.payload
-      ));
+      EventTaxiImpl.singleton().fire(PayloadChangedEvent(payload: c.payload));
     }
   }
 }

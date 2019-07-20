@@ -257,6 +257,7 @@ class _AccountPageState extends State<AccountPage>
         });
       }
     });
+    this.accountState?.updateAccount();
     this.accountState?.getAccountOperations()?.whenComplete(() {
       if (mounted) {
         setState(() {
