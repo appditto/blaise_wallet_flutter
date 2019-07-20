@@ -49,6 +49,9 @@ abstract class BaseTheme {
   Color overlay15;
   Color overlay10;
 
+  Color switchKnob;
+  Color switchTrack;
+
   LinearGradient gradientPrimary;
 
   LinearGradient gradientListTop;
@@ -152,6 +155,9 @@ class BlaiseLightTheme extends BaseTheme {
   Color overlay20 = black.withOpacity(0.2);
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
+
+  Color switchKnob = white;
+  Color switchTrack = black.withOpacity(0.1);
 
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
@@ -272,6 +278,7 @@ class BlaiseDarkTheme extends BaseTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
   static const Color grayLight = Color(0xFFD7D9E6);
+  static const Color grayLightish = Color(0xFF585A6F);
   static const Color grayDark = Color(0xFF2B2C37);
   static const Color grayDark00 = Color(0x002B2C37);
   static const Color black = Color(0xFF000000);
@@ -321,6 +328,9 @@ class BlaiseDarkTheme extends BaseTheme {
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
 
+  Color switchKnob = grayLightish;
+  Color switchTrack = black.withOpacity(0.3);
+
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
@@ -360,13 +370,13 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -4.0);
 
   BoxShadow shadowTextDark = BoxShadow(
-      color: black.withOpacity(0.15),
+      color: black.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   
   BoxShadow shadowTextDarkTwo = BoxShadow(
-      color: black.withOpacity(0.25),
+      color: black.withOpacity(0.35),
       offset: Offset(0, 12),
       blurRadius: 24,
       spreadRadius: -4.0);

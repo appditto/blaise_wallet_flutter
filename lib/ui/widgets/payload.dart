@@ -114,7 +114,8 @@ class _PayloadState extends State<Payload> {
                   child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     Container(
                       constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width - (_encrypted?151:136)),
+                          maxWidth: MediaQuery.of(context).size.width -
+                              (_encrypted ? 151 : 136)),
                       child: AutoSizeText(
                         this._payload,
                         maxLines: 3,
@@ -387,19 +388,13 @@ class _PayloadDialogState extends State<PayloadDialog>
                                                     });
                                                   },
                                                   inactiveThumbColor:
-                                                      StateContainer.of(context).curTheme == BlaiseDarkTheme()?
-                                                      Color(0xFF444556):
                                                       StateContainer.of(context)
                                                           .curTheme
-                                                          .backgroundPrimary,
+                                                          .switchKnob,
                                                   inactiveTrackColor:
-                                                    StateContainer.of(context).curTheme == BlaiseDarkTheme()?
-                                                    StateContainer.of(context)
-                                                          .curTheme
-                                                          .overlay20:
                                                       StateContainer.of(context)
                                                           .curTheme
-                                                          .overlay10,
+                                                          .switchTrack,
                                                   activeColor:
                                                       StateContainer.of(context)
                                                           .curTheme
