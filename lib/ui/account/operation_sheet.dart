@@ -166,6 +166,9 @@ class _OperationSheetState extends State<OperationSheet> {
                         ),
                       ],
                     ),
+              widget.operation.optype != OpType.TRANSACTION
+                  ? SizedBox(height: 4)
+                  : SizedBox(),
               // "Operation Details" button
               Row(
                 children: <Widget>[
