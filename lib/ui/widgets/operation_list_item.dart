@@ -127,93 +127,101 @@ class _OperationListItemState extends State<OperationListItem> {
                           ),
                         ),
                         // Amount & Payload indicator or New Account Name
-                        widget.type == OperationType.DelistedForSale?SizedBox():
-                        Container(
-                          width: MediaQuery.of(context).size.width / 2 - 72,
-                          margin: EdgeInsetsDirectional.only(
-                              top: 4),
-                          child: widget.type == OperationType.Received ||
-                                  widget.type == OperationType.Sent ||
-                                  widget.type == OperationType.ListedForSale
-                              ? AutoSizeText.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "",
-                                        style: widget.type ==
-                                                OperationType.Received
-                                            ? AppStyles
-                                                .iconFontPrimaryBalanceSmallPascal(
-                                                    context)
-                                            : widget.type == OperationType.Sent
-                                                ? AppStyles
-                                                    .iconFontTextDarkBalanceSmallPascal(
-                                                        context)
-                                                : AppStyles
-                                                    .iconFontSecondarySmallPascal(
-                                                        context),
-                                      ),
-                                      TextSpan(
-                                          text: " ",
-                                          style: TextStyle(fontSize: 7)),
-                                      TextSpan(
-                                          text: widget.type ==
-                                                      OperationType.Received ||
-                                                  widget.type ==
-                                                      OperationType.Sent
-                                              ? widget.amount
-                                              : widget.price,
-                                          style: widget.type ==
-                                                  OperationType.Received
-                                              ? AppStyles.balanceSmall(context)
-                                              : widget.type ==
-                                                      OperationType.Sent
-                                                  ? AppStyles
-                                                      .balanceSmallTextDark(
-                                                          context)
-                                                  : AppStyles
-                                                      .balanceSmallSecondary(
-                                                          context)),
-                                      isNotEmpty(widget.payload)
-                                          ? TextSpan(
-                                              text: " ",
-                                              style: TextStyle(fontSize: 14))
-                                          : TextSpan(),
-                                      isNotEmpty(widget.payload)
-                                          ? TextSpan(
-                                              text: "",
+                        widget.type == OperationType.DelistedForSale
+                            ? SizedBox()
+                            : Container(
+                                width:
+                                    MediaQuery.of(context).size.width / 2 - 72,
+                                margin: EdgeInsetsDirectional.only(top: 4),
+                                child: widget.type == OperationType.Received ||
+                                        widget.type == OperationType.Sent ||
+                                        widget.type ==
+                                            OperationType.ListedForSale
+                                    ? AutoSizeText.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "",
                                               style: widget.type ==
                                                       OperationType.Received
                                                   ? AppStyles
-                                                      .iconFontPrimaryBalanceSmallest(
+                                                      .iconFontPrimaryBalanceSmallPascal(
                                                           context)
-                                                  : AppStyles
-                                                      .iconFontTextDarkBalanceSmallest(
-                                                          context),
-                                            )
-                                          : TextSpan(),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  minFontSize: 4,
-                                  stepGranularity: 1,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                )
-                              : widget.type == OperationType.NameChanged
-                                  ? AutoSizeText(
-                                      widget.name,
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      minFontSize: 4,
-                                      stepGranularity: 1,
-                                      style: AppStyles.balanceSmallSecondary(
-                                          context),
-                                    )
-                                  : SizedBox(),
-                        ),
+                                                  : widget.type ==
+                                                          OperationType.Sent
+                                                      ? AppStyles
+                                                          .iconFontTextDarkBalanceSmallPascal(
+                                                              context)
+                                                      : AppStyles
+                                                          .iconFontSecondarySmallPascal(
+                                                              context),
+                                            ),
+                                            TextSpan(
+                                                text: " ",
+                                                style: TextStyle(fontSize: 7)),
+                                            TextSpan(
+                                                text: widget.type ==
+                                                            OperationType
+                                                                .Received ||
+                                                        widget.type ==
+                                                            OperationType.Sent
+                                                    ? widget.amount
+                                                    : widget.price,
+                                                style: widget.type ==
+                                                        OperationType.Received
+                                                    ? AppStyles.balanceSmall(
+                                                        context)
+                                                    : widget.type ==
+                                                            OperationType.Sent
+                                                        ? AppStyles
+                                                            .balanceSmallTextDark(
+                                                                context)
+                                                        : AppStyles
+                                                            .balanceSmallSecondary(
+                                                                context)),
+                                            isNotEmpty(widget.payload)
+                                                ? TextSpan(
+                                                    text: " ",
+                                                    style:
+                                                        TextStyle(fontSize: 14))
+                                                : TextSpan(),
+                                            isNotEmpty(widget.payload)
+                                                ? TextSpan(
+                                                    text: "",
+                                                    style: widget.type ==
+                                                            OperationType
+                                                                .Received
+                                                        ? AppStyles
+                                                            .iconFontPrimaryBalanceSmallest(
+                                                                context)
+                                                        : AppStyles
+                                                            .iconFontTextDarkBalanceSmallest(
+                                                                context),
+                                                  )
+                                                : TextSpan(),
+                                          ],
+                                        ),
+                                        textAlign: TextAlign.start,
+                                        maxLines: 1,
+                                        minFontSize: 4,
+                                        stepGranularity: 1,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    : widget.type == OperationType.NameChanged
+                                        ? AutoSizeText(
+                                            widget.name,
+                                            textAlign: TextAlign.start,
+                                            maxLines: 1,
+                                            minFontSize: 4,
+                                            stepGranularity: 1,
+                                            style:
+                                                AppStyles.balanceSmallSecondary(
+                                                    context),
+                                          )
+                                        : SizedBox(),
+                              ),
                       ],
                     ),
                     Column(
@@ -228,18 +236,19 @@ class _OperationListItemState extends State<OperationListItem> {
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             72,
+                                    margin: EdgeInsetsDirectional.only(bottom: 2),
                                     alignment: Alignment(1, 0),
                                     child: AutoSizeText.rich(
                                       TextSpan(children: [
                                         TextSpan(
-                                          text: "@",
-                                          style: AppStyles
-                                              .contactsItemAddressPrimary(
+                                          text: " ",
+                                          style:
+                                              AppStyles.iconFontPrimaryMedium(
                                                   context),
                                         ),
                                         TextSpan(
                                           text: widget.address.substring(1),
-                                          style: AppStyles.contactsItemAddress(
+                                          style: AppStyles.contactsItemName(
                                               context),
                                         ),
                                       ]),
@@ -247,7 +256,6 @@ class _OperationListItemState extends State<OperationListItem> {
                                       stepGranularity: 0.1,
                                       textAlign: TextAlign.end,
                                       style: TextStyle(
-                                        fontFamily: 'SourceCodePro',
                                         fontSize: 16,
                                       ),
                                     ),
@@ -256,10 +264,11 @@ class _OperationListItemState extends State<OperationListItem> {
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             72,
+                                    margin: EdgeInsetsDirectional.only(bottom: 2),
                                     alignment: Alignment(1, 0),
                                     child: AutoSizeText(
                                       widget.address,
-                                      style: AppStyles.contactsItemAddress(
+                                      style: AppStyles.monoTextDarkSmall400(
                                           context),
                                       maxLines: 1,
                                       stepGranularity: 0.1,

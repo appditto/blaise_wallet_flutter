@@ -270,6 +270,7 @@ class AppStyles {
         fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark50,
         fontSize: 12.0,
+        height: 1.3,
         fontWeight: FontWeight.w400);
   }
 
@@ -366,19 +367,20 @@ class AppStyles {
         fontWeight: FontWeight.w400);
   }
 
-  static TextStyle contactsItemAddressPrimary(BuildContext context) {
-    return TextStyle(
-        fontFamily: 'SourceCodePro',
-        color: StateContainer.of(context).curTheme.primary,
-        fontSize: 16.0,
-        fontWeight: FontWeight.w400);
-  }
-
+  // Contacts item address
   static TextStyle monoTextDarkSmall400(BuildContext context) {
     return TextStyle(
         fontFamily: 'SourceCodePro',
         color: StateContainer.of(context).curTheme.textDark,
         fontSize: 14.0,
+        fontWeight: FontWeight.w400);
+  }
+
+  static TextStyle contactsItemAddressPrimary(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'Metropolis',
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 16.0,
         fontWeight: FontWeight.w400);
   }
 

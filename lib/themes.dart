@@ -271,9 +271,9 @@ class BlaiseLightTheme extends BaseTheme {
 class BlaiseDarkTheme extends BaseTheme {
   int themeID = 2;
 
-  static const Color teal = Color(0xFF61DEFF);
-  static const Color tealLight = Color(0xFFA8FDFF);
-  static const Color green = Color(0xFF00FFBF);
+  static const Color teal = Color(0xFFCB7244);
+  static const Color tealLight = Color(0xFFFFBF6A);
+  static const Color green = Color(0xFF45BFA1);
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
