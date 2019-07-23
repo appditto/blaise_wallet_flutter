@@ -184,14 +184,14 @@ class _SentSheetState extends State<SentSheet> {
                                 : AutoSizeText.rich(
                                     TextSpan(children: [
                                       TextSpan(
-                                        text: widget.contact.name[0],
-                                        style: AppStyles.privateKeySuccess(
+                                        text: " ",
+                                        style: AppStyles.iconFontSuccessMedium(
                                             context),
                                       ),
                                       TextSpan(
                                           text:
                                               widget.contact.name.substring(1),
-                                          style: AppStyles.privateKeyTextDark(
+                                          style: AppStyles.contactsItemName(
                                               context)),
                                       TextSpan(
                                           text: " (" +
@@ -203,8 +203,8 @@ class _SentSheetState extends State<SentSheet> {
                                                   context)),
                                     ]),
                                     style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'SourceCodePro'),
+                                      fontSize: 14,
+                                    ),
                                     minFontSize: 8,
                                     stepGranularity: 0.1)),
                         // Amount and Fee
@@ -409,7 +409,13 @@ class _SentSheetState extends State<SentSheet> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Container(
-                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-(widget.encryptedPayload?101:86)),
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                (widget.encryptedPayload
+                                                    ? 101
+                                                    : 86)),
                                         child: AutoSizeText(
                                           widget.payload,
                                           maxLines: 3,

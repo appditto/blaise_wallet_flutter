@@ -211,11 +211,11 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                 child: AutoSizeText.rich(
                                   TextSpan(children: [
                                     TextSpan(
-                                      text: widget.contact.name[0],
+                                      text: " ",
                                       style: contactNameCopied
-                                          ? AppStyles.contactsItemNameSuccess(
+                                          ? AppStyles.iconFontSuccessSmall(
                                               context)
-                                          : AppStyles.contactsItemNamePrimary(
+                                          : AppStyles.iconFontPrimarySmall(
                                               context),
                                     ),
                                     TextSpan(
@@ -349,7 +349,11 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                                 .textDark10,
                                       ),
                                       child: Container(
-                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-86),
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                86),
                                         child: AutoSizeText(
                                           widget.contact.payload,
                                           maxLines: 3,

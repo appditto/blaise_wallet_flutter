@@ -57,8 +57,8 @@ class _SettingsListItemState extends State<SettingsListItem> {
                         child: AutoSizeText.rich(
                           TextSpan(children: [
                             TextSpan(
-                              text: widget.contactName[0],
-                              style: AppStyles.settingsHeader(context),
+                              text: " ",
+                              style: AppStyles.iconFontPrimaryMedium(context),
                             ),
                             TextSpan(
                               text: widget.contactName.substring(1),
@@ -67,6 +67,7 @@ class _SettingsListItemState extends State<SettingsListItem> {
                           ]),
                           maxLines: 1,
                           stepGranularity: 0.1,
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       Container(

@@ -69,6 +69,9 @@ class _SendSheetState extends State<SendSheet> {
   // Account State
   Account accountState;
 
+  // Switch to Contacts field
+  bool _isDestinationFieldTypeContact;
+
   @override
   void initState() {
     super.initState();
@@ -79,6 +82,7 @@ class _SendSheetState extends State<SendSheet> {
     this._payload = "";
     this._hasFee = walletState.shouldHaveFee();
     this._isValidContactAndUnfocused = false;
+    this._isDestinationFieldTypeContact = false;
     this._contacts = [];
     this._encryptedPayload = false;
     this.accountState = walletState.getAccountState(widget.account);
@@ -344,57 +348,90 @@ class _SendSheetState extends State<SendSheet> {
                                 Container(
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 10, 30, 0),
-                                  child: AppTextField(
-                                    label: 'Address',
-                                    style: _isValidContactAndUnfocused
-                                        ? AppStyles.contactsItemName(context)
-                                        : AppStyles.paragraphMedium(context),
-                                    prefix: _isValidContactAndUnfocused
-                                        ? Text("@",
-                                            style: AppStyles.settingsHeader(
-                                                context))
-                                        : null,
-                                    maxLines: 1,
-                                    onChanged: (text) async {
-                                      if (destinationError != null && mounted) {
-                                        setState(() {
-                                          destinationError = null;
-                                        });
-                                      }
-                                      // Handle contacts
-                                      await _checkAndUpdateContacts();
-                                    },
-                                    focusNode: addressFocusNode,
-                                    controller: addressController,
-                                    firstButton: TextFieldButton(
-                                      icon: AppIcons.paste,
-                                      onPressed: () {
-                                        Clipboard.getData("text/plain")
-                                            .then((data) {
-                                          try {
-                                            AccountNumber num =
-                                                AccountNumber(data.text);
-                                            addressController.text =
-                                                num.toString();
-                                          } catch (e) {
-                                            checkAndValidateContact(
-                                                name: data.text);
-                                          }
-                                        });
-                                      },
-                                    ),
-                                    secondButton: TextFieldButton(
-                                      icon: AppIcons.scan,
-                                      onPressed: () async {
-                                        String text =
-                                            await UserDataUtil.getQRData(
-                                                DataType.ACCOUNT);
-                                        if (text != null) {
-                                          addressController.text = text;
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                  child: _isDestinationFieldTypeContact
+                                      ? AppTextField(
+                                          label: 'Contact Name',
+                                          style: AppStyles.contactsItemName(
+                                              context),
+                                          prefix: _isValidContactAndUnfocused
+                                              ? Text(
+                                                  " ",
+                                                  style: AppStyles
+                                                      .iconFontPrimaryMedium(
+                                                          context),
+                                                )
+                                              : null,
+                                          maxLines: 1,
+                                          onChanged: (text) async {
+                                            if (destinationError != null &&
+                                                mounted) {
+                                              setState(() {
+                                                destinationError = null;
+                                              });
+                                            }
+                                            // Handle contacts
+                                            await _checkAndUpdateContacts();
+                                          },
+                                          focusNode: addressFocusNode,
+                                          controller: addressController,
+                                        )
+                                      : AppTextField(
+                                          label: 'Account',
+                                          style: _isValidContactAndUnfocused
+                                              ? AppStyles.contactsItemName(
+                                                  context)
+                                              : AppStyles.paragraphMedium(
+                                                  context),
+                                          prefix: _isValidContactAndUnfocused
+                                              ? Text(
+                                                  " ",
+                                                  style: AppStyles
+                                                      .iconFontPrimaryMedium(
+                                                          context),
+                                                )
+                                              : null,
+                                          maxLines: 1,
+                                          onChanged: (text) async {
+                                            if (destinationError != null &&
+                                                mounted) {
+                                              setState(() {
+                                                destinationError = null;
+                                              });
+                                            }
+                                            // Handle contacts
+                                            await _checkAndUpdateContacts();
+                                          },
+                                          focusNode: addressFocusNode,
+                                          controller: addressController,
+                                          firstButton: TextFieldButton(
+                                            icon: AppIcons.paste,
+                                            onPressed: () {
+                                              Clipboard.getData("text/plain")
+                                                  .then((data) {
+                                                try {
+                                                  AccountNumber num =
+                                                      AccountNumber(data.text);
+                                                  addressController.text =
+                                                      num.toString();
+                                                } catch (e) {
+                                                  checkAndValidateContact(
+                                                      name: data.text);
+                                                }
+                                              });
+                                            },
+                                          ),
+                                          secondButton: TextFieldButton(
+                                            icon: AppIcons.scan,
+                                            onPressed: () async {
+                                              String text =
+                                                  await UserDataUtil.getQRData(
+                                                      DataType.ACCOUNT);
+                                              if (text != null) {
+                                                addressController.text = text;
+                                              }
+                                            },
+                                          ),
+                                        ),
                                 ),
                                 // A stack to display contacts pop up
                                 Stack(
@@ -728,8 +765,8 @@ class _SendSheetState extends State<SendSheet> {
           child: AutoSizeText.rich(
             TextSpan(children: [
               TextSpan(
-                text: contact.name[0],
-                style: AppStyles.settingsHeader(context),
+                text: " ",
+                style: AppStyles.iconFontPrimaryMedium(context),
               ),
               TextSpan(
                 text: contact.name.substring(1),

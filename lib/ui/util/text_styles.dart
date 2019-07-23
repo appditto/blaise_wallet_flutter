@@ -291,6 +291,42 @@ class AppStyles {
         fontWeight: FontWeight.w700);
   }
 
+  static TextStyle iconFontPrimaryMedium(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'AppIcons',
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 16.0);
+  }
+
+  static TextStyle iconFontSuccessMedium(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'AppIcons',
+        color: StateContainer.of(context).curTheme.success,
+        fontSize: 16.0);
+  }
+
+  static TextStyle iconFontPrimarySmall(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'AppIcons',
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0);
+  }
+
+  static TextStyle iconFontSuccessSmall(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'AppIcons',
+        color: StateContainer.of(context).curTheme.success,
+        fontSize: 14.0);
+  }
+
+  static TextStyle emptySpaceSmallest(BuildContext context) {
+    return TextStyle(fontSize: 12);
+  }
+
+  static TextStyle emptySpaceTiny(BuildContext context) {
+    return TextStyle(fontSize: 10);
+  }
+
   // Contacts item name
   static TextStyle contactsItemName(BuildContext context) {
     return TextStyle(
@@ -388,11 +424,12 @@ class AppStyles {
   // For neutral Private Key
   static TextStyle privateKeyTextDarkFaded(BuildContext context) {
     return TextStyle(
-        color: StateContainer.of(context).curTheme.textDark.withOpacity(0.5),
-        fontSize: 14.0,
-        height: 1,
-        fontWeight: FontWeight.w500,
-        fontFamily: 'SourceCodePro');
+      fontFamily: 'SourceCodePro',
+      color: StateContainer.of(context).curTheme.textDark.withOpacity(0.5),
+      fontSize: 14.0,
+      height: 1,
+      fontWeight: FontWeight.w500,
+    );
   }
 
   // For success Private Key
@@ -630,18 +667,19 @@ class AppStyles {
   // Version info in settings
   static TextStyle textStyleVersion(BuildContext context) {
     return TextStyle(
-      fontFamily: "Metropolis",
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      color: StateContainer.of(context).curTheme.textDark60);
+        fontFamily: "Metropolis",
+        fontSize: AppFontSizes.small,
+        fontWeight: FontWeight.w100,
+        color: StateContainer.of(context).curTheme.textDark60);
   }
+
   static TextStyle textStyleVersionUnderline(BuildContext context) {
     return TextStyle(
-      fontFamily: "Metropolis",
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      color: StateContainer.of(context).curTheme.textDark60,
-      decoration: TextDecoration.underline);
+        fontFamily: "Metropolis",
+        fontSize: AppFontSizes.small,
+        fontWeight: FontWeight.w100,
+        color: StateContainer.of(context).curTheme.textDark60,
+        decoration: TextDecoration.underline);
   }
 }
 
