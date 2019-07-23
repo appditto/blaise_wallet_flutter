@@ -236,7 +236,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             72,
-                                    margin: EdgeInsetsDirectional.only(bottom: 2),
+                                    margin: EdgeInsetsDirectional.only(bottom: 4),
                                     alignment: Alignment(1, 0),
                                     child: AutoSizeText.rich(
                                       TextSpan(children: [
@@ -264,7 +264,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             72,
-                                    margin: EdgeInsetsDirectional.only(bottom: 2),
+                                    margin: EdgeInsetsDirectional.only(bottom: 4),
                                     alignment: Alignment(1, 0),
                                     child: AutoSizeText(
                                       widget.address,
@@ -279,7 +279,6 @@ class _OperationListItemState extends State<OperationListItem> {
                         // Date
                         Container(
                           width: MediaQuery.of(context).size.width / 2 - 72,
-                          margin: EdgeInsetsDirectional.only(top: 2),
                           alignment: Alignment(1, 0),
                           child: AutoSizeText(
                             widget.date,

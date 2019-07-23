@@ -270,7 +270,6 @@ class AppStyles {
         fontFamily: "Metropolis",
         color: StateContainer.of(context).curTheme.textDark50,
         fontSize: 12.0,
-        height: 1.3,
         fontWeight: FontWeight.w400);
   }
 

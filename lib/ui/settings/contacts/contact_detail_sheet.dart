@@ -458,7 +458,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
 
   void _copyToClipboard(String toCopy) {
     if (toCopy == "Contact Name") {
-      Clipboard.setData(ClipboardData(text: widget.contact.name.toString()));
+      Clipboard.setData(ClipboardData(text: (widget.contact.name.toString().substring(1))));
       setState(() {
         contactNameCopied = true;
         contactAddressCopied = false;

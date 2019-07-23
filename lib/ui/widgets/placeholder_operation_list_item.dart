@@ -183,7 +183,7 @@ class _PlaceholderOperationListItemState
                   // Date
                   Container(
                     width: MediaQuery.of(context).size.width / 2 - 72,
-                    margin: EdgeInsetsDirectional.only(top: 2),
+                    margin: EdgeInsetsDirectional.only(top: 4),
                     alignment: Alignment(1, 0),
                     child: Container(
                       decoration: BoxDecoration(
