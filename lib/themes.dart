@@ -273,11 +273,11 @@ class BlaiseDarkTheme extends BaseTheme {
 
   static const Color teal = Color(0xFFCB7244);
   static const Color tealLight = Color(0xFFFFBF6A);
-  static const Color green = Color(0xFF45BFA1);
+  static const Color green = Color(0xFF32C6AE);
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
-  static const Color grayLight = Color(0xFFD7D9E6);
+  static const Color grayLight = Color(0xFFB9BAC4);
   static const Color grayLightish = Color(0xFF585A6F);
   static const Color grayDark = Color(0xFF2B2C37);
   static const Color grayDark00 = Color(0x002B2C37);
