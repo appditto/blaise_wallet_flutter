@@ -268,11 +268,11 @@ class BlaiseLightTheme extends BaseTheme {
       SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent);
 }
 
-class BlaiseDarkTheme extends BaseTheme {
+class BlaiseCopperTheme extends BaseTheme {
   int themeID = 2;
 
-  static const Color teal = Color(0xFFDD8D52);
-  static const Color tealLight = Color(0xFFFFBF6A);
+  static const Color orange = Color(0xFFDD8D52);
+  static const Color orangeLight = Color(0xFFFFBF6A);
   static const Color green = Color(0xFF32C6AE);
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
@@ -283,14 +283,14 @@ class BlaiseDarkTheme extends BaseTheme {
   static const Color grayDark00 = Color(0x002B2C37);
   static const Color black = Color(0xFF000000);
 
-  Color primary = teal;
-  Color primary60 = teal.withOpacity(0.6);
-  Color primary50 = teal.withOpacity(0.5);
-  Color primary30 = teal.withOpacity(0.3);
-  Color primary15 = teal.withOpacity(0.15);
-  Color primary10 = teal.withOpacity(0.10);
+  Color primary = orange;
+  Color primary60 = orange.withOpacity(0.6);
+  Color primary50 = orange.withOpacity(0.5);
+  Color primary30 = orange.withOpacity(0.3);
+  Color primary15 = orange.withOpacity(0.15);
+  Color primary10 = orange.withOpacity(0.10);
 
-  Color secondary = tealLight;
+  Color secondary = orangeLight;
 
   Color success = green;
   Color success30 = green.withOpacity(0.3);
@@ -335,7 +335,7 @@ class BlaiseDarkTheme extends BaseTheme {
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
     stops: [0.0, 1],
-    colors: [teal, tealLight],
+    colors: [orange, orangeLight],
   );
 
   LinearGradient gradientListTop = LinearGradient(
@@ -346,13 +346,13 @@ class BlaiseDarkTheme extends BaseTheme {
   );
 
   BoxShadow shadowPrimaryOne = BoxShadow(
-      color: teal.withOpacity(0.2),
+      color: orange.withOpacity(0.2),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowPrimaryTwo = BoxShadow(
-      color: teal.withOpacity(0.1),
+      color: orange.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -416,18 +416,18 @@ class BlaiseDarkTheme extends BaseTheme {
       blurRadius: 16,
       spreadRadius: -4.0);
 
-  String illustrationNewWallet = 'assets/illustration_new_wallet_dark.svg';
-  String illustrationBackup = 'assets/illustration_backup_dark.svg';
-  String illustrationTwoOptions = 'assets/illustration_two_options_dark.svg';
-  String illustrationBorrowed = 'assets/illustration_borrowed_dark.svg';
-  String illustrationSecurity = 'assets/illustration_security_dark.svg';
+  String illustrationNewWallet = 'assets/illustration_new_wallet_copper.svg';
+  String illustrationBackup = 'assets/illustration_backup_copper.svg';
+  String illustrationTwoOptions = 'assets/illustration_two_options_copper.svg';
+  String illustrationBorrowed = 'assets/illustration_borrowed_copper.svg';
+  String illustrationSecurity = 'assets/illustration_security_copper.svg';
 
-  String animationWelcome = 'assets/animation_welcome_dark.flr';
-  String animationSend = 'assets/animation_send_dark.flr';
-  String animationNameChange = 'assets/animation_name_change_dark.flr';
-  String animationSale = 'assets/animation_sale_dark.flr';
-  String animationTransfer = 'assets/animation_transfer_dark.flr';
-  String animationGetAccount = 'assets/animation_get_account_dark.flr';
+  String animationWelcome = 'assets/animation_welcome_copper.flr';
+  String animationSend = 'assets/animation_send_copper.flr';
+  String animationNameChange = 'assets/animation_name_change_copper.flr';
+  String animationSale = 'assets/animation_sale_copper.flr';
+  String animationTransfer = 'assets/animation_transfer_copper.flr';
+  String animationGetAccount = 'assets/animation_get_account_copper.flr';
 
 
   Brightness brightness = Brightness.light;

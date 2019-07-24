@@ -234,7 +234,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         .toString() ==
                                     BlaiseLightTheme().toString()
                                 ? "Light"
-                                : "Dark",
+                                : "Copper",
                             icon: AppIcons.theme,
                             onPressed: () {
                               showAppDialog(
