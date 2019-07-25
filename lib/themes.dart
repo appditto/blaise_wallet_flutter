@@ -417,18 +417,18 @@ class BlaiseDarkTheme extends BaseTheme {
       blurRadius: 16,
       spreadRadius: -4.0);
 
-  String illustrationNewWallet = 'assets/illustration_new_wallet_copper.svg';
-  String illustrationBackup = 'assets/illustration_backup_copper.svg';
-  String illustrationTwoOptions = 'assets/illustration_two_options_copper.svg';
-  String illustrationBorrowed = 'assets/illustration_borrowed_copper.svg';
-  String illustrationSecurity = 'assets/illustration_security_copper.svg';
+  String illustrationNewWallet = 'assets/illustration_new_wallet_dark.svg';
+  String illustrationBackup = 'assets/illustration_backup_dark.svg';
+  String illustrationTwoOptions = 'assets/illustration_two_options_dark.svg';
+  String illustrationBorrowed = 'assets/illustration_borrowed_dark.svg';
+  String illustrationSecurity = 'assets/illustration_security_dark.svg';
 
-  String animationWelcome = 'assets/animation_welcome_copper.flr';
-  String animationSend = 'assets/animation_send_copper.flr';
-  String animationNameChange = 'assets/animation_name_change_copper.flr';
-  String animationSale = 'assets/animation_sale_copper.flr';
-  String animationTransfer = 'assets/animation_transfer_copper.flr';
-  String animationGetAccount = 'assets/animation_get_account_copper.flr';
+  String animationWelcome = 'assets/animation_welcome_dark.flr';
+  String animationSend = 'assets/animation_send_dark.flr';
+  String animationNameChange = 'assets/animation_name_change_dark.flr';
+  String animationSale = 'assets/animation_sale_dark.flr';
+  String animationTransfer = 'assets/animation_transfer_dark.flr';
+  String animationGetAccount = 'assets/animation_get_account_dark.flr';
 
 
   Brightness brightness = Brightness.light;

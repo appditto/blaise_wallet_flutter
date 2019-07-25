@@ -179,25 +179,36 @@ flutter:
   assets:
     - assets/animation_welcome.flr
     - assets/animation_welcome_copper.flr
+    - assets/animation_welcome_dark.flr
     - assets/animation_send.flr
     - assets/animation_send_copper.flr
+    - assets/animation_send_dark.flr
     - assets/animation_name_change.flr
     - assets/animation_name_change_copper.flr
+    - assets/animation_name_change_dark.flr
     - assets/animation_sale.flr
     - assets/animation_sale_copper.flr
+    - assets/animation_sale_dark.flr
     - assets/animation_transfer.flr
     - assets/animation_transfer_copper.flr
+    - assets/animation_transfer_dark.flr
     - assets/animation_get_account.flr
     - assets/animation_get_account_copper.flr
+    - assets/animation_get_account_dark.flr
     - assets/illustration_backup.svg
     - assets/illustration_new_wallet.svg
     - assets/illustration_two_options.svg
     - assets/illustration_borrowed.svg
+    - assets/illustration_security.svg
+    - assets/illustration_backup_dark.svg
+    - assets/illustration_new_wallet_dark.svg
+    - assets/illustration_two_options_dark.svg
+    - assets/illustration_borrowed_dark.svg
+    - assets/illustration_security_dark.svg
     - assets/illustration_backup_copper.svg
     - assets/illustration_new_wallet_copper.svg
     - assets/illustration_two_options_copper.svg
     - assets/illustration_borrowed_copper.svg
-    - assets/illustration_security.svg
     - assets/illustration_security_copper.svg
     - assets/country_phone_map.json
 
