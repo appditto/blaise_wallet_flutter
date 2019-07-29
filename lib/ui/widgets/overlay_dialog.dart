@@ -15,6 +15,7 @@ class DialogOverlay extends StatefulWidget {
   final TextSpan body;
   final String confirmButtonText;
   final Function onConfirm;
+  final bool feeDialog;
 
   DialogOverlay(
       {this.title,
@@ -22,7 +23,8 @@ class DialogOverlay extends StatefulWidget {
       this.body,
       this.confirmButtonText,
       this.onConfirm,
-      this.warningStyle = false});
+      this.warningStyle = false,
+      this.feeDialog = false});
 
   @override
   State<StatefulWidget> createState() => _DialogOverlayState();
@@ -113,9 +115,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                   maxWidth: 280,
                 ),
                 decoration: BoxDecoration(
-                  color: StateContainer.of(context)
-                      .curTheme
-                      .backgroundPrimary,
+                  color: StateContainer.of(context).curTheme.backgroundPrimary,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
@@ -147,8 +147,8 @@ class _DialogOverlayState extends State<DialogOverlay>
                               topRight: Radius.circular(12)),
                         ),
                         child: Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(
-                              24, 16, 24, 16),
+                          margin:
+                              EdgeInsetsDirectional.fromSTEB(24, 16, 24, 16),
                           child: AutoSizeText(
                             widget.title,
                             style: AppStyles.modalHeader(context),
@@ -178,7 +178,9 @@ class _DialogOverlayState extends State<DialogOverlay>
                                 Row(
                                   children: <Widget>[
                                     AppButton(
-                                      type: AppButtonType.Danger,
+                                      type: widget.feeDialog
+                                          ? AppButtonType.Primary
+                                          : AppButtonType.Danger,
                                       text: widget.confirmButtonText,
                                       buttonTop: true,
                                       onPressed: () {
@@ -192,7 +194,9 @@ class _DialogOverlayState extends State<DialogOverlay>
                                 Row(
                                   children: <Widget>[
                                     AppButton(
-                                      type: AppButtonType.DangerOutline,
+                                      type: widget.feeDialog
+                                          ? AppButtonType.PrimaryOutline
+                                          : AppButtonType.DangerOutline,
                                       text: "CANCEL",
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -205,8 +209,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                           : Container(
                               constraints: BoxConstraints(
                                   maxHeight:
-                                      MediaQuery.of(context).size.height *
-                                              0.6 -
+                                      MediaQuery.of(context).size.height * 0.6 -
                                           60,
                                   minHeight: 0),
                               // Options list
