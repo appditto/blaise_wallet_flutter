@@ -545,7 +545,9 @@ class _SendSheetState extends State<SendSheet> {
                                       _encryptedPayload = encrypted;
                                     });
                                   },
-                                )
+                                ),
+                                // Bottom Margin
+                                SizedBox(height: 24),
                               ],
                             ),
                           ),

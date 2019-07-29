@@ -475,7 +475,9 @@ class _SendingSheetState extends State<SendingSheet> {
                                                           .textDark))
                                           : SizedBox()
                                     ]))
-                            : SizedBox()
+                            : SizedBox(),
+                        // Bottom Margin
+                        SizedBox(height: 24),
                       ],
                     ),
                   ),

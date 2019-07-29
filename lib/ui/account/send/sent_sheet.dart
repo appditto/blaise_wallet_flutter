@@ -439,7 +439,9 @@ class _SentSheetState extends State<SentSheet> {
                                                           .textDark))
                                           : SizedBox()
                                     ]))
-                            : SizedBox()
+                            : SizedBox(),
+                        // Bottom Margin
+                        SizedBox(height: 24),
                       ],
                     ),
                   ),

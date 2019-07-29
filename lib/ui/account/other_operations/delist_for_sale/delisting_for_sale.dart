@@ -277,7 +277,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                                 ),
                               ),
                             )
-                          : SizedBox()
+                          : SizedBox(),
+                      // Bottom Margin
+                      SizedBox(height: 24),
                     ],
                   ),
                 ),

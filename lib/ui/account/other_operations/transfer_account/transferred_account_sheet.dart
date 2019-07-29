@@ -226,7 +226,9 @@ class _TransferredAccountSheetState extends State<TransferredAccountSheet> {
                                   ),
                                 ),
                               )
-                            : SizedBox()
+                            : SizedBox(),
+                        // Bottom Margin
+                        SizedBox(height: 24),
                       ],
                     ),
                   ),

@@ -346,6 +346,8 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
                                     ],
                                   )
                                 : SizedBox(),
+                            // Bottom Margin
+                            SizedBox(height: 24),
                           ],
                         ),
                       ),
@@ -425,8 +427,8 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result =
-          await accountState.listAccountForSale(widget.price, widget.receiver, fee: fee);
+      RPCResponse result = await accountState
+          .listAccountForSale(widget.price, widget.receiver, fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);

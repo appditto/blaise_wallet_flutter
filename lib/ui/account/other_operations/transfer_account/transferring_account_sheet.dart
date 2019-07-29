@@ -282,7 +282,9 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                                 ),
                               ),
                             )
-                          : SizedBox()
+                          : SizedBox(),
+                      // Bottom Margin
+                      SizedBox(height: 24),
                     ],
                   ),
                 ),
@@ -326,8 +328,8 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
     fee = fee == null ? widget.fee : fee;
     try {
       showOverlay(context);
-      RPCResponse result = await accountState
-          .transferAccount(widget.publicKeyDisplay, fee: fee);
+      RPCResponse result =
+          await accountState.transferAccount(widget.publicKeyDisplay, fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
         UIUtil.showSnackbar(errResp.errorMessage, context);

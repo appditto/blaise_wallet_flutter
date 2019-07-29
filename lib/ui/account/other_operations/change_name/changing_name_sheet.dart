@@ -279,7 +279,9 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                                 ),
                               ),
                             )
-                          : SizedBox()
+                          : SizedBox(),
+                      // Bottom Margin
+                      SizedBox(height: 24),
                     ],
                   ),
                 ),

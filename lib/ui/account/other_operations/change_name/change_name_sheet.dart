@@ -170,6 +170,8 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                               ErrorContainer(
                                 errorText: _nameError == null ? "" : _nameError,
                               ),
+                              // Bottom Margin
+                              SizedBox(height: 24),
                             ],
                           ),
                         ),
