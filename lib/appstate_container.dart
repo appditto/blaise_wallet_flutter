@@ -1,11 +1,19 @@
+import 'dart:async';
+
+import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
+import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.dart';
+import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
+import 'package:blaise_wallet_flutter/network/ws_client.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -69,9 +77,18 @@ class StateContainer extends StatefulWidget {
 ///
 /// Basically the central hub behind the entire app
 class StateContainerState extends State<StateContainer> {
+  // Theme
   BaseTheme curTheme = BlaiseLightTheme();
+
+  // Language
   LanguageSetting curLanguage = LanguageSetting(AvailableLanguage.DEFAULT);
 
+  // Currency
+  String currencyLocale;
+  Locale deviceLocale = Locale('en', 'US');
+  AvailableCurrency curCurrency = AvailableCurrency(AvailableCurrencyEnum.USD);
+
+  // Helper FN to precache SVG assets for performance
   Future<void> _precacheSvgs() async {
     PREACHED_SVG_ASSETS.forEach((asset) {
       precachePicture(
@@ -79,6 +96,7 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  // Change the theme
   Future<void> updateTheme(ThemeSetting theme) async {
     if (theme != null && theme.getTheme() != curTheme) {
       if (mounted) {
@@ -113,6 +131,43 @@ class StateContainerState extends State<StateContainer> {
     }
   }
 
+  StreamSubscription<ConnStatusEvent> _connStatusSub;
+  StreamSubscription<SubscribeEvent> _subscribeEventSub;
+  StreamSubscription<PriceEvent> _priceEventSub;
+
+  // Register RX event listenerss
+  void _registerBus() {
+    _subscribeEventSub = EventTaxiImpl.singleton().registerTo<SubscribeEvent>().listen((event) {
+      handleSubscribeResponse(event.response);
+    });
+    _priceEventSub = EventTaxiImpl.singleton().registerTo<PriceEvent>().listen((event) {
+      // PriceResponse's get pushed periodically, it wasn't a request we made so don't pop the queue
+      setState(() {
+        walletState.btcPrice = event.response.btcPrice;
+        walletState.localCurrencyPrice = event.response.price;
+      });
+    });
+    _connStatusSub = EventTaxiImpl.singleton().registerTo<ConnStatusEvent>().listen((event) {
+      if (event.status == ConnectionStatus.CONNECTED) {
+        requestUpdate();
+      } else if (event.status == ConnectionStatus.DISCONNECTED && !sl.get<WSClient>().suspended) {
+        sl.get<WSClient>().initCommunication();
+      }
+    });
+  }
+
+  void _destroyBus() {
+    if (_connStatusSub != null) {
+      _connStatusSub.cancel();
+    }
+    if (_subscribeEventSub != null) {
+      _subscribeEventSub.cancel();
+    }
+    if (_priceEventSub != null) {
+      _priceEventSub.cancel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -124,11 +179,56 @@ class StateContainerState extends State<StateContainer> {
     });
     // Add initial contact if not already present
     _addSampleContact();
+    // Set currency locale here for the UI to access
+    sl.get<SharedPrefsUtil>().getCurrency(deviceLocale).then((currency) {
+      setState(() {
+        currencyLocale = currency.getLocale().toString();
+        curCurrency = currency;
+      });
+    });
   }
 
   @override
   void dispose() {
+    _destroyBus();
     super.dispose();
+  }
+
+  // Websocket Methods
+  void disconnect() {
+    sl.get<WSClient>().reset(suspend: true);
+  }
+
+  void reconnect() {
+    sl.get<WSClient>().initCommunication(unsuspend: true);
+  }
+
+  /// Handle account_subscribe response
+  void handleSubscribeResponse(SubscribeResponse response) {
+    // Set currency locale here for the UI to access
+    sl.get<SharedPrefsUtil>().getCurrency(deviceLocale).then((currency) {
+      setState(() {
+        currencyLocale = currency.getLocale().toString();
+        curCurrency = currency;
+      });
+    });
+    // Server gives us a UUID for future requests on subscribe
+    if (response.uuid != null) {
+      sl.get<SharedPrefsUtil>().setUuid(response.uuid);
+    }
+    setState(() {
+      walletState.localCurrencyPrice = response.price;
+      walletState.btcPrice = response.btcPrice;
+      sl.get<WSClient>().pop();
+      sl.get<WSClient>().processQueue();
+    });
+  }
+
+  Future<void> requestUpdate() async {
+    String uuid = await sl.get<SharedPrefsUtil>().getUuid();
+    sl.get<WSClient>().clearQueue();;
+    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid));
+    sl.get<WSClient>().processQueue();
   }
 
   @override

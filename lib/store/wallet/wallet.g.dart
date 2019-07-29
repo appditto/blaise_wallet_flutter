@@ -129,6 +129,58 @@ mixin _$Wallet on WalletBase, Store {
     }, _$usdPriceAtom, name: '${_$usdPriceAtom.name}_set');
   }
 
+  final _$localCurrencyPriceAtom = Atom(name: 'WalletBase.localCurrencyPrice');
+
+  @override
+  double get localCurrencyPrice {
+    _$localCurrencyPriceAtom.context
+        .enforceReadPolicy(_$localCurrencyPriceAtom);
+    _$localCurrencyPriceAtom.reportObserved();
+    return super.localCurrencyPrice;
+  }
+
+  @override
+  set localCurrencyPrice(double value) {
+    _$localCurrencyPriceAtom.context.conditionallyRunInAction(() {
+      super.localCurrencyPrice = value;
+      _$localCurrencyPriceAtom.reportChanged();
+    }, _$localCurrencyPriceAtom, name: '${_$localCurrencyPriceAtom.name}_set');
+  }
+
+  final _$btcPriceAtom = Atom(name: 'WalletBase.btcPrice');
+
+  @override
+  double get btcPrice {
+    _$btcPriceAtom.context.enforceReadPolicy(_$btcPriceAtom);
+    _$btcPriceAtom.reportObserved();
+    return super.btcPrice;
+  }
+
+  @override
+  set btcPrice(double value) {
+    _$btcPriceAtom.context.conditionallyRunInAction(() {
+      super.btcPrice = value;
+      _$btcPriceAtom.reportChanged();
+    }, _$btcPriceAtom, name: '${_$btcPriceAtom.name}_set');
+  }
+
+  final _$uuidAtom = Atom(name: 'WalletBase.uuid');
+
+  @override
+  String get uuid {
+    _$uuidAtom.context.enforceReadPolicy(_$uuidAtom);
+    _$uuidAtom.reportObserved();
+    return super.uuid;
+  }
+
+  @override
+  set uuid(String value) {
+    _$uuidAtom.context.conditionallyRunInAction(() {
+      super.uuid = value;
+      _$uuidAtom.reportChanged();
+    }, _$uuidAtom, name: '${_$uuidAtom.name}_set');
+  }
+
   final _$updatePriceDataAsyncAction = AsyncAction('updatePriceData');
 
   @override

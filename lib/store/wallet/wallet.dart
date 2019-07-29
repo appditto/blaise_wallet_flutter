@@ -39,6 +39,14 @@ abstract class WalletBase with Store {
   @observable
   double usdPrice;
 
+  @observable
+  double localCurrencyPrice;
+  @observable
+  double btcPrice;
+
+  @observable
+  String uuid;
+
   @action
   Future<void> updatePriceData() async {
     double newPrice = await PriceAPI.getPrice();

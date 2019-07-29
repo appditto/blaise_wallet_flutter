@@ -293,6 +293,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                   type: PinOverlayType.NEW_PIN,
                   onSuccess: (pin) {
                     sl.get<Vault>().setPin(pin).then((_) {
+                      StateContainer.of(context).requestUpdate();
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           '/overview', (Route<dynamic> route) => false);                      
                     });

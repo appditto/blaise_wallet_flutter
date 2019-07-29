@@ -21,6 +21,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
   String _countDownTxt = "";
 
   void _goHome() {
+    StateContainer.of(context).requestUpdate();
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/overview', (Route<dynamic> route) => false);
   }

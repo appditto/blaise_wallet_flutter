@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/lock_timeout.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +28,10 @@ class SharedPrefsUtil {
   static const String firstcontact_added = 'blaise_first_c_added';
   // Caching price API response
   static const String price_api_cache = 'price_api_cache_v1';
+  // Local currency
+  static const String cur_currency = 'blaise_currency_pref';
+  // UUID for our WS subscription
+  static const String app_uuid_key = 'blaise_app_uuid';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -202,6 +208,22 @@ class SharedPrefsUtil {
     await set(price_api_cache, data);
   }
 
+  Future<void> setCurrency(AvailableCurrency currency) async {
+   return await set(cur_currency, currency.getIndex());
+  }
+
+  Future<AvailableCurrency> getCurrency(Locale deviceLocale) async {
+    return AvailableCurrency(AvailableCurrencyEnum.values[await get(cur_currency, defaultValue: AvailableCurrency.getBestForLocale(deviceLocale).currency.index)]);
+  }
+
+  Future<void> setUuid(String uuid) async {
+    return await set(app_uuid_key, uuid);
+  }
+
+  Future<String> getUuid() async {
+    return await get(app_uuid_key);
+  }
+
   // For logging out
   Future<void> deleteAll({bool firstLaunch = false}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -215,6 +237,8 @@ class SharedPrefsUtil {
       await prefs.remove(auth_method);
       await prefs.remove(app_lock_timeout);
       await prefs.remove(lock_app);
+      await prefs.remove(cur_currency);
+      await prefs.remove(app_uuid_key);
     }
   }
 }
