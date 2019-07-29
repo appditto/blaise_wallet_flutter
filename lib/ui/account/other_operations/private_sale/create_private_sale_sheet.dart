@@ -219,19 +219,18 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                       }
                                     },
                                   ),
-                                  secondButton:
-                                      TextFieldButton(
-                                        icon: AppIcons.scan,
-                                        onPressed: () async {
-                                          String text =
-                                              await UserDataUtil.getQRData(
-                                                  DataType.ACCOUNT);
-                                          if (text != null) {
-                                            receiverFocusNode.unfocus();
-                                            receiverController.text = text;
-                                          }                                          
-                                        },
-                                      ),
+                                  secondButton: TextFieldButton(
+                                    icon: AppIcons.scan,
+                                    onPressed: () async {
+                                      String text =
+                                          await UserDataUtil.getQRData(
+                                              DataType.ACCOUNT);
+                                      if (text != null) {
+                                        receiverFocusNode.unfocus();
+                                        receiverController.text = text;
+                                      }
+                                    },
+                                  ),
                                   inputFormatters: [
                                     WhitelistingTextInputFormatter(
                                         RegExp("[0-9-]")),
@@ -276,7 +275,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                               DataType.PUBLIC_KEY);
                                       if (text != null) {
                                         publicKeyController.text = text;
-                                      }                                      
+                                      }
                                     },
                                   ),
                                   focusNode: publicKeyFocusNode,
@@ -291,6 +290,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                 ),
                               ),
                               ErrorContainer(errorText: _publicKeyErr ?? ""),
+                              // Bottom Margin
+                              SizedBox(height: 24),
                               // TODO Implement duration
                               /*
                                 Row(

@@ -16,6 +16,7 @@ class UIUtil {
     else
       return false;
   }
+
   static void showSnackbar(String content, BuildContext context) {
     showToastWidget(
       Align(
@@ -77,17 +78,17 @@ class UIUtil {
         context: context,
         builder: (_) => DialogOverlay(
             title: 'Add Fee',
-            warningStyle: false,
+            feeDialog: true,
             confirmButtonText: "YES, ADD FEE",
             body: TextSpan(
               children: [
                 TextSpan(
-                  text: "This operation requires a fee. ",
+                  text: "This operation requires a fee.\n",
                   style: AppStyles.paragraph(context),
                 ),
                 TextSpan(
                   text:
-                      "Would you like to add a 0.0001 PASC fee to this operation?",
+                      "Please confirm the addition of 0.0001 PASC fee to this operation to continue.",
                   style: AppStyles.paragraphPrimary(context),
                 ),
               ],

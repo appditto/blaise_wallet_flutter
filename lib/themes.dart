@@ -49,6 +49,9 @@ abstract class BaseTheme {
   Color overlay15;
   Color overlay10;
 
+  Color switchKnob;
+  Color switchTrack;
+
   LinearGradient gradientPrimary;
 
   LinearGradient gradientListTop;
@@ -152,6 +155,9 @@ class BlaiseLightTheme extends BaseTheme {
   Color overlay20 = black.withOpacity(0.2);
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
+
+  Color switchKnob = white;
+  Color switchTrack = black.withOpacity(0.1);
 
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
@@ -265,25 +271,27 @@ class BlaiseLightTheme extends BaseTheme {
 class BlaiseDarkTheme extends BaseTheme {
   int themeID = 2;
 
-  static const Color teal = Color(0xFF61DEFF);
-  static const Color tealLight = Color(0xFFA8FDFF);
-  static const Color green = Color(0xFF00FFBF);
+  static const Color blueish = Color(0xFF8287B5);
+  static const Color blueish2 = Color(0xFF6F70A8);
+  static const Color blueishLight = Color(0xFFACB7D1);
+  static const Color green = Color(0xFF32C6AE);
   static const Color red = Color(0xFFFF6C59);
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
-  static const Color grayLight = Color(0xFFD7D9E6);
-  static const Color grayDark = Color(0xFF2B2C37);
-  static const Color grayDark00 = Color(0x002B2C37);
+  static const Color grayLight = Color(0xFFB5B5BF);
+  static const Color grayLightish = Color(0xFF2D3136);
+  static const Color grayDark = Color(0xFF1C1E21);
+  static const Color grayDark00 = Color(0x001C1E21);
   static const Color black = Color(0xFF000000);
 
-  Color primary = teal;
-  Color primary60 = teal.withOpacity(0.6);
-  Color primary50 = teal.withOpacity(0.5);
-  Color primary30 = teal.withOpacity(0.3);
-  Color primary15 = teal.withOpacity(0.15);
-  Color primary10 = teal.withOpacity(0.10);
+  Color primary = blueish;
+  Color primary60 = blueish.withOpacity(0.6);
+  Color primary50 = blueish.withOpacity(0.5);
+  Color primary30 = blueish.withOpacity(0.3);
+  Color primary15 = blueish.withOpacity(0.15);
+  Color primary10 = blueish.withOpacity(0.10);
 
-  Color secondary = tealLight;
+  Color secondary = blueishLight;
 
   Color success = green;
   Color success30 = green.withOpacity(0.3);
@@ -321,11 +329,14 @@ class BlaiseDarkTheme extends BaseTheme {
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
 
+  Color switchKnob = grayLightish;
+  Color switchTrack = black.withOpacity(0.3);
+
   LinearGradient gradientPrimary = LinearGradient(
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
     stops: [0.0, 1],
-    colors: [teal, tealLight],
+    colors: [blueish2, blueishLight],
   );
 
   LinearGradient gradientListTop = LinearGradient(
@@ -336,37 +347,37 @@ class BlaiseDarkTheme extends BaseTheme {
   );
 
   BoxShadow shadowPrimaryOne = BoxShadow(
-      color: teal.withOpacity(0.2),
+      color: blueish.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowPrimaryTwo = BoxShadow(
-      color: teal.withOpacity(0.1),
+      color: blueish.withOpacity(0.05),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   
   BoxShadow shadowSuccessOne = BoxShadow(
-      color: green.withOpacity(0.2),
-      offset: Offset(0, 8),
-      blurRadius: 16,
-      spreadRadius: -4.0);
-
-  BoxShadow shadowSuccessTwo = BoxShadow(
       color: green.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
+  BoxShadow shadowSuccessTwo = BoxShadow(
+      color: green.withOpacity(0.05),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
   BoxShadow shadowTextDark = BoxShadow(
-      color: black.withOpacity(0.15),
+      color: black.withOpacity(0.25),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   
   BoxShadow shadowTextDarkTwo = BoxShadow(
-      color: black.withOpacity(0.25),
+      color: black.withOpacity(0.35),
       offset: Offset(0, 12),
       blurRadius: 24,
       spreadRadius: -4.0);
@@ -396,12 +407,12 @@ class BlaiseDarkTheme extends BaseTheme {
       spreadRadius: -5.0);
 
   BoxShadow shadowDangerOne = BoxShadow(
-      color: red.withOpacity(0.2),
+      color: red.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
   BoxShadow shadowDangerTwo = BoxShadow(
-      color: red.withOpacity(0.1),
+      color: red.withOpacity(0.05),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
@@ -418,6 +429,174 @@ class BlaiseDarkTheme extends BaseTheme {
   String animationSale = 'assets/animation_sale_dark.flr';
   String animationTransfer = 'assets/animation_transfer_dark.flr';
   String animationGetAccount = 'assets/animation_get_account_dark.flr';
+
+
+  Brightness brightness = Brightness.light;
+  SystemUiOverlayStyle statusBar =
+      SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent);
+}
+
+class BlaiseCopperTheme extends BaseTheme {
+  int themeID = 3;
+
+  static const Color orange = Color(0xFFDD8D52);
+  static const Color orange2 = Color(0xFFCB7244);
+  static const Color orangeLight = Color(0xFFFFBF6A);
+  static const Color green = Color(0xFF32C6AE);
+  static const Color red = Color(0xFFFF6C59);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color white00 = Color(0x00FFFFFF);
+  static const Color grayLight = Color(0xFFB9BAC4);
+  static const Color grayLightish = Color(0xFF585A6F);
+  static const Color grayDark = Color(0xFF2B2C37);
+  static const Color grayDark00 = Color(0x002B2C37);
+  static const Color black = Color(0xFF000000);
+
+  Color primary = orange;
+  Color primary60 = orange.withOpacity(0.6);
+  Color primary50 = orange.withOpacity(0.5);
+  Color primary30 = orange.withOpacity(0.3);
+  Color primary15 = orange.withOpacity(0.15);
+  Color primary10 = orange.withOpacity(0.10);
+
+  Color secondary = orangeLight;
+
+  Color success = green;
+  Color success30 = green.withOpacity(0.3);
+  Color success15 = green.withOpacity(0.15);
+  Color success10 = green.withOpacity(0.1);
+
+  Color danger = red;
+  Color danger30 = red.withOpacity(0.3);
+  Color danger15 = red.withOpacity(0.15);
+
+  Color backgroundPrimary = grayDark;
+  Color backgroundPrimary60 = grayDark.withOpacity(0.6);
+  Color backgroundPrimary30 = grayDark.withOpacity(0.3);
+  Color backgroundPrimary15 = grayDark.withOpacity(0.15);
+
+  Color backgroundSecondary = grayDark;
+
+  Color textDark = grayLight;
+  Color textDark60 = grayLight.withOpacity(0.6);
+  Color textDark50 = grayLight.withOpacity(0.5);
+  Color textDark40 = grayLight.withOpacity(0.4);
+  Color textDark30 = grayLight.withOpacity(0.3);
+  Color textDark15 = grayLight.withOpacity(0.15);
+  Color textDark10 = grayLight.withOpacity(0.1);
+
+  Color shadow = black;
+  Color shadow50 = black.withOpacity(0.5);
+  Color shadow10 = black.withOpacity(0.1);
+
+  Color textLight = grayDark;
+  Color textLight30 = grayDark.withOpacity(0.3);
+  Color textLight15 = grayDark.withOpacity(0.15);
+
+  Color overlay20 = black.withOpacity(0.2);
+  Color overlay15 = black.withOpacity(0.15);
+  Color overlay10 = black.withOpacity(0.10);
+
+  Color switchKnob = grayLightish;
+  Color switchTrack = black.withOpacity(0.3);
+
+  LinearGradient gradientPrimary = LinearGradient(
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+    stops: [0.0, 1],
+    colors: [orange2, orangeLight],
+  );
+
+  LinearGradient gradientListTop = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    stops: [0.0, 1],
+    colors: [grayDark, grayDark00],
+  );
+
+  BoxShadow shadowPrimaryOne = BoxShadow(
+      color: orange.withOpacity(0.1),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
+  BoxShadow shadowPrimaryTwo = BoxShadow(
+      color: orange.withOpacity(0.05),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowSuccessOne = BoxShadow(
+      color: green.withOpacity(0.1),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
+  BoxShadow shadowSuccessTwo = BoxShadow(
+      color: green.withOpacity(0.05),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
+  BoxShadow shadowTextDark = BoxShadow(
+      color: black.withOpacity(0.25),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  
+  BoxShadow shadowTextDarkTwo = BoxShadow(
+      color: black.withOpacity(0.35),
+      offset: Offset(0, 12),
+      blurRadius: 24,
+      spreadRadius: -4.0);
+
+  BoxShadow shadowMainCard = BoxShadow(
+      color: black.withOpacity(0.25),
+      offset: Offset(0, 10),
+      blurRadius: 20,
+      spreadRadius: -3.3);
+
+  BoxShadow shadowAccountCard = BoxShadow(
+      color: black.withOpacity(0.25),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -2.6);
+
+  BoxShadow shadowBottomBar = BoxShadow(
+      color: black.withOpacity(0.25),
+      offset: Offset(0, -15),
+      blurRadius: 30,
+      spreadRadius: -5.0);
+
+  BoxShadow shadowSettingsList = BoxShadow(
+      color: black.withOpacity(0.5),
+      offset: Offset(0, 10),
+      blurRadius: 30,
+      spreadRadius: -5.0);
+
+  BoxShadow shadowDangerOne = BoxShadow(
+      color: red.withOpacity(0.1),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+  BoxShadow shadowDangerTwo = BoxShadow(
+      color: red.withOpacity(0.05),
+      offset: Offset(0, 8),
+      blurRadius: 16,
+      spreadRadius: -4.0);
+
+  String illustrationNewWallet = 'assets/illustration_new_wallet_copper.svg';
+  String illustrationBackup = 'assets/illustration_backup_copper.svg';
+  String illustrationTwoOptions = 'assets/illustration_two_options_copper.svg';
+  String illustrationBorrowed = 'assets/illustration_borrowed_copper.svg';
+  String illustrationSecurity = 'assets/illustration_security_copper.svg';
+
+  String animationWelcome = 'assets/animation_welcome_copper.flr';
+  String animationSend = 'assets/animation_send_copper.flr';
+  String animationNameChange = 'assets/animation_name_change_copper.flr';
+  String animationSale = 'assets/animation_sale_copper.flr';
+  String animationTransfer = 'assets/animation_transfer_copper.flr';
+  String animationGetAccount = 'assets/animation_get_account_copper.flr';
 
 
   Brightness brightness = Brightness.light;

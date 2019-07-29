@@ -252,7 +252,7 @@ class _PinScreenState extends State<PinScreen>
       ret.add(
         Container(
           margin: EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-          child: Icon(_dotStates[i], size: 18),
+          child: Icon(_dotStates[i], size: 18, color: StateContainer.of(context).curTheme.backgroundPrimary),
         ),
       );
     }

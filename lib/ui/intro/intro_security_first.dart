@@ -83,7 +83,7 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
                           alignment: Alignment(-1, 0),
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "In the next screen, you'll see your new private key. It is a password access your funds. It is crucial that you back it up and never share it with anyone.",
+                            "In the next screen, you'll see your new private key. It is a password to access your funds. It is crucial that you back it up and never share it with anyone.",
                             maxLines: 4,
                             stepGranularity: 0.1,
                             style: AppStyles.paragraph(context),

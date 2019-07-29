@@ -148,28 +148,7 @@ class _SendingSheetState extends State<SendingSheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      // Close Button
-                      Container(
-                        margin: EdgeInsetsDirectional.only(start: 5, end: 10),
-                        height: 50,
-                        width: 50,
-                        child: FlatButton(
-                            highlightColor:
-                                StateContainer.of(context).curTheme.textLight15,
-                            splashColor:
-                                StateContainer.of(context).curTheme.textLight30,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Icon(AppIcons.close,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textLight,
-                                size: 20)),
-                      ),
+                      SizedBox(width: 65, height: 50),
                       // Header
                       Container(
                         width: MediaQuery.of(context).size.width - 130,
@@ -245,25 +224,25 @@ class _SendingSheetState extends State<SendingSheet> {
                               : AutoSizeText.rich(
                                   TextSpan(children: [
                                     TextSpan(
-                                      text: widget.contact.name[0],
-                                      style:
-                                          AppStyles.privateKeyPrimary(context),
+                                      text: " ",
+                                      style: AppStyles.iconFontPrimaryMedium(
+                                          context),
                                     ),
                                     TextSpan(
                                         text: widget.contact.name.substring(1),
-                                        style: AppStyles.privateKeyTextDark(
+                                        style: AppStyles.contactsItemName(
                                             context)),
                                     TextSpan(
-                                        text: " (" +
-                                            widget.contact.account.toString() +
-                                            ")",
-                                        style:
-                                            AppStyles.privateKeyTextDarkFaded(
-                                                context)),
+                                      text: " (" +
+                                          widget.contact.account.toString() +
+                                          ")",
+                                      style: AppStyles.privateKeyTextDarkFaded(
+                                          context),
+                                    ),
                                   ]),
                                   style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'SourceCodePro'),
+                                    fontSize: 14,
+                                  ),
                                   minFontSize: 8,
                                   stepGranularity: 0.1,
                                 ),
@@ -466,7 +445,13 @@ class _SendingSheetState extends State<SendingSheet> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Container(
-                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-(widget.encryptPayload?101:86)),
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                (widget.encryptPayload
+                                                    ? 101
+                                                    : 86)),
                                         child: AutoSizeText(
                                           widget.payload,
                                           maxLines: 3,
@@ -490,7 +475,9 @@ class _SendingSheetState extends State<SendingSheet> {
                                                           .textDark))
                                           : SizedBox()
                                     ]))
-                            : SizedBox()
+                            : SizedBox(),
+                        // Bottom Margin
+                        SizedBox(height: 24),
                       ],
                     ),
                   ),

@@ -431,6 +431,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                             style: AppStyles.privateKeyTextDark(context),
                           ),
                         ),
+                        // Bottom Margin
+                        SizedBox(height: 24),
                       ],
                     ),
                   ),

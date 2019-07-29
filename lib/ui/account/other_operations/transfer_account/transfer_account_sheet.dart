@@ -150,7 +150,9 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                   firstButton: TextFieldButton(
                                     icon: AppIcons.paste,
                                     onPressed: () async {
-                                      String text = await UserDataUtil.getClipboardText(DataType.PUBLIC_KEY);
+                                      String text =
+                                          await UserDataUtil.getClipboardText(
+                                              DataType.PUBLIC_KEY);
                                       if (text != null) {
                                         publicKeyController.text = text;
                                       }
@@ -159,10 +161,12 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                   secondButton: TextFieldButton(
                                     icon: AppIcons.scan,
                                     onPressed: () async {
-                                      String text = await UserDataUtil.getQRData(DataType.PUBLIC_KEY);
+                                      String text =
+                                          await UserDataUtil.getQRData(
+                                              DataType.PUBLIC_KEY);
                                       if (text != null) {
                                         publicKeyController.text = text;
-                                      }                                      
+                                      }
                                     },
                                   ),
                                   focusNode: publicKeyFocusNode,
@@ -187,6 +191,8 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                 errorText:
                                     pubkeyError == null ? "" : pubkeyError,
                               ),
+                              // Bottom Margin
+                              SizedBox(height: 24),
                             ],
                           ),
                         ),

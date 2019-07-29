@@ -2,7 +2,7 @@ import 'package:blaise_wallet_flutter/model/setting_item.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:flutter/material.dart';
 
-enum ThemeOptions { LIGHT, DARK }
+enum ThemeOptions { LIGHT, DARK, COPPER }
 
 /// Represent notification on/off setting
 class ThemeSetting extends SettingSelectionItem {
@@ -14,6 +14,8 @@ class ThemeSetting extends SettingSelectionItem {
     switch (theme) {
       case ThemeOptions.DARK:
         return "Dark";
+      case ThemeOptions.COPPER:
+        return "Copper";
       case ThemeOptions.LIGHT:
       default:
         return "Light";
@@ -22,6 +24,8 @@ class ThemeSetting extends SettingSelectionItem {
 
   BaseTheme getTheme() {
     switch (theme) {
+      case ThemeOptions.COPPER:
+        return BlaiseCopperTheme();
       case ThemeOptions.DARK:
         return BlaiseDarkTheme();
       case ThemeOptions.LIGHT:

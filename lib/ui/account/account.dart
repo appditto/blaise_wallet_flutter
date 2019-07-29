@@ -257,6 +257,7 @@ class _AccountPageState extends State<AccountPage>
         });
       }
     });
+    this.accountState?.updateAccount();
     this.accountState?.getAccountOperations()?.whenComplete(() {
       if (mounted) {
         setState(() {
@@ -378,7 +379,7 @@ class _AccountPageState extends State<AccountPage>
                                               margin: EdgeInsetsDirectional.only(
                                                   start: 16, bottom: 12),
                                               child: AutoSizeText(
-                                                "\$" + walletState.usdPrice.toStringAsFixed(4),
+                                                "\$" + walletState.usdPrice.toStringAsFixed(3),
                                                 maxLines: 1,
                                                 stepGranularity: 0.1,
                                                 minFontSize: 8,

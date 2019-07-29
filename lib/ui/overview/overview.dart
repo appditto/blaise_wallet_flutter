@@ -454,7 +454,7 @@ class _OverviewPageState extends State<OverviewPage>
                                         return SizedBox();
                                       } else {
                                         return AutoSizeText(
-                                          "\$" + walletState.usdPrice.toStringAsFixed(4),
+                                          "\$" + walletState.usdPrice.toStringAsFixed(3),
                                           style: AppStyles
                                               .paragraphTextLightSmallSemiBold(
                                                   context),

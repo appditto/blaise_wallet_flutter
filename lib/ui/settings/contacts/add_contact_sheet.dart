@@ -30,7 +30,6 @@ class AddContactSheet extends StatefulWidget {
 }
 
 class _AddContactSheetState extends State<AddContactSheet> {
-
   FocusNode nameFocusNode;
   FocusNode addressFocusNode;
   TextEditingController nameController;
@@ -57,7 +56,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
             this.addressController.text = numberFormatted.toString();
           } catch (e) {}
         }
-      });      
+      });
     } else {
       this.addressController.text = widget.account.toString();
     }
@@ -66,199 +65,207 @@ class _AddContactSheetState extends State<AddContactSheet> {
   @override
   Widget build(BuildContext context) {
     return TapOutsideUnfocus(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: StateContainer.of(context).curTheme.backgroundPrimary,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                ),
+        child: Column(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: StateContainer.of(context).curTheme.backgroundPrimary,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
               ),
-              child: Column(
-                children: <Widget>[
-                  // Sheet header
-                  Container(
-                    height: 60,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      gradient:
-                          StateContainer.of(context).curTheme.gradientPrimary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        // Sized Box
-                        SizedBox(
-                          height: 50,
-                          width: 65,
-                        ),
-                        // Container for the address text field
-                        Container(
-                          width: MediaQuery.of(context).size.width - 130,
-                          alignment: Alignment(0, 0),
-                          child: AutoSizeText(
-                            "ADD CONTACT",
-                            style: AppStyles.header(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        // Sized Box
-                        SizedBox(
-                          height: 50,
-                          width: 65,
-                        ),
-                      ],
+            ),
+            child: Column(
+              children: <Widget>[
+                // Sheet header
+                Container(
+                  height: 60,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    gradient:
+                        StateContainer.of(context).curTheme.gradientPrimary,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
                     ),
                   ),
-                  Expanded(
-                    child: KeyboardAvoider(
-                      duration: Duration(milliseconds: 0),
-                      autoScroll: true,
-                      focusPadding: 40,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // Container for the name text field
-                          Container(
-                              margin:
-                                  EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
-                              child: AppTextField(
-                                label: 'Contact Name',
-                                style: AppStyles.contactsItemName(context),
-                                prefix: Text("@",
-                                    style: AppStyles.settingsHeader(context)),
-                                maxLines: 1,
-                                focusNode: nameFocusNode,
-                                controller: nameController,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(20)
-                                ],
-                                onChanged: (newText) {
-                                  if (isNotEmpty(nameError)) {
-                                    setState(() {
-                                      nameError = null;
-                                    });
-                                  }
-                                },
-                              )
-                          ),
-                          ErrorContainer(
-                            errorText: nameError ?? "",
-                          ),
-                          // Container for the address text field
-                          Container(
-                            margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      // Sized Box
+                      SizedBox(
+                        height: 50,
+                        width: 65,
+                      ),
+                      // Container for the address text field
+                      Container(
+                        width: MediaQuery.of(context).size.width - 130,
+                        alignment: Alignment(0, 0),
+                        child: AutoSizeText(
+                          "ADD CONTACT",
+                          style: AppStyles.header(context),
+                          maxLines: 1,
+                          stepGranularity: 0.1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      // Sized Box
+                      SizedBox(
+                        height: 50,
+                        width: 65,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: KeyboardAvoider(
+                    duration: Duration(milliseconds: 0),
+                    autoScroll: true,
+                    focusPadding: 40,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Container for the name text field
+                        Container(
+                            margin:
+                                EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                             child: AppTextField(
-                              label: 'Address',
-                              style: AppStyles.contactsItemAddress(context),
-                              firstButton: widget.account == null ? TextFieldButton(
-                                icon: AppIcons.paste,
-                                onPressed: () {
-                                  UserDataUtil.getClipboardText(DataType.ACCOUNT).then((account) {
-                                    if (account != null) {
-                                      addressController.text = account;
-                                    }
-                                  });
-                                },
-                              ) : null,
-                              secondButton: widget.account == null ? 
-                                TextFieldButton(
-                                  icon: AppIcons.scan,
-                                  onPressed: () async {
-                                    String text = await UserDataUtil.getQRData(DataType.ACCOUNT);
-                                    if (text != null) {
-                                      addressController.text = text;
-                                    }
-                                  }
-                                )
-                               : null,
+                              label: 'Contact Name',
+                              style: AppStyles.contactsItemName(context),
+                              prefix: Text(
+                                " ",
+                                style: AppStyles.iconFontPrimarySmall(context),
+                              ),
                               maxLines: 1,
-                              textCapitalization: TextCapitalization.characters,
-                              controller: addressController,
-                              focusNode: addressFocusNode,
+                              focusNode: nameFocusNode,
+                              controller: nameController,
                               inputFormatters: [
-                                WhitelistingTextInputFormatter(
-                                    RegExp("[0-9-]")),
-                                PascalAccountFormatter()                                
+                                LengthLimitingTextInputFormatter(20)
                               ],
                               onChanged: (newText) {
-                                if (isNotEmpty(accountError)) {
+                                if (isNotEmpty(nameError)) {
                                   setState(() {
-                                    accountError = null;
+                                    nameError = null;
                                   });
                                 }
                               },
-                              readOnly: widget.account != null,
-                            ),
-                          ),
-                          ErrorContainer(
-                            errorText: accountError ?? "",
-                          ),
-                          // Container for the "Add Payload" button
-                          Payload(
-                            onPayloadChanged: (newPayload, encrypted) {
-                              setState(() {
-                                payload = newPayload;
-                              });
+                            )),
+                        ErrorContainer(
+                          errorText: nameError ?? "",
+                        ),
+                        // Container for the address text field
+                        Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
+                          child: AppTextField(
+                            label: 'Address',
+                            style: AppStyles.contactsItemAddress(context),
+                            firstButton: widget.account == null
+                                ? TextFieldButton(
+                                    icon: AppIcons.paste,
+                                    onPressed: () {
+                                      UserDataUtil.getClipboardText(
+                                              DataType.ACCOUNT)
+                                          .then((account) {
+                                        if (account != null) {
+                                          addressController.text = account;
+                                        }
+                                      });
+                                    },
+                                  )
+                                : null,
+                            secondButton: widget.account == null
+                                ? TextFieldButton(
+                                    icon: AppIcons.scan,
+                                    onPressed: () async {
+                                      String text =
+                                          await UserDataUtil.getQRData(
+                                              DataType.ACCOUNT);
+                                      if (text != null) {
+                                        addressController.text = text;
+                                      }
+                                    })
+                                : null,
+                            maxLines: 1,
+                            textCapitalization: TextCapitalization.characters,
+                            controller: addressController,
+                            focusNode: addressFocusNode,
+                            inputFormatters: [
+                              WhitelistingTextInputFormatter(RegExp("[0-9-]")),
+                              PascalAccountFormatter()
+                            ],
+                            onChanged: (newText) {
+                              if (isNotEmpty(accountError)) {
+                                setState(() {
+                                  accountError = null;
+                                });
+                              }
                             },
-                            allowEncryption: false,
-                          )
-                        ],
-                      ),
+                            readOnly: widget.account != null,
+                          ),
+                        ),
+                        ErrorContainer(
+                          errorText: accountError ?? "",
+                        ),
+                        // Container for the "Add Payload" button
+                        Payload(
+                          onPayloadChanged: (newPayload, encrypted) {
+                            setState(() {
+                              payload = newPayload;
+                            });
+                          },
+                          allowEncryption: false,
+                        )
+                      ],
                     ),
                   ),
-                  //"Add Contact" and "Close" buttons
-                  Row(
-                    children: <Widget>[
-                      AppButton(
-                        type: AppButtonType.Primary,
-                        text: "Add Contact",
-                        buttonTop: true,
-                        onPressed: () async {
-                          if (await validateForm()) {
-                            Contact newContact = Contact(
-                              account: widget.account == null ? AccountNumber(addressController.text) : widget.account,
+                ),
+                //"Add Contact" and "Close" buttons
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.Primary,
+                      text: "Add Contact",
+                      buttonTop: true,
+                      onPressed: () async {
+                        if (await validateForm()) {
+                          Contact newContact = Contact(
+                              account: widget.account == null
+                                  ? AccountNumber(addressController.text)
+                                  : widget.account,
                               name: "@${nameController.text}",
-                              payload: payload
-                            );
-                            await sl.get<DBHelper>().saveContact(newContact);
-                            EventTaxiImpl.singleton().fire(ContactAddedEvent(contact: newContact));
-                            UIUtil.showSnackbar("${newContact.name} added to contacts", context);
-                            EventTaxiImpl.singleton().fire(ContactModifiedEvent(contact: newContact));
-                            Navigator.of(context).pop();
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  // "Close" button
-                  Row(
-                    children: <Widget>[
-                      AppButton(
-                        type: AppButtonType.PrimaryOutline,
-                        text: "Close",
-                        onPressed: () {
+                              payload: payload);
+                          await sl.get<DBHelper>().saveContact(newContact);
+                          EventTaxiImpl.singleton()
+                              .fire(ContactAddedEvent(contact: newContact));
+                          UIUtil.showSnackbar(
+                              "${newContact.name} added to contacts", context);
+                          EventTaxiImpl.singleton()
+                              .fire(ContactModifiedEvent(contact: newContact));
                           Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                // "Close" button
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      type: AppButtonType.PrimaryOutline,
+                      text: "Close",
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
-      )
-    );
+        ),
+      ],
+    ));
   }
 
   Future<bool> validateForm() async {
@@ -275,7 +282,8 @@ class _AddContactSheetState extends State<AddContactSheet> {
         try {
           AccountNumber acctNum = AccountNumber(addressController.text);
           addressFocusNode.unfocus();
-          bool exists = await sl.get<DBHelper>().contactExistsWithAccount(acctNum);
+          bool exists =
+              await sl.get<DBHelper>().contactExistsWithAccount(acctNum);
           if (exists) {
             isValid = false;
             setState(() {
