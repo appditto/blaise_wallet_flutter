@@ -24,6 +24,7 @@ import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class OverviewPage extends StatefulWidget {
   OverviewPage();
@@ -378,11 +379,11 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
-                                      } else if (walletState.usdPrice == null || walletState.totalBalanceUsd() == null) {
+                                      } else if (walletState.localCurrencyPrice == null || walletState.totalWalletBalance == null) {
                                         return SizedBox();
                                       } else {
                                         return AutoSizeText(
-                                          "(\$" + walletState.totalBalanceUsd() + ")",
+                                          "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: walletState.totalWalletBalance)})",
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -450,11 +451,11 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
-                                      } else if (walletState.usdPrice == null) {
+                                      } else if (walletState.localCurrencyPrice == null) {
                                         return SizedBox();
                                       } else {
                                         return AutoSizeText(
-                                          "\$" + walletState.usdPrice.toStringAsFixed(3),
+                                          "${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: Currency('1'), decimalDigits: 3)}",
                                           style: AppStyles
                                               .paragraphTextLightSmallSemiBold(
                                                   context),

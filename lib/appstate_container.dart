@@ -142,10 +142,8 @@ class StateContainerState extends State<StateContainer> {
     });
     _priceEventSub = EventTaxiImpl.singleton().registerTo<PriceEvent>().listen((event) {
       // PriceResponse's get pushed periodically, it wasn't a request we made so don't pop the queue
-      setState(() {
-        walletState.btcPrice = event.response.btcPrice;
-        walletState.localCurrencyPrice = event.response.price;
-      });
+      walletState.btcPrice = event.response.btcPrice;
+      walletState.localCurrencyPrice = event.response.price;
     });
     _connStatusSub = EventTaxiImpl.singleton().registerTo<ConnStatusEvent>().listen((event) {
       if (event.status == ConnectionStatus.CONNECTED) {
@@ -171,6 +169,7 @@ class StateContainerState extends State<StateContainer> {
   @override
   void initState() {
     super.initState();
+    _registerBus();
     // Precache SVG Assets
     _precacheSvgs();
     // Set initial theme
@@ -216,12 +215,10 @@ class StateContainerState extends State<StateContainer> {
     if (response.uuid != null) {
       sl.get<SharedPrefsUtil>().setUuid(response.uuid);
     }
-    setState(() {
-      walletState.localCurrencyPrice = response.price;
-      walletState.btcPrice = response.btcPrice;
-      sl.get<WSClient>().pop();
-      sl.get<WSClient>().processQueue();
-    });
+    walletState.localCurrencyPrice = response.price;
+    walletState.btcPrice = response.btcPrice;
+    sl.get<WSClient>().pop();
+    sl.get<WSClient>().processQueue();
   }
 
   Future<void> requestUpdate() async {

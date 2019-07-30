@@ -17,5 +17,5 @@ Map<String, dynamic> _$PriceResponseToJson(PriceResponse instance) =>
     <String, dynamic>{
       'currency': instance.currency,
       'price': instance.price,
-      'btc': instance.btcPrice
+      'btc': instance.btcPrice,
     };

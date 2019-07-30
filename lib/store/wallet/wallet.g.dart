@@ -112,23 +112,6 @@ mixin _$Wallet on WalletBase, Store {
     }, _$accountStateMapAtom, name: '${_$accountStateMapAtom.name}_set');
   }
 
-  final _$usdPriceAtom = Atom(name: 'WalletBase.usdPrice');
-
-  @override
-  double get usdPrice {
-    _$usdPriceAtom.context.enforceReadPolicy(_$usdPriceAtom);
-    _$usdPriceAtom.reportObserved();
-    return super.usdPrice;
-  }
-
-  @override
-  set usdPrice(double value) {
-    _$usdPriceAtom.context.conditionallyRunInAction(() {
-      super.usdPrice = value;
-      _$usdPriceAtom.reportChanged();
-    }, _$usdPriceAtom, name: '${_$usdPriceAtom.name}_set');
-  }
-
   final _$localCurrencyPriceAtom = Atom(name: 'WalletBase.localCurrencyPrice');
 
   @override
@@ -179,13 +162,6 @@ mixin _$Wallet on WalletBase, Store {
       super.uuid = value;
       _$uuidAtom.reportChanged();
     }, _$uuidAtom, name: '${_$uuidAtom.name}_set');
-  }
-
-  final _$updatePriceDataAsyncAction = AsyncAction('updatePriceData');
-
-  @override
-  Future<void> updatePriceData() {
-    return _$updatePriceDataAsyncAction.run(() => super.updatePriceData());
   }
 
   final _$initializeRpcAsyncAction = AsyncAction('initializeRpc');
@@ -265,10 +241,12 @@ mixin _$Wallet on WalletBase, Store {
   }
 
   @override
-  String totalBalanceUsd() {
+  String getLocalCurrencyDisplay(
+      {AvailableCurrency currency, Currency amount, int decimalDigits}) {
     final _$actionInfo = _$WalletBaseActionController.startAction();
     try {
-      return super.totalBalanceUsd();
+      return super.getLocalCurrencyDisplay(
+          currency: currency, amount: amount, decimalDigits: decimalDigits);
     } finally {
       _$WalletBaseActionController.endAction(_$actionInfo);
     }

@@ -1,4 +1,4 @@
-import 'package:blaise_wallet_flutter/network/price/price_client.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -6,6 +6,8 @@ import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:logger/logger.dart';
+import 'package:intl/intl.dart';
+import 'package:decimal/decimal.dart';
 
 part 'wallet.g.dart';
 
@@ -37,24 +39,12 @@ abstract class WalletBase with Store {
   Map<int, Account> accountStateMap = Map();
 
   @observable
-  double usdPrice;
-
-  @observable
   double localCurrencyPrice;
   @observable
   double btcPrice;
 
   @observable
   String uuid;
-
-  @action
-  Future<void> updatePriceData() async {
-    double newPrice = await PriceAPI.getPrice();
-    if (newPrice == null) {
-      newPrice = await PriceAPI.getCachedPrice();
-    }
-    this.usdPrice = newPrice ?? this.usdPrice;
-  }
 
   @action
   Future<void> initializeRpc() async {
@@ -74,8 +64,6 @@ abstract class WalletBase with Store {
     if (this.rpcClient == null) {
       await initializeRpc();
     }
-    // Update price
-    this.updatePriceData();
     // Get total balance and list of accounts
     // TODO - pagination?
     FindAccountsRequest findAccountsRequest = FindAccountsRequest(
@@ -157,13 +145,24 @@ abstract class WalletBase with Store {
   }
 
   @action
-  String totalBalanceUsd() {
-    try {
-      return (double.parse(this.totalWalletBalance.toStringOpt()) * usdPrice).toStringAsFixed(2);
-    } catch (e) {
+  String getLocalCurrencyDisplay({AvailableCurrency currency, Currency amount, int decimalDigits}) {
+    if (localCurrencyPrice == null) {
       return null;
     }
+    currency = currency ?? AvailableCurrency(AvailableCurrencyEnum.USD);
+    Decimal converted = Decimal.parse(localCurrencyPrice.toString()) * Decimal.parse(amount.toStringOpt());
+    switch (currency.getLocale().countryCode) {
+      case "VE":
+        return NumberFormat.currency(locale: currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: "Bs.S", decimalDigits: 4).format(converted.toDouble());
+      case "TR":
+        return NumberFormat.currency(locale:currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: "₺", decimalDigits: decimalDigits).format(converted.toDouble());
+      default:
+        return NumberFormat.currency(locale:currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: currency.getCurrencySymbol(), decimalDigits: decimalDigits).format(converted.toDouble());
+    }
   }
+
+  @action
+
 
   @action
   void reset() {

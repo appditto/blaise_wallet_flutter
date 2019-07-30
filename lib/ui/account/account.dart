@@ -372,14 +372,14 @@ class _AccountPageState extends State<AccountPage>
                                       // Price text
                                       Observer(
                                         builder: (BuildContext context) {
-                                          if (walletState.usdPrice == null) {
+                                          if (walletState.localCurrencyPrice == null) {
                                             return SizedBox();
                                           } else {
                                             return Container(
                                               margin: EdgeInsetsDirectional.only(
                                                   start: 16, bottom: 12),
                                               child: AutoSizeText(
-                                                "\$" + walletState.usdPrice.toStringAsFixed(3),
+                                                walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: Currency('1'), decimalDigits: 3),
                                                 maxLines: 1,
                                                 stepGranularity: 0.1,
                                                 minFontSize: 8,
@@ -454,14 +454,14 @@ class _AccountPageState extends State<AccountPage>
                                     // Container for the fiat conversion
                                     Observer(
                                       builder: (BuildContext context) {
-                                        if (walletState.usdPrice == null) {
+                                        if (walletState.localCurrencyPrice == null) {
                                           return SizedBox();
                                         } else {
                                           return Container(
                                             margin: EdgeInsetsDirectional.fromSTEB(
                                                 12, 0, 12, 0),
                                             child: AutoSizeText(
-                                              "(\$${accountState.usdBalance()})",
+                                              "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
                                               style:
                                                   AppStyles.paragraphTextLightSmall(
                                                       context),

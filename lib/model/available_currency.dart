@@ -5,7 +5,7 @@ import 'dart:ui';
 enum AvailableCurrencyEnum { USD, ARS, AUD, BRL, CAD, CHF, CLP, CNY, CZK, DKK,
                   EUR, GBP, HKD, HUF, IDR, ILS, INR, JPY, KRW, KWD,
                   MXN, MYR, NOK, NZD, PHP, PKR, PLN, RUB, SAR, SEK,
-                  SGD, THB, TRY, TWD, AED, VES, ZAR }
+                  SGD, THB, TRY, TWD, AED, ZAR }
 
 /// Represent the available authentication methods our app supports
 class AvailableCurrency extends SettingSelectionItem {
@@ -91,8 +91,6 @@ class AvailableCurrency extends SettingSelectionItem {
           return "Taiwan Dollar";
       case "AED":
           return "UAE Dirham";
-      case "VES":
-          return "Venezuelan Bolivar";
       case "ZAR":
           return "South African Rand";
       case "USD":
@@ -171,8 +169,6 @@ class AvailableCurrency extends SettingSelectionItem {
           return "NT\$";
       case "AED":
           return "د.إ";
-      case "VES":
-          return "VES";
       case "ZAR":
           return "R\$";
       case "USD":
@@ -251,8 +247,6 @@ class AvailableCurrency extends SettingSelectionItem {
           return Locale("en", "TW");
       case "AED":
           return Locale("ar", "AE");
-      case "VES":
-          return Locale("es", "VE");
       case "ZAR":
           return Locale("en", "ZA");
       case "USD":
@@ -269,7 +263,7 @@ class AvailableCurrency extends SettingSelectionItem {
   // Get best currency for a given locale
   // Default to USD
   static AvailableCurrency getBestForLocale(Locale locale) {
-    AvailableCurrencyEnum.values.forEach((value) {
+    for (AvailableCurrencyEnum value in AvailableCurrencyEnum.values) {
       AvailableCurrency currency = AvailableCurrency(value);
       if (locale != null && locale.countryCode == null) {
         // Special cases
@@ -279,7 +273,7 @@ class AvailableCurrency extends SettingSelectionItem {
           return currency;
         }
       }
-    });
+    }
     return AvailableCurrency(AvailableCurrencyEnum.USD);
   }
 }

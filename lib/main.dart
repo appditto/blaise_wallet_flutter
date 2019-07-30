@@ -155,6 +155,69 @@ class _AppState extends State<App> {
               return null;
           }
         },
+        supportedLocales: [
+          // Currency-default requires country included
+          const Locale("es", "AR"),
+          const Locale("en", "AU"),
+          const Locale("en", "US"),
+          const Locale("pt", "BR"),
+          const Locale("en", "CA"),
+          const Locale("de", "CH"),
+          const Locale("es", "CL"),
+          const Locale("zh", "CN"),
+          const Locale("cs", "CZ"),
+          const Locale("da", "DK"),
+          const Locale("fr", "FR"),
+          const Locale("en", "GB"),
+          const Locale("zh", "HK"),
+          const Locale("hu", "HU"),
+          const Locale("id", "ID"),
+          const Locale("he", "IL"),
+          const Locale("hi", "IN"),
+          const Locale("ja", "JP"),
+          const Locale("ko", "KR"),
+          const Locale("es", "MX"),
+          const Locale("ta", "MY"),
+          const Locale("en", "NZ"),
+          const Locale("tl", "PH"),
+          const Locale("ur", "PK"),
+          const Locale("pl", "PL"),
+          const Locale("ru", "RU"),
+          const Locale("sv", "SE"),
+          const Locale("zh", "SG"),
+          const Locale("th", "TH"),
+          const Locale("tr", "TR"),
+          const Locale("en", "TW"),
+          const Locale("es", "VE"),
+          const Locale("en", "ZA"),
+          const Locale("en", "US"),
+          const Locale("es", "AR"),
+          const Locale("de", "AT"),
+          const Locale("fr", "BE"),
+          const Locale("de", "BE"),
+          const Locale("nl", "BE"),
+          const Locale("tr", "CY"),
+          const Locale("et", "EE"),
+          const Locale("fi", "FI"),
+          const Locale("fr", "FR"),
+          const Locale("el", "GR"),
+          const Locale("es", "AR"),
+          const Locale("en", "IE"),
+          const Locale("it", "IT"),
+          const Locale("es", "AR"),
+          const Locale("lv", "LV"),
+          const Locale("lt", "LT"),
+          const Locale("fr", "LU"),
+          const Locale("en", "MT"),
+          const Locale("nl", "NL"),
+          const Locale("pt", "PT"),
+          const Locale("sk", "SK"),
+          const Locale("sl", "SI"),
+          const Locale("es", "ES"),
+          const Locale("ar", "AE"), // UAE
+          const Locale("ar", "SA"), // Saudi Arabia
+          const Locale("ar", "KW"), // Kuwait          
+        ],
       ),
     );
   }
@@ -182,6 +245,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         if (await sl.get<SharedPrefsUtil>().getLock() || await sl.get<SharedPrefsUtil>().shouldLock()) {
           Navigator.of(context).pushReplacementNamed('/lock_screen', arguments: TransitionOption.NONE);
         } else {
+          StateContainer.of(context).requestUpdate();
           Navigator.of(context).pushReplacementNamed('/overview',
              arguments: TransitionOption.NONE);
         }
@@ -237,8 +301,18 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
     });*/
   }
 
+  void setDeviceLocaleAndCurrency() {
+    setState(() {
+      StateContainer.of(context).deviceLocale = Localizations.localeOf(context);
+      sl.get<SharedPrefsUtil>().getCurrency(StateContainer.of(context).deviceLocale).then((currency) {
+        StateContainer.of(context).curCurrency = currency;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    setDeviceLocaleAndCurrency();
     return Scaffold(
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
     );

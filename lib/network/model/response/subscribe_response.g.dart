@@ -17,5 +17,5 @@ Map<String, dynamic> _$SubscribeResponseToJson(SubscribeResponse instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'price': instance.price,
-      'btc': instance.btcPrice
+      'btc': instance.btcPrice,
     };

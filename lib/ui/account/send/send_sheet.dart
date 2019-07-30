@@ -307,7 +307,7 @@ class _SendSheetState extends State<SendSheet> {
                                   // Balance in fiat
                                   Observer(
                                     builder: (BuildContext context) {
-                                      if (walletState.usdPrice != null) {
+                                      if (walletState.localCurrencyPrice != null) {
                                         return Container(
                                           constraints: BoxConstraints(
                                               maxWidth: MediaQuery.of(context)
@@ -318,7 +318,7 @@ class _SendSheetState extends State<SendSheet> {
                                           margin: EdgeInsetsDirectional.only(
                                               top: 2),
                                           child: AutoSizeText(
-                                            "(\$${accountState.usdBalance()})",
+                                            "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
                                             style: AppStyles.primarySmallest400(
                                                 context),
                                             maxLines: 1,

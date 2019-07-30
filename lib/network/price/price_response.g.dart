@@ -7,8 +7,12 @@ part of 'price_response.dart';
 // **************************************************************************
 
 PriceResponse _$PriceResponseFromJson(Map<String, dynamic> json) {
-  return PriceResponse(price: _toDouble(json['price']));
+  return PriceResponse(
+    price: _toDouble(json['price']),
+  );
 }
 
 Map<String, dynamic> _$PriceResponseToJson(PriceResponse instance) =>
-    <String, dynamic>{'price': instance.price};
+    <String, dynamic>{
+      'price': instance.price,
+    };

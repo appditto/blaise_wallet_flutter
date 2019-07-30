@@ -8,13 +8,14 @@ part of 'contact.dart';
 
 Contact _$ContactFromJson(Map<String, dynamic> json) {
   return Contact(
-      name: json['name'] as String,
-      account: intToAccountNum(json['account'] as int),
-      payload: json['payload'] as String);
+    name: json['name'] as String,
+    account: intToAccountNum(json['account'] as int),
+    payload: json['payload'] as String,
+  );
 }
 
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'name': instance.name,
       'account': accountNumToInt(instance.account),
-      'payload': instance.payload
+      'payload': instance.payload,
     };

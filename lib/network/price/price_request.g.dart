@@ -7,8 +7,12 @@ part of 'price_request.dart';
 // **************************************************************************
 
 PriceRequest _$PriceRequestFromJson(Map<String, dynamic> json) {
-  return PriceRequest(action: json['action'] as String);
+  return PriceRequest(
+    action: json['action'] as String,
+  );
 }
 
 Map<String, dynamic> _$PriceRequestToJson(PriceRequest instance) =>
-    <String, dynamic>{'action': instance.action};
+    <String, dynamic>{
+      'action': instance.action,
+    };

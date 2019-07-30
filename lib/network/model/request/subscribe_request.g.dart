@@ -8,10 +8,11 @@ part of 'subscribe_request.dart';
 
 SubscribeRequest _$SubscribeRequestFromJson(Map<String, dynamic> json) {
   return SubscribeRequest(
-      action: json['action'] as String,
-      account: json['account'] as int,
-      currency: json['currency'] as String,
-      uuid: json['uuid'] as String);
+    action: json['action'] as String,
+    account: json['account'] as int,
+    currency: json['currency'] as String,
+    uuid: json['uuid'] as String,
+  );
 }
 
 Map<String, dynamic> _$SubscribeRequestToJson(SubscribeRequest instance) {

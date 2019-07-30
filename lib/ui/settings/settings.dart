@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/daemon_changed_event.dart';
 import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
@@ -36,7 +37,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<DialogListItem> currencyList = [];
   List<DialogListItem> languageList = [];
 
   List<DialogListItem> getThemeList() {
@@ -52,6 +52,30 @@ class _SettingsPageState extends State<SettingsPage> {
     });
     return ret;
   }
+
+  List<DialogListItem> getCurrencyList() {
+    List<DialogListItem> ret = [];
+    AvailableCurrencyEnum.values.forEach((AvailableCurrencyEnum value) {
+      AvailableCurrency currency = AvailableCurrency(value);
+      ret.add(DialogListItem(
+          option: currency.getDisplayName(context),
+          action: () {
+            sl.get<SharedPrefsUtil>()
+                .setCurrency(currency)
+                .then((result) {
+              if (StateContainer.of(context).curCurrency.currency != currency.currency) {
+                setState(() {
+                  StateContainer.of(context).curCurrency = currency;
+                });
+                StateContainer.of(context).requestUpdate();
+              }
+            });
+            Navigator.of(context).pop();
+          }));
+    });
+    return ret;
+  }
+
 
   String daemonURL;
   String versionString = "";
@@ -72,13 +96,6 @@ class _SettingsPageState extends State<SettingsPage> {
         versionString = "v${packageInfo.version}";
       });
     });
-    currencyList = [
-      DialogListItem(
-          option: "\$ US Dollar",
-          action: () {
-            Navigator.pop(context);
-          }),
-    ];
     languageList = [
       DialogListItem(
           option: "English (en)",
@@ -212,7 +229,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   context: context,
                                   builder: (_) => DialogOverlay(
                                       title: 'Currency',
-                                      optionsList: currencyList));
+                                      optionsList: getCurrencyList()));
                             },
                           ),
                           SettingsListItem(
