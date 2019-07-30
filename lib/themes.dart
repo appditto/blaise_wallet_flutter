@@ -274,8 +274,8 @@ class BlaiseDarkTheme extends BaseTheme {
   static const Color blueish = Color(0xFF8287B5);
   static const Color blueish2 = Color(0xFF6F70A8);
   static const Color blueishLight = Color(0xFFACB7D1);
-  static const Color green = Color(0xFF32C6AE);
-  static const Color red = Color(0xFFFF6C59);
+  static const Color green = Color(0xFF7CBFA1);
+  static const Color red = Color(0xFFCC7A7A);
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
   static const Color grayLight = Color(0xFFB5B5BF);
@@ -442,8 +442,8 @@ class BlaiseCopperTheme extends BaseTheme {
   static const Color orange = Color(0xFFDD8D52);
   static const Color orange2 = Color(0xFFCB7244);
   static const Color orangeLight = Color(0xFFFFBF6A);
-  static const Color green = Color(0xFF32C6AE);
-  static const Color red = Color(0xFFFF6C59);
+  static const Color blue = Color(0xFF5A73F2);
+  static const Color red = Color(0xFFF25A5A);
   static const Color white = Color(0xFFFFFFFF);
   static const Color white00 = Color(0x00FFFFFF);
   static const Color grayLight = Color(0xFFB9BAC4);
@@ -461,10 +461,10 @@ class BlaiseCopperTheme extends BaseTheme {
 
   Color secondary = orangeLight;
 
-  Color success = green;
-  Color success30 = green.withOpacity(0.3);
-  Color success15 = green.withOpacity(0.15);
-  Color success10 = green.withOpacity(0.1);
+  Color success = blue;
+  Color success30 = blue.withOpacity(0.3);
+  Color success15 = blue.withOpacity(0.15);
+  Color success10 = blue.withOpacity(0.1);
 
   Color danger = red;
   Color danger30 = red.withOpacity(0.3);
@@ -527,13 +527,13 @@ class BlaiseCopperTheme extends BaseTheme {
       spreadRadius: -4.0);
   
   BoxShadow shadowSuccessOne = BoxShadow(
-      color: green.withOpacity(0.1),
+      color: blue.withOpacity(0.1),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
 
   BoxShadow shadowSuccessTwo = BoxShadow(
-      color: green.withOpacity(0.05),
+      color: blue.withOpacity(0.05),
       offset: Offset(0, 8),
       blurRadius: 16,
       spreadRadius: -4.0);
