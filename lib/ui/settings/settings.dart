@@ -222,7 +222,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           // List Items
                           SettingsListItem(
                             header: "Currency",
-                            subheader: "\$ US Dollar",
+                            subheader: StateContainer.of(context).curCurrency.getDisplayName(context),
                             icon: AppIcons.currency,
                             onPressed: () {
                               showAppDialog(
