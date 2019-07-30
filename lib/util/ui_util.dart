@@ -79,7 +79,7 @@ class UIUtil {
         builder: (_) => DialogOverlay(
             title: 'Add Fee',
             feeDialog: true,
-            confirmButtonText: "YES, ADD FEE",
+            confirmButtonText: "Confirm",
             body: TextSpan(
               children: [
                 TextSpan(
