@@ -288,7 +288,7 @@ class AppLocalization {
   }
 
   String get deletePrivateKeyAndLogout {
-    return Intl.message("Delete Private Key And Logout",
+    return Intl.message("Delete Private Key\nAnd Logout",
         desc: 'A button to delete the private key and logout',
         name: 'deletePrivateKeyAndLogout');
   }
