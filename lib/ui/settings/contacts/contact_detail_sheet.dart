@@ -229,6 +229,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                   maxLines: 1,
                                   stepGranularity: 0.1,
                                   textAlign: TextAlign.start,
+                                  style: TextStyle(fontSize: 14.0),
                                 ),
                               ),
                             ],

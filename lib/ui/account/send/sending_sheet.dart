@@ -225,7 +225,7 @@ class _SendingSheetState extends State<SendingSheet> {
                                   TextSpan(children: [
                                     TextSpan(
                                       text: " ",
-                                      style: AppStyles.iconFontPrimaryMedium(
+                                      style: AppStyles.iconFontPrimarySmall(
                                           context),
                                     ),
                                     TextSpan(

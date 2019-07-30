@@ -185,7 +185,7 @@ class _SentSheetState extends State<SentSheet> {
                                     TextSpan(children: [
                                       TextSpan(
                                         text: " ",
-                                        style: AppStyles.iconFontSuccessMedium(
+                                        style: AppStyles.iconFontSuccessSmall(
                                             context),
                                       ),
                                       TextSpan(

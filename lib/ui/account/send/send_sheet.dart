@@ -191,7 +191,30 @@ class _SendSheetState extends State<SendSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        SizedBox(width: 65, height: 50),
+                        // Close Button
+                        Container(
+                          margin: EdgeInsetsDirectional.only(start: 5, end: 10),
+                          height: 50,
+                          width: 50,
+                          child: FlatButton(
+                              highlightColor: StateContainer.of(context)
+                                  .curTheme
+                                  .textLight15,
+                              splashColor: StateContainer.of(context)
+                                  .curTheme
+                                  .textLight30,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Icon(AppIcons.close,
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .textLight,
+                                  size: 20)),
+                        ),
                         // Header
                         Container(
                           width: MediaQuery.of(context).size.width - 130,
@@ -307,7 +330,8 @@ class _SendSheetState extends State<SendSheet> {
                                   // Balance in fiat
                                   Observer(
                                     builder: (BuildContext context) {
-                                      if (walletState.localCurrencyPrice != null) {
+                                      if (walletState.localCurrencyPrice !=
+                                          null) {
                                         return Container(
                                           constraints: BoxConstraints(
                                               maxWidth: MediaQuery.of(context)
@@ -357,36 +381,7 @@ class _SendSheetState extends State<SendSheet> {
                                               ? Text(
                                                   " ",
                                                   style: AppStyles
-                                                      .iconFontPrimaryMedium(
-                                                          context),
-                                                )
-                                              : null,
-                                          maxLines: 1,
-                                          onChanged: (text) async {
-                                            if (destinationError != null &&
-                                                mounted) {
-                                              setState(() {
-                                                destinationError = null;
-                                              });
-                                            }
-                                            // Handle contacts
-                                            await _checkAndUpdateContacts();
-                                          },
-                                          focusNode: addressFocusNode,
-                                          controller: addressController,
-                                        )
-                                      : AppTextField(
-                                          label: 'Account',
-                                          style: _isValidContactAndUnfocused
-                                              ? AppStyles.contactsItemName(
-                                                  context)
-                                              : AppStyles.paragraphMedium(
-                                                  context),
-                                          prefix: _isValidContactAndUnfocused
-                                              ? Text(
-                                                  " ",
-                                                  style: AppStyles
-                                                      .iconFontPrimaryMedium(
+                                                      .iconFontPrimarySmall(
                                                           context),
                                                 )
                                               : null,
@@ -404,6 +399,45 @@ class _SendSheetState extends State<SendSheet> {
                                           focusNode: addressFocusNode,
                                           controller: addressController,
                                           firstButton: TextFieldButton(
+                                            icon: Icons.account_balance_wallet,
+                                            onPressed: () {
+                                              setState(() {
+                                                _isDestinationFieldTypeContact =
+                                                    !_isDestinationFieldTypeContact;
+                                              });
+                                              addressFocusNode.requestFocus();
+                                            },
+                                          ),
+                                        )
+                                      : AppTextField(
+                                          label: 'Account',
+                                          style: _isValidContactAndUnfocused
+                                              ? AppStyles.contactsItemName(
+                                                  context)
+                                              : AppStyles.paragraphMedium(
+                                                  context),
+                                          prefix: _isValidContactAndUnfocused
+                                              ? Text(
+                                                  " ",
+                                                  style: AppStyles
+                                                      .iconFontPrimarySmall(
+                                                          context),
+                                                )
+                                              : null,
+                                          maxLines: 1,
+                                          onChanged: (text) async {
+                                            if (destinationError != null &&
+                                                mounted) {
+                                              setState(() {
+                                                destinationError = null;
+                                              });
+                                            }
+                                            // Handle contacts
+                                            await _checkAndUpdateContacts();
+                                          },
+                                          focusNode: addressFocusNode,
+                                          controller: addressController,
+                                          secondButton: TextFieldButton(
                                             icon: AppIcons.paste,
                                             onPressed: () {
                                               Clipboard.getData("text/plain")
@@ -420,15 +454,14 @@ class _SendSheetState extends State<SendSheet> {
                                               });
                                             },
                                           ),
-                                          secondButton: TextFieldButton(
-                                            icon: AppIcons.scan,
-                                            onPressed: () async {
-                                              String text =
-                                                  await UserDataUtil.getQRData(
-                                                      DataType.ACCOUNT);
-                                              if (text != null) {
-                                                addressController.text = text;
-                                              }
+                                          firstButton: TextFieldButton(
+                                            icon: AppIcons.contacts,
+                                            onPressed: () {
+                                              setState(() {
+                                                _isDestinationFieldTypeContact =
+                                                    !_isDestinationFieldTypeContact;
+                                              });
+                                              addressFocusNode.requestFocus();
                                             },
                                           ),
                                         ),
@@ -451,73 +484,69 @@ class _SendSheetState extends State<SendSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   30, 30, 30, 0),
                                           child: AppTextField(
-                                            label: 'Amount',
-                                            style: AppStyles.paragraphPrimary(
-                                                context),
-                                            maxLines: 1,
-                                            inputType:
-                                                TextInputType.numberWithOptions(
-                                                    decimal: true),
-                                            prefix: _localCurrencyMode
-                                                ? Text("")
-                                                : Icon(
-                                                    AppIcons.pascalsymbol,
-                                                    size: 15,
-                                                    color: StateContainer.of(
-                                                            context)
-                                                        .curTheme
-                                                        .primary,
-                                                  ),
-                                            onChanged: (text) {
-                                              if (amountError != null) {
-                                                setState(() {
-                                                  amountError = null;
-                                                });
-                                              }
-                                            },
-                                            inputFormatters: [
-                                              LengthLimitingTextInputFormatter(
-                                                  13),
-                                              _localCurrencyMode
-                                                  ? CurrencyFormatter(
-                                                      decimalSeparator:
-                                                          _localCurrencyFormat
-                                                              .symbols
-                                                              .DECIMAL_SEP,
-                                                      commaSeparator:
-                                                          _localCurrencyFormat
-                                                              .symbols
-                                                              .GROUP_SEP,
-                                                      maxDecimalDigits: 2)
-                                                  : CurrencyFormatter(
-                                                      maxDecimalDigits:
-                                                          NumberUtil
-                                                              .maxDecimalDigits),
-                                              LocalCurrencyFormatter(
-                                                  active: _localCurrencyMode,
-                                                  currencyFormat:
-                                                      _localCurrencyFormat),
-                                            ],
-                                            focusNode: amountFocusNode,
-                                            controller: amountController,
-                                            firstButton: TextFieldButton(
-                                              icon: AppIcons.max,
-                                              onPressed: () {
-                                                amountController.text = widget
-                                                    .account.balance
-                                                    .toStringOpt();
-                                                amountFocusNode.unfocus();
+                                              label: 'Amount',
+                                              style: AppStyles.paragraphPrimary(
+                                                  context),
+                                              maxLines: 1,
+                                              inputType: TextInputType
+                                                  .numberWithOptions(
+                                                      decimal: true),
+                                              prefix: _localCurrencyMode
+                                                  ? Text("")
+                                                  : Icon(
+                                                      AppIcons.pascalsymbol,
+                                                      size: 15,
+                                                      color: StateContainer.of(
+                                                              context)
+                                                          .curTheme
+                                                          .primary,
+                                                    ),
+                                              onChanged: (text) {
+                                                if (amountError != null) {
+                                                  setState(() {
+                                                    amountError = null;
+                                                  });
+                                                }
                                               },
-                                            ),
-                                            secondButton: false
-                                                ? TextFieldButton(
-                                                    icon:
-                                                        AppIcons.currencyswitch,
-                                                    onPressed: () {
-                                                      toggleLocalCurrency();
-                                                    })
-                                                : null,
-                                          ),
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    13),
+                                                _localCurrencyMode
+                                                    ? CurrencyFormatter(
+                                                        decimalSeparator:
+                                                            _localCurrencyFormat
+                                                                .symbols
+                                                                .DECIMAL_SEP,
+                                                        commaSeparator:
+                                                            _localCurrencyFormat
+                                                                .symbols
+                                                                .GROUP_SEP,
+                                                        maxDecimalDigits: 2)
+                                                    : CurrencyFormatter(
+                                                        maxDecimalDigits:
+                                                            NumberUtil
+                                                                .maxDecimalDigits),
+                                                LocalCurrencyFormatter(
+                                                    active: _localCurrencyMode,
+                                                    currencyFormat:
+                                                        _localCurrencyFormat),
+                                              ],
+                                              focusNode: amountFocusNode,
+                                              controller: amountController,
+                                              firstButton: TextFieldButton(
+                                                icon: AppIcons.max,
+                                                onPressed: () {
+                                                  amountController.text = widget
+                                                      .account.balance
+                                                      .toStringOpt();
+                                                  amountFocusNode.unfocus();
+                                                },
+                                              ),
+                                              secondButton: TextFieldButton(
+                                                  icon: AppIcons.currencyswitch,
+                                                  onPressed: () {
+                                                    toggleLocalCurrency();
+                                                  })),
                                         ),
                                         // Fee container
                                         _hasFee
@@ -531,23 +560,24 @@ class _SendSheetState extends State<SendSheet> {
                                               ? ""
                                               : amountError,
                                         ),
+                                        Payload(
+                                          initialPayload: _payload,
+                                          onPayloadChanged:
+                                              (newPayload, encrypted) {
+                                            setState(() {
+                                              _payload = newPayload;
+                                              _encryptedPayload = encrypted;
+                                            });
+                                          },
+                                        ),
+                                        // Bottom Margin
+                                        SizedBox(height: 24),
                                       ],
                                     ),
                                     // Contacts pop up
                                     _getContactsPopup(),
                                   ],
                                 ),
-                                Payload(
-                                  initialPayload: _payload,
-                                  onPayloadChanged: (newPayload, encrypted) {
-                                    setState(() {
-                                      _payload = newPayload;
-                                      _encryptedPayload = encrypted;
-                                    });
-                                  },
-                                ),
-                                // Bottom Margin
-                                SizedBox(height: 24),
                               ],
                             ),
                           ),
@@ -568,14 +598,18 @@ class _SendSheetState extends State<SendSheet> {
                       ),
                     ],
                   ),
-                  // "Close" button
+                  // "Scan QR Code" button
                   Row(
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.PrimaryOutline,
-                        text: "Close",
-                        onPressed: () {
-                          Navigator.of(context).pop();
+                        text: "Scan QR Code",
+                        onPressed: () async {
+                          String text =
+                              await UserDataUtil.getQRData(DataType.ACCOUNT);
+                          if (text != null) {
+                            addressController.text = text;
+                          }
                         },
                       ),
                     ],
@@ -727,13 +761,13 @@ class _SendSheetState extends State<SendSheet> {
   }
 
   Widget _getContactsPopup() {
-    return _contacts.length > 0
+    return _contacts.length > 0 && _isDestinationFieldTypeContact
         ? Material(
             color: StateContainer.of(context).curTheme.backgroundPrimary,
             child: Container(
               constraints: BoxConstraints(maxHeight: 138),
               width: MediaQuery.of(context).size.width - 60,
-              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 3),
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4),
               decoration: BoxDecoration(
                   color: StateContainer.of(context).curTheme.backgroundPrimary,
                   boxShadow: [
@@ -768,7 +802,7 @@ class _SendSheetState extends State<SendSheet> {
             TextSpan(children: [
               TextSpan(
                 text: " ",
-                style: AppStyles.iconFontPrimaryMedium(context),
+                style: AppStyles.iconFontPrimarySmall(context),
               ),
               TextSpan(
                 text: contact.name.substring(1),
@@ -778,7 +812,7 @@ class _SendSheetState extends State<SendSheet> {
             maxLines: 1,
             stepGranularity: 0.1,
             textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 14),
           ),
         ),
       ),

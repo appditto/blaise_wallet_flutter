@@ -243,7 +243,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                         TextSpan(
                                           text: " ",
                                           style:
-                                              AppStyles.iconFontPrimaryMedium(
+                                              AppStyles.iconFontPrimarySmall(
                                                   context),
                                         ),
                                         TextSpan(
@@ -256,7 +256,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                       stepGranularity: 0.1,
                                       textAlign: TextAlign.end,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   )
