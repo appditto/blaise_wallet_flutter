@@ -122,6 +122,9 @@ dependencies:
   # QR scanning
   barcode_scan: ^1.0.0
 
+  # Push notifications
+  firebase_messaging: ^5.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

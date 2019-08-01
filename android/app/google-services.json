@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "786466973238",
+    "firebase_url": "https://blaise-a22fa.firebaseio.com",
+    "project_id": "blaise-a22fa",
+    "storage_bucket": "blaise-a22fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786466973238:android:59d3b6ab52a943d3",
+        "android_client_info": {
+          "package_name": "com.appditto.blaise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786466973238-luvav6kcq097806661753c4jh98q7dre.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb7sG6W-UFHg9Fbb5Mx3LaIkE5e3wxrwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786466973238-luvav6kcq097806661753c4jh98q7dre.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
