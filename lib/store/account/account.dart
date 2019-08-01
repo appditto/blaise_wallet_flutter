@@ -71,7 +71,7 @@ abstract class AccountBase with Store {
     /// Add operation if:
     /// 1) We don't have it
     /// 2) We do have it, but it has since been confirmed
-    if (!this.operations.contains(op) || this.operations.contains(op) && this.operations.singleWhere((nOp) => nOp == op).maturation == null && op.maturation != null) {
+    if (!this.operations.contains(op) || this.operations.contains(op) && this.operations.firstWhere((nOp) => nOp == op).maturation == null && op.maturation != null) {
       if (this.operations.contains(op)) {
         this.operations.remove(op);
       }
@@ -90,6 +90,8 @@ abstract class AccountBase with Store {
       this.operations.insertAll(0, pendings);
       // Update to display
       this.operationsToDisplay = getOperationsToDisplay();
+      // Refresh total wallet balance
+      EventTaxiImpl.singleton().fire(UpdateHistoryEvent());
     }
   }
 

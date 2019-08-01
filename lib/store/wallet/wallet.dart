@@ -51,6 +51,9 @@ abstract class WalletBase with Store {
   @observable
   String uuid;
 
+  @observable
+  AccountNumber activeAccount;
+
   @action
   Future<void> initializeRpc() async {
     this.rpcClient =
@@ -179,11 +182,11 @@ abstract class WalletBase with Store {
   }
 
   @action
-  Future<void> requestUpdate({AccountNumber accountNumber}) async {
+  Future<void> requestUpdate() async {
     String uuid = await sl.get<SharedPrefsUtil>().getUuid();
     AvailableCurrency curCurrency = await sl.get<SharedPrefsUtil>().getCurrency(Locale("en", "US"));
     sl.get<WSClient>().clearQueue();
-    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: accountNumber == null ? null : accountNumber.account));
+    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: this.activeAccount == null ? null : this.activeAccount.account));
     sl.get<WSClient>().processQueue();
   }
 

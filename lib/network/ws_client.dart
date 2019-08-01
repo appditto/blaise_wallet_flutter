@@ -14,7 +14,7 @@ import 'package:pascaldart/pascaldart.dart' as pd;
 
 import 'package:web_socket_channel/io.dart';
 import 'package:package_info/package_info.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -25,7 +25,7 @@ Map decodeJson(dynamic src) {
 
 // WSClient singleton
 class WSClient {
-  final Logger log = Logger("WSClient");
+  final Logger log = Logger();
 
   // For all requests we place them on a queue with expiry to be processed sequentially
   Queue<RequestItem> _requestQueue;
@@ -63,13 +63,13 @@ class WSClient {
       reconnectStream.cancel();
     }
     _isInRetryState = true;
-    log.fine("Retrying connection in 3 seconds...");
+    print("Retrying connection in 3 seconds...");
     Future<dynamic> delayed = new Future.delayed(new Duration(seconds: 3));
     delayed.then((_) {
       return true;
     });
     reconnectStream = delayed.asStream().listen((_) {
-      log.fine("Attempting connection to service");
+      print("Attempting connection to service");
       initCommunication(unsuspend: true);
       _isInRetryState = false;
     });
@@ -96,13 +96,13 @@ class WSClient {
                                headers: {
                                 'X-Client-Version': packageInfo.buildNumber
                                });
-      log.fine("Connected to service");
+      print("Connected to service");
       _isConnecting = false;
       _isConnected = true;
       EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.CONNECTED));
       _channel.stream.listen(_onMessageReceived, onDone: connectionClosed, onError: connectionClosedError);
     } catch(e){
-      log.severe("Error from service ${e.toString()}");
+      log.e("Error from service ${e.toString()}", e);
       _isConnected = false;
       _isConnecting = false;
       EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.DISCONNECTED));
@@ -114,7 +114,7 @@ class WSClient {
     _isConnected = false;
     _isConnecting = false;
     clearQueue();
-    log.fine("disconnected from service");
+    print("disconnected from service");
     // Send disconnected message
     EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.DISCONNECTED));
   }
@@ -124,7 +124,7 @@ class WSClient {
     _isConnected = false;
     _isConnecting = false;
     clearQueue();
-    log.fine("disconnected from service with error ${e.toString()}");
+    print("disconnected from service with error ${e.toString()}");
     // Send disconnected message
     EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.DISCONNECTED));
   }
@@ -170,7 +170,9 @@ class WSClient {
     await _lock.synchronized(() async {
       _isConnected = true;
       _isConnecting = false;
-      log.fine("Received ${message.length > 30 ? message.substring(0, 30) : message}");
+      // TODO showing full length for debugging
+      print(message);
+      //print("Received ${message.length > 30 ? message.substring(0, 30) : message}");
       Map msg = await compute(decodeJson, message);
       // Determine response type
       if (msg.containsKey("uuid") || msg.containsKey("currency") ||
@@ -195,20 +197,20 @@ class WSClient {
   /* Send Request */
   Future<void> sendRequest(BaseRequest request) async {
     // We don't care about order or server response in these requests
-    log.fine("sending ${json.encode(request.toJson())}");
+    print("sending ${json.encode(request.toJson())}");
     _send(await compute(encodeRequestItem, request));
   }
 
   /* Enqueue Request */
   void queueRequest(BaseRequest request) {
-    log.fine("requetest ${json.encode(request.toJson())}, q length: ${_requestQueue.length}");
+    print("requetest ${json.encode(request.toJson())}, q length: ${_requestQueue.length}");
     _requestQueue.add(new RequestItem(request));
   }
 
   /* Process Queue */
   Future<void> processQueue() async {
     await _lock.synchronized(() async {
-      log.fine("Request Queue length ${_requestQueue.length}");
+      print("Request Queue length ${_requestQueue.length}");
       if (_requestQueue != null && _requestQueue.length > 0) {
         RequestItem requestItem = _requestQueue.first;
         if (requestItem != null && !requestItem.isProcessing) {
@@ -220,7 +222,7 @@ class WSClient {
           }
           requestItem.isProcessing = true;
           String requestJson = await compute(encodeRequestItem, requestItem.request);
-          log.fine("Sending: $requestJson");
+          print("Sending: $requestJson");
           await _send(requestJson);
         } else if (requestItem != null && (DateTime
             .now()
