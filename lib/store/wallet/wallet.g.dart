@@ -164,6 +164,23 @@ mixin _$Wallet on WalletBase, Store {
     }, _$uuidAtom, name: '${_$uuidAtom.name}_set');
   }
 
+  final _$activeAccountAtom = Atom(name: 'WalletBase.activeAccount');
+
+  @override
+  AccountNumber get activeAccount {
+    _$activeAccountAtom.context.enforceReadPolicy(_$activeAccountAtom);
+    _$activeAccountAtom.reportObserved();
+    return super.activeAccount;
+  }
+
+  @override
+  set activeAccount(AccountNumber value) {
+    _$activeAccountAtom.context.conditionallyRunInAction(() {
+      super.activeAccount = value;
+      _$activeAccountAtom.reportChanged();
+    }, _$activeAccountAtom, name: '${_$activeAccountAtom.name}_set');
+  }
+
   final _$initializeRpcAsyncAction = AsyncAction('initializeRpc');
 
   @override
@@ -181,9 +198,8 @@ mixin _$Wallet on WalletBase, Store {
   final _$requestUpdateAsyncAction = AsyncAction('requestUpdate');
 
   @override
-  Future<void> requestUpdate({AccountNumber accountNumber}) {
-    return _$requestUpdateAsyncAction
-        .run(() => super.requestUpdate(accountNumber: accountNumber));
+  Future<void> requestUpdate() {
+    return _$requestUpdateAsyncAction.run(() => super.requestUpdate());
   }
 
   final _$WalletBaseActionController = ActionController(name: 'WalletBase');

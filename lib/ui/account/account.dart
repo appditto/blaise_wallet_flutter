@@ -71,6 +71,7 @@ class _AccountPageState extends State<AccountPage>
     this.accountState = walletState.getAccountState(widget.account);
     this.accountState.updateAccount();
     this.accountState.getAccountOperations();
+    walletState.activeAccount = widget.account.account;
     // Opacity Animation
     _opacityAnimationController = new AnimationController(
       duration: const Duration(milliseconds: 500),
@@ -87,7 +88,7 @@ class _AccountPageState extends State<AccountPage>
     // Contacts
     _updateContacts();
     // Subscribe for updates
-    walletState.requestUpdate(accountNumber: accountState.account.account);
+    walletState.requestUpdate();
   }
 
   void _animationStatusListener(AnimationStatus status) {
@@ -124,6 +125,7 @@ class _AccountPageState extends State<AccountPage>
     WidgetsBinding.instance.removeObserver(this);
     _disposeAnimations();
     _destroyBus();
+    walletState.activeAccount = null;
     super.dispose();
   }
 
@@ -136,8 +138,9 @@ class _AccountPageState extends State<AccountPage>
       case AppLifecycleState.resumed:
         // Do an auto-refresh
         if (_lastRefresh == null || DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 300) {
-          _refresh();
+          _refresh(socketUpdate: false);
         }
+        walletState.requestUpdate();
         super.didChangeAppLifecycleState(state);
         break;
       default:
@@ -245,7 +248,7 @@ class _AccountPageState extends State<AccountPage>
   }
 
   // Refresh list
-  Future<void> _refresh() async {
+  Future<void> _refresh({bool socketUpdate = true}) async {
     _lastRefresh = DateTime.now().toUtc();
     setState(() {
       _isRefreshing = true;
@@ -259,6 +262,9 @@ class _AccountPageState extends State<AccountPage>
         });
       }
     });
+    if (socketUpdate) {
+      walletState.requestUpdate();      
+    }
     this.accountState?.updateAccount();
     this.accountState?.getAccountOperations()?.whenComplete(() {
       if (mounted) {
@@ -867,7 +873,7 @@ class _AccountPageState extends State<AccountPage>
   Widget _buildAccountHistoryItem(PascalOperation op) {
     if (op.optype == OpType.TRANSACTION) {
       OperationType type;
-      if (op.amount.pasc < BigInt.zero) {
+      if (op.senders[0].sendingAccount == accountState.account.account) {
         type = OperationType.Sent;
       } else {
         type = OperationType.Received;
