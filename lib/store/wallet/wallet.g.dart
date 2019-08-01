@@ -178,6 +178,14 @@ mixin _$Wallet on WalletBase, Store {
     return _$loadWalletAsyncAction.run(() => super.loadWallet());
   }
 
+  final _$requestUpdateAsyncAction = AsyncAction('requestUpdate');
+
+  @override
+  Future<void> requestUpdate({AccountNumber accountNumber}) {
+    return _$requestUpdateAsyncAction
+        .run(() => super.requestUpdate(accountNumber: accountNumber));
+  }
+
   final _$WalletBaseActionController = ActionController(name: 'WalletBase');
 
   @override
@@ -247,6 +255,36 @@ mixin _$Wallet on WalletBase, Store {
     try {
       return super.getLocalCurrencyDisplay(
           currency: currency, amount: amount, decimalDigits: decimalDigits);
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void disconnect() {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.disconnect();
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void reconnect() {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.reconnect();
+    } finally {
+      _$WalletBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addNewOp(PascalOperation op) {
+    final _$actionInfo = _$WalletBaseActionController.startAction();
+    try {
+      return super.addNewOp(op);
     } finally {
       _$WalletBaseActionController.endAction(_$actionInfo);
     }

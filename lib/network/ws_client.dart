@@ -10,6 +10,7 @@ import 'package:blaise_wallet_flutter/network/model/request_item.dart';
 import 'package:blaise_wallet_flutter/network/model/response/price_response.dart';
 import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pascaldart/pascaldart.dart' as pd;
 
 import 'package:web_socket_channel/io.dart';
 import 'package:package_info/package_info.dart';
@@ -182,6 +183,10 @@ class WSClient {
         // Price info sent from server
         PriceResponse resp = PriceResponse.fromJson(msg);
         EventTaxiImpl.singleton().fire(PriceEvent(response: resp));
+      } else if (msg.containsKey("block") && msg.containsKey("ophash")) {
+        // Operation
+        pd.PascalOperation op = pd.PascalOperation.fromJson(msg);
+        EventTaxiImpl.singleton().fire(NewOperationEvent(operation: op));
       }
       return;
     });

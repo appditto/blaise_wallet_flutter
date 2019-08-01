@@ -1,4 +1,9 @@
+import 'dart:ui';
+
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.dart';
+import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
+import 'package:blaise_wallet_flutter/network/ws_client.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
@@ -161,8 +166,37 @@ abstract class WalletBase with Store {
     }
   }
 
+  /// Websocket Actions
+  // Websocket Methods
   @action
+  void disconnect() {
+    sl.get<WSClient>().reset(suspend: true);
+  }
 
+  @action
+  void reconnect() {
+    sl.get<WSClient>().initCommunication(unsuspend: true);
+  }
+
+  @action
+  Future<void> requestUpdate({AccountNumber accountNumber}) async {
+    String uuid = await sl.get<SharedPrefsUtil>().getUuid();
+    AvailableCurrency curCurrency = await sl.get<SharedPrefsUtil>().getCurrency(Locale("en", "US"));
+    sl.get<WSClient>().clearQueue();
+    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: accountNumber == null ? null : accountNumber.account));
+    sl.get<WSClient>().processQueue();
+  }
+
+  @action
+  void addNewOp(PascalOperation op) {
+    this.accountStateMap.forEach((k, acct) {
+      if (op.senders.isNotEmpty && op.senders[0].sendingAccount == acct.account.account) {
+        acct.addNewOperation(op);
+      } else if (op.receivers.isNotEmpty && op.receivers[0].receivingAccount == acct.account.account) {
+        acct.addNewOperation(op);
+      }
+    });
+  }
 
   @action
   void reset() {

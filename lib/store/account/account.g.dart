@@ -212,6 +212,26 @@ mixin _$Account on AccountBase, Store {
   }
 
   @override
+  void addNewOperation(PascalOperation op) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.addNewOperation(op);
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void diffAndSortOperations(List<PascalOperation> newOperationList) {
+    final _$actionInfo = _$AccountBaseActionController.startAction();
+    try {
+      return super.diffAndSortOperations(newOperationList);
+    } finally {
+      _$AccountBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   List<PascalOperation> getOperationsToDisplay() {
     final _$actionInfo = _$AccountBaseActionController.startAction();
     try {

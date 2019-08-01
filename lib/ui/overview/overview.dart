@@ -113,11 +113,11 @@ class _OverviewPageState extends State<OverviewPage>
     switch (state) {
       case AppLifecycleState.paused:
         setAppLockEvent();
-        StateContainer.of(context).disconnect();
+        walletState.disconnect();
         break;
       case AppLifecycleState.resumed:
         cancelLockEvent();
-        StateContainer.of(context).reconnect();
+        walletState.reconnect();
         super.didChangeAppLifecycleState(state);
         break;
       default:
@@ -199,7 +199,7 @@ class _OverviewPageState extends State<OverviewPage>
       _isRefreshing = true;
     });
     HapticUtil.success();
-    StateContainer.of(context).requestUpdate();
+    walletState.requestUpdate();
     // Hide refresh indicator after 3 seconds if no server response
     Future.delayed(new Duration(seconds: 3), () {
       if (mounted) {

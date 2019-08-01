@@ -86,6 +86,8 @@ class _AccountPageState extends State<AccountPage>
     _startAnimation();
     // Contacts
     _updateContacts();
+    // Subscribe for updates
+    walletState.requestUpdate(accountNumber: accountState.account.account);
   }
 
   void _animationStatusListener(AnimationStatus status) {

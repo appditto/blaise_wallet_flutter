@@ -67,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   StateContainer.of(context).curCurrency = currency;
                 });
-                StateContainer.of(context).requestUpdate();
+                walletState.requestUpdate();
               }
             });
             Navigator.of(context).pop();

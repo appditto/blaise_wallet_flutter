@@ -66,6 +66,28 @@ abstract class AccountBase with Store {
     return true;
   }
 
+  @action
+  void addNewOperation(PascalOperation op) {
+    if (!this.operations.contains(op)) {
+      this.operations.add(op);
+      // Re-sort this list
+      // Remove pendings
+      List<PascalOperation> pendings = this.operations.where((op) => op.maturation == null).toList();
+      this.operations.removeWhere((op) => op.maturation == null);
+      if (op.maturation != null) {
+        this.operations.add(op);
+      } else {
+        pendings.insert(0, op);
+      }
+      // Sort by time
+      this.operations.sort((a, b) => b.time.compareTo(a.time));
+      this.operations.insertAll(0, pendings);
+      // Update to display
+      this.operationsToDisplay = getOperationsToDisplay();
+    }
+  }
+
+  @action
   void diffAndSortOperations(List<PascalOperation> newOperationList) {
     // Get pendings
     List<PascalOperation> pendingOperations = newOperationList.where((op) => op.maturation == null).toList();

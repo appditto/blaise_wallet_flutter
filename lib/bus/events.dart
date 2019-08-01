@@ -9,3 +9,4 @@ export 'disable_lock_timeout_event.dart';
 export 'conn_status_event.dart';
 export 'subscribe_event.dart';
 export 'price_event.dart';
+export 'new_operation_event.dart';

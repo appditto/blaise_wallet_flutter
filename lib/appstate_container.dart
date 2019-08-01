@@ -134,6 +134,7 @@ class StateContainerState extends State<StateContainer> {
   StreamSubscription<ConnStatusEvent> _connStatusSub;
   StreamSubscription<SubscribeEvent> _subscribeEventSub;
   StreamSubscription<PriceEvent> _priceEventSub;
+  StreamSubscription<NewOperationEvent> _newOpSub;
 
   // Register RX event listenerss
   void _registerBus() {
@@ -147,10 +148,13 @@ class StateContainerState extends State<StateContainer> {
     });
     _connStatusSub = EventTaxiImpl.singleton().registerTo<ConnStatusEvent>().listen((event) {
       if (event.status == ConnectionStatus.CONNECTED) {
-        requestUpdate();
+        walletState.requestUpdate();
       } else if (event.status == ConnectionStatus.DISCONNECTED && !sl.get<WSClient>().suspended) {
         sl.get<WSClient>().initCommunication();
       }
+    });
+    _newOpSub = EventTaxiImpl.singleton().registerTo<NewOperationEvent>().listen((event) {
+      walletState.addNewOp(event.operation);
     });
   }
 
@@ -163,6 +167,9 @@ class StateContainerState extends State<StateContainer> {
     }
     if (_priceEventSub != null) {
       _priceEventSub.cancel();
+    }
+    if (_newOpSub != null) {
+      _newOpSub.cancel();
     }
   }
 
@@ -193,15 +200,6 @@ class StateContainerState extends State<StateContainer> {
     super.dispose();
   }
 
-  // Websocket Methods
-  void disconnect() {
-    sl.get<WSClient>().reset(suspend: true);
-  }
-
-  void reconnect() {
-    sl.get<WSClient>().initCommunication(unsuspend: true);
-  }
-
   /// Handle account_subscribe response
   void handleSubscribeResponse(SubscribeResponse response) {
     // Set currency locale here for the UI to access
@@ -218,13 +216,6 @@ class StateContainerState extends State<StateContainer> {
     walletState.localCurrencyPrice = response.price;
     walletState.btcPrice = response.btcPrice;
     sl.get<WSClient>().pop();
-    sl.get<WSClient>().processQueue();
-  }
-
-  Future<void> requestUpdate() async {
-    String uuid = await sl.get<SharedPrefsUtil>().getUuid();
-    sl.get<WSClient>().clearQueue();;
-    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid));
     sl.get<WSClient>().processQueue();
   }
 

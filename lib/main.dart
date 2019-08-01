@@ -245,7 +245,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         if (await sl.get<SharedPrefsUtil>().getLock() || await sl.get<SharedPrefsUtil>().shouldLock()) {
           Navigator.of(context).pushReplacementNamed('/lock_screen', arguments: TransitionOption.NONE);
         } else {
-          StateContainer.of(context).requestUpdate();
+          walletState.requestUpdate();
           Navigator.of(context).pushReplacementNamed('/overview',
              arguments: TransitionOption.NONE);
         }
