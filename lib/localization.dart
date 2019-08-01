@@ -355,6 +355,17 @@ class AppLocalization {
         name: 'enterPhoneNumberParagraph');
   }
 
+  String get enterConfirmationCodeParagraph {
+    return Intl.message("We have sent you a confirmation code, please enter it below.",
+        desc: 'A paragraph that tells users to enter the confirmation code to the text field below',
+        name: 'enterConfirmationCodeParagraph');
+  }
+
+  String get borrowAccountParagraph {
+    return Intl.message("To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% PASCAL (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 PASCAL</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
+        desc: 'A paragraph that explains the process of borrowing & buying an account',
+        name: 'borrowAccountParagraph');
+  }
   // **** PARAGRAPHS END **** //
 }
 
