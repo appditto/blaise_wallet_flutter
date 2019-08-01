@@ -292,6 +292,70 @@ class AppLocalization {
         desc: 'A button to delete the private key and logout',
         name: 'deletePrivateKeyAndLogout');
   }
+  // **** BUTTONS END **** //
+
+  // **** PARAGRAPHS **** //
+  String get welcomeParagraph {
+    return Intl.message("Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
+        desc: 'A paragraph that greets the user in the initial opening',
+        name: 'welcomeParagraph');
+  }
+
+  String get newKeySecurityParagraph {
+    return Intl.message("In the next screen, you'll see your new private key. It is a password to access your funds. It is crucial that you back it up and never share it with anyone.",
+        desc: 'A paragraph that explains what users should do with their new private key',
+        name: 'newKeySecurityParagraph');
+  }
+
+  String get uninstallDisclaimerParagraph {
+    return Intl.message("If you lose your device or uninstall Blaise Wallet, you'll need your private key to recover your funds.",
+        desc: 'A paragraph that gives a security disclaimer about what happens if the wallet is uninstalled',
+        name: 'uninstallDisclaimerParagraph');
+  }
+
+  String get newKeyParagraph {
+    return Intl.message("Below is your new wallet’s private key. It is crucial that you backup your private key and never store it as plaintext or a screenshot. We recommend writing it on a piece of paper and storing it offline.",
+        desc: 'A paragraph that explains what users should do with their new private key',
+        name: 'newKeyParagraph');
+  }
+
+  String get newKeyConfirmParagraph {
+    return Intl.message("Are you sure that you have backed up your new wallet’s private key?",
+        desc: 'A paragraph to confirm if the new private key is backed up',
+        name: 'newKeyConfirmParagraph');
+  }
+
+  String get newWalletGreetingParagraph {
+    return Intl.message("Welcome to <colored>Blaise Wallet</colored>.\nYou can start by getting an account.",
+        desc: 'A paragraph to greet the user when a new wallet is created',
+        name: 'newWalletGreetingParagraph');
+  }
+
+  String get getAccountFirstParagraph {
+    return Intl.message("There are 2 options for getting your first account\n\n",
+        desc: 'The first paragraph of the explanation for the process of getting an account',
+        name: 'getAccountFirstParagraph');
+  }
+
+  String get getAccountSecondParagraph {
+    return Intl.message("1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>\n\n",
+        desc: 'The second paragraph of the explanation for the process of getting an account',
+        name: 'getAccountSecondParagraph');
+  }
+
+  String get getAccountThirdParagraph {
+    return Intl.message("2- You can buy as many accounts as you want for <colored>%1 PASCAL (%2).</colored>",
+        desc: 'The third paragraph of the explanation for the process of getting an account',
+        name: 'getAccountThirdParagraph');
+  }
+
+  String get enterPhoneNumberParagraph {
+    return Intl.message("Enter your phone number below.",
+        desc: 'A paragraph that tells users to enter their phone number to the text field below',
+        name: 'enterPhoneNumberParagraph');
+  }
+
+  // **** PARAGRAPHS END **** //
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalization> {
