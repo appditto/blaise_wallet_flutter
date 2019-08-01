@@ -68,7 +68,13 @@ abstract class AccountBase with Store {
 
   @action
   void addNewOperation(PascalOperation op) {
-    if (!this.operations.contains(op)) {
+    /// Add operation if:
+    /// 1) We don't have it
+    /// 2) We do have it, but it has since been confirmed
+    if (!this.operations.contains(op) || this.operations.contains(op) && this.operations.singleWhere((nOp) => nOp == op).maturation == null && op.maturation != null) {
+      if (this.operations.contains(op)) {
+        this.operations.remove(op);
+      }
       this.operations.add(op);
       // Re-sort this list
       // Remove pendings
