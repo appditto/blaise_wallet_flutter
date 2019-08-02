@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
@@ -9,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta_with_accounts.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/account_card.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
@@ -47,14 +49,14 @@ class _OverviewPageState extends State<OverviewPage>
 
   // Firebase Instance
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  bool pnRegistered = false;
+  int accountToLogin; // Account to login after a notification
 
   Future<void> walletLoad() async {
     try {
       await walletState?.loadWallet();
-      if (!pnRegistered) {
-        pnRegistered = true;
-        registerPushNotifications();
+      if (accountToLogin != null && !walletState.walletLoading) {
+        _switchToAccount(accountToLogin);
+        accountToLogin = null;
       }
     } catch (e) {
       if (mounted) {
@@ -135,16 +137,27 @@ class _OverviewPageState extends State<OverviewPage>
     }
   }
 
-  void _chooseCorrectAccountFromNotification(Map<String, dynamic> message) {
+  void _switchToAccount(int account) {
+    walletState.walletAccounts.forEach((acct) {
+      print("wallet account ${acct.account.account}");
+      if (acct.account.account == account) {
+        print("Pushing account");
+        Navigator.popUntil(context, RouteUtils.withNameLike('/overview'));
+        Navigator.pushNamed(context, '/account',
+                arguments: acct);
+      }
+    });    
+  }
+
+  void _chooseCorrectAccountFromNotification(dynamic message) {
     if (message.containsKey("account")) {
       int account = int.tryParse(message['account']);
       if (account != null) {
-        walletState.walletAccounts.forEach((acct) {
-          if (acct.account.account == account) {
-            Navigator.pushNamed(context, '/account',
-                    arguments: acct);
-          }
-        });
+        if (!walletState.walletLoading) {
+          _switchToAccount(account);
+        } else {
+          accountToLogin = account;
+        }
       }
     }
   }
@@ -152,14 +165,15 @@ class _OverviewPageState extends State<OverviewPage>
   void registerPushNotifications() {
     // Register push notifications
     _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
       onLaunch: (Map<String, dynamic> message) async {
-        _chooseCorrectAccountFromNotification(message);
+        if (message.containsKey('data')) {
+          _chooseCorrectAccountFromNotification(message['data']);
+        }
       },
       onResume: (Map<String, dynamic> message) async {
-        _chooseCorrectAccountFromNotification(message);
+        if (message.containsKey('data')) {
+          _chooseCorrectAccountFromNotification(message['data']);
+        }
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
@@ -182,6 +196,7 @@ class _OverviewPageState extends State<OverviewPage>
   void initState() {
     super.initState();
     _registerBus();
+    registerPushNotifications();
     WidgetsBinding.instance.addObserver(this);
     _isRefreshing = false;
     _lockDisabled = false;

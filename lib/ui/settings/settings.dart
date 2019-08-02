@@ -85,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
           option: setting.getDisplayName(context),
           action: () {
             if (setting != _curNotificiationSetting) {
-              sl.get<SharedPrefsUtil>().setNotificationsOn(setting.setting == NotificationOptions.OFF).then((result) {
+              sl.get<SharedPrefsUtil>().setNotificationsOn(setting.setting == NotificationOptions.ON).then((result) {
                 setState(() {
                   _curNotificiationSetting = setting;
                 });
