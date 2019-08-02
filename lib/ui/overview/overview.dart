@@ -50,6 +50,7 @@ class _OverviewPageState extends State<OverviewPage>
   // Firebase Instance
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   int accountToLogin; // Account to login after a notification
+  bool walletLoaded;
 
   Future<void> walletLoad() async {
     try {
@@ -57,6 +58,10 @@ class _OverviewPageState extends State<OverviewPage>
       if (accountToLogin != null && !walletState.walletLoading) {
         _switchToAccount(accountToLogin);
         accountToLogin = null;
+      }
+      if (!walletLoaded) {
+        walletLoaded = true;
+        walletState.fcmUpdateBulk();
       }
     } catch (e) {
       if (mounted) {
@@ -138,15 +143,21 @@ class _OverviewPageState extends State<OverviewPage>
   }
 
   void _switchToAccount(int account) {
+    bool exists = false;
     walletState.walletAccounts.forEach((acct) {
-      print("wallet account ${acct.account.account}");
-      if (acct.account.account == account && walletState.activeAccount != AccountNumber.fromInt(account)) {
-        print("Pushing account");
-        Navigator.popUntil(context, RouteUtils.withNameLike('/overview'));
-        Navigator.pushNamed(context, '/account',
-                arguments: acct);
+      if (acct.account.account == account) {
+        exists = true;
+        if (walletState.activeAccount != AccountNumber.fromInt(account)) {
+          Navigator.popUntil(context, RouteUtils.withNameLike('/overview'));
+          Navigator.pushNamed(context, '/account',
+                  arguments: acct);
+        }
       }
-    });    
+    });   
+    // Disable notifications for this acct
+    if (!exists) {
+      walletState.fcmDeleteAccount(AccountNumber.fromInt(account));
+    } 
   }
 
   void _chooseCorrectAccountFromNotification(dynamic message) {
@@ -195,6 +206,7 @@ class _OverviewPageState extends State<OverviewPage>
   @override
   void initState() {
     super.initState();
+    walletLoaded = false;
     _registerBus();
     registerPushNotifications();
     WidgetsBinding.instance.addObserver(this);

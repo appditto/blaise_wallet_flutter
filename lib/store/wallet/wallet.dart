@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/network/model/request/fcm_delete_account_request.dart';
+import 'package:blaise_wallet_flutter/network/model/request/fcm_update_bulk_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_update_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.dart';
 import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
@@ -115,6 +117,7 @@ abstract class WalletBase with Store {
     this.totalWalletBalance -= account.balance;
     this.walletAccounts.removeWhere((acct) => acct == account);
     this.accountStateMap.remove(account.account.account);
+    this.fcmDeleteAccount(account.account);
   }
 
   @action
@@ -199,6 +202,26 @@ abstract class WalletBase with Store {
     bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
     String fcmToken = await FirebaseMessaging().getToken();
     sl.get<WSClient>().sendRequest(FcmUpdateRequest(account: account.account, enabled: enabled, fcmToken: fcmToken));
+  }
+
+  @action
+  Future<void> fcmDeleteAccount(AccountNumber account) async {
+    String fcmToken = await FirebaseMessaging().getToken();
+    sl.get<WSClient>().sendRequest(FcmDeleteAccountRequest(account: account.account, fcmToken: fcmToken));
+  }
+
+  @action
+  Future<void> fcmUpdateBulk() async {
+    if (walletLoading) {
+      return;
+    }
+    bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
+    String fcmToken = await FirebaseMessaging().getToken();
+    List<int> accounts = [];
+    for (PascalAccount acct in walletAccounts) {
+      accounts.add(acct.account.account);
+    }
+    sl.get<WSClient>().sendRequest(FcmUpdateBulkRequest(accounts: accounts, enabled: enabled, fcmToken: fcmToken));
   }
 
   @action

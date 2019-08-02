@@ -89,10 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   _curNotificiationSetting = setting;
                 });
-                // TODO we should probably pass a list for less websocket requests
-                walletState.walletAccounts.forEach((acct) {
-                  walletState.fcmUpdate(acct.account);
-                });
+                walletState.fcmUpdateBulk();
               });
             }
             Navigator.of(context).pop();

@@ -209,6 +209,21 @@ mixin _$Wallet on WalletBase, Store {
     return _$fcmUpdateAsyncAction.run(() => super.fcmUpdate(account));
   }
 
+  final _$fcmDeleteAccountAsyncAction = AsyncAction('fcmDeleteAccount');
+
+  @override
+  Future<void> fcmDeleteAccount(AccountNumber account) {
+    return _$fcmDeleteAccountAsyncAction
+        .run(() => super.fcmDeleteAccount(account));
+  }
+
+  final _$fcmUpdateBulkAsyncAction = AsyncAction('fcmUpdateBulk');
+
+  @override
+  Future<void> fcmUpdateBulk() {
+    return _$fcmUpdateBulkAsyncAction.run(() => super.fcmUpdateBulk());
+  }
+
   final _$WalletBaseActionController = ActionController(name: 'WalletBase');
 
   @override
