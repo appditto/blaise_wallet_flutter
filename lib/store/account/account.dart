@@ -75,16 +75,11 @@ abstract class AccountBase with Store {
       if (this.operations.contains(op)) {
         this.operations.remove(op);
       }
-      this.operations.add(op);
+      this.operations.insert(0, op);
       // Re-sort this list
       // Remove pendings
       List<PascalOperation> pendings = this.operations.where((op) => op.maturation == null).toList();
       this.operations.removeWhere((op) => op.maturation == null);
-      if (op.maturation != null) {
-        this.operations.add(op);
-      } else {
-        pendings.insert(0, op);
-      }
       // Sort by time
       this.operations.sort((a, b) => b.time.compareTo(a.time));
       this.operations.insertAll(0, pendings);
