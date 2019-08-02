@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/network/model/request/fcm_update_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.dart';
 import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
 import 'package:blaise_wallet_flutter/network/ws_client.dart';
@@ -8,6 +9,7 @@ import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:logger/logger.dart';
@@ -185,9 +187,18 @@ abstract class WalletBase with Store {
   Future<void> requestUpdate() async {
     String uuid = await sl.get<SharedPrefsUtil>().getUuid();
     AvailableCurrency curCurrency = await sl.get<SharedPrefsUtil>().getCurrency(Locale("en", "US"));
+    String fcmToken = await FirebaseMessaging().getToken();
+    bool notificationsEnabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
     sl.get<WSClient>().clearQueue();
-    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: this.activeAccount == null ? null : this.activeAccount.account));
+    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: this.activeAccount == null ? null : this.activeAccount.account, fcmToken: fcmToken, notificationEnabled: notificationsEnabled));
     sl.get<WSClient>().processQueue();
+  }
+
+  @action
+  Future<void> fcmUpdate(AccountNumber account) async {
+    bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
+    String fcmToken = await FirebaseMessaging().getToken();
+    sl.get<WSClient>().sendRequest(FcmUpdateRequest(account: account.account, enabled: enabled, fcmToken: fcmToken));
   }
 
   @action

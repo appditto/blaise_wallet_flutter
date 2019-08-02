@@ -89,6 +89,8 @@ class _AccountPageState extends State<AccountPage>
     _updateContacts();
     // Subscribe for updates
     walletState.requestUpdate();
+    // Update FCM token
+    walletState.fcmUpdate(widget.account.account);
   }
 
   void _animationStatusListener(AnimationStatus status) {

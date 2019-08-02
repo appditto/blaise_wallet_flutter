@@ -202,6 +202,13 @@ mixin _$Wallet on WalletBase, Store {
     return _$requestUpdateAsyncAction.run(() => super.requestUpdate());
   }
 
+  final _$fcmUpdateAsyncAction = AsyncAction('fcmUpdate');
+
+  @override
+  Future<void> fcmUpdate(AccountNumber account) {
+    return _$fcmUpdateAsyncAction.run(() => super.fcmUpdate(account));
+  }
+
   final _$WalletBaseActionController = ActionController(name: 'WalletBase');
 
   @override

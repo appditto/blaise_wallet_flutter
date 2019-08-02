@@ -1,22 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'subscribe_request.dart';
+part of 'fcm_update_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SubscribeRequest _$SubscribeRequestFromJson(Map<String, dynamic> json) {
-  return SubscribeRequest(
-      action: json['action'] as String,
+FcmUpdateRequest _$FcmUpdateRequestFromJson(Map<String, dynamic> json) {
+  return FcmUpdateRequest(
       account: json['account'] as int,
-      currency: json['currency'] as String,
-      uuid: json['uuid'] as String,
       fcmToken: json['fcm_token'] as String,
-      notificationEnabled: json['notification_enabled'] as bool);
+      enabled: json['enabled'] as bool)
+    ..action = json['action'] as String;
 }
 
-Map<String, dynamic> _$SubscribeRequestToJson(SubscribeRequest instance) {
+Map<String, dynamic> _$FcmUpdateRequestToJson(FcmUpdateRequest instance) {
   final val = <String, dynamic>{
     'action': instance.action,
   };
@@ -28,9 +26,7 @@ Map<String, dynamic> _$SubscribeRequestToJson(SubscribeRequest instance) {
   }
 
   writeNotNull('account', instance.account);
-  writeNotNull('currency', instance.currency);
-  writeNotNull('uuid', instance.uuid);
   writeNotNull('fcm_token', instance.fcmToken);
-  writeNotNull('notification_enabled', instance.notificationEnabled);
+  val['enabled'] = instance.enabled;
   return val;
 }

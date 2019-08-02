@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/bus/daemon_changed_event.dart';
 import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/model/notification_enabled.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
@@ -76,9 +77,34 @@ class _SettingsPageState extends State<SettingsPage> {
     return ret;
   }
 
+  List<DialogListItem> getNotificationList() {
+    List<DialogListItem> ret = [];
+    NotificationOptions.values.forEach((NotificationOptions value) {
+      NotificationSetting setting = NotificationSetting(value);
+      ret.add(DialogListItem(
+          option: setting.getDisplayName(context),
+          action: () {
+            if (setting != _curNotificiationSetting) {
+              sl.get<SharedPrefsUtil>().setNotificationsOn(setting.setting == NotificationOptions.OFF).then((result) {
+                setState(() {
+                  _curNotificiationSetting = setting;
+                });
+                // TODO we should probably pass a list for less websocket requests
+                walletState.walletAccounts.forEach((acct) {
+                  walletState.fcmUpdate(acct.account);
+                });
+              });
+            }
+            Navigator.of(context).pop();
+          }));
+    });
+    return ret;
+  }
 
   String daemonURL;
   String versionString = "";
+  NotificationSetting _curNotificiationSetting =
+      NotificationSetting(NotificationOptions.ON);
 
   @override
   void initState() {
@@ -103,6 +129,14 @@ class _SettingsPageState extends State<SettingsPage> {
             Navigator.pop(context);
           }),
     ];
+    // Get default notification setting
+    sl.get<SharedPrefsUtil>().getNotificationsOn().then((notificationsOn) {
+      setState(() {
+        _curNotificiationSetting = notificationsOn
+            ? NotificationSetting(NotificationOptions.ON)
+            : NotificationSetting(NotificationOptions.OFF);
+      });
+    });
   }
 
   @override
@@ -264,6 +298,18 @@ class _SettingsPageState extends State<SettingsPage> {
                                   builder: (_) => DialogOverlay(
                                       title: 'Theme',
                                       optionsList: getThemeList()));
+                            },
+                          ),
+                          SettingsListItem(
+                            header: "Notifications",
+                            subheader: _curNotificiationSetting.getDisplayName(context),
+                            icon: AppIcons.notifications,
+                            onPressed: () {
+                              showAppDialog(
+                                  context: context,
+                                  builder: (_) => DialogOverlay(
+                                      title: 'Notifications',
+                                      optionsList: getNotificationList()));
                             },
                           ),
                           SettingsListItem(

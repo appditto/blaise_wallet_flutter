@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/constants.dart';
@@ -32,6 +33,8 @@ class SharedPrefsUtil {
   static const String cur_currency = 'blaise_currency_pref';
   // UUID for our WS subscription
   static const String app_uuid_key = 'blaise_app_uuid';
+  // Push notifications
+  static const String notification_enabled = 'blaise_notification_on';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -222,6 +225,21 @@ class SharedPrefsUtil {
 
   Future<String> getUuid() async {
     return await get(app_uuid_key);
+  }
+
+  Future<void> setNotificationsOn(bool value) async {
+    return await set(notification_enabled, value);
+  }
+
+  Future<bool> getNotificationsOn() async {
+    // Notifications off by default on iOS, 
+    bool defaultValue = Platform.isIOS ? false : true;
+    return await get(notification_enabled, defaultValue: defaultValue);
+  }
+
+  /// If notifications have been set by user/app
+  Future<bool> getNotificationsSet() async {
+    return await get(notification_enabled, defaultValue: null) == null ? false : true;
   }
 
   // For logging out

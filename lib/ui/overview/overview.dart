@@ -22,6 +22,7 @@ import 'package:blaise_wallet_flutter/util/haptic_util.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:event_taxi/event_taxi.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -44,9 +45,17 @@ class _OverviewPageState extends State<OverviewPage>
   // Whether to lock app
   bool _lockDisabled;
 
+  // Firebase Instance
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  bool pnRegistered = false;
+
   Future<void> walletLoad() async {
     try {
       await walletState?.loadWallet();
+      if (!pnRegistered) {
+        pnRegistered = true;
+        registerPushNotifications();
+      }
     } catch (e) {
       if (mounted) {
         UIUtil.showSnackbar("Did not get a response from server", context);
@@ -124,6 +133,49 @@ class _OverviewPageState extends State<OverviewPage>
         super.didChangeAppLifecycleState(state);
         break;
     }
+  }
+
+  void _chooseCorrectAccountFromNotification(Map<String, dynamic> message) {
+    if (message.containsKey("account")) {
+      int account = int.tryParse(message['account']);
+      if (account != null) {
+        walletState.walletAccounts.forEach((acct) {
+          if (acct.account.account == account) {
+            Navigator.pushNamed(context, '/account',
+                    arguments: acct);
+          }
+        });
+      }
+    }
+  }
+
+  void registerPushNotifications() {
+    // Register push notifications
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        _chooseCorrectAccountFromNotification(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        _chooseCorrectAccountFromNotification(message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      if (settings.alert || settings.badge || settings.sound) {
+        sl.get<SharedPrefsUtil>().getNotificationsSet().then((beenSet) {
+          if (!beenSet) {
+            sl.get<SharedPrefsUtil>().setNotificationsOn(true);
+          }
+        });
+      } else {
+        sl.get<SharedPrefsUtil>().setNotificationsOn(false);
+      }
+    });   
   }
 
   @override

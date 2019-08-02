@@ -367,6 +367,14 @@ class AppLocalization {
         name: 'borrowAccountParagraph');
   }
   // **** PARAGRAPHS END **** //
+
+  String get onStr {
+    return Intl.message("On", desc: "On", name: "onStr");
+  }
+
+  String get offStr {
+    return Intl.message("Off", desc: "Off", name: "offStr");
+  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalization> {
