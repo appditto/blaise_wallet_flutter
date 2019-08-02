@@ -79,7 +79,7 @@ abstract class WalletBase with Store {
     // Get total balance and list of accounts
     // TODO - pagination?
     FindAccountsRequest findAccountsRequest = FindAccountsRequest(
-        b58Pubkey: PublicKeyCoder().encodeToBase58(this.publicKey), max: 10);
+        b58Pubkey: PublicKeyCoder().encodeToBase58(this.publicKey), max: 25);
     RPCResponse resp = await this.rpcClient.makeRpcRequest(findAccountsRequest);
     if (resp.isError) {
       ErrorResponse err = resp;
@@ -211,11 +211,11 @@ abstract class WalletBase with Store {
   }
 
   @action
-  Future<void> fcmUpdateBulk() async {
+  Future<void> fcmUpdateBulk({bool forceDisable = false}) async {
     if (walletLoading) {
       return;
     }
-    bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
+    bool enabled = forceDisable ? false : await sl.get<SharedPrefsUtil>().getNotificationsOn();
     String fcmToken = await FirebaseMessaging().getToken();
     List<int> accounts = [];
     for (PascalAccount acct in walletAccounts) {
@@ -238,6 +238,7 @@ abstract class WalletBase with Store {
   @action
   void reset() {
     // Reset all properties (for when logging out, etc)
+    this.fcmUpdateBulk(forceDisable: true);
     this.walletLoading = true;
     this.totalWalletBalance = Currency('0');
     this.rpcClient = null;
