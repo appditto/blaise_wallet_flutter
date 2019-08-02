@@ -140,7 +140,7 @@ class _OverviewPageState extends State<OverviewPage>
   void _switchToAccount(int account) {
     walletState.walletAccounts.forEach((acct) {
       print("wallet account ${acct.account.account}");
-      if (acct.account.account == account) {
+      if (acct.account.account == account && walletState.activeAccount != AccountNumber.fromInt(account)) {
         print("Pushing account");
         Navigator.popUntil(context, RouteUtils.withNameLike('/overview'));
         Navigator.pushNamed(context, '/account',
