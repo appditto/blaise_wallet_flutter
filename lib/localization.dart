@@ -295,6 +295,7 @@ class AppLocalization {
   // **** BUTTONS END **** //
 
   // **** PARAGRAPHS **** //
+  // New Private Key
   String get welcomeParagraph {
     return Intl.message("Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
         desc: 'A paragraph that greets the user in the initial opening',
@@ -332,13 +333,13 @@ class AppLocalization {
   }
 
   String get getAccountFirstParagraph {
-    return Intl.message("There are 2 options for getting your first account\n\n",
+    return Intl.message("There are 2 options for getting your first account",
         desc: 'The first paragraph of the explanation for the process of getting an account',
         name: 'getAccountFirstParagraph');
   }
 
   String get getAccountSecondParagraph {
-    return Intl.message("1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>\n\n",
+    return Intl.message("1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>",
         desc: 'The second paragraph of the explanation for the process of getting an account',
         name: 'getAccountSecondParagraph');
   }
@@ -365,7 +366,57 @@ class AppLocalization {
     return Intl.message("To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% PASCAL (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 PASCAL</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
         desc: 'A paragraph that explains the process of borrowing & buying an account',
         name: 'borrowAccountParagraph');
+  } 
+  // New Private Key End
+
+  // Import Private Key
+  String get importKeyParagraph {
+    return Intl.message("Enter your private key below.",
+        desc: 'A paragraph that tells the user to enter their private key to the text field below',
+        name: 'importKeyParagraph');
   }
+  String get changeDaemonParagraph {
+    return Intl.message("Enter an address to use a different Pascal daemon for RPC requests.",
+        desc: 'A paragraph that tells the user to enter a new daemon address below',
+        name: 'changeDaemonParagraph');
+  }
+  String get backupKeyFirstParagraph {
+    return Intl.message("You have 2 options for backing up your private key:",
+        desc: 'The first paragraph of the explanation for the process of backing up the private key',
+        name: 'backupKeyFirstParagraph');
+  }
+  String get backupKeySecondParagraph {
+    return Intl.message("1- Encrypted, which means it is protected by a password.",
+        desc: 'The second paragraph of the explanation for the process of backing up the private key',
+        name: 'backupKeySecondParagraph');
+  }
+  String get backupKeyThirdParagraph {
+    return Intl.message("2- Unencrypted, which means it is raw and not protected by a password.",
+        desc: 'The third paragraph of the explanation for the process of backing up the private key',
+        name: 'backupKeyThirdParagraph');
+  }
+  String get backupKeyFourthParagraph {
+    return Intl.message("We recommend storing the unencrypted version offline, by writing it on a piece of paper. You can store the encrypted version on a password manager for your convenience.",
+        desc: 'The fourth paragraph of the explanation for the process of backing up the private key',
+        name: 'backupKeyFourthParagraph');
+  }
+  String get encryptKeyParagraph {
+    return Intl.message("Create a new password to encrypt your private key.",
+        desc: 'A paragraph that tells the user to create a new password to encrypt their key',
+        name: 'encryptKeyParagraph');
+  }
+  String get backupEncryptedKeyFirstParagraph {
+    return Intl.message("Below is your encrypted private key. It is protected by a password. You can store it safely on a password manager for your convenience.",
+        desc: 'A paragraph that explains how an encrypted private key can be backed up',
+        name: 'backupEncryptedKeyFirstParagraph');
+  }
+  String get backupEncryptedKeyFirstParagraph {
+    return Intl.message("Below is your encrypted private key. It is protected by a password. You can store it safely on a password manager for your convenience.",
+        desc: 'A paragraph that explains how an encrypted private key can be backed up',
+        name: 'backupEncryptedKeyFirstParagraph');
+  }
+  // Import Private Key End
+
   // **** PARAGRAPHS END **** //
 
   String get onStr {
