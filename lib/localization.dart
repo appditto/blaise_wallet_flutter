@@ -64,6 +64,12 @@ class AppLocalization {
         desc: 'A button to copy something', name: 'copy');
   }
 
+  String get copied {
+    return Intl.message("Copied",
+        desc: 'A button to inform the user that something has been copied',
+        name: 'copied');
+  }
+
   String get iHaveBackedItUp {
     return Intl.message("I've Backed It Up",
         desc: 'A button to confirm that something is backed up',
@@ -134,6 +140,12 @@ class AppLocalization {
   String get copyAddress {
     return Intl.message("Copy Address",
         desc: 'A button to copy an address', name: 'copyAddress');
+  }
+
+  String get copiedAddress {
+    return Intl.message("Address Copied",
+        desc: 'A button to inform the user that the address has been copied',
+        name: 'copiedAddress');
   }
 
   String get addToContacts {
@@ -295,127 +307,301 @@ class AppLocalization {
   // **** BUTTONS END **** //
 
   // **** PARAGRAPHS **** //
-  // New Private Key
+
   String get welcomeParagraph {
-    return Intl.message("Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
+    return Intl.message(
+        "Welcome to Blaise Wallet. To begin, you can create a new private key or import one.",
         desc: 'A paragraph that greets the user in the initial opening',
         name: 'welcomeParagraph');
   }
 
   String get newKeySecurityParagraph {
-    return Intl.message("In the next screen, you'll see your new private key. It is a password to access your funds. It is crucial that you back it up and never share it with anyone.",
-        desc: 'A paragraph that explains what users should do with their new private key',
+    return Intl.message(
+        "In the next screen, you'll see your new private key. It is a password to access your funds. It is crucial that you back it up and never share it with anyone.",
+        desc:
+            'A paragraph that explains what users should do with their new private key',
         name: 'newKeySecurityParagraph');
   }
 
   String get uninstallDisclaimerParagraph {
-    return Intl.message("If you lose your device or uninstall Blaise Wallet, you'll need your private key to recover your funds.",
-        desc: 'A paragraph that gives a security disclaimer about what happens if the wallet is uninstalled',
+    return Intl.message(
+        "If you lose your device or uninstall Blaise Wallet, you'll need your private key to recover your funds.",
+        desc:
+            'A paragraph that gives a security disclaimer about what happens if the wallet is uninstalled',
         name: 'uninstallDisclaimerParagraph');
   }
 
   String get newKeyParagraph {
-    return Intl.message("Below is your new wallet’s private key. It is crucial that you backup your private key and never store it as plaintext or a screenshot. We recommend writing it on a piece of paper and storing it offline.",
-        desc: 'A paragraph that explains what users should do with their new private key',
+    return Intl.message(
+        "Below is your new wallet’s private key. It is crucial that you backup your private key and never store it as plaintext or a screenshot. We recommend writing it on a piece of paper and storing it offline.",
+        desc:
+            'A paragraph that explains what users should do with their new private key',
         name: 'newKeyParagraph');
   }
 
   String get newKeyConfirmParagraph {
-    return Intl.message("Are you sure that you have backed up your new wallet’s private key?",
+    return Intl.message(
+        "Are you sure that you have backed up your new wallet’s private key?",
         desc: 'A paragraph to confirm if the new private key is backed up',
         name: 'newKeyConfirmParagraph');
   }
 
   String get newWalletGreetingParagraph {
-    return Intl.message("Welcome to <colored>Blaise Wallet</colored>.\nYou can start by getting an account.",
+    return Intl.message(
+        "Welcome to <colored>Blaise Wallet</colored>.\nYou can start by getting an account.",
         desc: 'A paragraph to greet the user when a new wallet is created',
         name: 'newWalletGreetingParagraph');
   }
 
   String get getAccountFirstParagraph {
     return Intl.message("There are 2 options for getting your first account",
-        desc: 'The first paragraph of the explanation for the process of getting an account',
+        desc:
+            'The first paragraph of the explanation for the process of getting an account',
         name: 'getAccountFirstParagraph');
   }
 
   String get getAccountSecondParagraph {
-    return Intl.message("1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>",
-        desc: 'The second paragraph of the explanation for the process of getting an account',
+    return Intl.message(
+        "1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>",
+        desc:
+            'The second paragraph of the explanation for the process of getting an account',
         name: 'getAccountSecondParagraph');
   }
 
   String get getAccountThirdParagraph {
-    return Intl.message("2- You can buy as many accounts as you want for <colored>%1 PASCAL (%2).</colored>",
-        desc: 'The third paragraph of the explanation for the process of getting an account',
+    return Intl.message(
+        "2- You can buy as many accounts as you want for <colored>%1 PASCAL (%2).</colored>",
+        desc:
+            'The third paragraph of the explanation for the process of getting an account',
         name: 'getAccountThirdParagraph');
   }
 
   String get enterPhoneNumberParagraph {
     return Intl.message("Enter your phone number below.",
-        desc: 'A paragraph that tells users to enter their phone number to the text field below',
+        desc:
+            'A paragraph that tells users to enter their phone number to the text field below',
         name: 'enterPhoneNumberParagraph');
   }
 
   String get enterConfirmationCodeParagraph {
-    return Intl.message("We have sent you a confirmation code, please enter it below.",
-        desc: 'A paragraph that tells users to enter the confirmation code to the text field below',
+    return Intl.message(
+        "We have sent you a confirmation code, please enter it below.",
+        desc:
+            'A paragraph that tells users to enter the confirmation code to the text field below',
         name: 'enterConfirmationCodeParagraph');
   }
 
   String get borrowAccountParagraph {
-    return Intl.message("To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% PASCAL (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 PASCAL</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
-        desc: 'A paragraph that explains the process of borrowing & buying an account',
+    return Intl.message(
+        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% PASCAL (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 PASCAL</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
+        desc:
+            'A paragraph that explains the process of borrowing & buying an account',
         name: 'borrowAccountParagraph');
-  } 
-  // New Private Key End
+  }
 
-  // Import Private Key
   String get importKeyParagraph {
     return Intl.message("Enter your private key below.",
-        desc: 'A paragraph that tells the user to enter their private key to the text field below',
+        desc:
+            'A paragraph that tells the user to enter their private key to the text field below',
         name: 'importKeyParagraph');
   }
+
+  // Settings Related Paragraphs
   String get changeDaemonParagraph {
-    return Intl.message("Enter an address to use a different Pascal daemon for RPC requests.",
-        desc: 'A paragraph that tells the user to enter a new daemon address below',
+    return Intl.message(
+        "Enter an address to use a different Pascal daemon for RPC requests.",
+        desc:
+            'A paragraph that tells the user to enter a new daemon address below',
         name: 'changeDaemonParagraph');
   }
+
   String get backupKeyFirstParagraph {
     return Intl.message("You have 2 options for backing up your private key:",
-        desc: 'The first paragraph of the explanation for the process of backing up the private key',
+        desc:
+            'The first paragraph of the explanation for the process of backing up the private key',
         name: 'backupKeyFirstParagraph');
   }
+
   String get backupKeySecondParagraph {
-    return Intl.message("1- Encrypted, which means it is protected by a password.",
-        desc: 'The second paragraph of the explanation for the process of backing up the private key',
+    return Intl.message(
+        "1- Encrypted, which means it is protected by a password.",
+        desc:
+            'The second paragraph of the explanation for the process of backing up the private key',
         name: 'backupKeySecondParagraph');
   }
+
   String get backupKeyThirdParagraph {
-    return Intl.message("2- Unencrypted, which means it is raw and not protected by a password.",
-        desc: 'The third paragraph of the explanation for the process of backing up the private key',
+    return Intl.message(
+        "2- Unencrypted, which means it is raw and not protected by a password.",
+        desc:
+            'The third paragraph of the explanation for the process of backing up the private key',
         name: 'backupKeyThirdParagraph');
   }
+
   String get backupKeyFourthParagraph {
-    return Intl.message("We recommend storing the unencrypted version offline, by writing it on a piece of paper. You can store the encrypted version on a password manager for your convenience.",
-        desc: 'The fourth paragraph of the explanation for the process of backing up the private key',
+    return Intl.message(
+        "We recommend storing the unencrypted version offline, by writing it on a piece of paper. You can store the encrypted version on a password manager for your convenience.",
+        desc:
+            'The fourth paragraph of the explanation for the process of backing up the private key',
         name: 'backupKeyFourthParagraph');
   }
+
   String get encryptKeyParagraph {
     return Intl.message("Create a new password to encrypt your private key.",
-        desc: 'A paragraph that tells the user to create a new password to encrypt their key',
+        desc:
+            'A paragraph that tells the user to create a new password to encrypt their key',
         name: 'encryptKeyParagraph');
   }
+
   String get backupEncryptedKeyFirstParagraph {
-    return Intl.message("Below is your encrypted private key. It is protected by a password. You can store it safely on a password manager for your convenience.",
-        desc: 'A paragraph that explains how an encrypted private key can be backed up',
+    return Intl.message(
+        "Below is your encrypted private key. It is protected by a password. You can store it safely on a password manager for your convenience.",
+        desc:
+            'A paragraph that explains how an encrypted private key can be backed up',
         name: 'backupEncryptedKeyFirstParagraph');
   }
-  String get backupEncryptedKeyFirstParagraph {
-    return Intl.message("Below is your encrypted private key. It is protected by a password. You can store it safely on a password manager for your convenience.",
-        desc: 'A paragraph that explains how an encrypted private key can be backed up',
-        name: 'backupEncryptedKeyFirstParagraph');
+
+  String get backupEncryptedKeySecondParagraph {
+    return Intl.message(
+        "Since it is encrypted with your password, if you lose or forget your password, you won't be able to decrypt it and access your funds.",
+        desc:
+            'A paragraph that gives a disclaimer about what would happen in case the password that was used to encrypt the private key is lost or forgotten',
+        name: 'backupEncryptedKeySecondParagraph');
   }
-  // Import Private Key End
+
+  String get backupUnencryptedKeyParagraph {
+    return Intl.message(
+        "Below is your unencrypted private key. <colored>It is not protected by a password, which means it is crucial that you store it somewhere safe and offline.</colored> We recommend writing it on a piece of paper.",
+        desc:
+            'A paragraph that explains the process of backing up the unencrypted private key',
+        name: 'backupUnencryptedKeyParagraph');
+  }
+
+  String get publicKeyParagraph {
+    return Intl.message(
+        "Below is your public key. As the name suggests, it is intended to be shared publicly and prove that a particular operation belongs to your private key.",
+        desc: 'A paragraph that explains what a public key is',
+        name: 'publicKeyParagraph');
+  }
+
+  String get logoutFirstDisclaimerParagraph {
+    return Intl.message(
+        "<colored>Logging out will remove your private key and all Blaise related data from this device.</colored> If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
+        desc:
+            'The first part of the disclaimer that is shown when the user tries to log out.',
+        name: 'logoutFirstDisclaimerParagraph');
+  }
+
+  String get logoutSecondDisclaimerParagraph {
+    return Intl.message(
+        "Are you sure that you've backed up your private key? <colored>As long as you've backed up your private key, you have nothing to worry about.</colored>",
+        desc:
+            'The second part of the disclaimer that is shown when the user tries to log out.',
+        name: 'logoutSecondDisclaimerParagraph');
+  }
+  // Settings related paragraphs END
+
+  // Operation Related Paragraphs
+  String get sendingConfirmParagraph {
+    return Intl.message("Confirm the transaction details to send.",
+        desc:
+            'A paragraph that tells the user to confirm the info below to send',
+        name: 'sendingConfirmParagraph');
+  }
+
+  String get sentParagraph {
+    return Intl.message("Transaction has been sent succesfully.",
+        desc:
+            'A paragraph that informs the user that the transaction has been sent succesfully',
+        name: 'sentParagraph');
+  }
+
+  String get changeNameParagraph {
+    return Intl.message("Enter a name below to change your account's name.",
+        desc:
+            'A paragraph that tells the user to enter a new account name below',
+        name: 'changeNameParagraph');
+  }
+
+  String get changingNameParagraph {
+    return Intl.message("Confirm your new account name to proceed.",
+        desc: 'A paragraph that tells the user to confirm the new account name',
+        name: 'changingNameParagraph');
+  }
+
+  String get changedNameParagraph {
+    return Intl.message("Your account name has been changed successfully.",
+        desc:
+            'A paragraph that informs the user that the account name has been changed successfully',
+        name: 'changedNameParagraph');
+  }
+  String get transferParagraph {
+    return Intl.message("Enter a public key below to transfer the ownership of this account to it.",
+        desc:
+            'A paragraph that tells the user to enter a public key to the text field below to transfer the ownership of the account',
+        name: 'transferParagraph');
+  }
+  String get transfferingParagraph {
+    return Intl.message("Confirm the public key below to transfer the ownership of this account to it.",
+        desc:
+            'A paragraph that tells the user to confirm the public key below to proceed with the transfer',
+        name: 'transfferingParagraph');
+  }
+  String get transferredParagraph {
+    return Intl.message("Your account has been transferred successfully to the public key below.",
+        desc:
+            'A paragraph that informs the user that the account transfer has been completed successfully',
+        name: 'transferredParagraph');
+  }
+  String get listForSaleParagraph {
+    return Intl.message("Enter a price and an account that will be receiving the payment to list this account for sale.",
+        desc:
+            'A paragraph that tells the user to enter a price and a receiver account to list the account for sale',
+        name: 'listForSaleParagraph');
+  }
+  String get listingForSaleParagraph {
+    return Intl.message("Confirm the price and the account that will be receiving the payment.",
+        desc:
+            'A paragraph that tells the user to confirm the price and the receiver account',
+        name: 'listingForSaleParagraph');
+  }
+  String get listedForSaleParagraph {
+    return Intl.message("Your account has been successfully listed for sale. We’ll let you know if someone buys it.",
+        desc:
+            'A paragraph that informs the user that the account has been listed for sale successfully',
+        name: 'listedForSaleParagraph');
+  }
+  String get createPrivateSaleParagraph {
+    return Intl.message("Enter a price, a receiving account, and a public key below to create a private sale for this account.",
+        desc:
+            'A paragraph that tells the user to enter a price, a receiver account, and a public key to create a private sale for the account',
+        name: 'createPrivateSaleParagraph');
+  }
+  String get creatingPrivateSaleParagraph {
+    return Intl.message("Confirm the information below.",
+        desc:
+            'A paragraph that tells the user to confirm the information below.',
+        name: 'creatingPrivateSaleParagraph');
+  }
+  String get createdPrivateSaleParagraph {
+    return Intl.message("The private sale has been created successfully. We’ll let you know if it is bought.",
+        desc:
+            'A paragraph that informs the user that the private sale has been created successfully',
+        name: 'createdPrivateSaleParagraph');
+  }
+  String get delistFromSaleParagraph {
+    return Intl.message("Confirm that you would like to delist this account from sale.",
+        desc:
+            'A paragraph that tells the users to confirm that they would like to delist the account from sale.',
+        name: 'delistFromSaleParagraph');
+  }
+  String get delistedFromSaleParagraph {
+    return Intl.message("Your account has been successfully delisted from sale.",
+        desc:
+            'A paragraph that informs the user that the account has been delisted from sale successfully',
+        name: 'delistedFromSaleParagraph');
+  }
+  // Operation Related Paragraphs END
 
   // **** PARAGRAPHS END **** //
 
