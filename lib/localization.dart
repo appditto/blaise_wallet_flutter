@@ -410,11 +410,7 @@ class AppLocalization {
         desc: 'A paragraph that explains how an encrypted private key can be backed up',
         name: 'backupEncryptedKeyFirstParagraph');
   }
-  String get backupEncryptedKeyFirstParagraph {
-    return Intl.message("Below is your encrypted private key. It is protected by a password. You can store it safely on a password manager for your convenience.",
-        desc: 'A paragraph that explains how an encrypted private key can be backed up',
-        name: 'backupEncryptedKeyFirstParagraph');
-  }
+
   // Import Private Key End
 
   // **** PARAGRAPHS END **** //
