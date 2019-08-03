@@ -535,73 +535,128 @@ class AppLocalization {
             'A paragraph that informs the user that the account name has been changed successfully',
         name: 'changedNameParagraph');
   }
+
   String get transferParagraph {
-    return Intl.message("Enter a public key below to transfer the ownership of this account to it.",
+    return Intl.message(
+        "Enter a public key below to transfer the ownership of this account to it.",
         desc:
             'A paragraph that tells the user to enter a public key to the text field below to transfer the ownership of the account',
         name: 'transferParagraph');
   }
+
   String get transfferingParagraph {
-    return Intl.message("Confirm the public key below to transfer the ownership of this account to it.",
+    return Intl.message(
+        "Confirm the public key below to transfer the ownership of this account to it.",
         desc:
             'A paragraph that tells the user to confirm the public key below to proceed with the transfer',
         name: 'transfferingParagraph');
   }
+
   String get transferredParagraph {
-    return Intl.message("Your account has been transferred successfully to the public key below.",
+    return Intl.message(
+        "Your account has been transferred successfully to the public key below.",
         desc:
             'A paragraph that informs the user that the account transfer has been completed successfully',
         name: 'transferredParagraph');
   }
+
   String get listForSaleParagraph {
-    return Intl.message("Enter a price and an account that will be receiving the payment to list this account for sale.",
+    return Intl.message(
+        "Enter a price and an account that will be receiving the payment to list this account for sale.",
         desc:
             'A paragraph that tells the user to enter a price and a receiver account to list the account for sale',
         name: 'listForSaleParagraph');
   }
+
   String get listingForSaleParagraph {
-    return Intl.message("Confirm the price and the account that will be receiving the payment.",
+    return Intl.message(
+        "Confirm the price and the account that will be receiving the payment.",
         desc:
             'A paragraph that tells the user to confirm the price and the receiver account',
         name: 'listingForSaleParagraph');
   }
+
   String get listedForSaleParagraph {
-    return Intl.message("Your account has been successfully listed for sale. We’ll let you know if someone buys it.",
+    return Intl.message(
+        "Your account has been successfully listed for sale. We’ll let you know if someone buys it.",
         desc:
             'A paragraph that informs the user that the account has been listed for sale successfully',
         name: 'listedForSaleParagraph');
   }
+
   String get createPrivateSaleParagraph {
-    return Intl.message("Enter a price, a receiving account, and a public key below to create a private sale for this account.",
+    return Intl.message(
+        "Enter a price, a receiving account, and a public key below to create a private sale for this account.",
         desc:
             'A paragraph that tells the user to enter a price, a receiver account, and a public key to create a private sale for the account',
         name: 'createPrivateSaleParagraph');
   }
+
   String get creatingPrivateSaleParagraph {
     return Intl.message("Confirm the information below.",
         desc:
             'A paragraph that tells the user to confirm the information below.',
         name: 'creatingPrivateSaleParagraph');
   }
+
   String get createdPrivateSaleParagraph {
-    return Intl.message("The private sale has been created successfully. We’ll let you know if it is bought.",
+    return Intl.message(
+        "The private sale has been created successfully. We’ll let you know if it is bought.",
         desc:
             'A paragraph that informs the user that the private sale has been created successfully',
         name: 'createdPrivateSaleParagraph');
   }
+
   String get delistFromSaleParagraph {
-    return Intl.message("Confirm that you would like to delist this account from sale.",
+    return Intl.message(
+        "Confirm that you would like to delist this account from sale.",
         desc:
             'A paragraph that tells the users to confirm that they would like to delist the account from sale.',
         name: 'delistFromSaleParagraph');
   }
+
   String get delistedFromSaleParagraph {
-    return Intl.message("Your account has been successfully delisted from sale.",
+    return Intl.message(
+        "Your account has been successfully delisted from sale.",
         desc:
             'A paragraph that informs the user that the account has been delisted from sale successfully',
         name: 'delistedFromSaleParagraph');
   }
   // Operation Related Paragraphs END
+
+  String get feeRequiredParagraph {
+    return Intl.message("This operation requires a fee.",
+        desc: 'A paragraph to indicate that the operation requires a fee',
+        name: 'feeRequiredParagraph');
+  }
+
+  String get feeConfirmAmountParagraph {
+    return Intl.message(
+        "Please confirm the addition of 0.0001 PASC fee to this operation to continue.",
+        desc: 'A paragraph to tell the user to confirm the addition of a fee',
+        name: 'feeSecondParagraph');
+  }
+
+  // PIN Screen
+  String get enterPINToUnlockParagraph {
+    return Intl.message(
+        "Enter PIN to Unlock Blaise",
+        desc: 'A paragraph that tells the user to enter the PIN to unlock the wallet',
+        name: 'enterPINToUnlockParagraph');
+  }
+  String get authenticateToUnlockParagraph {
+    return Intl.message(
+        "Authenticate to Unlock Blaise",
+        desc: 'A paragraph that tells the user to authenticate to unlock the wallet',
+        name: 'authenticateToUnlockParagraph');
+  }
+  String get manyFailedAttemptsParagraph {
+    return Intl.message(
+        "Too many failed unlock attempts",
+        desc: 'A paragraph to inform the user that there was too many failed unlock attempts',
+        name: 'manyFailedAttemptsParagraph');
+  }
+  // PIN Screen END
 
   // **** PARAGRAPHS END **** //
 
