@@ -8,10 +8,10 @@ part of 'fcm_update_bulk_request.dart';
 
 FcmUpdateBulkRequest _$FcmUpdateBulkRequestFromJson(Map<String, dynamic> json) {
   return FcmUpdateBulkRequest(
-      accounts: (json['account'] as List)?.map((e) => e as int)?.toList(),
-      fcmToken: json['fcm_token'] as String,
-      enabled: json['enabled'] as bool)
-    ..action = json['action'] as String;
+    accounts: (json['account'] as List)?.map((e) => e as int)?.toList(),
+    fcmToken: json['fcm_token'] as String,
+    enabled: json['enabled'] as bool,
+  )..action = json['action'] as String;
 }
 
 Map<String, dynamic> _$FcmUpdateBulkRequestToJson(

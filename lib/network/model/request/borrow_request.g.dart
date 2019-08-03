@@ -8,12 +8,13 @@ part of 'borrow_request.dart';
 
 BorrowRequest _$BorrowRequestFromJson(Map<String, dynamic> json) {
   return BorrowRequest(
-      action: json['action'] as String,
-      b58pubkey: json['b58_pubkey'] as String);
+    action: json['action'] as String,
+    b58pubkey: json['b58_pubkey'] as String,
+  );
 }
 
 Map<String, dynamic> _$BorrowRequestToJson(BorrowRequest instance) =>
     <String, dynamic>{
       'action': instance.action,
-      'b58_pubkey': instance.b58pubkey
+      'b58_pubkey': instance.b58pubkey,
     };

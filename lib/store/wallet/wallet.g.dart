@@ -220,8 +220,9 @@ mixin _$Wallet on WalletBase, Store {
   final _$fcmUpdateBulkAsyncAction = AsyncAction('fcmUpdateBulk');
 
   @override
-  Future<void> fcmUpdateBulk() {
-    return _$fcmUpdateBulkAsyncAction.run(() => super.fcmUpdateBulk());
+  Future<void> fcmUpdateBulk({bool forceDisable = false}) {
+    return _$fcmUpdateBulkAsyncAction
+        .run(() => super.fcmUpdateBulk(forceDisable: forceDisable));
   }
 
   final _$WalletBaseActionController = ActionController(name: 'WalletBase');
