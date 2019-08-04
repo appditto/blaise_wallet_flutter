@@ -639,22 +639,98 @@ class AppLocalization {
 
   // PIN Screen
   String get enterPINToUnlockParagraph {
-    return Intl.message(
-        "Enter PIN to Unlock Blaise",
-        desc: 'A paragraph that tells the user to enter the PIN to unlock the wallet',
+    return Intl.message("Enter PIN to Unlock Blaise",
+        desc:
+            'A paragraph that tells the user to enter the PIN to unlock the wallet',
         name: 'enterPINToUnlockParagraph');
   }
+
   String get authenticateToUnlockParagraph {
-    return Intl.message(
-        "Authenticate to Unlock Blaise",
-        desc: 'A paragraph that tells the user to authenticate to unlock the wallet',
+    return Intl.message("Authenticate to Unlock Blaise",
+        desc:
+            'A paragraph that tells the user to authenticate to unlock the wallet',
         name: 'authenticateToUnlockParagraph');
   }
+
   String get manyFailedAttemptsParagraph {
-    return Intl.message(
-        "Too many failed unlock attempts",
-        desc: 'A paragraph to inform the user that there was too many failed unlock attempts',
+    return Intl.message("Too many failed unlock attempts",
+        desc:
+            'A paragraph to inform the user that there was too many failed unlock attempts',
         name: 'manyFailedAttemptsParagraph');
+  }
+
+  String get authenticateToChangeNameParagraph {
+    return Intl.message("Authenticate to change account name to \"%1\"",
+        desc:
+            'A paragraph that tells the user to authenticate to change the name of the account',
+        name: 'authenticateToChangeNameParagraph');
+  }
+
+  String get authenticateToDelistParagraph {
+    return Intl.message("Authenticate to change account name to \"%1\"",
+        desc:
+            'A paragraph that tells the user to authenticate to delist the account from sale',
+        name: 'authenticateToDelistParagraph');
+  }
+  String get authenticateToListForSaleParagraph {
+    return Intl.message("Authenticate to list account for sale",
+        desc:
+            'A paragraph that tells the user to authenticate to list the account for sale',
+        name: 'authenticateToListForSaleParagraph');
+  }
+  String get authenticateToCreatePrivateSaleParagraph {
+    return Intl.message("Authenticate to create private sale",
+        desc:
+            'A paragraph that tells the user to authenticate to create a private sale for the account',
+        name: 'authenticateToCreatePrivateSaleParagraph');
+  }
+  String get authenticateToTransferParagraph {
+    return Intl.message("Authenticate to transfer account",
+        desc:
+            'A paragraph that tells the user to authenticate to transfer the ownership of the account',
+        name: 'authenticateToTransferParagraph');
+  }
+  String get authenticateToSendParagraph {
+    return Intl.message("Authenticate to send %1 Pascal",
+        desc:
+            'A paragraph that tells the user to authenticate to send a specified amount of Pascal',
+        name: 'authenticateToSendParagraph');
+  }
+  String get authenticateToBackUpParagraph {
+    return Intl.message("Authenticate to back up private key",
+        desc:
+            'A paragraph that tells the user to authenticate to back up the private key',
+        name: 'authenticateToBackupParagraph');
+  }
+  String get invalidPINParagraph {
+    return Intl.message("Invalid PIN",
+        desc:
+            'A paragraph that tells the user that the entered PIN is invalid',
+        name: 'invalidPINParagraph');
+  }
+  String get noMatchPINParagraph {
+    return Intl.message("PINs do not match",
+        desc:
+            'A paragraph that tells the user that the entered PINs do not match',
+        name: 'noMatchPINParagraph');
+  }
+  String get confirmPINParagraph {
+    return Intl.message("Confirm your PIN",
+        desc:
+            'A paragraph that tells the user to confirm the PIN',
+        name: 'confirmPINParagraph');
+  }
+  String get enterPINParagraph {
+    return Intl.message("Enter PIN",
+        desc:
+            'A paragraph that tells the user to enter the PIN',
+        name: 'enterPINParagraph');
+  }
+  String get createPINParagraph {
+    return Intl.message("Create a 6-digit PIN",
+        desc:
+            'A paragraph that tells the user to create a PIN',
+        name: 'createPINParagraph');
   }
   // PIN Screen END
 

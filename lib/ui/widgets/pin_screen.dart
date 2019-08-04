@@ -211,7 +211,7 @@ class _PinScreenState extends State<PinScreen>
                             _awaitingConfirmation = true;
                             _dotStates = List.filled(
                                 PIN_LENGTH, FontAwesomeIcons.circle);
-                            _header = "Confirm your pin";
+                            _header = "Confirm your PIN";
                           });
                         } else {
                           // First and second pins match
@@ -263,7 +263,7 @@ class _PinScreenState extends State<PinScreen>
   Widget build(BuildContext context) {
     if (pinEnterTitle.isEmpty) {
       setState(() {
-        pinEnterTitle = "Enter pin";
+        pinEnterTitle = "Enter PIN";
         if (widget.type == PinOverlayType.ENTER_PIN) {
           _header = pinEnterTitle;
         }
@@ -271,7 +271,7 @@ class _PinScreenState extends State<PinScreen>
     }
     if (pinCreateTitle.isEmpty) {
       setState(() {
-        pinCreateTitle = "Create a 6-digit pin";
+        pinCreateTitle = "Create a 6-digit PIN";
         if (widget.type == PinOverlayType.NEW_PIN) {
           _header = pinCreateTitle;
         }
