@@ -1400,7 +1400,7 @@ class AppLocalization {
   }
     String get invalidNameError {
     return Intl.message("Invalid account name",
-        desc: 'Error that tells the user that the name is invalid', name: 'invalidNameError');
+        desc: 'Error that tells the user that the account name is invalid', name: 'invalidNameError');
   }
   String get invalidReceivingAccountError {
     return Intl.message("Invalid receiving account",
@@ -1408,19 +1408,19 @@ class AppLocalization {
   }
   String get invalidPublicKeyError {
     return Intl.message("Invalid public key",
-        desc: 'Error that tells the public key is invalid', name: 'invalidPublicKeyError');
+        desc: 'Error that tells the user that the public key is invalid', name: 'invalidPublicKeyError');
   }
   String get invalidAddressError {
     return Intl.message("Invalid address",
-        desc: 'Error that tells the address is invalid', name: 'invalidAddressError');
+        desc: 'Error that tells the user that the address is invalid', name: 'invalidAddressError');
   }
   String get invalidAccountError {
     return Intl.message("Invalid account",
-        desc: 'Error that tells the account is invalid', name: 'invalidAccountError');
+        desc: 'Error that tells the user that the account is invalid', name: 'invalidAccountError');
   }
   String get invalidDestinationError {
     return Intl.message("Invalid destination",
-        desc: 'Error that tells the destination is invalid', name: 'invalidDestinationError');
+        desc: 'Error that tells the user that the destination is invalid', name: 'invalidDestinationError');
   }
   
   String get insufficientBalanceError {

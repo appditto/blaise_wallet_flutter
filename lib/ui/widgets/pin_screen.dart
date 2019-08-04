@@ -98,7 +98,7 @@ class _PinScreenState extends State<PinScreen>
               } else {
                 setState(() {
                   _pin = "";
-                  _header = "Invalid pin entered";
+                  _header = "Invalid PIN";
                   _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
                   _controller.value = 0;
                 });
@@ -110,7 +110,7 @@ class _PinScreenState extends State<PinScreen>
               _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
               _pin = "";
               _pinConfirmed = "";
-              _header = "Pins do not match";
+              _header = "PINs do not match";
               _controller.value = 0;
             });
           }
