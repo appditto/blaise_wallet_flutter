@@ -1377,6 +1377,75 @@ class AppLocalization {
 
   // **** HEADERS END **** //
 
+  // **** ERROR TEXT **** //
+  String get priceRequiredError {
+    return Intl.message("Price is required",
+        desc: 'Error that tells the user that the price is required', name: 'priceRequiredError');
+  }
+  String get amountRequiredError {
+    return Intl.message("Amount is required",
+        desc: 'Error that tells the user that the amount is required', name: 'amountRequiredError');
+  }
+  String get nameRequiredError {
+    return Intl.message("Name is required",
+        desc: 'Error that tells the user that the name is required', name: 'nameRequiredError');
+  }
+  String get zeroPriceError {
+    return Intl.message("Price can't be 0",
+        desc: 'Error that tells the user that the price cant be zero', name: 'zeroPriceError');
+  }
+  String get zeroAmountError {
+    return Intl.message("Amount can't be 0",
+        desc: 'Error that tells the user that the amount cant be zero', name: 'zeroAmountError');
+  }
+    String get invalidNameError {
+    return Intl.message("Invalid account name",
+        desc: 'Error that tells the user that the name is invalid', name: 'invalidNameError');
+  }
+  String get invalidReceivingAccountError {
+    return Intl.message("Invalid receiving account",
+        desc: 'Error that tells the user that the receiving account is invalid', name: 'invalidReceivingAccountError');
+  }
+  String get invalidPublicKeyError {
+    return Intl.message("Invalid public key",
+        desc: 'Error that tells the public key is invalid', name: 'invalidPublicKeyError');
+  }
+  String get invalidAddressError {
+    return Intl.message("Invalid address",
+        desc: 'Error that tells the address is invalid', name: 'invalidAddressError');
+  }
+  String get invalidAccountError {
+    return Intl.message("Invalid account",
+        desc: 'Error that tells the account is invalid', name: 'invalidAccountError');
+  }
+  String get invalidDestinationError {
+    return Intl.message("Invalid destination",
+        desc: 'Error that tells the destination is invalid', name: 'invalidDestinationError');
+  }
+  
+  String get insufficientBalanceError {
+    return Intl.message("Insufficient balance",
+        desc: 'Error that tells the user that the balance is insufficient', name: 'insufficientBalanceError');
+  }
+  String get threeCharacterNameError {
+    return Intl.message("Must be at least 3 characters",
+        desc: 'Error that tells the user that the account name cant be shorter than 3 characters', name: 'threeCharacterNameError');
+  }
+  String get contactDoesntExistError {
+    return Intl.message("Contact doesn't exist",
+        desc: 'Error that tells the user that the contact doesnt exist', name: 'contactDoesntExistError');
+  }
+  String get contactAlreadyExistsError {
+    return Intl.message("Contact doesn't exist",
+        desc: 'Error that tells the user that the contact already exists', name: 'contactAlreadyExistsError');
+  }
+  String get cantSendToYourselfError {
+    return Intl.message("Can't send to yourself",
+        desc: 'Error that tells the user that you cant send to yourself', name: 'cantSendToYourselfError');
+  }
+  // **** ERROR TEXT END **** //
+
+
   String get onStr {
     return Intl.message("On", desc: "On", name: "onStr");
   }
