@@ -39,270 +39,282 @@ class AppLocalization {
   }
 
   // **** BUTTONS **** //
-  String get newPrivateKey {
+  String get newPrivateKeyButton {
     return Intl.message("New Private Key",
-        desc: 'A button that creates a new private key', name: 'newPrivateKey');
+        desc: 'A button that creates a new private key',
+        name: 'newPrivateKeyButton');
   }
 
-  String get importPrivateKey {
+  String get importPrivateKeyButton {
     return Intl.message("Import Private Key",
-        desc: 'A button that imports a private key', name: 'importPrivateKey');
+        desc: 'A button that imports a private key',
+        name: 'importPrivateKeyButton');
   }
 
-  String get gotIt {
+  String get gotItButton {
     return Intl.message("Got It!",
-        desc: 'A button that implies a message is understood', name: 'gotIt');
+        desc: 'A button that implies a message is understood',
+        name: 'gotItButton');
   }
 
-  String get goBack {
+  String get goBackButton {
     return Intl.message("Go Back",
-        desc: 'A button to go back to previous screen', name: 'goBack');
+        desc: 'A button to go back to previous screen', name: 'goBackButton');
   }
 
-  String get copy {
+  String get copyButton {
     return Intl.message("Copy",
-        desc: 'A button to copy something', name: 'copy');
+        desc: 'A button to copy something', name: 'copyButton');
   }
 
-  String get copied {
+  String get copiedButton {
     return Intl.message("Copied",
         desc: 'A button to inform the user that something has been copied',
-        name: 'copied');
+        name: 'copiedButton');
   }
 
-  String get iHaveBackedItUp {
+  String get iHaveBackedItUpButton {
     return Intl.message("I've Backed It Up",
         desc: 'A button to confirm that something is backed up',
-        name: 'iHaveBackedItUp');
+        name: 'iHaveBackedItUpButton');
   }
 
-  String get yesImSure {
+  String get yesImSureButton {
     return Intl.message("Yes, I'm Sure",
-        desc: 'A button to confirm if the user is sure', name: 'yesImSure');
+        desc: 'A button to confirm if the user is sure',
+        name: 'yesImSureButton');
   }
 
-  String get noGoBack {
+  String get noGoBackButton {
     return Intl.message("No, Go Back",
         desc:
             'A button to go back to previous screen if the user didnt do what the question asks',
-        name: 'noGoBack');
+        name: 'noGoBackButton');
   }
 
-  String get getAnAccount {
+  String get getAnAccountButton {
     return Intl.message("Get an Account",
         desc: 'A button to start the process of getting an account',
-        name: 'getAnAccount');
+        name: 'getAnAccountButton');
   }
 
-  String get getAFreeAccount {
+  String get getAFreeAccountButton {
     return Intl.message("Get a Free Account",
         desc: 'A button to start the process of getting a free account',
-        name: 'getAFreeAccount');
+        name: 'getAFreeAccountButton');
   }
 
-  String get buyAnAccount {
+  String get buyAnAccountButton {
     return Intl.message("Buy an Account",
         desc: 'A button to start the process of buying an account',
-        name: 'buyAnAccount');
+        name: 'buyAnAccountButton');
   }
 
-  String get sendConfirmation {
+  String get sendConfirmationButton {
     return Intl.message("Send Confirmation",
         desc: 'A button to request a confirmation to be sent',
-        name: 'sendConfirmation');
+        name: 'sendConfirmationButton');
   }
 
-  String get confirm {
+  String get confirmButton {
     return Intl.message("Confirm",
         desc: 'A button to confirm that a process should be executed',
-        name: 'confirm');
+        name: 'confirmButton');
   }
 
-  String get borrowAnAccount {
+  String get borrowAnAccountButton {
     return Intl.message("Borrow An Account",
-        desc: 'A button to borrow an account', name: 'borrowAnAccount');
+        desc: 'A button to borrow an account', name: 'borrowAnAccountButton');
   }
 
-  String get import {
+  String get importButton {
     return Intl.message("Import",
-        desc: 'A button to import something', name: 'import');
+        desc: 'A button to import something', name: 'importButton');
   }
 
-  String get receive {
+  String get receiveButton {
     return Intl.message("Receive",
-        desc: 'A button to receive Pascal', name: 'receive');
+        desc: 'A button to receive Pascal', name: 'receiveButton');
   }
 
-  String get send {
-    return Intl.message("Send", desc: 'A button to send Pascal', name: 'send');
+  String get sendButton {
+    return Intl.message("Send",
+        desc: 'A button to send Pascal', name: 'sendButton');
   }
 
-  String get copyAddress {
+  String get copyAddressButton {
     return Intl.message("Copy Address",
-        desc: 'A button to copy an address', name: 'copyAddress');
+        desc: 'A button to copy an address', name: 'copyAddressButton');
   }
 
-  String get copiedAddress {
+  String get copiedAddressButton {
     return Intl.message("Address Copied",
         desc: 'A button to inform the user that the address has been copied',
-        name: 'copiedAddress');
+        name: 'copiedAddressButton');
   }
 
-  String get addToContacts {
+  String get addToContactsButton {
     return Intl.message("Add to Contacts",
-        desc: 'A button to add an account to contacts', name: 'addToContacts');
+        desc: 'A button to add an account to contacts',
+        name: 'addToContactsButton');
   }
 
-  String get operationDetails {
+  String get operationDetailsButton {
     return Intl.message("Operation Details",
         desc: 'A button to view the details of an operation',
-        name: 'operationDetails');
+        name: 'operationDetailsButton');
   }
 
-  String get openInExplorer {
+  String get openInExplorerButton {
     return Intl.message("Open in Explorer",
         desc:
             'A button to view the details of an operation on the Pascal explorer',
-        name: 'openInExplorer');
+        name: 'openInExplorerButton');
   }
 
-  String get request {
+  String get requestButton {
     return Intl.message("Request",
-        desc: 'A button to request something', name: 'request');
+        desc: 'A button to request something', name: 'requestButton');
   }
 
-  String get addAPayload {
-    return Intl.message("Add a Payload",
+  String get addAPayloadButton {
+    return Intl.message("+ Add a Payload",
         desc: 'A button to add a payload (note) to an operation',
-        name: 'addAPayload');
+        name: 'addAPayloadButton');
   }
 
-  String get scanQRCode {
+  String get scanQRCodeButton {
     return Intl.message("Scan QR Code",
-        desc: 'A button to scan a QR Code', name: 'scanQRCode');
+        desc: 'A button to scan a QR Code', name: 'scanQRCodeButton');
   }
 
-  String get cancel {
+  String get cancelButton {
     return Intl.message("Cancel",
-        desc: 'A button to cancel a process', name: 'cancel');
+        desc: 'A button to cancel a process', name: 'cancelButton');
   }
 
-  String get close {
+  String get closeButton {
     return Intl.message("Close",
-        desc: 'A button to close a screen or a pop-up', name: 'close');
+        desc: 'A button to close a screen or a pop-up', name: 'closeButton');
   }
 
-  String get changeName {
+  String get changeNameButton {
     return Intl.message("Change Name",
-        desc: 'A button to change the name of an account', name: 'changeName');
+        desc: 'A button to change the name of an account',
+        name: 'changeNameButton');
   }
 
-  String get transfer {
+  String get transferButton {
     return Intl.message("Transfer",
         desc: 'A button to transfer the ownership of an account',
-        name: 'transfer');
+        name: 'transferButton');
   }
 
-  String get listForSale {
+  String get listForSaleButton {
     return Intl.message("List for Sale",
-        desc: 'A button to list an account for sale', name: 'listForSale');
+        desc: 'A button to list an account for sale',
+        name: 'listForSaleButton');
   }
 
-  String get createPrivateSale {
+  String get createPrivateSaleButton {
     return Intl.message("Create Private Sale",
         desc: 'A button to create a private sale for the account',
-        name: 'createPrivateSale');
+        name: 'createPrivateSaleButton');
   }
 
-  String get yesAddFee {
+  String get yesAddFeeButton {
     return Intl.message("Yes, Add Fee",
         desc: 'A button to confirm the addition of a fee to an operation',
-        name: 'yesAddFee');
+        name: 'yesAddFeeButton');
   }
 
-  String get unlock {
+  String get unlockButton {
     return Intl.message("Unlock",
-        desc: 'A button to unlock the wallet', name: 'unlock');
+        desc: 'A button to unlock the wallet', name: 'unlockButton');
   }
 
-  String get unlockWithBiometrics {
+  String get unlockWithBiometricsButton {
     return Intl.message("Unlock with Biometrics",
         desc: 'A button to unlock the wallet using biometrics',
-        name: 'unlockWithBiometrics');
+        name: 'unlockWithBiometricsButton');
   }
 
-  String get unlockWithPIN {
+  String get unlockWithPINButton {
     return Intl.message("Unlock with PIN",
-        desc: 'A button to unlock the wallet using PIN', name: 'unlockWithPIN');
+        desc: 'A button to unlock the wallet using PIN',
+        name: 'unlockWithPINButton');
   }
 
-  String get setToDefault {
+  String get setToDefaultButton {
     return Intl.message("Set to Default",
-        desc: 'A button to set something to its default', name: 'setToDefault');
+        desc: 'A button to set something to its default',
+        name: 'setToDefaultButton');
   }
 
-  String get changeDaemon {
+  String get changeDaemonButton {
     return Intl.message("Change Daemon",
         desc: 'A button to change the Pascal daemon for RPC requests',
-        name: 'changeDaemon');
+        name: 'changeDaemonButton');
   }
 
-  String get addContact {
+  String get addContactButton {
     return Intl.message("Add Contact",
-        desc: 'A button to add a contact', name: 'addContact');
+        desc: 'A button to add a contact', name: 'addContactButton');
   }
 
-  String get encryptedKey {
+  String get encryptedKeyButton {
     return Intl.message("Encrypted Key",
-        desc: 'A button to view the encrypted key', name: 'encryptedKey');
+        desc: 'A button to view the encrypted key', name: 'encryptedKeyButton');
   }
 
-  String get unencryptedKey {
+  String get unencryptedKeyButton {
     return Intl.message("Unencrypted Key",
-        desc: 'A button to view the unencrypted key', name: 'unencryptedKey');
+        desc: 'A button to view the unencrypted key',
+        name: 'unencryptedKeyButton');
   }
 
-  String get encrypt {
+  String get encryptButton {
     return Intl.message("Encrypt",
-        desc: 'A button to view the unencrypted key', name: 'encrypt');
+        desc: 'A button to view the unencrypted key', name: 'encryptButton');
   }
 
-  String get show {
+  String get showButton {
     return Intl.message("Show",
-        desc: 'A button to show something that is hidden', name: 'show');
+        desc: 'A button to show something that is hidden', name: 'showButton');
   }
 
-  String get hide {
+  String get hideButton {
     return Intl.message("Hide",
-        desc: 'A button to hide something that is shown', name: 'hide');
+        desc: 'A button to hide something that is shown', name: 'hideButton');
   }
 
-  String get copyEncryptedKey {
+  String get copyEncryptedKeyButton {
     return Intl.message("Copy Encrypted Key",
-        desc: 'A button to copy an encrypted key', name: 'copyEncryptedKey');
+        desc: 'A button to copy an encrypted key',
+        name: 'copyEncryptedKeyButton');
   }
 
-  String get copyUnencryptedKey {
+  String get copyUnencryptedKeyButton {
     return Intl.message("Copy Unencrypted Key",
         desc: 'A button to copy an unencrypted key',
-        name: 'copyUnencryptedKey');
+        name: 'copyUnencryptedKeyButton');
   }
 
-  String get copyKey {
+  String get copyKeyButton {
     return Intl.message("Copy Key",
         desc: 'A button to copy a key (private or public key)',
-        name: 'copyKey');
+        name: 'copyKeyButton');
   }
 
-  String get copyPublicKey {
+  String get copyPublicKeyButton {
     return Intl.message("Copy Public Key",
-        desc: 'A button to copy a public key', name: 'copyPublicKey');
+        desc: 'A button to copy a public key', name: 'copyPublicKeyButton');
   }
 
-  String get deletePrivateKeyAndLogout {
+  String get deletePrivateKeyAndLogoutButton {
     return Intl.message("Delete Private Key\nAnd Logout",
         desc: 'A button to delete the private key and logout',
-        name: 'deletePrivateKeyAndLogout');
+        name: 'deletePrivateKeyAndLogoutButton');
   }
   // **** BUTTONS END **** //
 
@@ -672,69 +684,233 @@ class AppLocalization {
             'A paragraph that tells the user to authenticate to delist the account from sale',
         name: 'authenticateToDelistParagraph');
   }
+
   String get authenticateToListForSaleParagraph {
     return Intl.message("Authenticate to list account for sale",
         desc:
             'A paragraph that tells the user to authenticate to list the account for sale',
         name: 'authenticateToListForSaleParagraph');
   }
+
   String get authenticateToCreatePrivateSaleParagraph {
     return Intl.message("Authenticate to create private sale",
         desc:
             'A paragraph that tells the user to authenticate to create a private sale for the account',
         name: 'authenticateToCreatePrivateSaleParagraph');
   }
+
   String get authenticateToTransferParagraph {
     return Intl.message("Authenticate to transfer account",
         desc:
             'A paragraph that tells the user to authenticate to transfer the ownership of the account',
         name: 'authenticateToTransferParagraph');
   }
+
   String get authenticateToSendParagraph {
     return Intl.message("Authenticate to send %1 Pascal",
         desc:
             'A paragraph that tells the user to authenticate to send a specified amount of Pascal',
         name: 'authenticateToSendParagraph');
   }
+
   String get authenticateToBackUpParagraph {
     return Intl.message("Authenticate to back up private key",
         desc:
             'A paragraph that tells the user to authenticate to back up the private key',
         name: 'authenticateToBackupParagraph');
   }
+
   String get invalidPINParagraph {
     return Intl.message("Invalid PIN",
-        desc:
-            'A paragraph that tells the user that the entered PIN is invalid',
+        desc: 'A paragraph that tells the user that the entered PIN is invalid',
         name: 'invalidPINParagraph');
   }
+
   String get noMatchPINParagraph {
     return Intl.message("PINs do not match",
         desc:
             'A paragraph that tells the user that the entered PINs do not match',
         name: 'noMatchPINParagraph');
   }
+
   String get confirmPINParagraph {
     return Intl.message("Confirm your PIN",
-        desc:
-            'A paragraph that tells the user to confirm the PIN',
+        desc: 'A paragraph that tells the user to confirm the PIN',
         name: 'confirmPINParagraph');
   }
+
   String get enterPINParagraph {
     return Intl.message("Enter PIN",
-        desc:
-            'A paragraph that tells the user to enter the PIN',
+        desc: 'A paragraph that tells the user to enter the PIN',
         name: 'enterPINParagraph');
   }
+
   String get createPINParagraph {
     return Intl.message("Create a 6-digit PIN",
-        desc:
-            'A paragraph that tells the user to create a PIN',
+        desc: 'A paragraph that tells the user to create a PIN',
         name: 'createPINParagraph');
   }
   // PIN Screen END
-
   // **** PARAGRAPHS END **** //
+
+  // **** HEADERS **** //
+  // Settings Headers
+  String get settingsHeader {
+    return Intl.message("Settings",
+        desc: 'Header for the settings', name: 'settings');
+  }
+
+  String get preferencesHeader {
+    return Intl.message("Preferences",
+        desc: 'Header for the preferences section', name: 'preferences');
+  }
+
+  String get currencyHeader {
+    return Intl.message("Currency",
+        desc: 'Header for the currencies', name: 'currency');
+  }
+
+  String get languageHeader {
+    return Intl.message("Language",
+        desc: 'Header for the languages', name: 'language');
+  }
+
+  String get themeHeader {
+    return Intl.message("theme", desc: 'Header for the themes', name: 'theme');
+  }
+
+  String get themeLightHeader {
+    return Intl.message("Light",
+        desc: 'Header for the light theme', name: 'themeLight');
+  }
+
+  String get themeDarkHeader {
+    return Intl.message("Dark",
+        desc: 'Header for the dark theme', name: 'themeDark');
+  }
+
+  String get themeCopperHeader {
+    return Intl.message("Copper",
+        desc: 'Header for the copper theme', name: 'themeCopper');
+  }
+
+  String get securityHeader {
+    return Intl.message("Copper",
+        desc: 'Header for the security section', name: 'securityHeader');
+  }
+
+  String get authenticationMethodHeader {
+    return Intl.message("Authentication Method",
+        desc: 'Header for the authentication method',
+        name: 'authenticationMethodHeader');
+  }
+
+  String get authenticationPINHeader {
+    return Intl.message("PIN",
+        desc: 'Header for the PIN authentication method',
+        name: 'authenticationPINHeader');
+  }
+
+  String get authenticationBiometricsHeader {
+    return Intl.message("Biometrics",
+        desc: 'Header for the biometric authentication method',
+        name: 'authenticationBiometricsHeader');
+  }
+
+  String get authenticateOnLaunchHeader {
+    return Intl.message("Authenticate on Launch",
+        desc: 'Header for the authenticate on launch option',
+        name: 'authenticateOnLaunchHeader');
+  }
+
+  String get yesHeader {
+    return Intl.message("Yes",
+        desc: 'Header for the yes option', name: 'yesHeader');
+  }
+
+  String get noHeader {
+    return Intl.message("No",
+        desc: 'Header for the no option', name: 'noHeader');
+  }
+
+  String get automaticallyLockHeader {
+    return Intl.message("Automatically Lock",
+        desc: 'Header for the automatically lock option',
+        name: 'automaticallyLockHeader');
+  }
+
+  String get lockInstantHeader {
+    return Intl.message("Instantly",
+        desc: 'Header for instantly locking option',
+        name: 'lockInstantHeader');
+  }
+
+  String get lock1Header {
+    return Intl.message("After 1% minute",
+        desc: 'Header for locking after 1 minute option',
+        name: 'lock1Header');
+  }
+
+  String get lock5Header {
+    return Intl.message("After 1% minutes",
+        desc: 'Header for locking after 5 minutes option',
+        name: 'lock5Header');
+  }
+
+  String get lock15Header {
+    return Intl.message("After 1% minutes",
+        desc: 'Header for locking after 15 minutes option',
+        name: 'lock15Header');
+  }
+
+  String get lock30Header {
+    return Intl.message("After 1% minutes",
+        desc: 'Header for locking after 30 minutes option',
+        name: 'lock30Header');
+  }
+
+  String get lock60Header {
+    return Intl.message("After 1% minutes",
+        desc: 'Header for locking after 60 minutes option',
+        name: 'lock60Header');
+  }
+  String get daemonHeader {
+    return Intl.message("Daemon",
+        desc: 'Header for Pascal daemon setting',
+        name: 'daemonHeader');
+  }
+  String get defaultHeader {
+    return Intl.message("Default",
+        desc: 'Header for default option',
+        name: 'defaultHeader');
+  }
+  String get manageHeader {
+    return Intl.message("Manage",
+        desc: 'Header for the manage section', name: 'manageHeader');
+  }
+  String get contactsHeader {
+    return Intl.message("Contacts",
+        desc: 'Header for the contacts section in settings', name: 'contactsHeader');
+  }
+  String get backUpPrivateKeyHeader {
+    return Intl.message("Back Up Private Key",
+        desc: 'Header for the back up private key option in settings', name: 'backUpPrivateKeyHeader');
+  }
+  String get viewPublicKeyHeader {
+    return Intl.message("View Public Key",
+        desc: 'Header for the view public key option in settings', name: 'viewPublicKeyHeader');
+  }
+  String get shareHeader {
+    return Intl.message("Share Blaise",
+        desc: 'Header for the share Blaise option in settings', name: 'shareHeader');
+  }
+  String get logoutHeader {
+    return Intl.message("Logout",
+        desc: 'Header for the logout option in settings', name: 'logoutHeader');
+  }
+  // Settings Headers END
+
+  // **** HEADERS END **** //
 
   String get onStr {
     return Intl.message("On", desc: "On", name: "onStr");
