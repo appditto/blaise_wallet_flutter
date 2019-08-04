@@ -183,6 +183,12 @@ class AppLocalization {
         name: 'addAPayloadButton');
   }
 
+  String get addADurationButton {
+    return Intl.message("+ Add a Duration",
+        desc: 'A button to add a duration to the sale',
+        name: 'addADurationButton');
+  }
+
   String get scanQRCodeButton {
     return Intl.message("Scan QR Code",
         desc: 'A button to scan a QR Code', name: 'scanQRCodeButton');
@@ -331,8 +337,7 @@ class AppLocalization {
 
   String get searcNameButton {
     return Intl.message("Search Name",
-        desc: 'A button to search name',
-        name: 'searchNameButton');
+        desc: 'A button to search name', name: 'searchNameButton');
   }
   // **** BUTTONS END **** //
 
@@ -1232,6 +1237,12 @@ class AppLocalization {
         name: 'receivingAccountTextFieldHeader');
   }
 
+  String get durationTextFieldHeader {
+    return Intl.message("Duration",
+        desc: 'Header for duration text field',
+        name: 'durationTextFieldHeader');
+  }
+
   String get feeTextFieldHeader {
     return Intl.message("Fee",
         desc: 'Header for fee text field', name: 'feeTextFieldHeader');
@@ -1241,16 +1252,20 @@ class AppLocalization {
   // Dialog Headers
   String get otherOperationsHeader {
     return Intl.message("Other Operations",
-        desc: 'Header for other operations dialog', name: 'otherOperationsHeader');
+        desc: 'Header for other operations dialog',
+        name: 'otherOperationsHeader');
   }
+
   String get warningHeader {
     return Intl.message("Warning",
         desc: 'Header for warning dialog', name: 'warningHeader');
   }
+
   String get areYouSureHeader {
     return Intl.message("Are You Sure?",
         desc: 'Header for are you sure dialog', name: 'areYouSureHeader');
   }
+
   String get addFeeHeader {
     return Intl.message("Add Fee",
         desc: 'Header for add fee dialog', name: 'addFeeHeader');
@@ -1262,33 +1277,47 @@ class AppLocalization {
     return Intl.message("Sent",
         desc: 'Header for sent type operation list item', name: 'sentHeader');
   }
+
   String get receivedHeader {
     return Intl.message("Received",
-        desc: 'Header for received type operation list item', name: 'receivedHeader');
+        desc: 'Header for received type operation list item',
+        name: 'receivedHeader');
   }
+
   String get nameChangedHeader {
     return Intl.message("Name Changed",
-        desc: 'Header for listed for sale type operation list item', name: 'nameChangedHeader');
+        desc: 'Header for listed for sale type operation list item',
+        name: 'nameChangedHeader');
   }
+
   String get listedForSaleHeader {
     return Intl.message("Listed For Sale",
-        desc: 'Header for listed for sale type operation list item', name: 'listedForSaleHeader');
+        desc: 'Header for listed for sale type operation list item',
+        name: 'listedForSaleHeader');
   }
+
   String get privateSaleHeader {
     return Intl.message("Private Sale",
-        desc: 'Header for private sale type operation list item', name: 'privateSaleHeader');
+        desc: 'Header for private sale type operation list item',
+        name: 'privateSaleHeader');
   }
+
   String get delistedFromSaleHeader {
     return Intl.message("Delisted From Sale",
-        desc: 'Header for delisted from sale type operation list item', name: 'delistedFromSaleHeader');
+        desc: 'Header for delisted from sale type operation list item',
+        name: 'delistedFromSaleHeader');
   }
+
   String get delistedHeader {
     return Intl.message("Delisted",
-        desc: 'Header for delisted type operation list item', name: 'delistedHeader');
+        desc: 'Header for delisted type operation list item',
+        name: 'delistedHeader');
   }
+
   String get transferredHeader {
     return Intl.message("Transferred",
-        desc: 'Header for transferred type operation list item', name: 'transferredHeader');
+        desc: 'Header for transferred type operation list item',
+        name: 'transferredHeader');
   }
   // Operation List Item Headers END
 
@@ -1297,38 +1326,49 @@ class AppLocalization {
     return Intl.message("Balance",
         desc: 'Header for balance', name: 'balanceHeader');
   }
+
   String get totalBalanceHeader {
     return Intl.message("Total Balance",
         desc: 'Header for total balance', name: 'totalBalanceHeader');
   }
+
   String get accountBalanceHeader {
     return Intl.message("Account Balance",
         desc: 'Header for account balance', name: 'accountBalanceHeader');
   }
+
   String get accountsHeader {
     return Intl.message("Accounts",
         desc: 'Header for accounts', name: 'accountsHeader');
   }
+
   String get operationsHeader {
     return Intl.message("Operations",
         desc: 'Header for operations', name: 'operationsHeader');
   }
+
   String get encryptThePayloadHeader {
     return Intl.message("Encrypt the Payload",
-        desc: 'Header for encrypt the payload switch', name: 'encryptThePayloadHeader');
+        desc: 'Header for encrypt the payload switch',
+        name: 'encryptThePayloadHeader');
   }
+
   String get encryptPayloadHeader {
     return Intl.message("Encrypt Payload",
-        desc: 'Header for encrypt payload switch', name: 'encryptPayloadHeader');
+        desc: 'Header for encrypt payload switch',
+        name: 'encryptPayloadHeader');
   }
+
   String get forSaleHeader {
     return Intl.message("For Sale",
         desc: 'Header of for sale tag', name: 'forSaleHeader');
   }
+
   String get borrowedHeader {
     return Intl.message("Borrowed",
         desc: 'Header for borrowed tag', name: 'borrowedHeader');
   }
+
   String get borrowedAccountHeader {
     return Intl.message("Borrowed Account",
         desc: 'Header for borrowed account tag', name: 'borrowedAccountHeader');
