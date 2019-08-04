@@ -908,7 +908,123 @@ class AppLocalization {
     return Intl.message("Logout",
         desc: 'Header for the logout option in settings', name: 'logoutHeader');
   }
+  String get privacyPolicyHeader {
+    return Intl.message("Privacy Policy",
+        desc: 'Header for the privacy policy option in settings', name: 'privacyPolicyHeader');
+  }
   // Settings Headers END
+
+  // Sheet Headers
+  String get getAccountHeader {
+    return Intl.message("Get Account",
+        desc: 'Header for the get account sheet (screen)', name: 'getAccountHeader');
+  }
+  String get freeAccountHeader {
+    return Intl.message("Free Account",
+        desc: 'Header for the free account sheet (screen)', name: 'freeAccountHeader');
+  }
+  String get buyAccountHeader {
+    return Intl.message("Buy Account",
+        desc: 'Header for the buy account sheet (screen)', name: 'buyAccountHeader');
+  }
+  String get sendHeader {
+    return Intl.message("Send",
+        desc: 'Header for send sheet (screen)', name: 'sendHeader');
+  }
+  String get sendingHeader {
+    return Intl.message("Sending",
+        desc: 'Header for sending sheet (screen)', name: 'sendingHeader');
+  }
+  String get sentHeader {
+    return Intl.message("Sent",
+        desc: 'Header for sent sheet (screen)', name: 'sentHeader');
+  }
+  String get requestHeader {
+    return Intl.message("Request",
+        desc: 'Header for request sheet (screen)', name: 'requestHeader');
+  }
+  String get changeNameHeader {
+    return Intl.message("Change Name",
+        desc: 'Header for change name sheet (screen)', name: 'changeNameHeader');
+  }
+  String get changingNameHeader {
+    return Intl.message("Changing",
+        desc: 'Header for name changing sheet (screen)', name: 'changingNameHeader');
+  }
+  String get changedNameHeader {
+    return Intl.message("Changed",
+        desc: 'Header for name changed sheet (screen)', name: 'changedNameHeader');
+  }
+  String get transferHeader {
+    return Intl.message("Transfer",
+        desc: 'Header for transfer sheet (screen)', name: 'transferHeader');
+  }
+  String get transferringHeader {
+    return Intl.message("Transferring",
+        desc: 'Header for transferring sheet (screen)', name: 'transferringHeader');
+  }
+  String get transferredHeader {
+    return Intl.message("Transferred",
+        desc: 'Header for transferred sheet (screen)', name: 'transferredHeader');
+  }
+  String get listForSaleHeader {
+    return Intl.message("List For Sale",
+        desc: 'Header for list for sale sheet (screen)', name: 'listForSaleHeader');
+  }
+  String get listingForSaleHeader {
+    return Intl.message("Listing",
+        desc: 'Header for listing for sale sheet (screen)', name: 'listingForSaleHeader');
+  }
+  String get listedForSaleHeader {
+    return Intl.message("Listed",
+        desc: 'Header for listed for sale sheet (screen)', name: 'listedForSaleHeader');
+  }
+  String get createPrivateSaleHeader {
+    return Intl.message("Private Sale",
+        desc: 'Header for create private sale sheet (screen)', name: 'createPrivateSaleHeader');
+  }
+  String get creatingPrivateSaleHeader {
+    return Intl.message("Creating",
+        desc: 'Header for creating private sale sheet (screen)', name: 'creatingPrivateSaleHeader');
+  }
+  String get createdPrivateSaleHeader {
+    return Intl.message("Created",
+        desc: 'Header for created private sale sheet (screen)', name: 'createdPrivateSaleHeader');
+  }
+  String get delistingHeader {
+    return Intl.message("Delisting",
+        desc: 'Header for delisting sheet (screen)', name: 'delistingHeader');
+  }
+  String get delistedHeader {
+    return Intl.message("Delisted",
+        desc: 'Header for delisted sheet (screen)', name: 'delistedHeader');
+  }
+  String get addContactHeader {
+    return Intl.message("Add Contact",
+        desc: 'Header for add contact sheet (screen)', name: 'addcontactHeader');
+  }
+  String get contactHeader {
+    return Intl.message("Contact",
+        desc: 'Header for contact details sheet (screen)', name: 'contactHeader');
+  }
+  String get privateKeyHeader {
+    return Intl.message("Private Key",
+        desc: 'Header for private key sheet (screen)', name: 'privateKeyHeader');
+  }
+  String get backUpHeader {
+    return Intl.message("BACK UP",
+        desc: 'Header for back up sheet (screen)', name: 'backUpHeader');
+  }
+  String get encryptHeader {
+    return Intl.message("Encrypt",
+        desc: 'Header for encrypt sheet (screen)', name: 'encryptHeader');
+  }
+  String get changeDaemonHeader {
+    return Intl.message("Change Daemon",
+        desc: 'Header for change daemon sheet (screen)', name: 'changeDaemonHeader');
+  }
+  // Sheet Headers END
+
 
   // **** HEADERS END **** //
 
