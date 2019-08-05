@@ -33,7 +33,7 @@ class UIUtil {
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                  color: StateContainer.of(context).curTheme.textDark50,
+                  color: StateContainer.of(context).curTheme.overlay20,
                   offset: Offset(0, 20),
                   blurRadius: 40,
                   spreadRadius: -5),

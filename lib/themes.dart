@@ -45,6 +45,7 @@ abstract class BaseTheme {
   Color textLight30;
   Color textLight15;
 
+  Color overlay30;
   Color overlay20;
   Color overlay15;
   Color overlay10;
@@ -152,6 +153,7 @@ class BlaiseLightTheme extends BaseTheme {
   Color textLight30 = white.withOpacity(0.3);
   Color textLight15 = white.withOpacity(0.15);
 
+  Color overlay30 = black.withOpacity(0.3);
   Color overlay20 = black.withOpacity(0.2);
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
@@ -325,6 +327,7 @@ class BlaiseDarkTheme extends BaseTheme {
   Color textLight30 = grayDark.withOpacity(0.3);
   Color textLight15 = grayDark.withOpacity(0.15);
 
+  Color overlay30 = black.withOpacity(0.3);
   Color overlay20 = black.withOpacity(0.2);
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
@@ -493,6 +496,7 @@ class BlaiseCopperTheme extends BaseTheme {
   Color textLight30 = grayDark.withOpacity(0.3);
   Color textLight15 = grayDark.withOpacity(0.15);
 
+  Color overlay30 = black.withOpacity(0.3);
   Color overlay20 = black.withOpacity(0.2);
   Color overlay15 = black.withOpacity(0.15);
   Color overlay10 = black.withOpacity(0.10);
