@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/operation_details_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/contacts/add_contact_sheet.dart';
@@ -81,7 +82,7 @@ class _OperationSheetState extends State<OperationSheet> {
                   ? Container(
                       margin: EdgeInsetsDirectional.only(top: 20),
                       child: AutoSizeText(
-                        "Payload",
+                        AppLocalization.of(context).payloadTextFieldHeader,
                         maxLines: 1,
                         stepGranularity: 1,
                         minFontSize: 8,
@@ -122,8 +123,8 @@ class _OperationSheetState extends State<OperationSheet> {
                               ? AppButtonType.Success
                               : AppButtonType.Primary,
                           text: _addressCopied
-                              ? "Address Copied"
-                              : "Copy Address",
+                              ? AppLocalization.of(context).copiedAddressButton
+                              : AppLocalization.of(context).copyAddressButton,
                           buttonTop: true,
                           onPressed: () {
                             Clipboard.setData(
@@ -153,7 +154,7 @@ class _OperationSheetState extends State<OperationSheet> {
                       children: <Widget>[
                         AppButton(
                           type: AppButtonType.PrimaryOutline,
-                          text: "Add to Contacts",
+                          text: AppLocalization.of(context).addToContactsButton,
                           buttonMiddle: true,
                           onPressed: () {
                             Navigator.pop(context);
@@ -174,7 +175,7 @@ class _OperationSheetState extends State<OperationSheet> {
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.PrimaryOutline,
-                    text: "Operation Details",
+                    text: AppLocalization.of(context).operationDetailsButton,
                     onPressed: () {
                       Navigator.of(context).pop();
                       AppSheets.showBottomSheet(

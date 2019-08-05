@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -51,7 +52,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                               margin: EdgeInsetsDirectional.fromSTEB(
                                   30, 24, 30, 24),
                               child: AutoSizeText(
-                                "Backup Your Key!",
+                                AppLocalization.of(context).backUpKeyHeader,
                                 style: AppStyles.header(context),
                                 maxLines: 3,
                                 stepGranularity: 0.1,
@@ -80,7 +81,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                               margin: EdgeInsetsDirectional.fromSTEB(
                                   30, 30, 30, 12),
                               child: AutoSizeText(
-                                "Are you sure that you have backed up your new wallet’s private key?",
+                                AppLocalization.of(context).newKeyBackUpConfirmParagraph,
                                 maxLines: 5,
                                 stepGranularity: 0.1,
                                 style: AppStyles.paragraph(context),
@@ -99,7 +100,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "YES, I'M SURE",
+                      text: AppLocalization.of(context).yesImSureButton.toUpperCase(),
                       buttonTop: true,
                       onPressed: () {
                         sl
@@ -132,7 +133,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "NO, GO BACK",
+                      text: AppLocalization.of(context).noGoBackButton.toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

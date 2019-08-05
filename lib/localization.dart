@@ -339,6 +339,11 @@ class AppLocalization {
     return Intl.message("Search Name",
         desc: 'A button to search name', name: 'searchNameButton');
   }
+
+  String get okayGoBackButton {
+    return Intl.message("Okay, Go Back",
+        desc: 'A button to confirm and go back', name: 'okayGoBackButton');
+  }
   // **** BUTTONS END **** //
 
   // **** PARAGRAPHS **** //
@@ -374,11 +379,11 @@ class AppLocalization {
         name: 'newKeyParagraph');
   }
 
-  String get newKeyConfirmParagraph {
+  String get newKeyBackUpConfirmParagraph {
     return Intl.message(
         "Are you sure that you have backed up your new wallet’s private key?",
         desc: 'A paragraph to confirm if the new private key is backed up',
-        name: 'newKeyConfirmParagraph');
+        name: 'newKeyBackUpConfirmParagraph');
   }
 
   String get newWalletGreetingParagraph {
@@ -405,7 +410,7 @@ class AppLocalization {
 
   String get getAccountThirdParagraph {
     return Intl.message(
-        "2- You can buy as many accounts as you want for <colored>%1 PASCAL (%2).</colored>",
+        "2- You can buy as many accounts as you want for <colored>%1 Pascal (%2).</colored>",
         desc:
             'The third paragraph of the explanation for the process of getting an account',
         name: 'getAccountThirdParagraph');
@@ -428,17 +433,25 @@ class AppLocalization {
 
   String get borrowAccountParagraph {
     return Intl.message(
-        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% PASCAL (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 PASCAL</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
+        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% Pascal (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
         desc:
             'A paragraph that explains the process of borrowing & buying an account',
         name: 'borrowAccountParagraph');
   }
 
-  String get importKeyParagraph {
+  String get importPrivateKeyParagraph {
     return Intl.message("Enter your private key below.",
         desc:
             'A paragraph that tells the user to enter their private key to the text field below',
-        name: 'importKeyParagraph');
+        name: 'importPrivateKeyParagraph');
+  }
+
+  String get looksLikeEncryptedKeyParagraph {
+    return Intl.message(
+        "This looks like an encrypted private key, please enter the password to decrypt and import it.",
+        desc:
+            'A paragraph that tells the user that the key looks like an encrypted one and it needs to be decrypted to import',
+        name: 'looksLikeEncryptedKeyParagraph');
   }
 
   // Settings Related Paragraphs
@@ -517,6 +530,13 @@ class AppLocalization {
         "Below is your public key. As the name suggests, it is intended to be shared publicly and prove that a particular operation belongs to your private key.",
         desc: 'A paragraph that explains what a public key is',
         name: 'publicKeyParagraph');
+  }
+
+  String get borrowedAccountParagraph {
+    return Intl.message(
+        "This is a <colored>borrowed account</colored>. If you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days %3 hours</colored>, it’ll be yours.",
+        desc: 'A paragraph that explains what a public key is',
+        name: 'borrowedAccountParagraph');
   }
 
   String get logoutFirstDisclaimerParagraph {
@@ -670,6 +690,14 @@ class AppLocalization {
         "Please confirm the addition of 0.0001 PASC fee to this operation to continue.",
         desc: 'A paragraph to tell the user to confirm the addition of a fee',
         name: 'feeSecondParagraph');
+  }
+
+  String get keyTypeNotSupportedParagraph {
+    return Intl.message(
+        "This type of private key is not yet supported by Blaise. You may create a new private key and transfer your accounts to it using a different wallet.",
+        desc:
+            'A paragraph to tell the user that the private key type is not supported',
+        name: 'keyTypeNotSupportedParagraph');
   }
 
   // PIN Screen
@@ -944,7 +972,43 @@ class AppLocalization {
         desc: 'Header for the privacy policy option in settings',
         name: 'privacyPolicyHeader');
   }
+
   // Settings Headers END
+
+  // Operations List Headers
+  String get changeAccountNameHeader {
+    return Intl.message("Change Account Name",
+        desc:
+            'Header for the change account name option in other operations list',
+        name: 'changeAccountNameHeader');
+  }
+
+  String get transferAccountHeader {
+    return Intl.message("Transfer Account",
+        desc: 'Header for the transfer account option in other operations list',
+        name: 'transferAccountHeader');
+  }
+
+  String get listAccountForSaleHeader {
+    return Intl.message("List Account For Sale",
+        desc:
+            'Header for the list account for sale option in other operations list',
+        name: 'listAccountForSaleHeader');
+  }
+
+  String get createPrivateSaleHeader {
+    return Intl.message("Create Private Sale",
+        desc:
+            'Header for the create private sale option in other operations list',
+        name: 'createPrivateSaleHeader');
+  }
+
+  String get delistFromSaleHeader {
+    return Intl.message("Delist From Sale",
+        desc: 'Header for the delist from sale option in other operations list',
+        name: 'delistFromSaleHeader');
+  }
+  // Operations List Headers END
 
   // Sheet Headers
   String get getAccountSheetHeader {
@@ -1005,7 +1069,8 @@ class AppLocalization {
 
   String get transferSheetHeader {
     return Intl.message("Transfer",
-        desc: 'Header for transfer sheet (screen)', name: 'transferSheetHeader');
+        desc: 'Header for transfer sheet (screen)',
+        name: 'transferSheetHeader');
   }
 
   String get transferringSheetHeader {
@@ -1058,12 +1123,14 @@ class AppLocalization {
 
   String get delistingSheetHeader {
     return Intl.message("Delisting",
-        desc: 'Header for delisting sheet (screen)', name: 'delistingSheetHeader');
+        desc: 'Header for delisting sheet (screen)',
+        name: 'delistingSheetHeader');
   }
 
   String get delistedSheetHeader {
     return Intl.message("Delisted",
-        desc: 'Header for delisted sheet (screen)', name: 'delistedSheetHeader');
+        desc: 'Header for delisted sheet (screen)',
+        name: 'delistedSheetHeader');
   }
 
   String get addContactSheetHeader {
@@ -1270,6 +1337,12 @@ class AppLocalization {
     return Intl.message("Add Fee",
         desc: 'Header for add fee dialog', name: 'addFeeHeader');
   }
+
+  String get keyTypeNotSupportedHeader {
+    return Intl.message("Key Not Supported",
+        desc: 'Header for key not supported dialog',
+        name: 'keyTypeNotSupportedHeader');
+  }
   // Dialog Headers END
 
   // Operation List Item Headers
@@ -1378,6 +1451,13 @@ class AppLocalization {
     return Intl.message("Fee:",
         desc: 'Header for fee amount', name: 'feeColonHeader');
   }
+
+  String get pendingHeader {
+    return Intl.message("Pending",
+        desc: 'Header to indicate that an operation is pending',
+        name: 'pendingHeader');
+  }
+
   // Miscellaneous Headers
 
   // **** HEADERS END **** //
@@ -1385,79 +1465,131 @@ class AppLocalization {
   // **** ERROR TEXT **** //
   String get priceRequiredError {
     return Intl.message("Price is required",
-        desc: 'Error that tells the user that the price is required', name: 'priceRequiredError');
+        desc: 'Error that tells the user that the price is required',
+        name: 'priceRequiredError');
   }
+
   String get amountRequiredError {
     return Intl.message("Amount is required",
-        desc: 'Error that tells the user that the amount is required', name: 'amountRequiredError');
+        desc: 'Error that tells the user that the amount is required',
+        name: 'amountRequiredError');
   }
+
   String get nameRequiredError {
     return Intl.message("Name is required",
-        desc: 'Error that tells the user that the name is required', name: 'nameRequiredError');
+        desc: 'Error that tells the user that the name is required',
+        name: 'nameRequiredError');
   }
+
   String get zeroPriceError {
     return Intl.message("Price can't be 0",
-        desc: 'Error that tells the user that the price cant be zero', name: 'zeroPriceError');
+        desc: 'Error that tells the user that the price cant be zero',
+        name: 'zeroPriceError');
   }
+
   String get zeroAmountError {
     return Intl.message("Amount can't be 0",
-        desc: 'Error that tells the user that the amount cant be zero', name: 'zeroAmountError');
+        desc: 'Error that tells the user that the amount cant be zero',
+        name: 'zeroAmountError');
   }
-    String get invalidAccountNameError {
+
+  String get invalidAccountNameError {
     return Intl.message("Invalid account name",
-        desc: 'Error that tells the user that the account name is invalid', name: 'invalidAccountNameError');
+        desc: 'Error that tells the user that the account name is invalid',
+        name: 'invalidAccountNameError');
   }
+
   String get invalidReceivingAccountError {
     return Intl.message("Invalid receiving account",
-        desc: 'Error that tells the user that the receiving account is invalid', name: 'invalidReceivingAccountError');
+        desc: 'Error that tells the user that the receiving account is invalid',
+        name: 'invalidReceivingAccountError');
   }
+
   String get invalidPublicKeyError {
     return Intl.message("Invalid public key",
-        desc: 'Error that tells the user that the public key is invalid', name: 'invalidPublicKeyError');
+        desc: 'Error that tells the user that the public key is invalid',
+        name: 'invalidPublicKeyError');
   }
+
+  String get invalidPrivateKeyError {
+    return Intl.message("Invalid private key",
+        desc: 'Error that tells the user that the private key is invalid',
+        name: 'invalidPrivateKeyError');
+  }
+
   String get invalidAddressError {
     return Intl.message("Invalid address",
-        desc: 'Error that tells the user that the address is invalid', name: 'invalidAddressError');
+        desc: 'Error that tells the user that the address is invalid',
+        name: 'invalidAddressError');
   }
+
   String get invalidAccountError {
     return Intl.message("Invalid account",
-        desc: 'Error that tells the user that the account is invalid', name: 'invalidAccountError');
+        desc: 'Error that tells the user that the account is invalid',
+        name: 'invalidAccountError');
   }
+
   String get invalidDestinationError {
     return Intl.message("Invalid destination",
-        desc: 'Error that tells the user that the destination is invalid', name: 'invalidDestinationError');
+        desc: 'Error that tells the user that the destination is invalid',
+        name: 'invalidDestinationError');
   }
-  
+
   String get insufficientBalanceError {
     return Intl.message("Insufficient balance",
-        desc: 'Error that tells the user that the balance is insufficient', name: 'insufficientBalanceError');
+        desc: 'Error that tells the user that the balance is insufficient',
+        name: 'insufficientBalanceError');
   }
+
   String get threeCharacterNameError {
     return Intl.message("Must be at least 3 characters",
-        desc: 'Error that tells the user that the account name cant be shorter than 3 characters', name: 'threeCharacterNameError');
+        desc:
+            'Error that tells the user that the account name cant be shorter than 3 characters',
+        name: 'threeCharacterNameError');
   }
+
   String get contactDoesntExistError {
     return Intl.message("Contact doesn't exist",
-        desc: 'Error that tells the user that the contact doesnt exist', name: 'contactDoesntExistError');
+        desc: 'Error that tells the user that the contact doesnt exist',
+        name: 'contactDoesntExistError');
   }
+
   String get contactAlreadyExistsError {
     return Intl.message("Contact doesn't exist",
-        desc: 'Error that tells the user that the contact already exists', name: 'contactAlreadyExistsError');
+        desc: 'Error that tells the user that the contact already exists',
+        name: 'contactAlreadyExistsError');
   }
+
   String get cantSendToYourselfError {
     return Intl.message("Can't send to yourself",
-        desc: 'Error that tells the user that you cant send to yourself', name: 'cantSendToYourselfError');
+        desc: 'Error that tells the user that you cant send to yourself',
+        name: 'cantSendToYourselfError');
   }
+
   String get somethingWentWrongError {
     return Intl.message("Something went wrong, please try again later.",
-        desc: 'Error that tells the user that something went wrong', name: 'somethingWentWrongError');
+        desc: 'Error that tells the user that something went wrong',
+        name: 'somethingWentWrongError');
   }
+
   String get failedToEncryptPayloadError {
     return Intl.message("Failed to encrypt the payload.",
-        desc: 'Error that tells the user that something went wrong', name: 'failedToEncryptPayloadError');
+        desc: 'Error that tells the user that payload encrypt is failed',
+        name: 'failedToEncryptPayloadError');
+  }
+
+  String get emptyPasswordError {
+    return Intl.message("Password can't be empty",
+        desc: 'Error that tells the user that the password cant be empty',
+        name: 'emptyPasswordError');
+  }
+
+  String get invalidPasswordError {
+    return Intl.message("Invalid password",
+        desc: 'Error that tells the user that the password is invalid',
+        name: 'invalidPasswordError');
   }
   // **** ERROR TEXT END **** //
-
 
   String get onStr {
     return Intl.message("On", desc: "On", name: "onStr");

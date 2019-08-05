@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -10,7 +11,6 @@ import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
-import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -42,112 +42,102 @@ class _IntroDecryptAndImportPrivateKeyPageState
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
-      body: TapOutsideUnfocus(
-        child: LayoutBuilder(
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
+        body: TapOutsideUnfocus(
+            child: LayoutBuilder(
           builder: (context, constraints) => Column(
             children: <Widget>[
               //A widget that holds welcome animation + paragraph
               Expanded(
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // Container for the header
+                  Container(
+                    padding: EdgeInsetsDirectional.only(
+                      top: (MediaQuery.of(context).padding.top) +
+                          (24 - (MediaQuery.of(context).padding.top) / 2),
+                    ),
+                    decoration: BoxDecoration(
+                      gradient:
+                          StateContainer.of(context).curTheme.gradientPrimary,
+                    ),
+                    // Row for back button and the header
+                    child: Row(
                       children: <Widget>[
-                        // Container for the header
+                        // The header
                         Container(
-                          padding: EdgeInsetsDirectional.only(
-                            top: (MediaQuery.of(context).padding.top) +
-                                (24 -
-                                    (MediaQuery.of(context).padding.top) /
-                                        2),
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: StateContainer.of(context)
-                                .curTheme
-                                .gradientPrimary,
-                          ),
-                          // Row for back button and the header
-                          child: Row(
-                            children: <Widget>[
-                              // The header
-                              Container(
-                                width:
-                                    MediaQuery.of(context).size.width - 60,
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    30, 24, 30, 24),
-                                child: AutoSizeText(
-                                  "Decrypt & Import",
-                                  style: AppStyles.header(context),
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Container for the paragraph
-                        Container(
-                          margin: EdgeInsetsDirectional.fromSTEB(
-                              30, 30, 30, 20),
-                          alignment: Alignment(-1, 0),
+                          width: MediaQuery.of(context).size.width - 60,
+                          margin:
+                              EdgeInsetsDirectional.fromSTEB(30, 24, 30, 24),
                           child: AutoSizeText(
-                            "This looks like an encrypted private key, please enter the password to decrypt and import it.",
-                            maxLines: 3,
+                            AppLocalization.of(context)
+                                .decryptAndImportKeyHeader,
+                            style: AppStyles.header(context),
+                            maxLines: 1,
                             stepGranularity: 0.1,
-                            style: AppStyles.paragraph(context),
-                          ),
-                        ),
-                        Expanded(
-                          child: KeyboardAvoider(
-                            duration: Duration(milliseconds: 0),
-                            autoScroll: true,
-                            focusPadding: 40,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // Container for the text field
-                                Container(
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 10, 30, 0),
-                                    child: AppTextField(
-                                      label: 'Password',
-                                      style: AppStyles.privateKeyPrimary(
-                                          context),
-                                      passwordField: true,
-                                      focusNode: _passwordFocusNode,
-                                      controller: _passwordController,
-                                      onChanged: onPasswordChanged,
-                                      maxLines: 1,
-                                    )),
-                                // Error Text
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      start: 30,
-                                      end: 30,
-                                      top: 4,
-                                      bottom: 40),
-                                  child: Text(
-                                    _passwordError == null
-                                        ? ""
-                                        : _passwordError,
-                                    style:
-                                        AppStyles.paragraphPrimary(context),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ),
+                  //Container for the paragraph
+                  Container(
+                    margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
+                    alignment: Alignment(-1, 0),
+                    child: AutoSizeText(
+                      AppLocalization.of(context)
+                          .looksLikeEncryptedKeyParagraph,
+                      maxLines: 3,
+                      stepGranularity: 0.1,
+                      style: AppStyles.paragraph(context),
+                    ),
+                  ),
+                  Expanded(
+                    child: KeyboardAvoider(
+                      duration: Duration(milliseconds: 0),
+                      autoScroll: true,
+                      focusPadding: 40,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Container for the text field
+                          Container(
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 10, 30, 0),
+                              child: AppTextField(
+                                label: AppLocalization.of(context)
+                                    .passwordTextFieldHeader,
+                                style: AppStyles.privateKeyPrimary(context),
+                                passwordField: true,
+                                focusNode: _passwordFocusNode,
+                                controller: _passwordController,
+                                onChanged: onPasswordChanged,
+                                maxLines: 1,
+                              )),
+                          // Error Text
+                          Container(
+                            margin: EdgeInsetsDirectional.only(
+                                start: 30, end: 30, top: 4, bottom: 40),
+                            child: Text(
+                              _passwordError == null ? "" : _passwordError,
+                              style: AppStyles.paragraphPrimary(context),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )),
               //"Import" and "Go Back" buttons
               Row(
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.Primary,
-                    text: "Import",
+                    text: AppLocalization.of(context).importButton,
                     buttonTop: true,
                     onPressed: () {
                       decryptAndSubmit();
@@ -160,7 +150,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.PrimaryOutline,
-                    text: "Go Back",
+                    text: AppLocalization.of(context).goBackButton,
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -169,9 +159,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
               ),
             ],
           ),
-        )
-      )
-    );
+        )));
   }
 
   void onPasswordChanged(String newText) {
@@ -183,7 +171,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
   void decryptAndSubmit() {
     if (_passwordController.text.length < 1) {
       setState(() {
-        _passwordError = "Password cannot be empty";
+        _passwordError = AppLocalization.of(context).emptyPasswordError;
       });
       return;
     }
@@ -193,51 +181,47 @@ class _IntroDecryptAndImportPrivateKeyPageState
           PDUtil.hexToBytes(widget.encryptedKey), _passwordController.text);
     } catch (e) {
       setState(() {
-        _passwordError = "Invalid Password";
+        _passwordError = AppLocalization.of(context).invalidPasswordError;
       });
       return;
     }
     if (!privKey.curve.supported) {
       showAppDialog(
-        context: context,
-        builder: (_) => DialogOverlay(
-          title: 'Key Not Supported',
-          warningStyle: true,
-          confirmButtonText: "Okay, take me back",
-          body: TextSpan(
-            children: [
-              TextSpan(
-                text:
-                    "This type of private key is not yet supported by Blaise. You may create a new private key and transfer your accounts to it using a different wallet.",
-                style: AppStyles.paragraph(context),
-              )
-            ],
-          ),
-          onConfirm: () {
-            Navigator.of(context).popUntil(RouteUtils.withNameLike('/intro_welcome'));
-          },
-        )
-      );
+          context: context,
+          builder: (_) => DialogOverlay(
+                title: AppLocalization.of(context).keyNotSupportedHeader,
+                confirmButtonText: AppLocalization.of(context).okayGoBackButton.toUpperCase(),
+                feeDialog: true,
+                body: TextSpan(
+                  children: [
+                    TextSpan(
+                      text:
+                          AppLocalization.of(context).keyTypeNotSupportedParagraph,
+                      style: AppStyles.paragraph(context),
+                    )
+                  ],
+                ),
+                onConfirm: () {
+                  Navigator.of(context)
+                      .popUntil(RouteUtils.withNameLike('/intro_welcome'));
+                },
+              ));
       return;
     }
     sl.get<Vault>().setPrivateKey(privKey).then((_) {
       sl.get<SharedPrefsUtil>().setPrivateKeyBackedUp(true).then((_) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return PinScreen(
-                type: PinOverlayType.NEW_PIN,
-                onSuccess: (pin) {
-                  sl.get<Vault>().setPin(pin).then((_) {
-                    walletState.requestUpdate();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/overview', (Route<dynamic> route) => false);                      
-                  });
-                }
-              );
-            }
-          )
-        );
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return PinScreen(
+              type: PinOverlayType.NEW_PIN,
+              onSuccess: (pin) {
+                sl.get<Vault>().setPin(pin).then((_) {
+                  walletState.requestUpdate();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/overview', (Route<dynamic> route) => false);
+                });
+              });
+        }));
       });
     });
   }

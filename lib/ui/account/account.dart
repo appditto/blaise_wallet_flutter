@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
@@ -62,6 +63,13 @@ class _AccountPageState extends State<AccountPage>
   // Last refresh
   DateTime _lastRefresh;
 
+  // Account price
+  final double accountPrice = 0.25;
+
+  // Borrowed account expiration
+  final double untilExpirationDays = 5;
+  final double untilExpirationHours = 12;
+
   @override
   void initState() {
     super.initState();
@@ -107,7 +115,8 @@ class _AccountPageState extends State<AccountPage>
   }
 
   void _animationControllerListener() {
-    if (accountState.operationsLoading || accountState.operationsToDisplay == null) {
+    if (accountState.operationsLoading ||
+        accountState.operationsToDisplay == null) {
       setState(() {});
     } else {
       _disposeAnimations();
@@ -139,7 +148,8 @@ class _AccountPageState extends State<AccountPage>
         break;
       case AppLifecycleState.resumed:
         // Do an auto-refresh
-        if (_lastRefresh == null || DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 300) {
+        if (_lastRefresh == null ||
+            DateTime.now().toUtc().difference(_lastRefresh).inSeconds > 300) {
           _refresh(socketUpdate: false);
         }
         walletState.requestUpdate();
@@ -150,7 +160,6 @@ class _AccountPageState extends State<AccountPage>
         break;
     }
   }
-
 
   void _startAnimation() {
     _opacityAnimationController.addListener(_animationControllerListener);
@@ -170,57 +179,60 @@ class _AccountPageState extends State<AccountPage>
   List<DialogListItem> getOperationsList() {
     return [
       DialogListItem(
-        option: "Change Account Name",
+        option: AppLocalization.of(context).changeAccountNameHeader,
         action: () {
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
-              context: context, widget: ChangeNameSheet(account: accountState.account));
+              context: context,
+              widget: ChangeNameSheet(account: accountState.account));
         },
       ),
       DialogListItem(
-        option: "Transfer Account",
+        option: AppLocalization.of(context).transferAccountHeader,
         action: () {
           Navigator.of(context).pop();
           AppSheets.showBottomSheet(
-            context: context,
-            widget: TransferAccountSheet(
-              account: accountState.account,
-            )
-          );
+              context: context,
+              widget: TransferAccountSheet(
+                account: accountState.account,
+              ));
         },
       ),
       DialogListItem(
-        option: "List Account for Sale",
-        action: () {
-          Navigator.of(context).pop();
-          AppSheets.showBottomSheet(
-              context: context, widget: ListForSaleSheet(account: accountState.account));
-        },
-        disabled: accountState == null || accountState.account.state == AccountState.LISTED
-      ),
+          option: AppLocalization.of(context).listAccountForSaleHeader,
+          action: () {
+            Navigator.of(context).pop();
+            AppSheets.showBottomSheet(
+                context: context,
+                widget: ListForSaleSheet(account: accountState.account));
+          },
+          disabled: accountState == null ||
+              accountState.account.state == AccountState.LISTED),
       DialogListItem(
-        option: "Private Sale",
-        action: () {
-          Navigator.of(context).pop();
-          AppSheets.showBottomSheet(
-              context: context, widget: CreatePrivateSaleSheet(account: accountState.account));
-        },
-        disabled: accountState == null || accountState.account.state == AccountState.LISTED
-      ),
+          option: AppLocalization.of(context).createPrivateSaleHeader,
+          action: () {
+            Navigator.of(context).pop();
+            AppSheets.showBottomSheet(
+                context: context,
+                widget: CreatePrivateSaleSheet(account: accountState.account));
+          },
+          disabled: accountState == null ||
+              accountState.account.state == AccountState.LISTED),
       DialogListItem(
-        option: "Delist Account",
-        action: () {
-          Navigator.of(context).pop();
-          AppSheets.showBottomSheet(
-            context: context,
-            widget: DelistingForSaleSheet(
-              account: accountState.account,
-              fee: walletState.shouldHaveFee() ? walletState.MIN_FEE : walletState.NO_FEE,
-            )
-          );
-        },
-        disabled: accountState == null || accountState.account.state != AccountState.LISTED
-      ),
+          option: AppLocalization.of(context).delistFromSaleHeader,
+          action: () {
+            Navigator.of(context).pop();
+            AppSheets.showBottomSheet(
+                context: context,
+                widget: DelistingForSaleSheet(
+                  account: accountState.account,
+                  fee: walletState.shouldHaveFee()
+                      ? walletState.MIN_FEE
+                      : walletState.NO_FEE,
+                ));
+          },
+          disabled: accountState == null ||
+              accountState.account.state != AccountState.LISTED),
     ];
   }
 
@@ -265,7 +277,7 @@ class _AccountPageState extends State<AccountPage>
       }
     });
     if (socketUpdate) {
-      walletState.requestUpdate();      
+      walletState.requestUpdate();
     }
     this.accountState?.updateAccount();
     this.accountState?.getAccountOperations()?.whenComplete(() {
@@ -284,435 +296,425 @@ class _AccountPageState extends State<AccountPage>
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       endDrawer: SizedBox(
-          width: double.infinity, child: AppDrawer(child: SettingsPage(account: accountState))),
+          width: double.infinity,
+          child: AppDrawer(child: SettingsPage(account: accountState))),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // A stack for the main card and the background gradient
+                  Stack(
                     children: <Widget>[
-                      // A stack for the main card and the background gradient
-                      Stack(
-                        children: <Widget>[
-                          // Container for the gradient background
-                          Container(
-                            height: 65 +
-                                (MediaQuery.of(context).padding.top) +
+                      // Container for the gradient background
+                      Container(
+                        height: 65 +
+                            (MediaQuery.of(context).padding.top) +
+                            (20 - (MediaQuery.of(context).padding.bottom) / 2),
+                        decoration: BoxDecoration(
+                          gradient: StateContainer.of(context)
+                              .curTheme
+                              .gradientPrimary,
+                        ),
+                      ),
+                      //Container for the main card
+                      Container(
+                        height: 130,
+                        margin: EdgeInsetsDirectional.fromSTEB(
+                            12,
+                            (MediaQuery.of(context).padding.top) +
                                 (20 -
                                     (MediaQuery.of(context).padding.bottom) /
                                         2),
-                            decoration: BoxDecoration(
-                              gradient: StateContainer.of(context)
+                            12,
+                            0),
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                            gradient: StateContainer.of(context)
+                                .curTheme
+                                .gradientPrimary,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              StateContainer.of(context)
                                   .curTheme
-                                  .gradientPrimary,
-                            ),
-                          ),
-                          //Container for the main card
-                          Container(
-                            height: 130,
-                            margin: EdgeInsetsDirectional.fromSTEB(
-                                12,
-                                (MediaQuery.of(context).padding.top) +
-                                    (20 -
-                                        (MediaQuery.of(context)
-                                                .padding
-                                                .bottom) /
-                                            2),
-                                12,
-                                0),
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                                gradient: StateContainer.of(context)
-                                    .curTheme
-                                    .gradientPrimary,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  StateContainer.of(context)
-                                      .curTheme
-                                      .shadowMainCard,
-                                ]),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                // Back icon and price text
-                                Container(
-                                  height: 130,
-                                  width: 60,
-                                  alignment: Alignment(0, -1),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      // Back icon
-                                      Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            top: 2, start: 2),
-                                        height: 50,
-                                        width: 50,
-                                        child: FlatButton(
-                                            highlightColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight15,
-                                            splashColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight30,
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        50.0)),
-                                            padding: EdgeInsetsDirectional.only(
-                                                end: 10),
-                                            child: Icon(AppIcons.back,
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .textLight,
-                                                size: 22)),
-                                      ),
-                                      // Price text
-                                      Observer(
-                                        builder: (BuildContext context) {
-                                          if (walletState.localCurrencyPrice == null) {
-                                            return SizedBox();
-                                          } else {
-                                            return Container(
-                                              margin: EdgeInsetsDirectional.only(
-                                                  start: 16, bottom: 12),
-                                              child: AutoSizeText(
-                                                walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: Currency('1'), decimalDigits: 3),
-                                                maxLines: 1,
-                                                stepGranularity: 0.1,
-                                                minFontSize: 8,
-                                                textAlign: TextAlign.start,
-                                                style: AppStyles
-                                                    .paragraphTextLightSmallSemiBold(
-                                                        context),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                // Column for balance texts
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    // Container for "TOTAL BALANCE" text
-                                    Container(
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: AutoSizeText(
-                                        "ACCOUNT BALANCE",
-                                        style:
-                                            AppStyles.paragraphTextLightSmall(
-                                                context),
-                                      ),
-                                    ),
-                                    // Container for the balance
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          168,
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          12, 4, 12, 4),
-                                      child: Observer(
-                                        builder: (BuildContext context) {
-                                          Currency bal =
-                                              accountState.accountBalance;
-                                          return AutoSizeText.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: "",
-                                                  style: AppStyles
-                                                      .iconFontTextLightPascal(
-                                                          context),
-                                                ),
-                                                TextSpan(
-                                                    text: " ",
-                                                    style: TextStyle(
-                                                        fontSize: 12)),
-                                                TextSpan(
-                                                    text: bal.toStringOpt(),
-                                                    style: AppStyles.header(
-                                                        context))
-                                              ],
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            maxLines: 1,
-                                            minFontSize: 8,
-                                            stepGranularity: 1,
-                                            style: TextStyle(
-                                              fontSize: 28,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    // Container for the fiat conversion
-                                    Observer(
-                                      builder: (BuildContext context) {
-                                        if (walletState.localCurrencyPrice == null) {
-                                          return SizedBox();
-                                        } else {
-                                          return Container(
-                                            margin: EdgeInsetsDirectional.fromSTEB(
-                                                12, 0, 12, 0),
-                                            child: AutoSizeText(
-                                              "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
-                                              style:
-                                                  AppStyles.paragraphTextLightSmall(
-                                                      context),
-                                            ),
-                                          );                                        
-                                        }
-                                      },
-                                    )
-                                  ],
-                                ),
-                                // Column for settings icon and other operations icon
-                                Container(
-                                  width: 60,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      // Settings Icon
-                                      Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            top: 2, end: 2),
-                                        height: 50,
-                                        width: 50,
-                                        child: FlatButton(
-                                            highlightColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight15,
-                                            splashColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight30,
-                                            onPressed: () {
-                                              _scaffoldKey.currentState
-                                                  .openEndDrawer();
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        50.0)),
-                                            padding: EdgeInsets.all(0.0),
-                                            child: Icon(AppIcons.settings,
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .textLight,
-                                                size: 24)),
-                                      ),
-                                      // Other Operations Icon
-                                      Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            bottom: 2, end: 2),
-                                        height: 50,
-                                        width: 50,
-                                        child: FlatButton(
-                                            highlightColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight15,
-                                            splashColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .textLight30,
-                                            onPressed: () {
-                                              showAppDialog(
-                                                  context: context,
-                                                  builder: (_) => DialogOverlay(
-                                                      title: 'Other Operations',
-                                                      optionsList:
-                                                          getOperationsList()));
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        50.0)),
-                                            padding: EdgeInsetsDirectional.only(
-                                                start: 8, top: 6),
-                                            child: Icon(AppIcons.edit,
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .textLight,
-                                                size: 18)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      widget.isBorrowed
-                          ? // Paragraph and illustration
-                          Expanded(
+                                  .shadowMainCard,
+                            ]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            // Back icon and price text
+                            Container(
+                              height: 130,
+                              width: 60,
+                              alignment: Alignment(0, -1),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  //Container for the paragraph
-                                  Container(
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        30, 0, 30, 0),
-                                    child: AutoSizeText.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "This is a",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text: " borrowed account",
-                                            style: AppStyles.paragraphPrimary(
-                                                context),
-                                          ),
-                                          TextSpan(
-                                            text: ".\n",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text: "If you send at least",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text: " 0.25 PASCAL",
-                                            style: AppStyles.paragraphPrimary(
-                                                context),
-                                          ),
-                                          TextSpan(
-                                            text: " to it in the next",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                          TextSpan(
-                                            text: " 5 days 8 hours",
-                                            style: AppStyles.paragraphPrimary(
-                                                context),
-                                          ),
-                                          TextSpan(
-                                            text: ", it’ll be yours.",
-                                            style: AppStyles.paragraph(context),
-                                          ),
-                                        ],
-                                      ),
-                                      stepGranularity: 0.5,
-                                      maxLines: 10,
-                                      minFontSize: 8,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  // Container for the illustration
+                                  // Back icon
                                   Container(
                                     margin: EdgeInsetsDirectional.only(
-                                      top: 24,
-                                      bottom: 24,
-                                    ),
-                                    child: SvgRepaintAsset(
-                                        asset: StateContainer.of(context)
+                                        top: 2, start: 2),
+                                    height: 50,
+                                    width: 50,
+                                    child: FlatButton(
+                                        highlightColor:
+                                            StateContainer.of(context)
+                                                .curTheme
+                                                .textLight15,
+                                        splashColor: StateContainer.of(context)
                                             .curTheme
-                                            .illustrationBorrowed,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.8,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.8 *
-                                                132 /
-                                                295),
+                                            .textLight30,
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0)),
+                                        padding:
+                                            EdgeInsetsDirectional.only(end: 10),
+                                        child: Icon(AppIcons.back,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .textLight,
+                                            size: 22)),
+                                  ),
+                                  // Price text
+                                  Observer(builder: (BuildContext context) {
+                                    if (walletState.localCurrencyPrice ==
+                                        null) {
+                                      return SizedBox();
+                                    } else {
+                                      return Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                            start: 16, bottom: 12),
+                                        child: AutoSizeText(
+                                          walletState.getLocalCurrencyDisplay(
+                                              currency:
+                                                  StateContainer.of(context)
+                                                      .curCurrency,
+                                              amount: Currency('1'),
+                                              decimalDigits: 3),
+                                          maxLines: 1,
+                                          stepGranularity: 0.1,
+                                          minFontSize: 8,
+                                          textAlign: TextAlign.start,
+                                          style: AppStyles
+                                              .paragraphTextLightSmallSemiBold(
+                                                  context),
+                                        ),
+                                      );
+                                    }
+                                  })
+                                ],
+                              ),
+                            ),
+                            // Column for balance texts
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                // Container for "TOTAL BALANCE" text
+                                Container(
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 12, 0),
+                                  child: AutoSizeText(
+                                    AppLocalization.of(context)
+                                        .accountBalanceHeader,
+                                    style: AppStyles.paragraphTextLightSmall(
+                                        context),
+                                  ),
+                                ),
+                                // Container for the balance
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width - 168,
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      12, 4, 12, 4),
+                                  child: Observer(
+                                    builder: (BuildContext context) {
+                                      Currency bal =
+                                          accountState.accountBalance;
+                                      return AutoSizeText.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "",
+                                              style: AppStyles
+                                                  .iconFontTextLightPascal(
+                                                      context),
+                                            ),
+                                            TextSpan(
+                                                text: " ",
+                                                style: TextStyle(fontSize: 12)),
+                                            TextSpan(
+                                                text: bal.toStringOpt(),
+                                                style:
+                                                    AppStyles.header(context))
+                                          ],
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        minFontSize: 8,
+                                        stepGranularity: 1,
+                                        style: TextStyle(
+                                          fontSize: 28,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                // Container for the fiat conversion
+                                Observer(
+                                  builder: (BuildContext context) {
+                                    if (walletState.localCurrencyPrice ==
+                                        null) {
+                                      return SizedBox();
+                                    } else {
+                                      return Container(
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 12, 0),
+                                        child: AutoSizeText(
+                                          "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
+                                          style:
+                                              AppStyles.paragraphTextLightSmall(
+                                                  context),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                            // Column for settings icon and other operations icon
+                            Container(
+                              width: 60,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  // Settings Icon
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(
+                                        top: 2, end: 2),
+                                    height: 50,
+                                    width: 50,
+                                    child: FlatButton(
+                                        highlightColor:
+                                            StateContainer.of(context)
+                                                .curTheme
+                                                .textLight15,
+                                        splashColor: StateContainer.of(context)
+                                            .curTheme
+                                            .textLight30,
+                                        onPressed: () {
+                                          _scaffoldKey.currentState
+                                              .openEndDrawer();
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0)),
+                                        padding: EdgeInsets.all(0.0),
+                                        child: Icon(AppIcons.settings,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .textLight,
+                                            size: 24)),
+                                  ),
+                                  // Other Operations Icon
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(
+                                        bottom: 2, end: 2),
+                                    height: 50,
+                                    width: 50,
+                                    child: FlatButton(
+                                        highlightColor:
+                                            StateContainer.of(context)
+                                                .curTheme
+                                                .textLight15,
+                                        splashColor: StateContainer.of(context)
+                                            .curTheme
+                                            .textLight30,
+                                        onPressed: () {
+                                          showAppDialog(
+                                              context: context,
+                                              builder: (_) => DialogOverlay(
+                                                  title: AppLocalization.of(
+                                                          context)
+                                                      .otherOperationsHeader,
+                                                  optionsList:
+                                                      getOperationsList()));
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0)),
+                                        padding: EdgeInsetsDirectional.only(
+                                            start: 8, top: 6),
+                                        child: Icon(AppIcons.edit,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .textLight,
+                                            size: 18)),
                                   ),
                                 ],
                               ),
-                            )
-                          :
-                          // Wallet Cards
-                          Expanded(
-                              child: widget.isBorrowed
-                                  ? SizedBox()
-                                  : Column(
-                                      children: <Widget>[
-                                        // Accounts text
-                                        Container(
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  24, 18, 24, 4),
-                                          alignment: Alignment(-1, 0),
-                                          child: AutoSizeText(
-                                            "Operations".toUpperCase(),
-                                            style:
-                                                AppStyles.headerSmall(context),
-                                            textAlign: TextAlign.left,
-                                            stepGranularity: 0.5,
-                                            maxLines: 1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  widget.isBorrowed
+                      ? // Paragraph and illustration
+                      Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              //Container for the paragraph
+                              Container(
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    30, 0, 30, 0),
+                                child: AutoSizeText.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "This is a",
+                                        style: AppStyles.paragraph(context),
+                                      ),
+                                      TextSpan(
+                                        text: " borrowed account",
+                                        style:
+                                            AppStyles.paragraphPrimary(context),
+                                      ),
+                                      TextSpan(
+                                        text: ".\n",
+                                        style: AppStyles.paragraph(context),
+                                      ),
+                                      TextSpan(
+                                        text: "If you send at least",
+                                        style: AppStyles.paragraph(context),
+                                      ),
+                                      TextSpan(
+                                        text: " 0.25 PASCAL",
+                                        style:
+                                            AppStyles.paragraphPrimary(context),
+                                      ),
+                                      TextSpan(
+                                        text: " to it in the next",
+                                        style: AppStyles.paragraph(context),
+                                      ),
+                                      TextSpan(
+                                        text: " 5 days 8 hours",
+                                        style:
+                                            AppStyles.paragraphPrimary(context),
+                                      ),
+                                      TextSpan(
+                                        text: ", it’ll be yours.",
+                                        style: AppStyles.paragraph(context),
+                                      ),
+                                    ],
+                                  ),
+                                  stepGranularity: 0.5,
+                                  maxLines: 10,
+                                  minFontSize: 8,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ),
+                              // Container for the illustration
+                              Container(
+                                margin: EdgeInsetsDirectional.only(
+                                  top: 24,
+                                  bottom: 24,
+                                ),
+                                child: SvgRepaintAsset(
+                                    asset: StateContainer.of(context)
+                                        .curTheme
+                                        .illustrationBorrowed,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.8 *
+                                        132 /
+                                        295),
+                              ),
+                            ],
+                          ),
+                        )
+                      :
+                      // Wallet Cards
+                      Expanded(
+                          child: widget.isBorrowed
+                              ? SizedBox()
+                              : Column(
+                                  children: <Widget>[
+                                    // Accounts text
+                                    Container(
+                                      margin: EdgeInsetsDirectional.fromSTEB(
+                                          24, 18, 24, 4),
+                                      alignment: Alignment(-1, 0),
+                                      child: AutoSizeText(
+                                        AppLocalization.of(context)
+                                            .operationsHeader,
+                                        style: AppStyles.headerSmall(context),
+                                        textAlign: TextAlign.left,
+                                        stepGranularity: 0.5,
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                    // Expanded list
+                                    Expanded(
+                                      // Container for the list
+                                      child: Container(
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            12, 8, 12, 0),
+                                        width: double.maxFinite,
+                                        decoration: BoxDecoration(
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .backgroundPrimary,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(12),
+                                            topRight: Radius.circular(12),
                                           ),
+                                          boxShadow: [
+                                            StateContainer.of(context)
+                                                .curTheme
+                                                .shadowSettingsList,
+                                          ],
                                         ),
-                                        // Expanded list
-                                        Expanded(
-                                          // Container for the list
-                                          child: Container(
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12, 8, 12, 0),
-                                            width: double.maxFinite,
-                                            decoration: BoxDecoration(
-                                              color: StateContainer.of(context)
-                                                  .curTheme
-                                                  .backgroundPrimary,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(12),
-                                                topRight: Radius.circular(12),
-                                              ),
-                                              boxShadow: [
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .shadowSettingsList,
-                                              ],
-                                            ),
-                                            // Operations List
-                                            child: Observer(
-                                              builder: (BuildContext context) {
-                                                if (accountState
-                                                        .operationsLoading || accountState.operations == null) {
-                                                  return ReactiveRefreshIndicator(
-                                                    backgroundColor:
-                                                        StateContainer.of(
-                                                                context)
-                                                            .curTheme
-                                                            .backgroundPrimary,
-                                                    onRefresh: _refresh,
-                                                    isRefreshing:
-                                                        _isRefreshing,
-                                                    child: ClipRRect(
+                                        // Operations List
+                                        child: Observer(
+                                          builder: (BuildContext context) {
+                                            if (accountState
+                                                    .operationsLoading ||
+                                                accountState.operations ==
+                                                    null) {
+                                              return ReactiveRefreshIndicator(
+                                                  backgroundColor:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .backgroundPrimary,
+                                                  onRefresh: _refresh,
+                                                  isRefreshing: _isRefreshing,
+                                                  child: ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.only(
                                                               topLeft: Radius
                                                                   .circular(12),
-                                                              topRight:
-                                                                  Radius.circular(
+                                                              topRight: Radius
+                                                                  .circular(
                                                                       12)),
                                                       child: Opacity(
-                                                        opacity: _opacityAnimation
-                                                            .value,
+                                                        opacity:
+                                                            _opacityAnimation
+                                                                .value,
                                                         child: ListView(
                                                             padding:
                                                                 EdgeInsetsDirectional
@@ -749,125 +751,129 @@ class _AccountPageState extends State<AccountPage>
                                                                       PlaceholderOperationType
                                                                           .Sent),
                                                             ]),
-                                                      )
-                                                    )
-                                                  );
-                                                } else {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft: Radius
-                                                                .circular(12),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    12)),
-                                                    child: ReactiveRefreshIndicator(
-                                                        backgroundColor:
-                                                            StateContainer.of(
-                                                                    context)
-                                                                .curTheme
-                                                                .backgroundPrimary,
-                                                        onRefresh: _refresh,
-                                                        isRefreshing:
-                                                            _isRefreshing,
-                                                        child: accountState.hasOperationsToDisplay() ? ListView.builder(
-                                                            physics: AlwaysScrollableScrollPhysics(),
+                                                      )));
+                                            } else {
+                                              return ClipRRect(
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(12),
+                                                    topRight:
+                                                        Radius.circular(12)),
+                                                child: ReactiveRefreshIndicator(
+                                                    backgroundColor:
+                                                        StateContainer.of(
+                                                                context)
+                                                            .curTheme
+                                                            .backgroundPrimary,
+                                                    onRefresh: _refresh,
+                                                    isRefreshing: _isRefreshing,
+                                                    child: accountState
+                                                            .hasOperationsToDisplay()
+                                                        ? ListView.builder(
+                                                            physics:
+                                                                AlwaysScrollableScrollPhysics(),
                                                             padding:
                                                                 EdgeInsetsDirectional
                                                                     .only(
                                                                         bottom:
                                                                             24),
-                                                            itemCount: accountState.operationsToDisplay.length,
-                                                            itemBuilder: (context, index) {
-                                                              return _buildAccountHistoryItem(accountState.operationsToDisplay[index]);
-                                                            }
-                                                        )
+                                                            itemCount: accountState
+                                                                .operationsToDisplay
+                                                                .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return _buildAccountHistoryItem(
+                                                                  accountState
+                                                                          .operationsToDisplay[
+                                                                      index]);
+                                                            })
                                                         : ListView(
-                                                          padding: EdgeInsetsDirectional.only(bottom: 24),
-                                                          children: getPlaceholderCards(),
-                                                        )
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                          ),
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .only(
+                                                                        bottom:
+                                                                            24),
+                                                            children:
+                                                                getPlaceholderCards(),
+                                                          )),
+                                              );
+                                            }
+                                          },
                                         ),
-                                      ],
+                                      ),
                                     ),
-                            ),
-                      // Bottom bar
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            color: StateContainer.of(context)
-                                .curTheme
-                                .backgroundPrimary,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
-                            ),
-                            boxShadow: [
-                              StateContainer.of(context)
-                                  .curTheme
-                                  .shadowBottomBar,
-                            ],
-                          ),
-                          child: Container(
-                            margin: EdgeInsetsDirectional.only(top: 4),
-                            child: Row(
-                              children: <Widget>[
-                                Observer(
-                                  builder: (BuildContext context) {
-                                    PascalAccount account =
-                                        accountState.account;
-                                    return AppButton(
-                                      text: "Receive",
-                                      type: AppButtonType.PrimaryLeft,
-                                      onPressed: () {
-                                        AppSheets.showBottomSheet(
-                                            context: context,
-                                            widget: ReceiveSheet(
-                                              accountName:
-                                                  account.name.accountName,
-                                              accountNumber: account.account,
-                                            ));
-                                      },
-                                    );
-                                  },
+                                  ],
                                 ),
-                                Observer(
-                                  builder: (BuildContext context) {
-                                    return AppButton(
-                                      text: "Send",
-                                      type: AppButtonType.PrimaryRight,
-                                      disabled: accountState.accountBalance >
-                                              Currency('0')
-                                          ? false
-                                          : true,
-                                      onPressed: () {
-                                        AppSheets.showBottomSheet(
-                                          context: context,
-                                          widget: SendSheet(
-                                            account: accountState.account
-                                          ),
-                                        );
-                                      },
+                        ),
+                  // Bottom bar
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: StateContainer.of(context)
+                            .curTheme
+                            .backgroundPrimary,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12),
+                        ),
+                        boxShadow: [
+                          StateContainer.of(context).curTheme.shadowBottomBar,
+                        ],
+                      ),
+                      child: Container(
+                        margin: EdgeInsetsDirectional.only(top: 4),
+                        child: Row(
+                          children: <Widget>[
+                            Observer(
+                              builder: (BuildContext context) {
+                                PascalAccount account = accountState.account;
+                                return AppButton(
+                                  text:
+                                      AppLocalization.of(context).receiveButton,
+                                  type: AppButtonType.PrimaryLeft,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                        context: context,
+                                        widget: ReceiveSheet(
+                                          accountName: account.name.accountName,
+                                          accountNumber: account.account,
+                                        ));
+                                  },
+                                );
+                              },
+                            ),
+                            Observer(
+                              builder: (BuildContext context) {
+                                return AppButton(
+                                  text: AppLocalization.of(context).sendButton,
+                                  type: AppButtonType.PrimaryRight,
+                                  disabled: accountState.accountBalance >
+                                          Currency('0')
+                                      ? false
+                                      : true,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                      context: context,
+                                      widget: SendSheet(
+                                          account: accountState.account),
                                     );
                                   },
-                                )
-                              ],
-                            ),
-                          ),
+                                );
+                              },
+                            )
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+          ],
+        ),
       ),
     );
   }
@@ -880,10 +886,11 @@ class _AccountPageState extends State<AccountPage>
       } else {
         type = OperationType.Received;
       }
-      AccountNumber accountToCheck = type == OperationType.Received ?
-        op.senders[0].sendingAccount
-        : op.receivers[0].receivingAccount;
-      List<Contact> contacts = _contacts.where((c) => c.account == accountToCheck).toList();
+      AccountNumber accountToCheck = type == OperationType.Received
+          ? op.senders[0].sendingAccount
+          : op.receivers[0].receivingAccount;
+      List<Contact> contacts =
+          _contacts.where((c) => c.account == accountToCheck).toList();
       Contact c;
       if (contacts.length > 0) {
         c = contacts[0];
@@ -892,8 +899,9 @@ class _AccountPageState extends State<AccountPage>
         type: type,
         amount: op.receivers[0].amount.toStringOpt(),
         address: c == null ? accountToCheck.toString() : c.name,
-        date:
-            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        date: op.maturation != null
+            ? UIUtil.formatDateStr(op.time)
+            : AppLocalization.of(context).pendingHeader,
         payload: op.receivers[0].payload,
         onPressed: () {
           AppSheets.showBottomSheet(
@@ -916,8 +924,9 @@ class _AccountPageState extends State<AccountPage>
         return OperationListItem(
           type: OperationType.NameChanged,
           address: op.changers[0].changingAccount.toString(),
-          date:
-              op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+          date: op.maturation != null
+              ? UIUtil.formatDateStr(op.time)
+              : AppLocalization.of(context).pendingHeader,
           payload: "",
           name: op.changers[0].newName.toString(),
           onPressed: () {
@@ -931,14 +940,15 @@ class _AccountPageState extends State<AccountPage>
                   account: op.changers[0].changingAccount,
                 ));
           },
-        );            
+        );
       }
     } else if (op.optype == OpType.LIST_FORSALE) {
       return OperationListItem(
         type: OperationType.ListedForSale,
         address: op.changers[0].sellerAccount.toString(),
-        date:
-            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        date: op.maturation != null
+            ? UIUtil.formatDateStr(op.time)
+            : AppLocalization.of(context).pendingHeader,
         payload: "",
         price: op.changers[0].accountPrice.toStringOpt(),
         onPressed: () {
@@ -952,13 +962,14 @@ class _AccountPageState extends State<AccountPage>
                 account: op.changers[0].sellerAccount,
               ));
         },
-      );            
+      );
     } else if (op.optype == OpType.DELIST_FORSALE) {
       return OperationListItem(
         type: OperationType.DelistedForSale,
         address: op.signerAccount.toString(),
-        date:
-            op.maturation != null ? UIUtil.formatDateStr(op.time) : "Pending",
+        date: op.maturation != null
+            ? UIUtil.formatDateStr(op.time)
+            : AppLocalization.of(context).pendingHeader,
         payload: "",
         onPressed: () {
           AppSheets.showBottomSheet(
@@ -971,7 +982,7 @@ class _AccountPageState extends State<AccountPage>
                 account: op.signerAccount,
               ));
         },
-      );      
+      );
     }
     return SizedBox();
   }

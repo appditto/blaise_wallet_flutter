@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -51,7 +52,7 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
                           margin:
                               EdgeInsetsDirectional.fromSTEB(30, 24, 30, 24),
                           child: AutoSizeText(
-                            "Security First!",
+                            AppLocalization.of(context).securityFirstHeader,
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -83,7 +84,7 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
                           alignment: Alignment(-1, 0),
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "In the next screen, you'll see your new private key. It is a password to access your funds. It is crucial that you back it up and never share it with anyone.",
+                            AppLocalization.of(context).newKeySecurityParagraph,
                             maxLines: 4,
                             stepGranularity: 0.1,
                             style: AppStyles.paragraph(context),
@@ -94,7 +95,8 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
                           alignment: Alignment(-1, 0),
                           margin: EdgeInsetsDirectional.fromSTEB(30, 10, 30, 0),
                           child: AutoSizeText(
-                            "If you lose your device or uninstall Blaise, you'll need your private key to recover your funds.",
+                            AppLocalization.of(context)
+                                .uninstallDisclaimerParagraph,
                             maxLines: 3,
                             stepGranularity: 0.1,
                             style: AppStyles.paragraphPrimary(context),
@@ -112,7 +114,7 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
               children: <Widget>[
                 AppButton(
                   type: AppButtonType.Primary,
-                  text: "Got It!",
+                  text: AppLocalization.of(context).gotItButton,
                   buttonTop: true,
                   onPressed: () {
                     sl
@@ -131,7 +133,7 @@ class _IntroSecurityFirstPageState extends State<IntroSecurityFirstPage> {
               children: <Widget>[
                 AppButton(
                   type: AppButtonType.PrimaryOutline,
-                  text: "Go Back",
+                  text: AppLocalization.of(context).goBackButton,
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

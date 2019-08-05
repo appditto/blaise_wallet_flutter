@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
@@ -318,7 +319,8 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                       children: <Widget>[
                         AppButton(
                           type: AppButtonType.Primary,
-                          text: "Open in Explorer",
+                          text:
+                              AppLocalization.of(context).openInExplorerButton,
                           buttonTop: true,
                           onPressed: () {
                             AppWebView.showWebView(context,
@@ -332,7 +334,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                       children: <Widget>[
                         AppButton(
                           type: AppButtonType.PrimaryOutline,
-                          text: "Close",
+                          text: AppLocalization.of(context).closeButton,
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -429,7 +431,7 @@ class _TransactionDetailsListItemState
                       alignment: Alignment(1, 0),
                       margin: EdgeInsetsDirectional.only(end: 16),
                       child: AutoSizeText(
-                        "Copied",
+                        AppLocalization.of(context).copiedButton,
                         style: AppStyles.textLightSmall700(context),
                         textAlign: TextAlign.end,
                       ),

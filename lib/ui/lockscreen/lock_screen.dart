@@ -1,4 +1,5 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -30,7 +31,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
     return PinScreen(
         type: PinOverlayType.ENTER_PIN,
         expectedPin: expectedPin,
-        description: "Enter PIN to Unlock Blaise",
+        description: AppLocalization.of(context).enterPINToUnlockParagraph,
         onSuccess: (pin) {
           _goHome();
         });
@@ -134,7 +135,8 @@ class _LockScreenPageState extends State<LockScreenPage> {
             _showUnlockButton = true;
           });
           AuthUtil()
-              .authenticateWithBiometrics("Authenticate to Unlock Blaise")
+              .authenticateWithBiometrics(
+                  AppLocalization.of(context).authenticateToUnlockParagraph)
               .then((authenticated) {
             if (authenticated) {
               _goHome();
@@ -213,7 +215,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
                                 MediaQuery.of(context).size.width * 0.08),
                         alignment: Alignment(0, 0),
                         child: Text(
-                          "LOCKED",
+                          AppLocalization.of(context).lockedHeader,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 30,
@@ -253,9 +255,9 @@ class _LockScreenPageState extends State<LockScreenPage> {
                 ? Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      width: MediaQuery.of(context).size.width-60,
+                      width: MediaQuery.of(context).size.width - 60,
                       child: Text(
-                        "Too many failed unlock attempts",
+                        AppLocalization.of(context).manyFailedAttemptsParagraph,
                         style: AppStyles.paragraphDanger(context),
                         textAlign: TextAlign.center,
                       ),
@@ -268,7 +270,9 @@ class _LockScreenPageState extends State<LockScreenPage> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.Primary,
-                        text: _lockedOut ? _countDownTxt : "Unlock",
+                        text: _lockedOut
+                            ? _countDownTxt
+                            : AppLocalization.of(context).unlockButton,
                         onPressed: () {
                           if (!_lockedOut) {
                             _authenticate(transitions: true);
