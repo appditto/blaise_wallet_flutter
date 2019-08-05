@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -112,22 +113,10 @@ class _UnencryptedPrivateKeySheetState
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText.rich(
                           TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Below is your unencrypted private key.",
-                                style: AppStyles.paragraph(context),
-                              ),
-                              TextSpan(
-                                text:
-                                    " It is not protected by a password, which means it is crucial that you store it somewhere safe.",
-                                style: AppStyles.paragraphPrimary(context),
-                              ),
-                              TextSpan(
-                                text:
-                                    " We recommend writing it on a piece of paper.",
-                                style: AppStyles.paragraph(context),
-                              ),
-                            ],
+                            children: formatLocalizedColors(
+                                context,
+                                AppLocalization.of(context)
+                                    .backupUnencryptedKeyParagraph),
                           ),
                           stepGranularity: 0.5,
                           maxLines: 6,

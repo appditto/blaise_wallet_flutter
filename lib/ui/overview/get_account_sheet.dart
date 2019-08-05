@@ -8,15 +8,23 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class GetAccountSheet extends StatefulWidget {
   _GetAccountSheetState createState() => _GetAccountSheetState();
 }
 
 class _GetAccountSheetState extends State<GetAccountSheet> {
+  String accountPrice = "0.25";
+  String fiatPrice = "";
   @override
   Widget build(BuildContext context) {
+    fiatPrice = walletState.getLocalCurrencyDisplay(
+        currency: StateContainer.of(context).curCurrency,
+        amount: Currency(accountPrice),
+        decimalDigits: 2);
     return Column(
       children: <Widget>[
         Expanded(
@@ -109,36 +117,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                   margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 24),
                   child: AutoSizeText.rich(
                     TextSpan(
-                      children: [
-                        TextSpan(
-                          text:
-                              "There are 2 options for getting your first account:\n\n",
-                          style: AppStyles.paragraph(context),
-                        ),
-                        TextSpan(
-                          text:
-                              "1- You can get a free account using your phone number. ",
-                          style: AppStyles.paragraph(context),
-                        ),
-                        TextSpan(
-                          text:
-                              "Only 1 account per phone number is allowed.\n\n",
-                          style: AppStyles.paragraphPrimary(context),
-                        ),
-                        TextSpan(
-                          text:
-                              "2- You can buy as many accounts as you want for ",
-                          style: AppStyles.paragraph(context),
-                        ),
-                        TextSpan(
-                          text: "0.25 PASCAL (~\$0.07)",
-                          style: AppStyles.paragraphPrimary(context),
-                        ),
-                        TextSpan(
-                          text: ".",
-                          style: AppStyles.paragraph(context),
-                        ),
-                      ],
+                      children: getAccountSheetParagraphs(),
                     ),
                     stepGranularity: 0.1,
                     maxLines: 9,
@@ -180,5 +159,31 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
         ),
       ],
     );
+  }
+
+  getAccountSheetParagraphs() {
+    List<TextSpan> ret = [];
+    ret.add(
+      TextSpan(
+        text: AppLocalization.of(context).getAccountFirstParagraph + "\n\n",
+        style: AppStyles.paragraph(context),
+      ),
+    );
+    ret = ret + []
+      ..addAll(formatLocalizedColors(
+          context, AppLocalization.of(context).getAccountSecondParagraph));
+    ret.add(
+      TextSpan(
+        text: "\n\n",
+        style: AppStyles.paragraph(context),
+      ),
+    );
+    ret = ret + []
+      ..addAll(formatLocalizedColors(
+          context,
+          AppLocalization.of(context)
+              .getAccountThirdParagraph
+              .replaceAll("%1", accountPrice).replaceAll("%2","~" + fiatPrice)));
+    return ret;
   }
 }

@@ -80,7 +80,8 @@ class UIUtil {
         builder: (_) => DialogOverlay(
             title: AppLocalization.of(context).addFeeHeader,
             feeDialog: true,
-            confirmButtonText: AppLocalization.of(context).confirmButton.toUpperCase(),
+            confirmButtonText:
+                AppLocalization.of(context).confirmButton.toUpperCase(),
             body: TextSpan(
               children: [
                 TextSpan(
@@ -88,8 +89,9 @@ class UIUtil {
                   style: AppStyles.paragraph(context),
                 ),
                 TextSpan(
-                  text:
-                      AppLocalization.of(context).feeConfirmAmountParagraph.replaceAll("%1", "0.0001"),
+                  text: AppLocalization.of(context)
+                      .feeConfirmAmountParagraph
+                      .replaceAll("%1", "0.0001"),
                   style: AppStyles.paragraphPrimary(context),
                 ),
               ],
@@ -114,4 +116,54 @@ class UIUtil {
       EventTaxiImpl.singleton().fire(DisableLockTimeoutEvent(disable: false));
     });
   }
+}
+
+List<TextSpan> formatLocalizedColors(BuildContext context, String input) {
+  List<TextSpan> ret = [];
+  if (!input.contains('<colored>') && !input.contains('</colored>')) {
+    ret.add(TextSpan(text: input, style: AppStyles.paragraph(context)));
+    return ret;
+  }
+  int i = 0;
+  int iEnd = 0;
+  while (input.contains('<colored>') && input.contains('</colored>')) {
+    i = input.indexOf('<colored>');
+    iEnd = input.indexOf('</colored>');
+    print(iEnd);
+    ret.add(TextSpan(
+        text: input.substring(0, i), style: AppStyles.paragraph(context)));
+    ret.add(TextSpan(
+        text: input.substring(i + 9, iEnd),
+        style: AppStyles.paragraphPrimary(context)));
+    input = input.substring(iEnd + 10);
+  }
+  if (input.length > 0) {
+    ret.add(TextSpan(text: input, style: AppStyles.paragraph(context)));
+  }
+  return ret;
+}
+
+List<TextSpan> formatLocalizedColorsDanger(BuildContext context, String input) {
+  List<TextSpan> ret = [];
+  if (!input.contains('<colored>') && !input.contains('</colored>')) {
+    ret.add(TextSpan(text: input, style: AppStyles.paragraph(context)));
+    return ret;
+  }
+  int i = 0;
+  int iEnd = 0;
+  while (input.contains('<colored>') && input.contains('</colored>')) {
+    i = input.indexOf('<colored>');
+    iEnd = input.indexOf('</colored>');
+    print(iEnd);
+    ret.add(TextSpan(
+        text: input.substring(0, i), style: AppStyles.paragraph(context)));
+    ret.add(TextSpan(
+        text: input.substring(i + 9, iEnd),
+        style: AppStyles.paragraphDanger(context)));
+    input = input.substring(iEnd + 10);
+  }
+  if (input.length > 0) {
+    ret.add(TextSpan(text: input, style: AppStyles.paragraph(context)));
+  }
+  return ret;
 }

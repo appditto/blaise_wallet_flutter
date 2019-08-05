@@ -5,8 +5,8 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
-import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta.dart';
-import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta_with_accounts.dart';
+import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -654,31 +654,11 @@ class _OverviewPageState extends State<OverviewPage>
                                                     30, 0, 30, 0),
                                             child: AutoSizeText.rich(
                                               TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: "Welcome to",
-                                                    style: AppStyles.paragraph(
-                                                        context),
-                                                  ),
-                                                  TextSpan(
-                                                    text: " Blaise Wallet",
-                                                    style: AppStyles
-                                                        .paragraphPrimary(
-                                                            context),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ".\n",
-                                                    style: AppStyles.paragraph(
-                                                        context),
-                                                  ),
-                                                  TextSpan(
-                                                    text:
-                                                        "You can start by getting an account.",
-                                                    style: AppStyles.paragraph(
-                                                        context),
-                                                  ),
-                                                ],
-                                              ),
+                                                  children: formatLocalizedColors(
+                                                      context,
+                                                      AppLocalization.of(
+                                                              context)
+                                                          .newWalletGreetingParagraph)),
                                               stepGranularity: 0.5,
                                               maxLines: 10,
                                               minFontSize: 8,
@@ -801,8 +781,7 @@ class _OverviewPageState extends State<OverviewPage>
                                 onPressed: () {
                                   AppSheets.showBottomSheet(
                                       context: context,
-                                      widget:
-                                          GetAccountSheetBetaWithAccounts());
+                                      widget: BuyAccountSheet());
                                 },
                               ),
                             ],
@@ -835,7 +814,7 @@ class _OverviewPageState extends State<OverviewPage>
                                 onPressed: () {
                                   AppSheets.showBottomSheet(
                                       context: context,
-                                      widget: GetAccountSheetBeta());
+                                      widget: GetAccountSheet());
                                 },
                               ),
                             ],

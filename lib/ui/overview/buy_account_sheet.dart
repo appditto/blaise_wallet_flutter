@@ -9,12 +9,16 @@ import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class BuyAccountSheet extends StatefulWidget {
   _BuyAccountSheetState createState() => _BuyAccountSheetState();
 }
 
 class _BuyAccountSheetState extends State<BuyAccountSheet> {
+  String accountPrice = "0.25";
+  String fiatPrice = "";
+  String returnInDays = "7";
   showOverlay(BuildContext context) async {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
@@ -51,6 +55,10 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
 
   @override
   Widget build(BuildContext context) {
+    fiatPrice = walletState.getLocalCurrencyDisplay(
+        currency: StateContainer.of(context).curCurrency,
+        amount: Currency(accountPrice),
+        decimalDigits: 2);
     return Column(
       children: <Widget>[
         Expanded(
@@ -130,38 +138,10 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText.rich(
                           TextSpan(
-                            children: [
-                              TextSpan(
-                                text:
-                                    "To buy an account, first you’ll need to borrow one for free. If you send at least",
-                                style: AppStyles.paragraph(context),
-                              ),
-                              TextSpan(
-                                text: " 0.25 PASCAL (~\$0.07)",
-                                style: AppStyles.paragraphPrimary(context),
-                              ),
-                              TextSpan(
-                                text: "  to the account in the",
-                                style: AppStyles.paragraph(context),
-                              ),
-                              TextSpan(
-                                text: " following 7 days",
-                                style: AppStyles.paragraphPrimary(context),
-                              ),
-                              TextSpan(
-                                text: ", the account will be yours and",
-                                style: AppStyles.paragraph(context),
-                              ),
-                              TextSpan(
-                                text: " 0.25 PASCAL",
-                                style: AppStyles.paragraphPrimary(context),
-                              ),
-                              TextSpan(
-                                text:
-                                    " will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of 7 days and won’t be useable anymore.",
-                                style: AppStyles.paragraph(context),
-                              ),
-                            ],
+                            children: formatLocalizedColors(
+                                context,
+                                AppLocalization.of(context)
+                                    .borrowAccountParagraph.replaceAll("%1", accountPrice).replaceAll("%2", "~" + fiatPrice).replaceAll("%3", returnInDays)),
                           ),
                           stepGranularity: 0.5,
                           maxLines: 9,

@@ -64,11 +64,11 @@ class _AccountPageState extends State<AccountPage>
   DateTime _lastRefresh;
 
   // Account price
-  final double accountPrice = 0.25;
+  String accountPrice = "0.25";
 
   // Borrowed account expiration
-  final double untilExpirationDays = 5;
-  final double untilExpirationHours = 12;
+  String untilExpirationDays = "5";
+  String untilExpirationHours = "12";
 
   @override
   void initState() {
@@ -425,7 +425,7 @@ class _AccountPageState extends State<AccountPage>
                                       12, 0, 12, 0),
                                   child: AutoSizeText(
                                     AppLocalization.of(context)
-                                        .accountBalanceHeader,
+                                        .accountBalanceHeader.toUpperCase(),
                                     style: AppStyles.paragraphTextLightSmall(
                                         context),
                                   ),
@@ -582,43 +582,15 @@ class _AccountPageState extends State<AccountPage>
                                     30, 0, 30, 0),
                                 child: AutoSizeText.rich(
                                   TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "This is a",
-                                        style: AppStyles.paragraph(context),
-                                      ),
-                                      TextSpan(
-                                        text: " borrowed account",
-                                        style:
-                                            AppStyles.paragraphPrimary(context),
-                                      ),
-                                      TextSpan(
-                                        text: ".\n",
-                                        style: AppStyles.paragraph(context),
-                                      ),
-                                      TextSpan(
-                                        text: "If you send at least",
-                                        style: AppStyles.paragraph(context),
-                                      ),
-                                      TextSpan(
-                                        text: " 0.25 PASCAL",
-                                        style:
-                                            AppStyles.paragraphPrimary(context),
-                                      ),
-                                      TextSpan(
-                                        text: " to it in the next",
-                                        style: AppStyles.paragraph(context),
-                                      ),
-                                      TextSpan(
-                                        text: " 5 days 8 hours",
-                                        style:
-                                            AppStyles.paragraphPrimary(context),
-                                      ),
-                                      TextSpan(
-                                        text: ", it’ll be yours.",
-                                        style: AppStyles.paragraph(context),
-                                      ),
-                                    ],
+                                    children: formatLocalizedColors(
+                                      context,
+                                      AppLocalization.of(context)
+                                          .borrowedAccountParagraph
+                                          .replaceAll("%1", accountPrice)
+                                          .replaceAll("%2", untilExpirationDays)
+                                          .replaceAll(
+                                              "%3", untilExpirationHours),
+                                    ),
                                   ),
                                   stepGranularity: 0.5,
                                   maxLines: 10,
@@ -661,7 +633,7 @@ class _AccountPageState extends State<AccountPage>
                                       alignment: Alignment(-1, 0),
                                       child: AutoSizeText(
                                         AppLocalization.of(context)
-                                            .operationsHeader,
+                                            .operationsHeader.toUpperCase(),
                                         style: AppStyles.headerSmall(context),
                                         textAlign: TextAlign.left,
                                         stepGranularity: 0.5,

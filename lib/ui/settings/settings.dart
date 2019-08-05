@@ -309,7 +309,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                           SettingsListItem(
-                            header: "Notifications",
+                            header: AppLocalization.of(context).notificationsHeader,
                             subheader: _curNotificiationSetting
                                 .getDisplayName(context),
                             icon: AppIcons.notifications,
@@ -317,7 +317,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               showAppDialog(
                                   context: context,
                                   builder: (_) => DialogOverlay(
-                                      title: 'Notifications',
+                                      title: AppLocalization.of(context).notificationsHeader,
                                       optionsList: getNotificationList()));
                             },
                           ),
@@ -472,18 +472,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   .deletePrivateKeyAndLogoutButton
                   .toUpperCase(),
               body: TextSpan(
-                children: [
-                  TextSpan(
-                    text:
-                        "Logging out will remove your private key and all Blaise related data from this device. ",
-                    style: AppStyles.paragraphDanger(context),
-                  ),
-                  TextSpan(
-                    text:
-                        "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
-                    style: AppStyles.paragraph(context),
-                  ),
-                ],
+                children: formatLocalizedColorsDanger(context,
+                    AppLocalization.of(context).logoutFirstDisclaimerParagraph),
               ),
               onConfirm: () {
                 Navigator.of(context).pop();
@@ -498,18 +488,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             .yesImSureButton
                             .toUpperCase(),
                         body: TextSpan(
-                          children: [
-                            TextSpan(
-                              text:
-                                  "Are you sure that you’ve backed up your private key? ",
-                              style: AppStyles.paragraph(context),
-                            ),
-                            TextSpan(
-                              text:
-                                  "As long as you’ve backed up your private key, you have nothing to worry about.",
-                              style: AppStyles.paragraphDanger(context),
-                            ),
-                          ],
+                          children: formatLocalizedColorsDanger(
+                              context,
+                              AppLocalization.of(context)
+                                  .logoutSecondDisclaimerParagraph),
                         ),
                         onConfirm: () {
                           // Handle logging out

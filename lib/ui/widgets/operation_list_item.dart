@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -62,25 +63,8 @@ class _OperationListItemState extends State<OperationListItem> {
                   margin: EdgeInsetsDirectional.fromSTEB(30, 16, 30, 16),
                   child: AutoSizeText.rich(
                     TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "This is your new account.\n",
-                          style: AppStyles.paragraph(context),
-                        ),
-                        TextSpan(
-                          text: "Once you receive",
-                          style: AppStyles.paragraph(context),
-                        ),
-                        TextSpan(
-                          text: " PASCAL",
-                          style: AppStyles.paragraphPrimary(context),
-                        ),
-                        TextSpan(
-                          text: ", operations will show up like below.",
-                          style: AppStyles.paragraph(context),
-                        ),
-                      ],
-                    ),
+                        children: formatLocalizedColors(context,
+                            AppLocalization.of(context).newAccountParagraph)),
                     stepGranularity: 0.5,
                     maxLines: 3,
                     minFontSize: 8,
@@ -115,15 +99,19 @@ class _OperationListItemState extends State<OperationListItem> {
                                 : widget.type == OperationType.Sent
                                     ? AppLocalization.of(context).sentHeader
                                     : widget.type == OperationType.NameChanged
-                                        ? AppLocalization.of(context).nameChangedHeader
+                                        ? AppLocalization.of(context)
+                                            .nameChangedHeader
                                         : widget.type ==
                                                 OperationType.ListedForSale
-                                            ? AppLocalization.of(context).listedForSaleHeader
+                                            ? AppLocalization.of(context)
+                                                .listedForSaleHeader
                                             : widget.type ==
                                                     OperationType
                                                         .DelistedForSale
-                                                ? AppLocalization.of(context).delistedHeader
-                                                : AppLocalization.of(context).undefinedHeader,
+                                                ? AppLocalization.of(context)
+                                                    .delistedHeader
+                                                : AppLocalization.of(context)
+                                                    .undefinedHeader,
                             style: AppStyles.operationType(context),
                           ),
                         ),
@@ -237,15 +225,15 @@ class _OperationListItemState extends State<OperationListItem> {
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             72,
-                                    margin: EdgeInsetsDirectional.only(bottom: 4),
+                                    margin:
+                                        EdgeInsetsDirectional.only(bottom: 4),
                                     alignment: Alignment(1, 0),
                                     child: AutoSizeText.rich(
                                       TextSpan(children: [
                                         TextSpan(
                                           text: " ",
-                                          style:
-                                              AppStyles.iconFontPrimarySmall(
-                                                  context),
+                                          style: AppStyles.iconFontPrimarySmall(
+                                              context),
                                         ),
                                         TextSpan(
                                           text: widget.address.substring(1),
@@ -265,7 +253,8 @@ class _OperationListItemState extends State<OperationListItem> {
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             72,
-                                    margin: EdgeInsetsDirectional.only(bottom: 4),
+                                    margin:
+                                        EdgeInsetsDirectional.only(bottom: 4),
                                     alignment: Alignment(1, 0),
                                     child: AutoSizeText(
                                       widget.address,

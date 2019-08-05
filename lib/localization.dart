@@ -400,7 +400,7 @@ class AppLocalization {
   }
 
   String get getAccountFirstParagraph {
-    return Intl.message("There are 2 options for getting your first account",
+    return Intl.message("There are 2 options for getting your first account:",
         desc:
             'The first paragraph of the explanation for the process of getting an account',
         name: 'getAccountFirstParagraph');
@@ -439,7 +439,7 @@ class AppLocalization {
 
   String get borrowAccountParagraph {
     return Intl.message(
-        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>1% Pascal (%2)</colored> to the account in the following 7 days, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically. Otherwise, it’ll return back to us at the end of 7 days and won’t belong to your wallet anymore.",
+        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account in the following <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.",
         desc:
             'A paragraph that explains the process of borrowing & buying an account',
         name: 'borrowAccountParagraph');
@@ -547,7 +547,7 @@ class AppLocalization {
 
   String get borrowedAccountParagraph {
     return Intl.message(
-        "This is a <colored>borrowed account</colored>. If you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days %3 hours</colored>, it’ll be yours.",
+        "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days %3 hours</colored>, it’ll be yours.",
         desc: 'A paragraph that explains what a public key is',
         name: 'borrowedAccountParagraph');
   }
@@ -851,48 +851,60 @@ class AppLocalization {
             'A paragraph that is shared when the user shares Blaise with others via the option in the settings',
         name: 'checkOutBlaiseParagraph');
   }
+  String get newAccountParagraph {
+    return Intl.message(
+        "This is your new account.\nOnce you receive <colored>Pascal</colored>, operations will show up like below.",
+        desc:
+            'A paragraph that is shown in the operations list of a new account as an explainer',
+        name: 'newAccountParagraph');
+  }
   // **** PARAGRAPHS END **** //
 
   // **** HEADERS **** //
   // Settings Headers
   String get settingsHeader {
     return Intl.message("Settings",
-        desc: 'Header for the settings', name: 'settings');
+        desc: 'Header for the settings', name: 'settingsHeader');
   }
 
   String get preferencesHeader {
     return Intl.message("Preferences",
-        desc: 'Header for the preferences section', name: 'preferences');
+        desc: 'Header for the preferences section', name: 'preferencesHeader');
   }
 
   String get currencyHeader {
     return Intl.message("Currency",
-        desc: 'Header for the currencies', name: 'currency');
+        desc: 'Header for the currencies', name: 'currencyHeader');
   }
 
   String get languageHeader {
     return Intl.message("Language",
-        desc: 'Header for the languages', name: 'language');
+        desc: 'Header for the languages', name: 'languageHeader');
   }
 
   String get themeHeader {
-    return Intl.message("theme", desc: 'Header for the themes', name: 'theme');
+    return Intl.message("Theme", desc: 'Header for the themes', name: 'themeHeader');
   }
 
   String get themeLightHeader {
     return Intl.message("Light",
-        desc: 'Header for the light theme', name: 'themeLight');
+        desc: 'Header for the light theme', name: 'themeLightHeader');
   }
 
   String get themeDarkHeader {
     return Intl.message("Dark",
-        desc: 'Header for the dark theme', name: 'themeDark');
+        desc: 'Header for the dark theme', name: 'themeDarkHeader');
   }
 
   String get themeCopperHeader {
     return Intl.message("Copper",
-        desc: 'Header for the copper theme', name: 'themeCopper');
+        desc: 'Header for the copper theme', name: 'themeCopperHeader');
   }
+
+  String get notificationsHeader {
+    return Intl.message("Notifications",
+        desc: 'Header for the notifications', name: 'notificationsHeader');
+  }  
 
   String get securityHeader {
     return Intl.message("Security",
