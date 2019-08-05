@@ -73,6 +73,12 @@ class AppLocalization {
         name: 'copiedButton');
   }
 
+  String get keyCopiedButton {
+    return Intl.message("Key Copied",
+        desc: 'A button to inform the user that the key has been copied',
+        name: 'keyCopiedButton');
+  }
+
   String get iHaveBackedItUpButton {
     return Intl.message("I've Backed It Up",
         desc: 'A button to confirm that something is backed up',
@@ -1584,6 +1590,12 @@ class AppLocalization {
         name: 'emptyPasswordError');
   }
 
+  String get noMatchPasswordError {
+    return Intl.message("Passwords don't match",
+        desc: 'Error that tells the user that the passwords dont match',
+        name: 'noMatchPasswordError');
+  }
+
   String get invalidPasswordError {
     return Intl.message("Invalid password",
         desc: 'Error that tells the user that the password is invalid',
@@ -1592,7 +1604,8 @@ class AppLocalization {
 
   String get didNotGetResponseError {
     return Intl.message("Did not get a response from server",
-        desc: 'Error that tells the user that there is no response from the server',
+        desc:
+            'Error that tells the user that there is no response from the server',
         name: 'didNotGetResponseError');
   }
   // **** ERROR TEXT END **** //

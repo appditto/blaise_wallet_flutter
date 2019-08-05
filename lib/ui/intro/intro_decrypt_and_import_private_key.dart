@@ -189,7 +189,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
       showAppDialog(
           context: context,
           builder: (_) => DialogOverlay(
-                title: AppLocalization.of(context).keyNotSupportedHeader,
+                title: AppLocalization.of(context).keyTypeNotSupportedHeader,
                 confirmButtonText: AppLocalization.of(context).okayGoBackButton.toUpperCase(),
                 feeDialog: true,
                 body: TextSpan(

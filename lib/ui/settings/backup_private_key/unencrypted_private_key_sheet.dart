@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -85,7 +86,9 @@ class _UnencryptedPrivateKeySheetState
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "PRIVATE KEY",
+                          AppLocalization.of(context)
+                              .privateKeySheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -134,37 +137,38 @@ class _UnencryptedPrivateKeySheetState
                       ),
                       // Container for the private key
                       Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
-                        padding: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              width: 1,
-                              color: StateContainer.of(context)
-                                  .curTheme
-                                  .primary15),
-                          color: StateContainer.of(context).curTheme.primary10,
-                        ),
-                        child: FutureBuilder(
-                          future: sl.get<Vault>().getPrivateKey(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
-                              return AutoSizeText(
-                                _showingKey
-                                  ? snapshot.data
-                                  : '•' * snapshot.data.length,
-                                maxLines: 4,
-                                stepGranularity: 0.1,
-                                minFontSize: 8,
-                                textAlign: TextAlign.center,
-                                style: AppStyles.privateKeyPrimary(context)
-                              );
-                            } else {
-                              return SizedBox();
-                            }
-                          }
-                        )
-                      ),
+                          margin: EdgeInsetsDirectional.fromSTEB(30, 24, 30, 0),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(30, 12, 30, 12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                width: 1,
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .primary15),
+                            color:
+                                StateContainer.of(context).curTheme.primary10,
+                          ),
+                          child: FutureBuilder(
+                              future: sl.get<Vault>().getPrivateKey(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData && snapshot.data != null) {
+                                  return AutoSizeText(
+                                      _showingKey
+                                          ? snapshot.data
+                                          : '•' * snapshot.data.length,
+                                      maxLines: 4,
+                                      stepGranularity: 0.1,
+                                      minFontSize: 8,
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          AppStyles.privateKeyPrimary(context));
+                                } else {
+                                  return SizedBox();
+                                }
+                              })),
                       // Container for the Show/Hide button
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -188,7 +192,9 @@ class _UnencryptedPrivateKeySheetState
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100.0)),
                               child: AutoSizeText(
-                                _showingKey ? "Hide" : "Show",
+                                _showingKey
+                                    ? AppLocalization.of(context).hideButton
+                                    : AppLocalization.of(context).showButton,
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -213,7 +219,10 @@ class _UnencryptedPrivateKeySheetState
                       type: _keyCopied
                           ? AppButtonType.Success
                           : AppButtonType.Primary,
-                      text: _keyCopied ? "Key Copied" : "Copy Unencrypted Key",
+                      text: _keyCopied
+                          ? AppLocalization.of(context).keyCopiedButton
+                          : AppLocalization.of(context)
+                              .copyUnencryptedKeyButton,
                       buttonTop: true,
                       onPressed: () {
                         sl.get<Vault>().getPrivateKey().then((key) {
@@ -242,7 +251,7 @@ class _UnencryptedPrivateKeySheetState
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

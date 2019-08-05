@@ -89,7 +89,9 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context).buyAccountSheetHeader.toUpperCase(),
+                          AppLocalization.of(context)
+                              .buyAccountSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -175,7 +177,9 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: AppLocalization.of(context).borrowAnAccountButton.toUpperCase(),
+                      text: AppLocalization.of(context)
+                          .borrowAnAccountButton
+                          .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         return;
@@ -194,7 +198,9 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: AppLocalization.of(context).cancelButton.toUpperCase(),
+                      text: AppLocalization.of(context)
+                          .cancelButton
+                          .toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

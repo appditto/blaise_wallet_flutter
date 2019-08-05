@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -17,8 +18,7 @@ class EncryptedPrivateKeySheet extends StatefulWidget {
       _EncryptedPrivateKeySheetState();
 }
 
-class _EncryptedPrivateKeySheetState
-    extends State<EncryptedPrivateKeySheet> {
+class _EncryptedPrivateKeySheetState extends State<EncryptedPrivateKeySheet> {
   bool _keyCopied;
   bool _showingKey;
   Timer _keyCopiedTimer;
@@ -87,7 +87,9 @@ class _EncryptedPrivateKeySheetState
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "PRIVATE KEY",
+                          AppLocalization.of(context)
+                              .privateKeySheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -113,12 +115,14 @@ class _EncryptedPrivateKeySheetState
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: "Below is your encrypted private key. It is protected by a password. So, you can store it safely on a password manager for convenience.\n\n",
+                                text: AppLocalization.of(context)
+                                        .backupEncryptedKeyFirstParagraph +
+                                    "\n\n",
                                 style: AppStyles.paragraph(context),
                               ),
                               TextSpan(
-                                text:
-                                    "Since it is encrypted with your password, if you lose or forget your password, you won’t be able to decrypt it and access your funds.",
+                                text: AppLocalization.of(context)
+                                    .backupEncryptedKeySecondParagraph,
                                 style: AppStyles.paragraphPrimary(context),
                               ),
                             ],
@@ -143,7 +147,9 @@ class _EncryptedPrivateKeySheetState
                           color: StateContainer.of(context).curTheme.primary10,
                         ),
                         child: AutoSizeText(
-                          _showingKey ? widget.encryptedKey : '•' * widget.encryptedKey.length,
+                          _showingKey
+                              ? widget.encryptedKey
+                              : '•' * widget.encryptedKey.length,
                           maxLines: 4,
                           stepGranularity: 0.1,
                           minFontSize: 8,
@@ -159,8 +165,8 @@ class _EncryptedPrivateKeySheetState
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100.0),
                               color: StateContainer.of(context)
-                                      .curTheme
-                                      .backgroundPrimary,
+                                  .curTheme
+                                  .backgroundPrimary,
                               boxShadow: [
                                 StateContainer.of(context)
                                     .curTheme
@@ -174,7 +180,9 @@ class _EncryptedPrivateKeySheetState
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100.0)),
                               child: AutoSizeText(
-                                _showingKey ? "Hide" : "Show",
+                                _showingKey
+                                    ? AppLocalization.of(context).hideButton
+                                    : AppLocalization.of(context).showButton,
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -199,10 +207,13 @@ class _EncryptedPrivateKeySheetState
                       type: _keyCopied
                           ? AppButtonType.Success
                           : AppButtonType.Primary,
-                      text: _keyCopied ? "Key Copied" : "Copy Encrypted Key",
+                      text: _keyCopied
+                          ? AppLocalization.of(context).keyCopiedButton
+                          : AppLocalization.of(context).copyEncryptedKeyButton,
                       buttonTop: true,
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: widget.encryptedKey));
+                        Clipboard.setData(
+                            ClipboardData(text: widget.encryptedKey));
                         setState(() {
                           _keyCopied = true;
                         });
@@ -226,7 +237,7 @@ class _EncryptedPrivateKeySheetState
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
