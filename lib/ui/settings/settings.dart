@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/daemon_changed_event.dart';
 import 'package:blaise_wallet_flutter/constants.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/model/notification_enabled.dart';
@@ -61,10 +62,9 @@ class _SettingsPageState extends State<SettingsPage> {
       ret.add(DialogListItem(
           option: currency.getDisplayName(context),
           action: () {
-            sl.get<SharedPrefsUtil>()
-                .setCurrency(currency)
-                .then((result) {
-              if (StateContainer.of(context).curCurrency.currency != currency.currency) {
+            sl.get<SharedPrefsUtil>().setCurrency(currency).then((result) {
+              if (StateContainer.of(context).curCurrency.currency !=
+                  currency.currency) {
                 setState(() {
                   StateContainer.of(context).curCurrency = currency;
                 });
@@ -85,7 +85,10 @@ class _SettingsPageState extends State<SettingsPage> {
           option: setting.getDisplayName(context),
           action: () {
             if (setting != _curNotificiationSetting) {
-              sl.get<SharedPrefsUtil>().setNotificationsOn(setting.setting == NotificationOptions.ON).then((result) {
+              sl
+                  .get<SharedPrefsUtil>()
+                  .setNotificationsOn(setting.setting == NotificationOptions.ON)
+                  .then((result) {
                 setState(() {
                   _curNotificiationSetting = setting;
                 });
@@ -196,7 +199,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: MediaQuery.of(context).size.width - 100,
                         margin: EdgeInsetsDirectional.fromSTEB(4, 0, 24, 0),
                         child: AutoSizeText(
-                          "Settings",
+                          AppLocalization.of(context).settingsHeader,
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -237,7 +240,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             margin: EdgeInsetsDirectional.only(
                                 start: 24, end: 24, top: 18, bottom: 8),
                             child: AutoSizeText(
-                              "Preferences",
+                              AppLocalization.of(context).preferencesHeader,
                               style: AppStyles.settingsHeader(context),
                               maxLines: 1,
                               stepGranularity: 0.1,
@@ -252,54 +255,63 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           // List Items
                           SettingsListItem(
-                            header: "Currency",
-                            subheader: StateContainer.of(context).curCurrency.getDisplayName(context),
+                            header: AppLocalization.of(context).currencyHeader,
+                            subheader: StateContainer.of(context)
+                                .curCurrency
+                                .getDisplayName(context),
                             icon: AppIcons.currency,
                             onPressed: () {
                               showAppDialog(
                                   context: context,
                                   builder: (_) => DialogOverlay(
-                                      title: 'Currency',
+                                      title: AppLocalization.of(context)
+                                          .currencyHeader,
                                       optionsList: getCurrencyList()));
                             },
                           ),
                           SettingsListItem(
-                            header: "Language",
-                            subheader: "System Default",
+                            header: AppLocalization.of(context).languageHeader,
+                            subheader:
+                                AppLocalization.of(context).systemDefault,
                             icon: AppIcons.language,
                             onPressed: () {
                               showAppDialog(
                                   context: context,
                                   builder: (_) => DialogOverlay(
-                                      title: 'Language',
+                                      title: AppLocalization.of(context)
+                                          .languageHeader,
                                       optionsList: languageList));
                             },
                           ),
                           SettingsListItem(
-                            header: "Theme",
+                            header: AppLocalization.of(context).themeHeader,
                             subheader: StateContainer.of(context)
                                         .curTheme
                                         .toString() ==
                                     BlaiseLightTheme().toString()
-                                ? "Light"
+                                ? AppLocalization.of(context).themeLightHeader
                                 : StateContainer.of(context)
                                             .curTheme
                                             .toString() ==
                                         BlaiseDarkTheme().toString()
-                                    ? "Dark"
-                                    : "Copper",
+                                    ? AppLocalization.of(context)
+                                        .themeDarkHeader
+                                    : AppLocalization.of(context)
+                                        .themeCopperHeader,
                             icon: AppIcons.theme,
                             onPressed: () {
                               showAppDialog(
                                   context: context,
                                   builder: (_) => DialogOverlay(
-                                      title: 'Theme',
+                                      title: AppLocalization.of(context)
+                                          .themeHeader,
                                       optionsList: getThemeList()));
                             },
                           ),
                           SettingsListItem(
                             header: "Notifications",
-                            subheader: _curNotificiationSetting.getDisplayName(context),
+                            subheader: _curNotificiationSetting
+                                .getDisplayName(context),
                             icon: AppIcons.notifications,
                             onPressed: () {
                               showAppDialog(
@@ -310,15 +322,16 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                           SettingsListItem(
-                            header: "Security",
+                            header: AppLocalization.of(context).securityHeader,
                             icon: AppIcons.security,
                             onPressed: () {
                               Navigator.pushNamed(context, '/security');
                             },
                           ),
                           SettingsListItem(
-                            header: "Daemon",
-                            subheader: daemonURL ?? "Default",
+                            header: AppLocalization.of(context).daemonHeader,
+                            subheader: daemonURL ??
+                                AppLocalization.of(context).defaultHeader,
                             icon: AppIcons.changedaemon,
                             onPressed: () {
                               AppSheets.showBottomSheet(
@@ -347,7 +360,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             margin: EdgeInsetsDirectional.only(
                                 start: 24, end: 24, top: 18, bottom: 8),
                             child: AutoSizeText(
-                              "Manage",
+                              AppLocalization.of(context).manageHeader,
                               style: AppStyles.settingsHeader(context),
                               maxLines: 1,
                               stepGranularity: 0.1,
@@ -361,7 +374,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 StateContainer.of(context).curTheme.textDark10,
                           ),
                           SettingsListItem(
-                            header: "Contacts",
+                            header: AppLocalization.of(context).contactsHeader,
                             icon: AppIcons.contacts,
                             onPressed: () {
                               Navigator.pushNamed(context, '/contacts',
@@ -369,7 +382,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                           SettingsListItem(
-                            header: "Backup Private Key",
+                            header: AppLocalization.of(context)
+                                .backUpPrivateKeyHeader,
                             icon: AppIcons.backupprivatekey,
                             onPressed: () {
                               AppSheets.showBottomSheet(
@@ -378,7 +392,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                           SettingsListItem(
-                            header: "View Public Key",
+                            header:
+                                AppLocalization.of(context).viewPublicKeyHeader,
                             icon: Icons.public,
                             onPressed: () {
                               AppSheets.showBottomSheet(
@@ -386,15 +401,15 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                           SettingsListItem(
-                              header: "Share Blaise",
+                              header: AppLocalization.of(context).shareHeader,
                               icon: AppIcons.share,
                               onPressed: () {
                                 UIUtil.cancelLockEvent();
-                                Share.share(
-                                    "Check out Blaise - Pascal Wallet for iOS and Android");
+                                Share.share(AppLocalization.of(context)
+                                    .checkOutBlaiseParagraph);
                               }),
                           SettingsListItem(
-                            header: "Logout",
+                            header: AppLocalization.of(context).logoutHeader,
                             icon: AppIcons.logout,
                             onPressed: () {
                               logoutPressed();
@@ -414,7 +429,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                       AppWebView.showWebView(context,
                                           AppConstants.PRIVACY_POLICY_URL);
                                     },
-                                    child: Text("Privacy Policy",
+                                    child: Text(
+                                        AppLocalization.of(context)
+                                            .privacyPolicyHeader,
                                         style:
                                             AppStyles.textStyleVersionUnderline(
                                                 context))),
@@ -449,20 +466,22 @@ class _SettingsPageState extends State<SettingsPage> {
     showAppDialog(
         context: context,
         builder: (_) => DialogOverlay(
-              title: 'WARNING',
+              title: AppLocalization.of(context).warningHeader.toUpperCase(),
               warningStyle: true,
-              confirmButtonText: "DELETE PRIVATE KEY\nAND LOGOUT",
+              confirmButtonText: AppLocalization.of(context)
+                  .deletePrivateKeyAndLogoutButton
+                  .toUpperCase(),
               body: TextSpan(
                 children: [
                   TextSpan(
                     text:
-                        "Are you sure that you’ve backed up your private key? ",
-                    style: AppStyles.paragraph(context),
+                        "Logging out will remove your private key and all Blaise related data from this device. ",
+                    style: AppStyles.paragraphDanger(context),
                   ),
                   TextSpan(
                     text:
-                        "As long as you’ve backed up your private key, you have nothing to worry about.",
-                    style: AppStyles.paragraphDanger(context),
+                        "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
+                    style: AppStyles.paragraph(context),
                   ),
                 ],
               ),
@@ -471,20 +490,24 @@ class _SettingsPageState extends State<SettingsPage> {
                 showAppDialog(
                     context: context,
                     builder: (_) => DialogOverlay(
-                        title: 'ARE YOU SURE?',
+                        title: AppLocalization.of(context)
+                            .areYouSureHeader
+                            .toUpperCase(),
                         warningStyle: true,
-                        confirmButtonText: "YES, I'M SURE",
+                        confirmButtonText: AppLocalization.of(context)
+                            .yesImSureButton
+                            .toUpperCase(),
                         body: TextSpan(
                           children: [
                             TextSpan(
                               text:
-                                  "Logging out will remove your private key and all Blaise related data from this device. ",
-                              style: AppStyles.paragraphDanger(context),
+                                  "Are you sure that you’ve backed up your private key? ",
+                              style: AppStyles.paragraph(context),
                             ),
                             TextSpan(
                               text:
-                                  "If your private key is not backed up, you will never be able to access your funds again. If your private key is backed up, you have nothing to worry about.",
-                              style: AppStyles.paragraph(context),
+                                  "As long as you’ve backed up your private key, you have nothing to worry about.",
+                              style: AppStyles.paragraphDanger(context),
                             ),
                           ],
                         ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -81,7 +82,9 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "PUBLIC KEY",
+                          AppLocalization.of(context)
+                              .publicKeySheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -104,7 +107,7 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Below is your public key. As the name suggest, it is safe to share it publicly. It is used to publicly prove that a particular operation belongs to your private key.",
+                          AppLocalization.of(context).publicKeyParagraph,
                           stepGranularity: 0.5,
                           maxLines: 6,
                           minFontSize: 8,
@@ -151,7 +154,9 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                       type: _keyCopied
                           ? AppButtonType.Success
                           : AppButtonType.Primary,
-                      text: _keyCopied ? "Key Copied" : "Copy Public Key",
+                      text: _keyCopied
+                          ? AppLocalization.of(context).keyCopiedButton
+                          : AppLocalization.of(context).copyPublicKeyButton,
                       buttonTop: true,
                       onPressed: () {
                         if (walletState.publicKey != null) {
@@ -182,7 +187,7 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

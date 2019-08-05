@@ -469,6 +469,13 @@ class AppLocalization {
         name: 'changeDaemonParagraph');
   }
 
+  String get urlChangedToParagraph {
+    return Intl.message("URL changed to %1",
+        desc:
+            'A paragraph that tells the user that the URL is changed to the entered URL',
+        name: 'urlChangedToParagraph');
+  }
+
   String get backupKeyFirstParagraph {
     return Intl.message("You have 2 options for backing up your private key:",
         desc:
@@ -829,6 +836,13 @@ class AppLocalization {
             'A paragraph that tells the user that the contact removel process is failed',
         name: 'failedToRemoveFromContactsParagraph');
   }
+
+  String get successfullyImportedContactsParagraph {
+    return Intl.message("Successfully imported %1 contacts",
+        desc:
+            'A paragraph to tell the user that a specific number of contacts was successfully imported',
+        name: 'successfullyImportedContactsParagraph');
+  }
   // **** PARAGRAPHS END **** //
 
   // **** HEADERS **** //
@@ -873,7 +887,7 @@ class AppLocalization {
   }
 
   String get securityHeader {
-    return Intl.message("Copper",
+    return Intl.message("Security",
         desc: 'Header for the security section', name: 'securityHeader');
   }
 
@@ -1170,6 +1184,12 @@ class AppLocalization {
     return Intl.message("Contact",
         desc: 'Header for contact details sheet (screen)',
         name: 'contactSheetHeader');
+  }
+
+  String get publicKeySheetHeader {
+    return Intl.message("Public Key",
+        desc: 'Header for public key sheet (screen)',
+        name: 'publicKeySheetHeader');
   }
 
   String get privateKeySheetHeader {
@@ -1652,12 +1672,6 @@ class AppLocalization {
     return Intl.message("Failed to import contacts",
         desc: 'Error that tells the user that there is no contacts to export',
         name: 'failedToImportContactsError');
-  }
-
-  String get successfullyImportedContacts {
-    return Intl.message("Successfully imported %1 contacts",
-        desc: 'Error that tells the user that there is no contacts to export',
-        name: 'successfullyImportedContacts');
   }
   // **** ERROR TEXT END **** //
 
