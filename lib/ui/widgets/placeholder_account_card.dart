@@ -1,14 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pascaldart/pascaldart.dart';
-import 'package:quiver/strings.dart';
 
 /// A widget for buttons
 class PlaceholderAccountCard extends StatefulWidget {

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/util/haptic_util.dart';
@@ -92,13 +93,12 @@ class _PinScreenState extends State<PinScreen>
                 });
                 sl.get<SharedPrefsUtil>().updateLockDate().then((_) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/lock_screen',
-                      (Route<dynamic> route) => false);
+                      '/lock_screen', (Route<dynamic> route) => false);
                 });
               } else {
                 setState(() {
                   _pin = "";
-                  _header = "Invalid PIN";
+                  _header = AppLocalization.of(context).invalidPINParagraph;
                   _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
                   _controller.value = 0;
                 });
@@ -110,7 +110,7 @@ class _PinScreenState extends State<PinScreen>
               _dotStates = List.filled(PIN_LENGTH, FontAwesomeIcons.circle);
               _pin = "";
               _pinConfirmed = "";
-              _header = "PINs do not match";
+              _header = AppLocalization.of(context).noMatchPINParagraph;
               _controller.value = 0;
             });
           }
@@ -211,7 +211,7 @@ class _PinScreenState extends State<PinScreen>
                             _awaitingConfirmation = true;
                             _dotStates = List.filled(
                                 PIN_LENGTH, FontAwesomeIcons.circle);
-                            _header = "Confirm your PIN";
+                            _header = AppLocalization.of(context).confirmPINParagraph;
                           });
                         } else {
                           // First and second pins match
@@ -252,7 +252,9 @@ class _PinScreenState extends State<PinScreen>
       ret.add(
         Container(
           margin: EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-          child: Icon(_dotStates[i], size: 18, color: StateContainer.of(context).curTheme.backgroundPrimary),
+          child: Icon(_dotStates[i],
+              size: 18,
+              color: StateContainer.of(context).curTheme.backgroundPrimary),
         ),
       );
     }
@@ -263,7 +265,7 @@ class _PinScreenState extends State<PinScreen>
   Widget build(BuildContext context) {
     if (pinEnterTitle.isEmpty) {
       setState(() {
-        pinEnterTitle = "Enter PIN";
+        pinEnterTitle = AppLocalization.of(context).enterPINParagraph;
         if (widget.type == PinOverlayType.ENTER_PIN) {
           _header = pinEnterTitle;
         }
@@ -271,7 +273,7 @@ class _PinScreenState extends State<PinScreen>
     }
     if (pinCreateTitle.isEmpty) {
       setState(() {
-        pinCreateTitle = "Create a 6-digit PIN";
+        pinCreateTitle = AppLocalization.of(context).createPINParagraph;
         if (widget.type == PinOverlayType.NEW_PIN) {
           _header = pinCreateTitle;
         }

@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
-import 'package:blaise_wallet_flutter/themes.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -173,7 +173,7 @@ class _PayloadState extends State<Payload> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100.0)),
                   child: AutoSizeText(
-                    "+ Add a Payload",
+                    AppLocalization.of(context).addAPayloadButton,
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     stepGranularity: 0.1,
@@ -310,7 +310,8 @@ class _PayloadDialogState extends State<PayloadDialog>
                                       margin: EdgeInsetsDirectional.fromSTEB(
                                           20, 24, 20, 0),
                                       child: AppTextField(
-                                        label: 'Payload',
+                                        label: AppLocalization.of(context)
+                                            .payloadTextFieldHeader,
                                         controller: payloadController,
                                         style: AppStyles.paragraph(context),
                                         maxLines: 1,
@@ -364,7 +365,8 @@ class _PayloadDialogState extends State<PayloadDialog>
                                                   margin: EdgeInsetsDirectional
                                                       .fromSTEB(20, 16, 0, 20),
                                                   child: AutoSizeText(
-                                                    "Encrypt the Payload",
+                                                    AppLocalization.of(context)
+                                                        .encryptPayloadHeader,
                                                     style: AppStyles
                                                         .textFieldLabel(
                                                             context),

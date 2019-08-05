@@ -700,7 +700,7 @@ class AppLocalization {
 
   String get feeConfirmAmountParagraph {
     return Intl.message(
-        "Please confirm the addition of 0.0001 PASC fee to this operation to continue.",
+        "Please confirm the addition of %1 Pascal fee to this operation to continue.",
         desc: 'A paragraph to tell the user to confirm the addition of a fee',
         name: 'feeSecondParagraph');
   }
@@ -842,6 +842,14 @@ class AppLocalization {
         desc:
             'A paragraph to tell the user that a specific number of contacts was successfully imported',
         name: 'successfullyImportedContactsParagraph');
+  }
+
+  String get checkOutBlaiseParagraph {
+    return Intl.message(
+        "Check out Blaise! Simple, sleek & secure Pascal wallet for iOS and Android: https://blaisewallet.com",
+        desc:
+            'A paragraph that is shared when the user shares Blaise with others via the option in the settings',
+        name: 'checkOutBlaiseParagraph');
   }
   // **** PARAGRAPHS END **** //
 
@@ -1438,6 +1446,12 @@ class AppLocalization {
     return Intl.message("Delisted",
         desc: 'Header for delisted type operation list item',
         name: 'delistedHeader');
+  }
+
+  String get undefinedHeader {
+    return Intl.message("Undefined",
+        desc: 'Header for undefined type operation list item',
+        name: 'undefinedHeader');
   }
 
   String get transferredHeader {

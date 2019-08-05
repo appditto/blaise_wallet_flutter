@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
@@ -110,19 +111,19 @@ class _OperationListItemState extends State<OperationListItem> {
                                           .secondary),
                           child: AutoSizeText(
                             widget.type == OperationType.Received
-                                ? "Received"
+                                ? AppLocalization.of(context).receivedHeader
                                 : widget.type == OperationType.Sent
-                                    ? "Sent"
+                                    ? AppLocalization.of(context).sentHeader
                                     : widget.type == OperationType.NameChanged
-                                        ? "Name Changed"
+                                        ? AppLocalization.of(context).nameChangedHeader
                                         : widget.type ==
                                                 OperationType.ListedForSale
-                                            ? "Listed For Sale"
+                                            ? AppLocalization.of(context).listedForSaleHeader
                                             : widget.type ==
                                                     OperationType
                                                         .DelistedForSale
-                                                ? "Delisted From Sale"
-                                                : "Undefined",
+                                                ? AppLocalization.of(context).delistedHeader
+                                                : AppLocalization.of(context).undefinedHeader,
                             style: AppStyles.operationType(context),
                           ),
                         ),

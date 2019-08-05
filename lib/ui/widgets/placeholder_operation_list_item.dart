@@ -76,7 +76,7 @@ class _PlaceholderOperationListItemState
                                   : widget.type ==
                                           PlaceholderOperationType.ListedForSale
                                       ? "                      "
-                                      : "Undefined",
+                                      : "           ",
                       style: AppStyles.operationType(context),
                     ),
                   ),

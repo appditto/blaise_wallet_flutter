@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:event_taxi/event_taxi.dart';
@@ -77,18 +78,18 @@ class UIUtil {
     showAppDialog(
         context: context,
         builder: (_) => DialogOverlay(
-            title: 'Add Fee',
+            title: AppLocalization.of(context).addFeeHeader,
             feeDialog: true,
-            confirmButtonText: "Confirm",
+            confirmButtonText: AppLocalization.of(context).confirmButton.toUpperCase(),
             body: TextSpan(
               children: [
                 TextSpan(
-                  text: "This operation requires a fee.\n",
+                  text: AppLocalization.of(context).feeRequiredParagraph + "\n",
                   style: AppStyles.paragraph(context),
                 ),
                 TextSpan(
                   text:
-                      "Please confirm the addition of 0.0001 PASC fee to this operation to continue.",
+                      AppLocalization.of(context).feeConfirmAmountParagraph.replaceAll("%1", "0.0001"),
                   style: AppStyles.paragraphPrimary(context),
                 ),
               ],

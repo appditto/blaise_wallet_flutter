@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -197,7 +198,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                                       type: widget.feeDialog
                                           ? AppButtonType.PrimaryOutline
                                           : AppButtonType.DangerOutline,
-                                      text: "CANCEL",
+                                      text: AppLocalization.of(context).cancelButton.toUpperCase(),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
