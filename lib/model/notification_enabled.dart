@@ -13,10 +13,10 @@ class NotificationSetting extends SettingSelectionItem {
   String getDisplayName(BuildContext context) {
     switch (setting) {
       case NotificationOptions.ON:
-        return AppLocalization.of(context).onStr;
+        return AppLocalization.of(context).onHeader;
       case NotificationOptions.OFF:
       default:
-        return AppLocalization.of(context).offStr;
+        return AppLocalization.of(context).offHeader;
     }
   }
 

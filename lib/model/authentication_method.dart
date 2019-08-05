@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/setting_item.dart';
 import 'package:flutter/material.dart';
 
@@ -12,11 +13,11 @@ class AuthenticationMethod extends SettingSelectionItem {
   String getDisplayName(BuildContext context) {
     switch (method) {
       case AuthMethod.BIOMETRICS:
-        return "Biometrics";
+        return AppLocalization.of(context).authenticationBiometricsHeader;
       case AuthMethod.PIN:
-        return "PIN";
+        return AppLocalization.of(context).authenticationPINHeader;
       default:
-        return "PIN";
+        return AppLocalization.of(context).authenticationPINHeader;
     }
   }
 

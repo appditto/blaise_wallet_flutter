@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/setting_item.dart';
 import 'package:blaise_wallet_flutter/themes.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,12 @@ class ThemeSetting extends SettingSelectionItem {
   String getDisplayName(BuildContext context) {
     switch (theme) {
       case ThemeOptions.DARK:
-        return "Dark";
+        return AppLocalization.of(context).themeDarkHeader;
       case ThemeOptions.COPPER:
-        return "Copper";
+        return AppLocalization.of(context).themeCopperHeader;
       case ThemeOptions.LIGHT:
       default:
-        return "Light";
+        return AppLocalization.of(context).themeLightHeader;
     }
   }
 
@@ -31,7 +32,7 @@ class ThemeSetting extends SettingSelectionItem {
       case ThemeOptions.LIGHT:
       default:
         return BlaiseLightTheme();
-    }    
+    }
   }
 
   // For saving to shared prefs

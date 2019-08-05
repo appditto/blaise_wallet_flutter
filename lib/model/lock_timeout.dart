@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/setting_item.dart';
 import 'package:flutter/material.dart';
 
@@ -12,19 +13,19 @@ class LockTimeoutSetting extends SettingSelectionItem {
   String getDisplayName(BuildContext context) {
     switch (setting) {
       case LockTimeoutOption.ZERO:
-        return "Instantly";
+        return AppLocalization.of(context).lockInstantHeader;
       case LockTimeoutOption.ONE:
-        return "After 1 minute";
+        return AppLocalization.of(context).lock1Header;
       case LockTimeoutOption.FIVE:
-        return "After 5 minutes";
+        return AppLocalization.of(context).lock5Header;
       case LockTimeoutOption.FIFTEEN:
-        return "After 15 minutes";
+        return AppLocalization.of(context).lock15Header;
       case LockTimeoutOption.THIRTY:
-        return "After 30 minutes";
+        return AppLocalization.of(context).lock30Header;
       case LockTimeoutOption.SIXTY:
-        return "After 60 minutes";
+        return AppLocalization.of(context).lock60Header;
       default:
-        return "After 1 minute";
+        return AppLocalization.of(context).lock1Header;
     }
   }
 

@@ -1525,6 +1525,15 @@ class AppLocalization {
         name: 'pendingHeader');
   }
 
+  String get onHeader {
+    return Intl.message("On",
+        desc: "A header to indicate that something is on", name: "onHeader");
+  }
+
+  String get offHeader {
+    return Intl.message("Off",
+        desc: "A header to indicate that something is off", name: "offHeader");
+  }
   // Miscellaneous Headers
 
   // **** HEADERS END **** //
@@ -1688,14 +1697,6 @@ class AppLocalization {
         name: 'failedToImportContactsError');
   }
   // **** ERROR TEXT END **** //
-
-  String get onStr {
-    return Intl.message("On", desc: "On", name: "onStr");
-  }
-
-  String get offStr {
-    return Intl.message("Off", desc: "Off", name: "offStr");
-  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalization> {

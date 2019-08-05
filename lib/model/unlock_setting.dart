@@ -1,3 +1,4 @@
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/setting_item.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +13,10 @@ class UnlockSetting extends SettingSelectionItem {
   String getDisplayName(BuildContext context) {
     switch (setting) {
       case UnlockOption.YES:
-        return "Yes";
+        return AppLocalization.of(context).yesHeader;
       case UnlockOption.NO:
       default:
-        return "No";
+        return AppLocalization.of(context).noHeader;
     }
   }
 
