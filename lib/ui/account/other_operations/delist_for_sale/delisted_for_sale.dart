@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -72,7 +73,9 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                               width: MediaQuery.of(context).size.width - 130,
                               alignment: Alignment(0, 0),
                               child: AutoSizeText(
-                                "DELISTED",
+                                AppLocalization.of(context)
+                                    .delistedSheetHeader
+                                    .toUpperCase(),
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -122,7 +125,8 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Your account has been successfully delisted from sale.",
+                            AppLocalization.of(context)
+                                .delistedFromSaleParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 3,
@@ -133,7 +137,7 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Account",
+                            AppLocalization.of(context).accountTextFieldHeader,
                             style: AppStyles.textFieldLabelSuccess(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -169,7 +173,8 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 30, 30, 0),
                                 child: AutoSizeText(
-                                  "Fee",
+                                  AppLocalization.of(context)
+                                      .feeTextFieldHeader,
                                   style:
                                       AppStyles.textFieldLabelSuccess(context),
                                   maxLines: 1,
@@ -235,7 +240,7 @@ class _DelistedForSaleSheetState extends State<DelistedForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.SuccessOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -85,7 +86,9 @@ class _SentSheetState extends State<SentSheet> {
                               width: MediaQuery.of(context).size.width - 130,
                               alignment: Alignment(0, 0),
                               child: AutoSizeText(
-                                "SENT",
+                                AppLocalization.of(context)
+                                    .sentSheetHeader
+                                    .toUpperCase(),
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -135,7 +138,7 @@ class _SentSheetState extends State<SentSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                           child: AutoSizeText(
-                            "Transaction has been sent successfully.",
+                            AppLocalization.of(context).sentParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 3,
@@ -147,7 +150,7 @@ class _SentSheetState extends State<SentSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Address",
+                            AppLocalization.of(context).addressTextFieldHeader,
                             style: AppStyles.textFieldLabelSuccess(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -225,7 +228,8 @@ class _SentSheetState extends State<SentSheet> {
                                     margin: EdgeInsetsDirectional.fromSTEB(
                                         0, 30, 0, 0),
                                     child: AutoSizeText(
-                                      "Amount",
+                                      AppLocalization.of(context)
+                                          .amountTextFieldHeader,
                                       style: AppStyles.textFieldLabelSuccess(
                                           context),
                                       maxLines: 1,
@@ -300,7 +304,8 @@ class _SentSheetState extends State<SentSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 30, 0, 0),
                                           child: AutoSizeText(
-                                            "Fee",
+                                            AppLocalization.of(context)
+                                                .feeTextFieldHeader,
                                             style:
                                                 AppStyles.textFieldLabelSuccess(
                                                     context),
@@ -378,7 +383,8 @@ class _SentSheetState extends State<SentSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 30, 30, 0),
                                 child: AutoSizeText(
-                                  "Payload",
+                                  AppLocalization.of(context)
+                                      .payloadTextFieldHeader,
                                   style:
                                       AppStyles.textFieldLabelSuccess(context),
                                   maxLines: 1,
@@ -451,7 +457,7 @@ class _SentSheetState extends State<SentSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.SuccessOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

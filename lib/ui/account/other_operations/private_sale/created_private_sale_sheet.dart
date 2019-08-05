@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -80,7 +81,9 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                               width: MediaQuery.of(context).size.width - 130,
                               alignment: Alignment(0, 0),
                               child: AutoSizeText(
-                                "CREATED",
+                                AppLocalization.of(context)
+                                    .createdPrivateSaleSheetHeader
+                                    .toUpperCase(),
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -130,7 +133,8 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "The private sale created successfully. We’ll let you know if it is bought.",
+                            AppLocalization.of(context)
+                                .createdPrivateSaleParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 3,
@@ -155,7 +159,8 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                                     margin: EdgeInsetsDirectional.fromSTEB(
                                         0, 30, 0, 0),
                                     child: AutoSizeText(
-                                      "Price",
+                                      AppLocalization.of(context)
+                                          .priceTextFieldHeader,
                                       style: AppStyles.textFieldLabelSuccess(
                                           context),
                                       maxLines: 1,
@@ -230,7 +235,8 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 30, 0, 0),
                                           child: AutoSizeText(
-                                            "Fee",
+                                            AppLocalization.of(context)
+                                                .feeTextFieldHeader,
                                             style:
                                                 AppStyles.textFieldLabelSuccess(
                                                     context),
@@ -305,7 +311,8 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Receiving Account",
+                            AppLocalization.of(context)
+                                .receivingAccountTextFieldHeader,
                             style: AppStyles.textFieldLabelSuccess(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -342,7 +349,8 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Public Key",
+                            AppLocalization.of(context)
+                                .publicKeyTextFieldHeader,
                             style: AppStyles.textFieldLabelSuccess(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -384,7 +392,7 @@ class _CreatedPrivateSaleSheetState extends State<CreatedPrivateSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.SuccessOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

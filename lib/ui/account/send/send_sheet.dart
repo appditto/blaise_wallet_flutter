@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
@@ -17,7 +18,6 @@ import 'package:blaise_wallet_flutter/ui/widgets/payload.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
-import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -220,7 +220,9 @@ class _SendSheetState extends State<SendSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            "SEND",
+                            AppLocalization.of(context)
+                                .sendSheetHeader
+                                .toUpperCase(),
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -374,7 +376,8 @@ class _SendSheetState extends State<SendSheet> {
                                       30, 10, 30, 0),
                                   child: _isDestinationFieldTypeContact
                                       ? AppTextField(
-                                          label: 'Contact Name',
+                                          label: AppLocalization.of(context)
+                                              .contactNameTextFieldHeader,
                                           style: AppStyles.contactsItemName(
                                               context),
                                           prefix: _isValidContactAndUnfocused
@@ -410,7 +413,8 @@ class _SendSheetState extends State<SendSheet> {
                                           ),
                                         )
                                       : AppTextField(
-                                          label: 'Account',
+                                          label: AppLocalization.of(context)
+                                              .addressTextFieldHeader,
                                           style: _isValidContactAndUnfocused
                                               ? AppStyles.contactsItemName(
                                                   context)
@@ -484,7 +488,8 @@ class _SendSheetState extends State<SendSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   30, 30, 30, 0),
                                           child: AppTextField(
-                                              label: 'Amount',
+                                              label: AppLocalization.of(context)
+                                                  .amountTextFieldHeader,
                                               style: AppStyles.paragraphPrimary(
                                                   context),
                                               maxLines: 1,
@@ -590,7 +595,7 @@ class _SendSheetState extends State<SendSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.Primary,
-                        text: "Send",
+                        text: AppLocalization.of(context).sendButton,
                         buttonTop: true,
                         onPressed: () async {
                           await validateAndSend();
@@ -603,7 +608,7 @@ class _SendSheetState extends State<SendSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.PrimaryOutline,
-                        text: "Scan QR Code",
+                        text: AppLocalization.of(context).scanQRCodeButton,
                         onPressed: () async {
                           String text =
                               await UserDataUtil.getQRData(DataType.ACCOUNT);
@@ -629,17 +634,17 @@ class _SendSheetState extends State<SendSheet> {
     if (amountController.text.length == 0) {
       hasError = true;
       setState(() {
-        amountError = "Amount is Required";
+        amountError = AppLocalization.of(context).amountRequiredError;
       });
     } else if (accountState.accountBalance < Currency(amountController.text)) {
       hasError = true;
       setState(() {
-        amountError = "Insufficient Balance";
+        amountError = AppLocalization.of(context).insufficientBalanceError;
       });
     } else if (Currency(amountController.text) <= Currency("0")) {
       hasError = true;
       setState(() {
-        amountError = "Amount Can't be 0";
+        amountError = AppLocalization.of(context).zeroAmountError;
       });
     }
     String contactNameToCheck;
@@ -653,7 +658,8 @@ class _SendSheetState extends State<SendSheet> {
       if (contact == null) {
         hasError = true;
         setState(() {
-          destinationError = "Contact Does Not Exist";
+          destinationError =
+              AppLocalization.of(context).contactDoesntExistError;
         });
       }
     } else {
@@ -662,13 +668,15 @@ class _SendSheetState extends State<SendSheet> {
         if (destination == accountState.account.account) {
           hasError = true;
           setState(() {
-            destinationError = "Can't Send to Yourself";
+            destinationError =
+                AppLocalization.of(context).cantSendToYourselfError;
           });
         }
       } catch (e) {
         hasError = true;
         setState(() {
-          destinationError = "Invalid Destination";
+          destinationError =
+              AppLocalization.of(context).invalidDestinationError;
         });
       }
     }

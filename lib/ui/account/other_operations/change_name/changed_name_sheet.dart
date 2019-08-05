@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -72,7 +73,9 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                               width: MediaQuery.of(context).size.width - 130,
                               alignment: Alignment(0, 0),
                               child: AutoSizeText(
-                                "CHANGED",
+                                AppLocalization.of(context)
+                                    .changedNameSheetHeader
+                                    .toUpperCase(),
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -122,18 +125,19 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                           child: AutoSizeText(
-                            "Your account name has been changed successfully.",
+                            AppLocalization.of(context).changedNameParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 3,
                             minFontSize: 8,
                           ),
                         ),
-                        // "Address" header
+                        // New Account Name Header
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "New Account Name",
+                            AppLocalization.of(context)
+                                .newAccountNameTextFieldHeader,
                             style: AppStyles.textFieldLabelSuccess(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -169,7 +173,8 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 30, 30, 0),
                                 child: AutoSizeText(
-                                  "Fee",
+                                  AppLocalization.of(context)
+                                      .feeTextFieldHeader,
                                   style:
                                       AppStyles.textFieldLabelSuccess(context),
                                   maxLines: 1,
@@ -235,7 +240,7 @@ class _ChangedNameSheetState extends State<ChangedNameSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.SuccessOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

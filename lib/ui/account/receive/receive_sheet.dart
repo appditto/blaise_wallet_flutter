@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/request_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -189,9 +190,12 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                     type: _addressCopied
                         ? AppButtonType.Success
                         : AppButtonType.Primary,
-                    text: _addressCopied ? "Address Copied" : "Copy Address",
+                    text: _addressCopied
+                        ? AppLocalization.of(context).copiedAddressButton
+                        : AppLocalization.of(context).copyAddressButton,
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: widget.accountNumber.toString()));
+                      Clipboard.setData(
+                          ClipboardData(text: widget.accountNumber.toString()));
                       setState(() {
                         _addressCopied = true;
                       });
@@ -215,7 +219,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                 children: <Widget>[
                   AppButton(
                     type: AppButtonType.PrimaryOutline,
-                    text: "Request",
+                    text: AppLocalization.of(context).requestButton,
                     onPressed: () {
                         Navigator.of(context).pop();
                         AppSheets.showBottomSheet(

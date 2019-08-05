@@ -579,12 +579,12 @@ class AppLocalization {
         name: 'transferParagraph');
   }
 
-  String get transfferingParagraph {
+  String get transferringParagraph {
     return Intl.message(
         "Confirm the public key below to transfer the ownership of this account to it.",
         desc:
             'A paragraph that tells the user to confirm the public key below to proceed with the transfer',
-        name: 'transfferingParagraph');
+        name: 'transferringParagraph');
   }
 
   String get transferredParagraph {
@@ -950,132 +950,132 @@ class AppLocalization {
   String get getAccountSheetHeader {
     return Intl.message("Get Account",
         desc: 'Header for the get account sheet (screen)',
-        name: 'getAccountHeader');
+        name: 'getAccountSheetHeader');
   }
 
   String get freeAccountSheetHeader {
     return Intl.message("Free Account",
         desc: 'Header for the free account sheet (screen)',
-        name: 'freeAccountHeader');
+        name: 'freeAccountSheetHeader');
   }
 
   String get buyAccountSheetHeader {
     return Intl.message("Buy Account",
         desc: 'Header for the buy account sheet (screen)',
-        name: 'buyAccountHeader');
+        name: 'buyAccountSheetHeader');
   }
 
   String get sendSheetHeader {
     return Intl.message("Send",
-        desc: 'Header for send sheet (screen)', name: 'sendHeader');
+        desc: 'Header for send sheet (screen)', name: 'sendSheetHeader');
   }
 
   String get sendingSheetHeader {
     return Intl.message("Sending",
-        desc: 'Header for sending sheet (screen)', name: 'sendingHeader');
+        desc: 'Header for sending sheet (screen)', name: 'sendingSheetHeader');
   }
 
   String get sentSheetHeader {
     return Intl.message("Sent",
-        desc: 'Header for sent sheet (screen)', name: 'sentHeader');
+        desc: 'Header for sent sheet (screen)', name: 'sentSheetHeader');
   }
 
   String get requestSheetHeader {
     return Intl.message("Request",
-        desc: 'Header for request sheet (screen)', name: 'requestHeader');
+        desc: 'Header for request sheet (screen)', name: 'requestSheetHeader');
   }
 
   String get changeNameSheetHeader {
     return Intl.message("Change Name",
         desc: 'Header for change name sheet (screen)',
-        name: 'changeNameHeader');
+        name: 'changeNameSheetHeader');
   }
 
   String get changingNameSheetHeader {
     return Intl.message("Changing",
         desc: 'Header for name changing sheet (screen)',
-        name: 'changingNameHeader');
+        name: 'changingNameSheetHeader');
   }
 
   String get changedNameSheetHeader {
     return Intl.message("Changed",
         desc: 'Header for name changed sheet (screen)',
-        name: 'changedNameHeader');
+        name: 'changedNameSheetHeader');
   }
 
   String get transferSheetHeader {
     return Intl.message("Transfer",
-        desc: 'Header for transfer sheet (screen)', name: 'transferHeader');
+        desc: 'Header for transfer sheet (screen)', name: 'transferSheetHeader');
   }
 
   String get transferringSheetHeader {
     return Intl.message("Transferring",
         desc: 'Header for transferring sheet (screen)',
-        name: 'transferringHeader');
+        name: 'transferringSheetHeader');
   }
 
   String get transferredSheetHeader {
     return Intl.message("Transferred",
         desc: 'Header for transferred sheet (screen)',
-        name: 'transferredHeader');
+        name: 'transferredSheetHeader');
   }
 
   String get listForSaleSheetHeader {
     return Intl.message("List For Sale",
         desc: 'Header for list for sale sheet (screen)',
-        name: 'listForSaleHeader');
+        name: 'listForSaleSheetHeader');
   }
 
   String get listingForSaleSheetHeader {
     return Intl.message("Listing",
         desc: 'Header for listing for sale sheet (screen)',
-        name: 'listingForSaleHeader');
+        name: 'listingForSaleSheetHeader');
   }
 
   String get listedForSaleSheetHeader {
     return Intl.message("Listed",
         desc: 'Header for listed for sale sheet (screen)',
-        name: 'listedForSaleHeader');
+        name: 'listedForSaleSheetHeader');
   }
 
   String get createPrivateSaleSheetHeader {
     return Intl.message("Private Sale",
         desc: 'Header for create private sale sheet (screen)',
-        name: 'createPrivateSaleHeader');
+        name: 'createPrivateSaleSheetHeader');
   }
 
   String get creatingPrivateSaleSheetHeader {
     return Intl.message("Creating",
         desc: 'Header for creating private sale sheet (screen)',
-        name: 'creatingPrivateSaleHeader');
+        name: 'creatingPrivateSaleSheetHeader');
   }
 
   String get createdPrivateSaleSheetHeader {
     return Intl.message("Created",
         desc: 'Header for created private sale sheet (screen)',
-        name: 'createdPrivateSaleHeader');
+        name: 'createdPrivateSaleSheetHeader');
   }
 
   String get delistingSheetHeader {
     return Intl.message("Delisting",
-        desc: 'Header for delisting sheet (screen)', name: 'delistingHeader');
+        desc: 'Header for delisting sheet (screen)', name: 'delistingSheetHeader');
   }
 
   String get delistedSheetHeader {
     return Intl.message("Delisted",
-        desc: 'Header for delisted sheet (screen)', name: 'delistedHeader');
+        desc: 'Header for delisted sheet (screen)', name: 'delistedSheetHeader');
   }
 
   String get addContactSheetHeader {
     return Intl.message("Add Contact",
         desc: 'Header for add contact sheet (screen)',
-        name: 'addcontactHeader');
+        name: 'addcontactSheetHeader');
   }
 
   String get contactSheetHeader {
     return Intl.message("Contact",
         desc: 'Header for contact details sheet (screen)',
-        name: 'contactHeader');
+        name: 'contactSheetHeader');
   }
 
   String get privateKeySheetHeader {
@@ -1085,19 +1085,19 @@ class AppLocalization {
   }
 
   String get backUpSheetHeader {
-    return Intl.message("BACK UP",
-        desc: 'Header for back up sheet (screen)', name: 'backUpHeader');
+    return Intl.message("Back Up",
+        desc: 'Header for back up sheet (screen)', name: 'backUpSheetHeader');
   }
 
   String get encryptSheetHeader {
     return Intl.message("Encrypt",
-        desc: 'Header for encrypt sheet (screen)', name: 'encryptHeader');
+        desc: 'Header for encrypt sheet (screen)', name: 'encryptSheetHeader');
   }
 
   String get changeDaemonSheetHeader {
     return Intl.message("Change Daemon",
         desc: 'Header for change daemon sheet (screen)',
-        name: 'changeDaemonHeader');
+        name: 'changeDaemonSheetHeader');
   }
   // Sheet Headers END
 
@@ -1373,6 +1373,11 @@ class AppLocalization {
     return Intl.message("Borrowed Account",
         desc: 'Header for borrowed account tag', name: 'borrowedAccountHeader');
   }
+
+  String get feeColonHeader {
+    return Intl.message("Fee:",
+        desc: 'Header for fee amount', name: 'feeColonHeader');
+  }
   // Miscellaneous Headers
 
   // **** HEADERS END **** //
@@ -1398,9 +1403,9 @@ class AppLocalization {
     return Intl.message("Amount can't be 0",
         desc: 'Error that tells the user that the amount cant be zero', name: 'zeroAmountError');
   }
-    String get invalidNameError {
+    String get invalidAccountNameError {
     return Intl.message("Invalid account name",
-        desc: 'Error that tells the user that the account name is invalid', name: 'invalidNameError');
+        desc: 'Error that tells the user that the account name is invalid', name: 'invalidAccountNameError');
   }
   String get invalidReceivingAccountError {
     return Intl.message("Invalid receiving account",
@@ -1442,6 +1447,14 @@ class AppLocalization {
   String get cantSendToYourselfError {
     return Intl.message("Can't send to yourself",
         desc: 'Error that tells the user that you cant send to yourself', name: 'cantSendToYourselfError');
+  }
+  String get somethingWentWrongError {
+    return Intl.message("Something went wrong, please try again later.",
+        desc: 'Error that tells the user that something went wrong', name: 'somethingWentWrongError');
+  }
+  String get failedToEncryptPayloadError {
+    return Intl.message("Failed to encrypt the payload.",
+        desc: 'Error that tells the user that something went wrong', name: 'failedToEncryptPayloadError');
   }
   // **** ERROR TEXT END **** //
 

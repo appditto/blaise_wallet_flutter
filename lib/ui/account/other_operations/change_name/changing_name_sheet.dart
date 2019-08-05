@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/authenticated_event.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changed_name_sheet.dart';
@@ -157,7 +158,9 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "CHANGING",
+                          AppLocalization.of(context)
+                              .changingNameSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -181,7 +184,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
-                          "Confirm your new account name to proceed.",
+                          AppLocalization.of(context).changingNameParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -192,7 +195,8 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "New Account Name",
+                          AppLocalization.of(context)
+                              .newAccountNameTextFieldHeader,
                           style: AppStyles.textFieldLabel(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -227,7 +231,7 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                               child: AutoSizeText(
-                                "Fee",
+                                AppLocalization.of(context).feeTextFieldHeader,
                                 style: AppStyles.textFieldLabel(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -290,7 +294,9 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "CONFIRM",
+                      text: AppLocalization.of(context)
+                          .confirmButton
+                          .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -306,7 +312,9 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "CANCEL",
+                      text: AppLocalization.of(context)
+                          .cancelButton
+                          .toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -363,18 +371,20 @@ class _ChangingNameSheetState extends State<ChangingNameSheet> {
           }
         } catch (e) {
           UIUtil.showSnackbar(
-              "Something went wrong, try again later.", context);
+              AppLocalization.of(context).somethingWentWrongError, context);
         }
       }
     } catch (e) {
       _overlay?.remove();
-      UIUtil.showSnackbar("Something went wrong, try again later.", context);
+      UIUtil.showSnackbar(
+          AppLocalization.of(context).somethingWentWrongError, context);
     }
   }
 
   Future<bool> authenticate() async {
-    String message =
-        "Authenticate to change account name to \"${widget.newName.toString()}\"";
+    String message = AppLocalization.of(context)
+        .authenticateToChangeNameParagraph
+        .replaceAll("%1", widget.newName.toString());
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/creating_private_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
@@ -120,7 +121,9 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "PRIVATE SALE",
+                          AppLocalization.of(context)
+                              .creatingPrivateSaleSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -144,7 +147,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
                         child: AutoSizeText(
-                          "Enter a price, a receiving account, and a public key below to create a private sale for this account.",
+                          AppLocalization.of(context)
+                              .creatingPrivateSaleParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -164,7 +168,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),
                                 child: AppTextField(
-                                  label: 'Price',
+                                  label: AppLocalization.of(context)
+                                      .priceTextFieldHeader,
                                   style: AppStyles.paragraphPrimary(context),
                                   maxLines: 1,
                                   inputType: TextInputType.numberWithOptions(
@@ -204,7 +209,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 30, 30, 0),
                                 child: AppTextField(
-                                  label: 'Receiving Account',
+                                  label: AppLocalization.of(context)
+                                      .receivingAccountTextFieldHeader,
                                   style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 1,
                                   firstButton: TextFieldButton(
@@ -253,7 +259,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),
                                 child: AppTextField(
-                                  label: 'Public Key',
+                                  label: AppLocalization.of(context)
+                                      .publicKeyTextFieldHeader,
                                   style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 4,
                                   firstButton: TextFieldButton(
@@ -317,7 +324,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                             borderRadius:
                                                 BorderRadius.circular(100.0)),
                                         child: AutoSizeText(
-                                          "+ Add a Duration",
+                                          AppLocalization.of(context).addADurationButton,
                                           textAlign: TextAlign.center,
                                           maxLines: 1,
                                           stepGranularity: 0.1,
@@ -342,7 +349,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Create Private Sale",
+                      text: AppLocalization.of(context).createPrivateSaleButton,
                       onPressed: () {
                         if (validateFormData()) {
                           AppSheets.showBottomSheet(
@@ -376,7 +383,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
     if (receiverController.text.trim().length == 0) {
       isValid = false;
       setState(() {
-        _receiverErr = "Invalid Receiving Account";
+        _receiverErr = AppLocalization.of(context).invalidReceivingAccountError;
       });
     } else {
       try {
@@ -384,7 +391,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
       } catch (e) {
         isValid = false;
         setState(() {
-          _receiverErr = "Invalid Receiving Account";
+          _receiverErr =
+              AppLocalization.of(context).invalidReceivingAccountError;
         });
       }
     }
@@ -392,14 +400,14 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
     if (priceController.text.trim().length == 0) {
       isValid = false;
       setState(() {
-        _priceErr = "Price is required";
+        _priceErr = AppLocalization.of(context).priceRequiredError;
       });
     } else {
       Currency price = Currency(priceController.text);
       if (price == Currency('0')) {
         isValid = false;
         setState(() {
-          _priceErr = "Price cannot be 0";
+          _priceErr = AppLocalization.of(context).zeroPriceError;
         });
       }
     }
@@ -407,7 +415,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
     if (PascalUtil().decipherPublicKey(publicKeyController.text) == null) {
       isValid = false;
       setState(() {
-        _publicKeyErr = "Invalid Public Key";
+        _publicKeyErr = AppLocalization.of(context).invalidPublicKeyError;
       });
     }
     return isValid;

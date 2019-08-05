@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/delist_for_sale/delisted_for_sale.dart';
@@ -155,7 +156,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "DELISTING",
+                          AppLocalization.of(context)
+                              .delistingSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -179,7 +182,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Confirm that you would like to delist this account for sale.",
+                          AppLocalization.of(context).delistedFromSaleParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -190,7 +193,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Account",
+                          AppLocalization.of(context).accountTextFieldHeader,
                           style: AppStyles.textFieldLabel(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -225,7 +228,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                               child: AutoSizeText(
-                                "Fee",
+                                AppLocalization.of(context).feeTextFieldHeader,
                                 style: AppStyles.textFieldLabel(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -288,7 +291,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "CONFIRM",
+                      text: AppLocalization.of(context)
+                          .confirmButton
+                          .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -304,7 +309,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "CANCEL",
+                      text: AppLocalization.of(context)
+                          .cancelButton
+                          .toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

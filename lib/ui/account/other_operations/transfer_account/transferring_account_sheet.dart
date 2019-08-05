@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/authenticated_event.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferred_account_sheet.dart';
@@ -160,7 +161,9 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "TRANSFERRING",
+                          AppLocalization.of(context)
+                              .transferringSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -184,7 +187,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 0),
                         child: AutoSizeText(
-                          "Confirm the public key to transfer the ownership of this account.",
+                          AppLocalization.of(context).transferringParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -195,7 +198,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                       Container(
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          "Public Key",
+                          AppLocalization.of(context).publicKeyTextFieldHeader,
                           style: AppStyles.textFieldLabel(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -230,7 +233,7 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                               child: AutoSizeText(
-                                "Fee",
+                                AppLocalization.of(context).feeTextFieldHeader,
                                 style: AppStyles.textFieldLabel(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -293,7 +296,9 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "CONFIRM",
+                      text: AppLocalization.of(context)
+                          .confirmButton
+                          .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -309,7 +314,9 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "CANCEL",
+                      text: AppLocalization.of(context)
+                          .cancelButton
+                          .toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -367,17 +374,19 @@ class _TransferringAccountSheetState extends State<TransferringAccountSheet> {
           }
         } catch (e) {
           UIUtil.showSnackbar(
-              "Something went wrong, try again later.", context);
+              AppLocalization.of(context).somethingWentWrongError, context);
         }
       }
     } catch (e) {
       _overlay?.remove();
-      UIUtil.showSnackbar("Something went wrong, try again later.", context);
+      UIUtil.showSnackbar(
+          AppLocalization.of(context).somethingWentWrongError, context);
     }
   }
 
   Future<bool> authenticate() async {
-    String message = "Authenticate to transfer account";
+    String message =
+        AppLocalization.of(context).authenticateToTransferParagraph;
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {

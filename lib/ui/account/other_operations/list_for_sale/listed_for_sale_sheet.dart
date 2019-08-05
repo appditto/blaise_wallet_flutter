@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -75,7 +76,9 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                               width: MediaQuery.of(context).size.width - 130,
                               alignment: Alignment(0, 0),
                               child: AutoSizeText(
-                                "LISTED",
+                                AppLocalization.of(context)
+                                    .listedForSaleSheetHeader
+                                    .toUpperCase(),
                                 style: AppStyles.header(context),
                                 maxLines: 1,
                                 stepGranularity: 0.1,
@@ -125,7 +128,7 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Your account has been successfully listed for sale. We’ll let you know if someone buys it.",
+                            AppLocalization.of(context).listedForSaleParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 3,
@@ -150,7 +153,8 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                                     margin: EdgeInsetsDirectional.fromSTEB(
                                         0, 30, 0, 0),
                                     child: AutoSizeText(
-                                      "Price",
+                                      AppLocalization.of(context)
+                                          .priceTextFieldHeader,
                                       style: AppStyles.textFieldLabelSuccess(
                                           context),
                                       maxLines: 1,
@@ -225,7 +229,8 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 30, 0, 0),
                                           child: AutoSizeText(
-                                            "Fee",
+                                            AppLocalization.of(context)
+                                                .feeTextFieldHeader,
                                             style:
                                                 AppStyles.textFieldLabelSuccess(
                                                     context),
@@ -300,7 +305,8 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Receiving Account",
+                            AppLocalization.of(context)
+                                .receivingAccountTextFieldHeader,
                             style: AppStyles.textFieldLabelSuccess(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -341,7 +347,7 @@ class _ListedForSaleSheetState extends State<ListedForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.SuccessOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

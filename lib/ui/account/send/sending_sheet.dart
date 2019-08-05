@@ -5,9 +5,9 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/authenticated_event.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sent_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -154,7 +154,9 @@ class _SendingSheetState extends State<SendingSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "SENDING",
+                          AppLocalization.of(context)
+                              .sendingSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -179,7 +181,7 @@ class _SendingSheetState extends State<SendingSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Confirm the transaction details to send.",
+                            AppLocalization.of(context).sendingConfirmParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 3,
@@ -191,7 +193,7 @@ class _SendingSheetState extends State<SendingSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Address",
+                            AppLocalization.of(context).addressTextFieldHeader,
                             style: AppStyles.textFieldLabel(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -265,7 +267,8 @@ class _SendingSheetState extends State<SendingSheet> {
                                     margin: EdgeInsetsDirectional.fromSTEB(
                                         0, 30, 0, 0),
                                     child: AutoSizeText(
-                                      "Amount",
+                                      AppLocalization.of(context)
+                                          .amountTextFieldHeader,
                                       style: AppStyles.textFieldLabel(context),
                                       maxLines: 1,
                                       stepGranularity: 0.1,
@@ -338,7 +341,8 @@ class _SendingSheetState extends State<SendingSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 30, 0, 0),
                                           child: AutoSizeText(
-                                            "Fee",
+                                            AppLocalization.of(context)
+                                                .feeTextFieldHeader,
                                             style: AppStyles.textFieldLabel(
                                                 context),
                                             maxLines: 1,
@@ -415,7 +419,8 @@ class _SendingSheetState extends State<SendingSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 30, 30, 0),
                                 child: AutoSizeText(
-                                  "Payload",
+                                  AppLocalization.of(context)
+                                      .payloadTextFieldHeader,
                                   style: AppStyles.textFieldLabel(context),
                                   maxLines: 1,
                                   stepGranularity: 0.1,
@@ -487,7 +492,9 @@ class _SendingSheetState extends State<SendingSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "CONFIRM",
+                      text: AppLocalization.of(context)
+                          .confirmButton
+                          .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -503,7 +510,9 @@ class _SendingSheetState extends State<SendingSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "CANCEL",
+                      text: AppLocalization.of(context)
+                          .cancelButton
+                          .toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -533,7 +542,8 @@ class _SendingSheetState extends State<SendingSheet> {
                     : widget.contact.account);
         if (encryptedPayload == null) {
           _overlay?.remove();
-          UIUtil.showSnackbar("Failed to Encrypt the Payload", context);
+          UIUtil.showSnackbar(
+              AppLocalization.of(context).failedToEncryptPayloadError, context);
           return;
         }
       }
@@ -589,12 +599,15 @@ class _SendingSheetState extends State<SendingSheet> {
     } catch (e) {
       log.e(e.toString());
       _overlay?.remove();
-      UIUtil.showSnackbar("Something went wrong, try again later.", context);
+      UIUtil.showSnackbar(
+          AppLocalization.of(context).somethingWentWrongError, context);
     }
   }
 
   Future<bool> authenticate() async {
-    String message = "Authenticate to send ${widget.amount} Pascal.";
+    String message = AppLocalization.of(context)
+        .authenticateToSendParagraph
+        .replaceAll("%1", widget.amount);
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {

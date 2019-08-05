@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/change_name/changing_name_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
@@ -97,7 +98,9 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "CHANGE NAME",
+                          AppLocalization.of(context)
+                              .changeNameSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -121,7 +124,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 20),
                         child: AutoSizeText(
-                          "Enter a name below to change your account’s name.",
+                          AppLocalization.of(context).changeNameParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -141,7 +144,8 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),
                                 child: AppTextField(
-                                  label: 'New Account Name',
+                                  label: AppLocalization.of(context)
+                                      .newAccountNameTextFieldHeader,
                                   style: AppStyles.paragraphMedium(context),
                                   maxLines: 1,
                                   controller: _nameController,
@@ -184,7 +188,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Change Name",
+                      text: AppLocalization.of(context).changeNameButton,
                       onPressed: () {
                         validateAndChangeName();
                       },
@@ -203,7 +207,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
     try {
       if (_nameController.text.isNotEmpty && _nameController.text.length < 3) {
         setState(() {
-          _nameError = "Must be at least 3 characters";
+          _nameError = AppLocalization.of(context).threeCharacterNameError;
         });
         return;
       }
@@ -217,7 +221,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
           noBlur: true);
     } catch (e) {
       setState(() {
-        _nameError = 'Invalid Account Name';
+        _nameError = AppLocalization.of(context).invalidAccountNameError;
       });
     }
   }

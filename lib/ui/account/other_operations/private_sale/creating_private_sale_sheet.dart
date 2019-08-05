@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/private_sale/created_private_sale_sheet.dart';
@@ -166,7 +167,9 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "CREATING",
+                          AppLocalization.of(context)
+                              .creatingPrivateSaleSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -191,7 +194,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                           width: double.maxFinite,
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Confirm the information below.",
+                            AppLocalization.of(context)
+                                .creatingPrivateSaleParagraph,
                             style: AppStyles.paragraph(context),
                             stepGranularity: 0.1,
                             maxLines: 2,
@@ -216,7 +220,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                                     margin: EdgeInsetsDirectional.fromSTEB(
                                         0, 30, 0, 0),
                                     child: AutoSizeText(
-                                      "Price",
+                                      AppLocalization.of(context)
+                                          .priceTextFieldHeader,
                                       style: AppStyles.textFieldLabel(context),
                                       maxLines: 1,
                                       stepGranularity: 0.1,
@@ -289,7 +294,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 30, 0, 0),
                                           child: AutoSizeText(
-                                            "Fee",
+                                            AppLocalization.of(context)
+                                                .feeTextFieldHeader,
                                             style: AppStyles.textFieldLabel(
                                                 context),
                                             maxLines: 1,
@@ -363,7 +369,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Receiving Account",
+                            AppLocalization.of(context)
+                                .receivingAccountTextFieldHeader,
                             style: AppStyles.textFieldLabel(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -400,7 +407,8 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Public Key",
+                            AppLocalization.of(context)
+                                .publicKeyTextFieldHeader,
                             style: AppStyles.textFieldLabel(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -442,7 +450,9 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "CONFIRM",
+                      text: AppLocalization.of(context)
+                          .confirmButton
+                          .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -458,7 +468,9 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "CANCEL",
+                      text: AppLocalization.of(context)
+                          .cancelButton
+                          .toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -519,17 +531,19 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
           }
         } catch (e) {
           UIUtil.showSnackbar(
-              "Something went wrong, try again later.", context);
+              AppLocalization.of(context).somethingWentWrongError, context);
         }
       }
     } catch (e) {
       _overlay?.remove();
-      UIUtil.showSnackbar("Something went wrong, try again later.", context);
+      UIUtil.showSnackbar(
+          AppLocalization.of(context).somethingWentWrongError, context);
     }
   }
 
   Future<bool> authenticate() async {
-    String message = "Authenticate to list account for sale";
+    String message =
+        AppLocalization.of(context).authenticateToCreatePrivateSaleParagraph;
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {

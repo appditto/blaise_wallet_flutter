@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/list_for_sale/listing_for_sale_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
@@ -11,7 +12,6 @@ import 'package:blaise_wallet_flutter/ui/widgets/fee_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
-import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -115,7 +115,9 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "LIST FOR SALE",
+                          AppLocalization.of(context)
+                              .listForSaleSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -139,7 +141,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 20),
                         child: AutoSizeText(
-                          "Enter a price and an account that will be receiving the payment to list this account for sale.",
+                          AppLocalization.of(context).listForSaleParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -159,7 +161,8 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),
                                 child: AppTextField(
-                                  label: 'Price',
+                                  label: AppLocalization.of(context)
+                                      .priceTextFieldHeader,
                                   style: AppStyles.paragraphPrimary(context),
                                   maxLines: 1,
                                   inputType: TextInputType.numberWithOptions(
@@ -199,7 +202,8 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 30, 30, 0),
                                 child: AppTextField(
-                                  label: 'Receiving Account',
+                                  label: AppLocalization.of(context)
+                                      .receivingAccountTextFieldHeader,
                                   style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 1,
                                   firstButton: TextFieldButton(
@@ -261,7 +265,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "List for Sale",
+                      text: AppLocalization.of(context).listForSaleButton,
                       onPressed: () {
                         if (validateFormData()) {
                           AppSheets.showBottomSheet(
@@ -294,7 +298,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
     if (receiverController.text.trim().length == 0) {
       isValid = false;
       setState(() {
-        _receiverErr = "Invalid Receiving Account";
+        _receiverErr = AppLocalization.of(context).invalidReceivingAccountError;
       });
     } else {
       try {
@@ -302,7 +306,8 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
       } catch (e) {
         isValid = false;
         setState(() {
-          _receiverErr = "Invalid Receiving Account";
+          _receiverErr =
+              AppLocalization.of(context).invalidReceivingAccountError;
         });
       }
     }
@@ -310,14 +315,14 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
     if (priceController.text.trim().length == 0) {
       isValid = false;
       setState(() {
-        _priceErr = "Price is required";
+        _priceErr = AppLocalization.of(context).priceRequiredError;
       });
     } else {
       Currency price = Currency(priceController.text);
       if (price == Currency('0')) {
         isValid = false;
         setState(() {
-          _priceErr = "Price cannot be 0";
+          _priceErr = AppLocalization.of(context).zeroPriceError;
         });
       }
     }

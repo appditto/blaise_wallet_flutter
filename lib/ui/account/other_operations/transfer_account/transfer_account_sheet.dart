@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/account/other_operations/transfer_account/transferring_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -12,7 +13,6 @@ import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:pascaldart/pascaldart.dart';
 
@@ -100,7 +100,9 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "TRANSFER",
+                          AppLocalization.of(context)
+                              .transferredSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -124,7 +126,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 40, 30, 20),
                         child: AutoSizeText(
-                          "Enter a public key below to transfer the ownership of this account to it.",
+                          AppLocalization.of(context).transferParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
@@ -144,7 +146,8 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 10, 30, 0),
                                 child: AppTextField(
-                                  label: 'Public Key',
+                                  label: AppLocalization.of(context)
+                                      .publicKeyTextFieldHeader,
                                   style: AppStyles.privateKeyTextDark(context),
                                   maxLines: 4,
                                   firstButton: TextFieldButton(
@@ -205,7 +208,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Transfer",
+                      text: AppLocalization.of(context).transferButton,
                       onPressed: () {
                         validateAndTransfer();
                       },
@@ -231,7 +234,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
             .decodeFromBytes(PDUtil.hexToBytes(publicKeyController.text));
       } catch (e) {
         setState(() {
-          pubkeyError = "Invalid Public Key";
+          pubkeyError = AppLocalization.of(context).invalidPublicKeyError;
         });
         return;
       }

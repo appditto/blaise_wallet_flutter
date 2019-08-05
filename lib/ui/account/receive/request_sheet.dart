@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -72,7 +73,9 @@ class _RequestSheetState extends State<RequestSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            "REQUEST",
+                            AppLocalization.of(context)
+                                .requestSheetHeader
+                                .toUpperCase(),
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -168,7 +171,8 @@ class _RequestSheetState extends State<RequestSheet> {
                               },
                               focusNode: amountFocusNode,
                               controller: amountController,
-                              label: 'Amount',
+                              label: AppLocalization.of(context)
+                                  .amountTextFieldHeader,
                               style: AppStyles.paragraphPrimary(context),
                               maxLines: 1,
                               inputType: TextInputType.numberWithOptions(
@@ -196,7 +200,8 @@ class _RequestSheetState extends State<RequestSheet> {
                               },
                               focusNode: payloadFocusNode,
                               controller: payloadController,
-                              label: 'Payload',
+                              label: AppLocalization.of(context)
+                                  .payloadTextFieldHeader,
                               style: AppStyles.paragraphMedium(context),
                               maxLines: 1,
                               firstButton:
@@ -214,7 +219,7 @@ class _RequestSheetState extends State<RequestSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.PrimaryOutline,
-                        text: "Close",
+                        text: AppLocalization.of(context).closeButton,
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
