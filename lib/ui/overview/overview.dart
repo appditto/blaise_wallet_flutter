@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
-import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet_beta_with_accounts.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
@@ -65,7 +64,8 @@ class _OverviewPageState extends State<OverviewPage>
       }
     } catch (e) {
       if (mounted) {
-        UIUtil.showSnackbar("Did not get a response from server", context);
+        UIUtil.showSnackbar(
+            AppLocalization.of(context).didNotGetResponseError, context);
       }
     }
   }
@@ -96,7 +96,7 @@ class _OverviewPageState extends State<OverviewPage>
     }
     if (_disableLockSub != null) {
       _disableLockSub.cancel();
-    }    
+    }
   }
 
   // To lock and unlock the app
@@ -149,15 +149,14 @@ class _OverviewPageState extends State<OverviewPage>
         exists = true;
         if (walletState.activeAccount != AccountNumber.fromInt(account)) {
           Navigator.popUntil(context, RouteUtils.withNameLike('/overview'));
-          Navigator.pushNamed(context, '/account',
-                  arguments: acct);
+          Navigator.pushNamed(context, '/account', arguments: acct);
         }
       }
-    });   
+    });
     // Disable notifications for this acct
     if (!exists) {
       walletState.fcmDeleteAccount(AccountNumber.fromInt(account));
-    } 
+    }
   }
 
   void _chooseCorrectAccountFromNotification(dynamic message) {
@@ -200,7 +199,7 @@ class _OverviewPageState extends State<OverviewPage>
       } else {
         sl.get<SharedPrefsUtil>().setNotificationsOn(false);
       }
-    });   
+    });
   }
 
   @override
@@ -362,7 +361,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       24, 0, 24, 0),
                                   child: AutoSizeText(
-                                    "TOTAL BALANCE",
+                                    AppLocalization.of(context)
+                                        .totalBalanceHeader
+                                        .toUpperCase(),
                                     style: AppStyles.paragraphTextLightSmall(
                                         context),
                                   ),
@@ -458,7 +459,11 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
-                                      } else if (walletState.localCurrencyPrice == null || walletState.totalWalletBalance == null) {
+                                      } else if (walletState
+                                                  .localCurrencyPrice ==
+                                              null ||
+                                          walletState.totalWalletBalance ==
+                                              null) {
                                         return SizedBox();
                                       } else {
                                         return AutoSizeText(
@@ -530,7 +535,9 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
-                                      } else if (walletState.localCurrencyPrice == null) {
+                                      } else if (walletState
+                                              .localCurrencyPrice ==
+                                          null) {
                                         return SizedBox();
                                       } else {
                                         return AutoSizeText(
@@ -562,7 +569,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                "Accounts".toUpperCase(),
+                                AppLocalization.of(context)
+                                    .accountsHeader
+                                    .toUpperCase(),
                                 style: AppStyles.headerSmall(context),
                                 textAlign: TextAlign.left,
                                 stepGranularity: 0.5,
@@ -713,7 +722,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                "Accounts".toUpperCase(),
+                                AppLocalization.of(context)
+                                    .accountsHeader
+                                    .toUpperCase(),
                                 style: AppStyles.headerSmall(context),
                                 textAlign: TextAlign.left,
                                 stepGranularity: 0.5,
@@ -784,12 +795,14 @@ class _OverviewPageState extends State<OverviewPage>
                           child: Row(
                             children: <Widget>[
                               AppButton(
-                                text: "Get an Account",
+                                text: AppLocalization.of(context)
+                                    .getAnAccountButton,
                                 type: AppButtonType.Primary,
                                 onPressed: () {
                                   AppSheets.showBottomSheet(
                                       context: context,
-                                      widget: GetAccountSheetBetaWithAccounts());
+                                      widget:
+                                          GetAccountSheetBetaWithAccounts());
                                 },
                               ),
                             ],
@@ -816,7 +829,8 @@ class _OverviewPageState extends State<OverviewPage>
                           child: Row(
                             children: <Widget>[
                               AppButton(
-                                text: "Get an Account",
+                                text: AppLocalization.of(context)
+                                    .getAnAccountButton,
                                 type: AppButtonType.Primary,
                                 onPressed: () {
                                   AppSheets.showBottomSheet(

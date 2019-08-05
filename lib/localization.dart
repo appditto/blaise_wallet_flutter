@@ -371,12 +371,12 @@ class AppLocalization {
         name: 'uninstallDisclaimerParagraph');
   }
 
-  String get newKeyParagraph {
+  String get newPrivateKeyParagraph {
     return Intl.message(
         "Below is your new wallet’s private key. It is crucial that you backup your private key and never store it as plaintext or a screenshot. We recommend writing it on a piece of paper and storing it offline.",
         desc:
             'A paragraph that explains what users should do with their new private key',
-        name: 'newKeyParagraph');
+        name: 'newPrivateKeyParagraph');
   }
 
   String get newKeyBackUpConfirmParagraph {
@@ -1588,6 +1588,12 @@ class AppLocalization {
     return Intl.message("Invalid password",
         desc: 'Error that tells the user that the password is invalid',
         name: 'invalidPasswordError');
+  }
+
+  String get didNotGetResponseError {
+    return Intl.message("Did not get a response from server",
+        desc: 'Error that tells the user that there is no response from the server',
+        name: 'didNotGetResponseError');
   }
   // **** ERROR TEXT END **** //
 

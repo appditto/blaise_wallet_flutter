@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -71,7 +72,9 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "GET ACCOUNT",
+                          AppLocalization.of(context)
+                              .getAccountSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -92,7 +95,9 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       Container(
                     margin: EdgeInsetsDirectional.only(top: 24, bottom: 16),
                     child: SvgRepaintAsset(
-                      asset: StateContainer.of(context).curTheme.illustrationTwoOptions,
+                      asset: StateContainer.of(context)
+                          .curTheme
+                          .illustrationTwoOptions,
                       width: MediaQuery.of(context).size.width * 0.6,
                       height:
                           MediaQuery.of(context).size.width * (142 / 180) * 0.6,
@@ -145,7 +150,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Get a Free Account",
+                      text: AppLocalization.of(context).getAFreeAccountButton,
                       buttonTop: true,
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -160,7 +165,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Buy An Account",
+                      text: AppLocalization.of(context).buyAnAccountButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                         AppSheets.showBottomSheet(

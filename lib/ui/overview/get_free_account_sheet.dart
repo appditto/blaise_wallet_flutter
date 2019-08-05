@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/overview/confirm_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
@@ -114,7 +115,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            "FREE ACCOUNT",
+                            AppLocalization.of(context).freeAccountSheetHeader.toUpperCase(),
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -137,7 +138,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           alignment: Alignment(-1, 0),
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "Enter your phone number below.",
+                            AppLocalization.of(context).enterPhoneNumberParagraph,
                             maxLines: 3,
                             stepGranularity: 0.1,
                             style: AppStyles.paragraph(context),
@@ -158,7 +159,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 30, 30, 0),
                                   child: AutoSizeText(
-                                    "Country Code",
+                                    AppLocalization.of(context).countryCodeTextFieldHeader,
                                     style: AppStyles.textFieldLabel(context),
                                     maxLines: 1,
                                     stepGranularity: 0.1,
@@ -220,7 +221,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 30, 30, 40),
                                   child: AppTextField(
-                                    label: 'Phone Number',
+                                    label: AppLocalization.of(context).phoneNumberTextFieldHeader,
                                     style: AppStyles.paragraphMedium(context),
                                     maxLines: 1,
                                     inputType: TextInputType.phone,
@@ -238,7 +239,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.Primary,
-                        text: "Send Confirmation",
+                        text: AppLocalization.of(context).sendConfirmationButton,
                         buttonTop: true,
                         onPressed: () {
                           AppSheets.showBottomSheet(
@@ -253,7 +254,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.PrimaryOutline,
-                        text: "Cancel",
+                        text: AppLocalization.of(context).cancelButton,
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

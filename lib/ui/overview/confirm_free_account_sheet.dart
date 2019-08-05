@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -91,7 +92,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            "FREE ACCOUNT",
+                            AppLocalization.of(context).freeAccountSheetHeader,
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -114,7 +115,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                           alignment: Alignment(-1, 0),
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            "We've sent you a confirmation code. Please enter it below.",
+                            AppLocalization.of(context).enterConfirmationCodeParagraph,
                             maxLines: 3,
                             stepGranularity: 0.1,
                             style: AppStyles.paragraph(context),
@@ -133,7 +134,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 30, 30, 30),
                                   child: AppTextField(
-                                    label: 'Confirmation Code',
+                                    label: AppLocalization.of(context).confirmationCodeTextFieldHeader,
                                     style: AppStyles.paragraphMedium(context),
                                     inputType: TextInputType.number,
                                     maxLines: 1,
@@ -151,7 +152,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.Primary,
-                        text: "CONFIRM",
+                        text: AppLocalization.of(context).confirmButton.toUpperCase(),
                         buttonTop: true,
                         onPressed: () async {
                           return;
@@ -171,7 +172,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.PrimaryOutline,
-                        text: "GO BACK",
+                        text: AppLocalization.of(context).goBackButton.toUpperCase(),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

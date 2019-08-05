@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
@@ -88,7 +89,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "BUY ACCOUNT",
+                          AppLocalization.of(context).buyAccountSheetHeader.toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -174,7 +175,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Borrow an Account",
+                      text: AppLocalization.of(context).borrowAnAccountButton.toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
                         return;
@@ -193,7 +194,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Cancel",
+                      text: AppLocalization.of(context).cancelButton.toUpperCase(),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
