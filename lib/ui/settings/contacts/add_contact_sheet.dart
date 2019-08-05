@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
@@ -103,7 +104,9 @@ class _AddContactSheetState extends State<AddContactSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "ADD CONTACT",
+                          AppLocalization.of(context)
+                              .addContactSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -131,7 +134,8 @@ class _AddContactSheetState extends State<AddContactSheet> {
                             margin:
                                 EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                             child: AppTextField(
-                              label: 'Contact Name',
+                              label: AppLocalization.of(context)
+                                  .contactNameTextFieldHeader,
                               style: AppStyles.contactsItemName(context),
                               prefix: Text(
                                 " ",
@@ -158,7 +162,8 @@ class _AddContactSheetState extends State<AddContactSheet> {
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AppTextField(
-                            label: 'Address',
+                            label: AppLocalization.of(context)
+                                .addressTextFieldHeader,
                             style: AppStyles.contactsItemAddress(context),
                             firstButton: widget.account == null
                                 ? TextFieldButton(
@@ -225,7 +230,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: "Add Contact",
+                      text: AppLocalization.of(context).addContactButton,
                       buttonTop: true,
                       onPressed: () async {
                         if (await validateForm()) {
@@ -239,7 +244,10 @@ class _AddContactSheetState extends State<AddContactSheet> {
                           EventTaxiImpl.singleton()
                               .fire(ContactAddedEvent(contact: newContact));
                           UIUtil.showSnackbar(
-                              "${newContact.name} added to contacts", context);
+                              AppLocalization.of(context)
+                                  .addedToContactsParagraph
+                                  .replaceAll("%1", newContact.name),
+                              context);
                           EventTaxiImpl.singleton()
                               .fire(ContactModifiedEvent(contact: newContact));
                           Navigator.of(context).pop();
@@ -253,7 +261,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -276,7 +284,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
       if (addressController.text.isEmpty) {
         isValid = false;
         setState(() {
-          accountError = "Invalid Account";
+          accountError = AppLocalization.of(context).invalidAccountError;
         });
       } else {
         try {
@@ -287,13 +295,14 @@ class _AddContactSheetState extends State<AddContactSheet> {
           if (exists) {
             isValid = false;
             setState(() {
-              accountError = "Contact Already Exists";
+              accountError =
+                  AppLocalization.of(context).contactAlreadyExistsError;
             });
           }
         } catch (e) {
           isValid = false;
           setState(() {
-            accountError = "Invalid Account";
+            accountError = AppLocalization.of(context).invalidAccountError;
           });
         }
       }
@@ -302,7 +311,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
     if (nameController.text.isEmpty) {
       isValid = false;
       setState(() {
-        nameError = "Name is Required";
+        nameError = AppLocalization.of(context).nameRequiredError;
       });
     } else {
       bool nameExists =
@@ -310,7 +319,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
       if (nameExists) {
         isValid = false;
         setState(() {
-          nameError = "Contact already Exists";
+          nameError = AppLocalization.of(context).contactAlreadyExistsError;
         });
       }
     }

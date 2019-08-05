@@ -808,6 +808,27 @@ class AppLocalization {
         name: 'createPINParagraph');
   }
   // PIN Screen END
+
+  String get addedToContactsParagraph {
+    return Intl.message("%1 added to contacts",
+        desc:
+            'A paragraph that tells the user that the contact has been added to contacts',
+        name: 'addedToContactsParagraph');
+  }
+
+  String get removedFromContactsParagraph {
+    return Intl.message("Removed %1 from contacts",
+        desc:
+            'A paragraph that tells the user that the contact has been removed from contacts',
+        name: 'removedFromContactsParagraph');
+  }
+
+  String get failedToRemoveFromContactsParagraph {
+    return Intl.message("Failed to remove %1 from contacts",
+        desc:
+            'A paragraph that tells the user that the contact removel process is failed',
+        name: 'failedToRemoveFromContactsParagraph');
+  }
   // **** PARAGRAPHS END **** //
 
   // **** HEADERS **** //
@@ -1349,6 +1370,12 @@ class AppLocalization {
         desc: 'Header for key not supported dialog',
         name: 'keyTypeNotSupportedHeader');
   }
+
+  String get accountToSendFromHeader {
+    return Intl.message("Account to Send From",
+        desc: 'Header for account to send from dialog',
+        name: 'accountToSendFromHeader');
+  }
   // Dialog Headers END
 
   // Operation List Item Headers
@@ -1561,7 +1588,7 @@ class AppLocalization {
   }
 
   String get contactAlreadyExistsError {
-    return Intl.message("Contact doesn't exist",
+    return Intl.message("Contact already exists",
         desc: 'Error that tells the user that the contact already exists',
         name: 'contactAlreadyExistsError');
   }
@@ -1573,13 +1600,13 @@ class AppLocalization {
   }
 
   String get somethingWentWrongError {
-    return Intl.message("Something went wrong, please try again later.",
+    return Intl.message("Something went wrong, please try again later",
         desc: 'Error that tells the user that something went wrong',
         name: 'somethingWentWrongError');
   }
 
   String get failedToEncryptPayloadError {
-    return Intl.message("Failed to encrypt the payload.",
+    return Intl.message("Failed to encrypt the payload",
         desc: 'Error that tells the user that payload encrypt is failed',
         name: 'failedToEncryptPayloadError');
   }
@@ -1607,6 +1634,30 @@ class AppLocalization {
         desc:
             'Error that tells the user that there is no response from the server',
         name: 'didNotGetResponseError');
+  }
+
+  String get noContactsToExportError {
+    return Intl.message("No contacts to export",
+        desc: 'Error that tells the user that there is no contacts to export',
+        name: 'noContactsToExportError');
+  }
+
+  String get noContactsToImportError {
+    return Intl.message("No contacts to import",
+        desc: 'Error that tells the user that there is no contacts to import',
+        name: 'noContactsToImportError');
+  }
+
+  String get failedToImportContactsError {
+    return Intl.message("Failed to import contacts",
+        desc: 'Error that tells the user that there is no contacts to export',
+        name: 'failedToImportContactsError');
+  }
+
+  String get successfullyImportedContacts {
+    return Intl.message("Successfully imported %1 contacts",
+        desc: 'Error that tells the user that there is no contacts to export',
+        name: 'successfullyImportedContacts');
   }
   // **** ERROR TEXT END **** //
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
 import 'package:blaise_wallet_flutter/model/db/contact.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
@@ -97,12 +98,16 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                     ContactModifiedEvent(
                                         contact: widget.contact));
                                 UIUtil.showSnackbar(
-                                    "Removed ${widget.contact.name} from contacts",
+                                    AppLocalization.of(context)
+                                        .removedFromContactsParagraph
+                                        .replaceAll("%1", widget.contact.name),
                                     context);
                                 Navigator.of(context).pop();
                               } else {
                                 UIUtil.showSnackbar(
-                                    "Failed to remove ${widget.contact.name} from contacts",
+                                    AppLocalization.of(context)
+                                        .failedToRemoveFromContactsParagraph
+                                        .replaceAll("%1", widget.contact.name),
                                     context);
                               }
                             },
@@ -120,7 +125,9 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          "CONTACT",
+                          AppLocalization.of(context)
+                              .contactSheetHeader
+                              .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -173,8 +180,9 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                     30, 40, 30, 0),
                                 child: AutoSizeText(
                                   contactNameCopied
-                                      ? "Copied to Clipboard"
-                                      : "Contact Name",
+                                      ? AppLocalization.of(context).copiedButton
+                                      : AppLocalization.of(context)
+                                          .contactNameTextFieldHeader,
                                   style: contactNameCopied
                                       ? AppStyles.textFieldLabelSuccess(context)
                                       : AppStyles.textFieldLabel(context),
@@ -249,8 +257,9 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                     30, 30, 30, 0),
                                 child: AutoSizeText(
                                   contactAddressCopied
-                                      ? "Copied to Clipboard"
-                                      : "Address",
+                                      ? AppLocalization.of(context).copiedButton
+                                      : AppLocalization.of(context)
+                                          .addressTextFieldHeader,
                                   style: contactAddressCopied
                                       ? AppStyles.textFieldLabelSuccess(context)
                                       : AppStyles.textFieldLabel(context),
@@ -313,8 +322,10 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                           30, 30, 30, 0),
                                       child: AutoSizeText(
                                         contactPayloadCopied
-                                            ? "Copied to Clipboard"
-                                            : "Payload",
+                                            ? AppLocalization.of(context)
+                                                .copiedButton
+                                            : AppLocalization.of(context)
+                                                .payloadTextFieldHeader,
                                         style: contactPayloadCopied
                                             ? AppStyles.textFieldLabelSuccess(
                                                 context)
@@ -382,7 +393,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                         children: <Widget>[
                           AppButton(
                             type: AppButtonType.Primary,
-                            text: "Send",
+                            text: AppLocalization.of(context).sendButton,
                             buttonTop: true,
                             onPressed: () {
                               if (widget.account != null) {
@@ -397,7 +408,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                 showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
-                                        title: 'Choose Account to Send From',
+                                        title: AppLocalization.of(context)
+                                            .accountToSendFromHeader,
                                         optionsList: _getAccountsList()));
                               }
                             },
@@ -410,7 +422,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: "Close",
+                      text: AppLocalization.of(context).closeButton,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -459,7 +471,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
 
   void _copyToClipboard(String toCopy) {
     if (toCopy == "Contact Name") {
-      Clipboard.setData(ClipboardData(text: (widget.contact.name.toString().substring(1))));
+      Clipboard.setData(
+          ClipboardData(text: (widget.contact.name.toString().substring(1))));
       setState(() {
         contactNameCopied = true;
         contactAddressCopied = false;
