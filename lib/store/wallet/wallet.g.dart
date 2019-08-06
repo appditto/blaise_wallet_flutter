@@ -181,11 +181,59 @@ mixin _$Wallet on WalletBase, Store {
     }, _$activeAccountAtom, name: '${_$activeAccountAtom.name}_set');
   }
 
+  final _$borrowedAccountAtom = Atom(name: 'WalletBase.borrowedAccount');
+
+  @override
+  BorrowResponse get borrowedAccount {
+    _$borrowedAccountAtom.context.enforceReadPolicy(_$borrowedAccountAtom);
+    _$borrowedAccountAtom.reportObserved();
+    return super.borrowedAccount;
+  }
+
+  @override
+  set borrowedAccount(BorrowResponse value) {
+    _$borrowedAccountAtom.context.conditionallyRunInAction(() {
+      super.borrowedAccount = value;
+      _$borrowedAccountAtom.reportChanged();
+    }, _$borrowedAccountAtom, name: '${_$borrowedAccountAtom.name}_set');
+  }
+
+  final _$isBorrowEligibleAtom = Atom(name: 'WalletBase.isBorrowEligible');
+
+  @override
+  bool get isBorrowEligible {
+    _$isBorrowEligibleAtom.context.enforceReadPolicy(_$isBorrowEligibleAtom);
+    _$isBorrowEligibleAtom.reportObserved();
+    return super.isBorrowEligible;
+  }
+
+  @override
+  set isBorrowEligible(bool value) {
+    _$isBorrowEligibleAtom.context.conditionallyRunInAction(() {
+      super.isBorrowEligible = value;
+      _$isBorrowEligibleAtom.reportChanged();
+    }, _$isBorrowEligibleAtom, name: '${_$isBorrowEligibleAtom.name}_set');
+  }
+
   final _$initializeRpcAsyncAction = AsyncAction('initializeRpc');
 
   @override
   Future<void> initializeRpc() {
     return _$initializeRpcAsyncAction.run(() => super.initializeRpc());
+  }
+
+  final _$updateBorrowedAsyncAction = AsyncAction('updateBorrowed');
+
+  @override
+  Future<void> updateBorrowed() {
+    return _$updateBorrowedAsyncAction.run(() => super.updateBorrowed());
+  }
+
+  final _$initiateBorrowAsyncAction = AsyncAction('initiateBorrow');
+
+  @override
+  Future<void> initiateBorrow() {
+    return _$initiateBorrowAsyncAction.run(() => super.initiateBorrow());
   }
 
   final _$loadWalletAsyncAction = AsyncAction('loadWallet');

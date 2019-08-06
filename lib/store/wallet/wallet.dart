@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/network/http_client.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_delete_account_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_update_bulk_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_update_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.dart';
+import 'package:blaise_wallet_flutter/network/model/response/borrow_response.dart';
 import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
 import 'package:blaise_wallet_flutter/network/ws_client.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
@@ -58,10 +60,43 @@ abstract class WalletBase with Store {
   @observable
   AccountNumber activeAccount;
 
+  @observable
+  BorrowResponse borrowedAccount;
+
+  @observable
+  bool isBorrowEligible = false;
+
   @action
   Future<void> initializeRpc() async {
     this.rpcClient =
         RPCClient(rpcAddress: await sl.get<SharedPrefsUtil>().getRpcUrl());
+  }
+
+  @action
+  Future<void> updateBorrowed() async {
+    BorrowResponse resp = await HttpAPI.getBorrowed(PublicKeyCoder().encodeToBase58(this.publicKey));
+    if (resp == null) {
+      isBorrowEligible = false;
+    } else if (resp.account == null) {
+      isBorrowEligible = true;
+      borrowedAccount = null;
+    } else {
+      isBorrowEligible = false;
+      borrowedAccount = resp;
+    }
+  }
+
+  @action
+  Future<void> initiateBorrow() async {
+    if (isBorrowEligible) {
+      BorrowResponse resp = await HttpAPI.borrowAccount(PublicKeyCoder().encodeToBase58(this.publicKey));
+      if (resp == null) {
+        isBorrowEligible = false;
+      } else {
+        isBorrowEligible = false;
+        borrowedAccount = resp;
+      }      
+    }
   }
 
   @action
@@ -86,11 +121,18 @@ abstract class WalletBase with Store {
       log.d("findaccounts returned error ${err.errorMessage}");
       return false;
     }
+    this.updateBorrowed(); // Update borrowed state
     AccountsResponse accountsResponse = resp;
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
       totalBalance += acct.balance;
+      if (borrowedAccount != null) {
+        if (acct.account == borrowedAccount.account) {
+          borrowedAccount = null;
+          isBorrowEligible = true;
+        }
+      }
     });
     this.totalWalletBalance = totalBalance;
     this.walletLoading = false;
@@ -245,5 +287,7 @@ abstract class WalletBase with Store {
     this.walletAccounts = [];
     this.publicKey = null;
     this.accountStateMap = Map();
+    this.borrowedAccount = null;
+    this.isBorrowEligible = false;
   }
 }
