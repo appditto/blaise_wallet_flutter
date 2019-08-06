@@ -24,13 +24,6 @@ part 'wallet.g.dart';
 
 class Wallet = WalletBase with _$Wallet;
 
-class PascalAccountExtended extends PascalAccount {
-  bool isBorrowed;
-  BorrowResponse accountBorrowed;
-
-  PascalAccountExtended({this.accountBorrowed, this.isBorrowed = false}) : super();
-}
-
 /// The global wallet state and mutation actions
 abstract class WalletBase with Store {
   final Currency NO_FEE = Currency('0');
@@ -45,7 +38,7 @@ abstract class WalletBase with Store {
   Currency totalWalletBalance = Currency('0');
 
   @observable
-  List<PascalAccountExtended> walletAccounts = [];
+  List<PascalAccount> walletAccounts = [];
 
   @observable
   RPCClient rpcClient;
@@ -84,11 +77,9 @@ abstract class WalletBase with Store {
     if (borrowedAccount != null) {
       RPCResponse resp = await rpcClient.makeRpcRequest(GetAccountRequest(account: borrowedAccount.account.account));
       if (resp is PascalAccount) {
-        PascalAccountExtended extAccount = resp;
-        extAccount.isBorrowed = true;
-        extAccount.accountBorrowed = borrowedAccount;
+        resp.isBorrowed = true;
         this.walletAccounts.removeWhere((acct) => acct.account == borrowedAccount.account);
-        this.walletAccounts.add(extAccount);
+        this.walletAccounts.add(resp);
       }
     }
   }
@@ -145,7 +136,7 @@ abstract class WalletBase with Store {
       return false;
     }
     AccountsResponse accountsResponse = resp;
-    PascalAccountExtended borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
+    PascalAccount borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
@@ -157,7 +148,7 @@ abstract class WalletBase with Store {
         }
       }
     });
-    if (borrowedAccount != null && this.isBorrowEligible) {
+    if (borrowedAccount != null && !this.isBorrowEligible) {
       this.walletAccounts.add(borrowedAccount);
     }
     this.updateBorrowed();

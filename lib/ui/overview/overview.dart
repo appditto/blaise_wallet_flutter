@@ -52,7 +52,6 @@ class _OverviewPageState extends State<OverviewPage>
   bool walletLoaded;
 
   Future<void> walletLoad() async {
-    try {
       await walletState?.loadWallet();
       if (accountToLogin != null && !walletState.walletLoading) {
         _switchToAccount(accountToLogin);
@@ -62,12 +61,7 @@ class _OverviewPageState extends State<OverviewPage>
         walletLoaded = true;
         walletState.fcmUpdateBulk();
       }
-    } catch (e) {
-      if (mounted) {
-        UIUtil.showSnackbar(
-            AppLocalization.of(context).didNotGetResponseError, context);
-      }
-    }
+
   }
 
   StreamSubscription<DaemonChangedEvent> _daemonChangeSub;

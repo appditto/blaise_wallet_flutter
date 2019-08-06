@@ -47,14 +47,14 @@ mixin _$Wallet on WalletBase, Store {
   final _$walletAccountsAtom = Atom(name: 'WalletBase.walletAccounts');
 
   @override
-  List<PascalAccountExtended> get walletAccounts {
+  List<PascalAccount> get walletAccounts {
     _$walletAccountsAtom.context.enforceReadPolicy(_$walletAccountsAtom);
     _$walletAccountsAtom.reportObserved();
     return super.walletAccounts;
   }
 
   @override
-  set walletAccounts(List<PascalAccountExtended> value) {
+  set walletAccounts(List<PascalAccount> value) {
     _$walletAccountsAtom.context.conditionallyRunInAction(() {
       super.walletAccounts = value;
       _$walletAccountsAtom.reportChanged();

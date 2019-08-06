@@ -14,7 +14,7 @@ import 'package:quiver/strings.dart';
 
 /// A widget for buttons
 class AccountCard extends StatefulWidget {
-  final PascalAccountExtended account;
+  final PascalAccount account;
 
   AccountCard({@required this.account});
 
