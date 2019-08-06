@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
@@ -18,10 +19,13 @@ class BuyAccountSheet extends StatefulWidget {
 class _BuyAccountSheetState extends State<BuyAccountSheet> {
   String accountPrice = "0.25";
   String fiatPrice = "";
-  String returnInDays = "7";
-  showOverlay(BuildContext context) async {
+  String returnInDays = "3";
+
+  OverlayEntry _overlay;
+
+  void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Container(
@@ -48,9 +52,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
         ),
       ),
     );
-    overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(milliseconds: 1500));
-    overlayEntry.remove();
+    overlayState.insert(_overlay);
   }
 
   @override
@@ -162,13 +164,17 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                           .toUpperCase(),
                       buttonTop: true,
                       onPressed: () async {
-                        return;
-                        // TODO
-                        /*
-                        await showOverlay(context);
-                        Navigator.of(context).pop();
-                        Navigator.pushNamed(context, '/account_borrowed');
-                        */
+                        showOverlay(context);
+                        await walletState.initiateBorrow();
+                        if (walletState.borrowedAccount != null) {
+                          _overlay?.remove();
+                          Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
+                          UIUtil.showSnackbar("Purchase Started for PASA ${walletState.borrowedAccount.account.toString()}", context);
+                        } else {
+                          _overlay?.remove();
+                          Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
+                          UIUtil.showSnackbar("An erorr has occured, try again later", context);
+                        }
                       },
                     ),
                   ],

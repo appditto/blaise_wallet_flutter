@@ -104,7 +104,7 @@ abstract class WalletBase with Store {
     } else {
       isBorrowEligible = false;
       borrowedAccount = resp;
-      this.getBalanceAndInsertBorrowed();
+      await this.getBalanceAndInsertBorrowed();
     }
   }
 
@@ -117,7 +117,7 @@ abstract class WalletBase with Store {
       } else {
         isBorrowEligible = false;
         borrowedAccount = resp;
-        this.getBalanceAndInsertBorrowed();
+        await this.getBalanceAndInsertBorrowed();
       }      
     }
   }
@@ -145,7 +145,7 @@ abstract class WalletBase with Store {
       return false;
     }
     AccountsResponse accountsResponse = resp;
-    PascalAccountExtended borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: null);
+    PascalAccountExtended borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
