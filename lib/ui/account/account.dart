@@ -37,9 +37,8 @@ import 'package:pascaldart/pascaldart.dart';
 
 class AccountPage extends StatefulWidget {
   final PascalAccount account;
-  final bool isBorrowed;
 
-  AccountPage({@required this.account, this.isBorrowed = false});
+  AccountPage({@required this.account});
   @override
   _AccountPageState createState() => _AccountPageState();
 }
@@ -425,7 +424,8 @@ class _AccountPageState extends State<AccountPage>
                                       12, 0, 12, 0),
                                   child: AutoSizeText(
                                     AppLocalization.of(context)
-                                        .accountBalanceHeader.toUpperCase(),
+                                        .accountBalanceHeader
+                                        .toUpperCase(),
                                     style: AppStyles.paragraphTextLightSmall(
                                         context),
                                   ),
@@ -533,7 +533,7 @@ class _AccountPageState extends State<AccountPage>
                                         bottom: 2, end: 2),
                                     height: 50,
                                     width: 50,
-                                    child: FlatButton(
+                                    child: !widget.account.isBorrowed? FlatButton(
                                         highlightColor:
                                             StateContainer.of(context)
                                                 .curTheme
@@ -560,7 +560,7 @@ class _AccountPageState extends State<AccountPage>
                                             color: StateContainer.of(context)
                                                 .curTheme
                                                 .textLight,
-                                            size: 18)),
+                                            size: 18)):SizedBox()
                                   ),
                                 ],
                               ),
@@ -570,7 +570,7 @@ class _AccountPageState extends State<AccountPage>
                       ),
                     ],
                   ),
-                  widget.isBorrowed
+                  widget.account.isBorrowed
                       ? // Paragraph and illustration
                       Expanded(
                           child: Column(
@@ -622,7 +622,7 @@ class _AccountPageState extends State<AccountPage>
                       :
                       // Wallet Cards
                       Expanded(
-                          child: widget.isBorrowed
+                          child: widget.account.isBorrowed
                               ? SizedBox()
                               : Column(
                                   children: <Widget>[
@@ -633,7 +633,8 @@ class _AccountPageState extends State<AccountPage>
                                       alignment: Alignment(-1, 0),
                                       child: AutoSizeText(
                                         AppLocalization.of(context)
-                                            .operationsHeader.toUpperCase(),
+                                            .operationsHeader
+                                            .toUpperCase(),
                                         style: AppStyles.headerSmall(context),
                                         textAlign: TextAlign.left,
                                         stepGranularity: 0.5,
@@ -823,8 +824,8 @@ class _AccountPageState extends State<AccountPage>
                                   text: AppLocalization.of(context).sendButton,
                                   type: AppButtonType.PrimaryRight,
                                   disabled: accountState.accountBalance >
-                                          Currency('0')
-                                      ? false
+                                          Currency('0')  
+                                      ? false || widget.account.isBorrowed
                                       : true,
                                   onPressed: () {
                                     AppSheets.showBottomSheet(
