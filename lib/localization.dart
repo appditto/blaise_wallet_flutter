@@ -33,11 +33,6 @@ class AppLocalization {
         desc: 'sample', name: 'translatableString');
   }
 
-  String get systemDefault {
-    return Intl.message("System Default",
-        desc: 'settings_default_language_string', name: 'systemDefault');
-  }
-
   // **** BUTTONS **** //
   String get newPrivateKeyButton {
     return Intl.message("New Private Key",
@@ -341,7 +336,7 @@ class AppLocalization {
         name: 'searchAccountNameButton');
   }
 
-  String get searcNameButton {
+  String get searchNameButton {
     return Intl.message("Search Name",
         desc: 'A button to search name', name: 'searchNameButton');
   }
@@ -702,7 +697,7 @@ class AppLocalization {
     return Intl.message(
         "Please confirm the addition of %1 Pascal fee to this operation to continue.",
         desc: 'A paragraph to tell the user to confirm the addition of a fee',
-        name: 'feeSecondParagraph');
+        name: 'feeConfirmAmountParagraph');
   }
 
   String get keyTypeNotSupportedParagraph {
@@ -781,7 +776,7 @@ class AppLocalization {
     return Intl.message("Authenticate to back up private key",
         desc:
             'A paragraph that tells the user to authenticate to back up the private key',
-        name: 'authenticateToBackupParagraph');
+        name: 'authenticateToBackUpParagraph');
   }
 
   String get invalidPINParagraph {
@@ -851,6 +846,7 @@ class AppLocalization {
             'A paragraph that is shared when the user shares Blaise with others via the option in the settings',
         name: 'checkOutBlaiseParagraph');
   }
+
   String get newAccountParagraph {
     return Intl.message(
         "This is your new account.\nOnce you receive <colored>Pascal</colored>, operations will show up like below.",
@@ -882,8 +878,14 @@ class AppLocalization {
         desc: 'Header for the languages', name: 'languageHeader');
   }
 
+  String get systemDefaultHeader {
+    return Intl.message("System Default",
+        desc: 'Header for system default', name: 'systemDefaultHeader');
+  }
+
   String get themeHeader {
-    return Intl.message("Theme", desc: 'Header for the themes', name: 'themeHeader');
+    return Intl.message("Theme",
+        desc: 'Header for the themes', name: 'themeHeader');
   }
 
   String get themeLightHeader {
@@ -904,7 +906,7 @@ class AppLocalization {
   String get notificationsHeader {
     return Intl.message("Notifications",
         desc: 'Header for the notifications', name: 'notificationsHeader');
-  }  
+  }
 
   String get securityHeader {
     return Intl.message("Security",
@@ -1197,7 +1199,7 @@ class AppLocalization {
   String get addContactSheetHeader {
     return Intl.message("Add Contact",
         desc: 'Header for add contact sheet (screen)',
-        name: 'addcontactSheetHeader');
+        name: 'addContactSheetHeader');
   }
 
   String get contactSheetHeader {
@@ -1716,166 +1718,187 @@ class AppLocalization {
         desc: 'Operation details header for blockchain reward',
         name: 'blockchainRewardOPDetails');
   }
+
   String get transactionOPDetails {
     return Intl.message("Transaction (%1)",
         desc: 'Operation details header for transaction',
         name: 'transactionOPDetails');
   }
+
   String get changeKeyOPDetails {
     return Intl.message("Change key (%1)",
         desc: 'Operation details header for change key',
         name: 'changeKeyOPDetails');
   }
+
   String get recoverFundsOPDetails {
     return Intl.message("Recover Funds (%1)",
         desc: 'Operation details header for recover funds',
         name: 'recoverFundsOPDetails');
   }
+
   String get listAccountForSaleOPDetails {
     return Intl.message("List Account for Sale (%1)",
         desc: 'Operation details header for list account for sale',
         name: 'listAccountForSaleOPDetails');
   }
+
   String get delistAccountOPDetails {
     return Intl.message("Delist Account (%1)",
         desc: 'Operation details header for delist account',
         name: 'delistAccountOPDetails');
   }
+
   String get buyAccountOPDetails {
     return Intl.message("Buy Account (%1)",
         desc: 'Operation details header for buy account',
         name: 'buyAccountOPDetails');
   }
+
   String get changeKeySignedOPDetails {
     return Intl.message("Change Key Signed (%1)",
         desc: 'Operation details header for change key signed',
         name: 'changeKeySignedOPDetails');
   }
+
   String get changeAccountInfoOPDetails {
     return Intl.message("Change Account Info (%1)",
         desc: 'Operation details header for change account info',
         name: 'changeAccountInfoOPDetails');
   }
+
   String get multioperationOPDetails {
     return Intl.message("Multioperation (%1)",
         desc: 'Operation details header for multioperation',
         name: 'multioperationOPDetails');
   }
+
   String get unknownOPDetails {
     return Intl.message("Unknown (%1)",
-        desc: 'Operation details header for unknown',
-        name: 'unknownOPDetails');
+        desc: 'Operation details header for unknown', name: 'unknownOPDetails');
   }
+
   String get sendingAccountOPDetails {
     return Intl.message("Sending Account",
         desc: 'Operation details header for sending account',
         name: 'sendingAccountOPDetails');
   }
+
   String get receivingAccountOPDetails {
     return Intl.message("Receiving Account",
         desc: 'Operation details header for receiving account',
         name: 'receivingAccountOPDetails');
   }
+
   String get changingAccountOPDetails {
     return Intl.message("Changing Account",
         desc: 'Operation details header for changing account',
         name: 'changingAccountOPDetails');
   }
+
   String get sendAmountOPDetails {
     return Intl.message("Send Amount",
         desc: 'Operation details header for send amount',
         name: 'sendAmountOPDetails');
   }
+
   String get payloadOPDetails {
     return Intl.message("Payload",
-        desc: 'Operation details header for payload',
-        name: 'payloadOPDetails');
+        desc: 'Operation details header for payload', name: 'payloadOPDetails');
   }
+
   String get newPublicKeyOPDetails {
     return Intl.message("New Public Key",
         desc: 'Operation details header for new public key',
         name: 'newPublicKeyOPDetails');
   }
+
   String get newNameOPDetails {
     return Intl.message("New Name",
         desc: 'Operation details header for new name',
         name: 'newNameOPDetails');
   }
+
   String get sellerAccountOPDetails {
     return Intl.message("Seller Account",
         desc: 'Operation details header for seller account',
         name: 'sellerAccountOPDetails');
   }
+
   String get accountPriceOPDetails {
     return Intl.message("Account Price",
         desc: 'Operation details header for account price',
         name: 'accountPriceOPDetails');
   }
+
   String get lockedUntilBlockOPDetails {
     return Intl.message("Locked Until Block",
         desc: 'Operation details header for locked until block',
         name: 'lockedUntilBlockOPDetails');
   }
+
   String get blockOPDetails {
     return Intl.message("block",
-        desc: 'Operation details header for block',
-        name: 'blockOPDetails');
+        desc: 'Operation details header for block', name: 'blockOPDetails');
   }
+
   String get optxtOPDetails {
     return Intl.message("optxt",
-        desc: 'Operation details header for optxt',
-        name: 'optxtOPDetails');
+        desc: 'Operation details header for optxt', name: 'optxtOPDetails');
   }
+
   String get timeOPDetails {
     return Intl.message("time",
-        desc: 'Operation details header for time',
-        name: 'timeOPDetails');
+        desc: 'Operation details header for time', name: 'timeOPDetails');
   }
+
   String get naOPDetails {
     return Intl.message("N/A",
-        desc: 'Operation details header for N/A',
-        name: 'naOPDetails');
+        desc: 'Operation details header for N/A', name: 'naOPDetails');
   }
+
   String get ophashOPDetails {
     return Intl.message("ophash",
-        desc: 'Operation details header for ophash',
-        name: 'ophashOPDetails');
+        desc: 'Operation details header for ophash', name: 'ophashOPDetails');
   }
+
   String get optypeOPDetails {
     return Intl.message("optype",
-        desc: 'Operation details header for optype',
-        name: 'optypeOPDetails');
+        desc: 'Operation details header for optype', name: 'optypeOPDetails');
   }
+
   String get maturationOPDetails {
     return Intl.message("maturation",
         desc: 'Operation details header for maturation',
         name: 'maturationOPDetails');
   }
+
   String get nullOPDetails {
     return Intl.message("null",
-        desc: 'Operation details header for null',
-        name: 'nullOPDetails');
+        desc: 'Operation details header for null', name: 'nullOPDetails');
   }
+
   String get feeOPDetails {
     return Intl.message("fee",
-        desc: 'Operation details header for fee',
-        name: 'feeOPDetails');
+        desc: 'Operation details header for fee', name: 'feeOPDetails');
   }
+
   String get opblockOPDetails {
     return Intl.message("opblock",
-        desc: 'Operation details header for opblock',
-        name: 'opblockOPDetails');
+        desc: 'Operation details header for opblock', name: 'opblockOPDetails');
   }
+
   String get noperationOPDetails {
     return Intl.message("n_operation",
         desc: 'Operation details header for n_operation',
         name: 'noperationOPDetails');
   }
+
   String get accountOPDetails {
     return Intl.message("account",
-        desc: 'Operation details header for account',
-        name: 'accountOPDetails');
+        desc: 'Operation details header for account', name: 'accountOPDetails');
   }
+
   String get signeraccountOPDetails {
     return Intl.message("signer_account",
         desc: 'Operation details header for signer_account',

@@ -272,7 +272,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           SettingsListItem(
                             header: AppLocalization.of(context).languageHeader,
                             subheader:
-                                AppLocalization.of(context).systemDefault,
+                                AppLocalization.of(context).systemDefaultHeader,
                             icon: AppIcons.language,
                             onPressed: () {
                               showAppDialog(

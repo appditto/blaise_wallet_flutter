@@ -812,9 +812,13 @@ class _OverviewPageState extends State<OverviewPage>
                                     .getAnAccountButton,
                                 type: AppButtonType.Primary,
                                 onPressed: () {
-                                  AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: GetAccountSheet());
+                                  if (walletState.walletLoading) {
+                                    return null;
+                                  } else {
+                                    AppSheets.showBottomSheet(
+                                        context: context,
+                                        widget: GetAccountSheet());
+                                  }
                                 },
                               ),
                             ],

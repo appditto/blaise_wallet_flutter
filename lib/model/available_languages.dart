@@ -18,7 +18,7 @@ class LanguageSetting extends SettingSelectionItem {
       case AvailableLanguage.ENGLISH:
         return "English (en)";
       default:
-        return AppLocalization.of(context).systemDefault;
+        return AppLocalization.of(context).systemDefaultHeader;
     }
   }
 

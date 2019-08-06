@@ -350,7 +350,7 @@ class _AccountPageState extends State<AccountPage>
                             Container(
                               height: 130,
                               width: 60,
-                              alignment: Alignment(0, -1),
+                              alignment: Alignment(-1, 0),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
