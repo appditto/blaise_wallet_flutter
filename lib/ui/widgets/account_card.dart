@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -12,7 +13,7 @@ import 'package:quiver/strings.dart';
 
 /// A widget for buttons
 class AccountCard extends StatefulWidget {
-  final PascalAccount account;
+  final PascalAccountExtended account;
 
   AccountCard({@required this.account});
 

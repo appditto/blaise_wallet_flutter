@@ -2,12 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
-import 'package:blaise_wallet_flutter/ui/overview/get_free_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
@@ -19,12 +19,18 @@ class GetAccountSheet extends StatefulWidget {
 class _GetAccountSheetState extends State<GetAccountSheet> {
   String accountPrice = "0.25";
   String fiatPrice = "";
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     fiatPrice = walletState.getLocalCurrencyDisplay(
         currency: StateContainer.of(context).curCurrency,
         amount: Currency(accountPrice),
-        decimalDigits: 2);
+        decimalDigits: 2);    
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Expanded(
@@ -132,9 +138,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                       text: AppLocalization.of(context).getAFreeAccountButton,
                       buttonTop: true,
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        AppSheets.showBottomSheet(
-                            context: context, widget: GetFreeAccountSheet());
+                        AppWebView.showWebView(context, 'https://freepasa.org?public_key=${PublicKeyCoder().encodeToBase58(walletState.publicKey)}');
                       },
                     ),
                   ],
