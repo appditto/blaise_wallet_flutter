@@ -27,27 +27,49 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
   String getOptypeDisplay(int optype) {
     switch (optype) {
       case OpType.BLOCKCHAIN_REWARD:
-        return "Blockchain Reward ($optype)";
+        return AppLocalization.of(context)
+            .blockchainRewardOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.TRANSACTION:
-        return "Transaction ($optype)";
+        return AppLocalization.of(context)
+            .transactionOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.CHANGE_KEY:
-        return "Change Key ($optype)";
+        return AppLocalization.of(context)
+            .changeKeyOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.RECOVER_FUNDS:
-        return "Recover Funds ($optype)";
+        return AppLocalization.of(context)
+            .recoverFundsOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.LIST_FORSALE:
-        return "List Account for Sale ($optype)";
+        return AppLocalization.of(context)
+            .listAccountForSaleHeader
+            .replaceAll("%1", optype.toString());
       case OpType.DELIST_FORSALE:
-        return "Delist Account ($optype)";
+        return AppLocalization.of(context)
+            .delistAccountOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.BUY_ACCOUNT:
-        return "Buy account ($optype)";
+        return AppLocalization.of(context)
+            .buyAccountOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.CHANGE_KEY_SIGNED:
-        return "Change Key Signed ($optype)";
+        return AppLocalization.of(context)
+            .changeKeySignedOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.CHANGE_ACCOUNT_INFO:
-        return "Change Account Info ($optype)";
+        return AppLocalization.of(context)
+            .changeAccountInfoOPDetails
+            .replaceAll("%1", optype.toString());
       case OpType.MULTIOPERATION:
-        return "Multioperation ($optype)";
+        return AppLocalization.of(context)
+            .multioperationOPDetails
+            .replaceAll("%1", optype.toString());
       default:
-        return "Unknown ($optype)";
+        return AppLocalization.of(context)
+            .unknownOPDetails
+            .replaceAll("%1", optype.toString());
     }
   }
 
@@ -69,7 +91,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype == OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Sending Account",
+            header: AppLocalization.of(context).sendingAccountOPDetails,
             value: widget.operation.senders[0].sendingAccount.toString());
       } catch (e) {
         return SizedBox();
@@ -82,7 +104,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype == OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Receiving Account",
+            header: AppLocalization.of(context).receivingAccountOPDetails,
             value: widget.operation.receivers[0].receivingAccount.toString());
       } catch (e) {
         return SizedBox();
@@ -95,7 +117,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Changing Account",
+            header: AppLocalization.of(context).changingAccountOPDetails,
             value: widget.operation.changers[0].changingAccount.toString());
       } catch (e) {
         return SizedBox();
@@ -108,7 +130,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Send Amount",
+            header: AppLocalization.of(context).sendAmountOPDetails,
             value: widget.operation.senders[0].amount.toStringOpt());
       } catch (e) {
         return SizedBox();
@@ -121,7 +143,8 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype == OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Payload", value: widget.operation.senders[0].payload);
+            header: AppLocalization.of(context).payloadOPDetails,
+            value: widget.operation.senders[0].payload);
       } catch (e) {
         return SizedBox();
       }
@@ -133,7 +156,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "New Public Key",
+            header: AppLocalization.of(context).newPublicKeyOPDetails,
             value: PublicKeyCoder()
                 .encodeToBase58(widget.operation.changers[0].newEncPubkey));
       } catch (e) {
@@ -147,7 +170,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "New Name",
+            header: AppLocalization.of(context).newNameOPDetails,
             value: widget.operation.changers[0].newName.toString());
       } catch (e) {
         return SizedBox();
@@ -160,7 +183,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Seller Account",
+            header: AppLocalization.of(context).sellerAccountOPDetails,
             value: widget.operation.changers[0].sellerAccount.toString());
       } catch (e) {
         return SizedBox();
@@ -173,7 +196,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Account Price",
+            header: AppLocalization.of(context).accountPriceOPDetails,
             value: widget.operation.changers[0].accountPrice.toStringOpt());
       } catch (e) {
         return SizedBox();
@@ -186,7 +209,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
     if (widget.operation.optype != OpType.TRANSACTION) {
       try {
         return TransactionDetailsListItem(
-            header: "Locked Until Block",
+            header: AppLocalization.of(context).lockedUntilBlockOPDetails,
             value: widget.operation.changers[0].lockedUntilBlock.toString());
       } catch (e) {
         return SizedBox();
@@ -225,15 +248,19 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                             child: Column(
                               children: <Widget>[
                                 TransactionDetailsListItem(
-                                    header: "block",
+                                    header: AppLocalization.of(context)
+                                        .blockOPDetails,
                                     value: widget.operation.block.toString()),
                                 TransactionDetailsListItem(
-                                    header: "optxt",
+                                    header: AppLocalization.of(context)
+                                        .optxtOPDetails,
                                     value: widget.operation.optxt),
                                 TransactionDetailsListItem(
-                                    header: "time",
+                                    header: AppLocalization.of(context)
+                                        .timeOPDetails,
                                     value: widget.operation.maturation == null
-                                        ? "N/A"
+                                        ? AppLocalization.of(context)
+                                            .naOPDetails
                                         : UIUtil.formatDateStrLong(
                                             widget.operation.time)),
                                 getSendingAccount(),
@@ -242,29 +269,36 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                 getReceivingAccount(),
                                 getNewName(),
                                 TransactionDetailsListItem(
-                                    header: "ophash",
+                                    header: AppLocalization.of(context)
+                                        .ophashOPDetails,
                                     value: widget.operation.ophash,
                                     withDivider: false),
                                 TransactionDetailsListItem(
-                                    header: "optype",
+                                    header: AppLocalization.of(context)
+                                        .optypeOPDetails,
                                     value: getOptypeDisplay(
                                         widget.operation.optype)),
                                 TransactionDetailsListItem(
-                                    header: "maturation",
+                                    header: AppLocalization.of(context)
+                                        .maturationOPDetails,
                                     value: widget.operation.maturation == null
-                                        ? "null"
+                                        ? AppLocalization.of(context)
+                                            .nullOPDetails
                                         : widget.operation.maturation
                                             .toString()),
                                 TransactionDetailsListItem(
-                                    header: "fee",
+                                    header: AppLocalization.of(context)
+                                        .feeOPDetails,
                                     value: widget.operation.fee
                                         .toPositive()
                                         .toStringOpt()),
                                 TransactionDetailsListItem(
-                                    header: "opblock",
+                                    header: AppLocalization.of(context)
+                                        .opblockOPDetails,
                                     value: widget.operation.opblock.toString()),
                                 TransactionDetailsListItem(
-                                    header: "n_operation",
+                                    header: AppLocalization.of(context)
+                                        .noperationOPDetails,
                                     value: getNOperation().toString()),
                                 getSeller(),
                                 getAccountPrice(),
@@ -272,10 +306,12 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                                 getNewPublickey(),
                                 getChangingAccount(),
                                 TransactionDetailsListItem(
-                                    header: "account",
+                                    header: AppLocalization.of(context)
+                                        .accountOPDetails,
                                     value: widget.operation.account.toString()),
                                 TransactionDetailsListItem(
-                                    header: "signer_account",
+                                    header: AppLocalization.of(context)
+                                        .signeraccountOPDetails,
                                     value: widget.operation.signerAccount
                                         .toString()),
                               ],
