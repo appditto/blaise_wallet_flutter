@@ -24,6 +24,11 @@ part 'wallet.g.dart';
 
 class Wallet = WalletBase with _$Wallet;
 
+class PascalAccountExtended extends PascalAccount {
+  bool isBorrowed;
+  BorrowResponse accountBorrowed;
+}
+
 /// The global wallet state and mutation actions
 abstract class WalletBase with Store {
   final Currency NO_FEE = Currency('0');
@@ -38,7 +43,7 @@ abstract class WalletBase with Store {
   Currency totalWalletBalance = Currency('0');
 
   @observable
-  List<PascalAccount> walletAccounts = [];
+  List<PascalAccountExtended> walletAccounts = [];
 
   @observable
   RPCClient rpcClient;
@@ -73,6 +78,20 @@ abstract class WalletBase with Store {
   }
 
   @action
+  Future<void> getBalanceAndInsertBorrowed() async {
+    if (borrowedAccount != null) {
+      RPCResponse resp = await rpcClient.makeRpcRequest(GetAccountRequest(account: borrowedAccount.account.account));
+      if (resp is PascalAccount) {
+        PascalAccountExtended extAccount = resp;
+        extAccount.isBorrowed = true;
+        extAccount.accountBorrowed = borrowedAccount;
+        this.walletAccounts.removeWhere((acct) => acct.account == borrowedAccount.account);
+        this.walletAccounts.add(extAccount);
+      }
+    }
+  }
+
+  @action
   Future<void> updateBorrowed() async {
     BorrowResponse resp = await HttpAPI.getBorrowed(PublicKeyCoder().encodeToBase58(this.publicKey));
     if (resp == null) {
@@ -83,6 +102,7 @@ abstract class WalletBase with Store {
     } else {
       isBorrowEligible = false;
       borrowedAccount = resp;
+      this.getBalanceAndInsertBorrowed();
     }
   }
 
@@ -95,6 +115,7 @@ abstract class WalletBase with Store {
       } else {
         isBorrowEligible = false;
         borrowedAccount = resp;
+        this.getBalanceAndInsertBorrowed();
       }      
     }
   }
@@ -121,19 +142,23 @@ abstract class WalletBase with Store {
       log.d("findaccounts returned error ${err.errorMessage}");
       return false;
     }
-    this.updateBorrowed(); // Update borrowed state
     AccountsResponse accountsResponse = resp;
+    PascalAccountExtended borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: null);
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
       totalBalance += acct.balance;
-      if (borrowedAccount != null) {
-        if (acct.account == borrowedAccount.account) {
-          borrowedAccount = null;
+      if (this.borrowedAccount != null) {
+        if (acct.account == this.borrowedAccount.account) {
+          this.borrowedAccount = null;
           isBorrowEligible = true;
         }
       }
     });
+    if (borrowedAccount != null && this.isBorrowEligible) {
+      this.walletAccounts.add(borrowedAccount);
+    }
+    this.updateBorrowed();
     this.totalWalletBalance = totalBalance;
     this.walletLoading = false;
     return true;

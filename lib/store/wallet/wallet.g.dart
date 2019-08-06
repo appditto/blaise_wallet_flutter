@@ -47,14 +47,14 @@ mixin _$Wallet on WalletBase, Store {
   final _$walletAccountsAtom = Atom(name: 'WalletBase.walletAccounts');
 
   @override
-  List<PascalAccount> get walletAccounts {
+  List<PascalAccountExtended> get walletAccounts {
     _$walletAccountsAtom.context.enforceReadPolicy(_$walletAccountsAtom);
     _$walletAccountsAtom.reportObserved();
     return super.walletAccounts;
   }
 
   @override
-  set walletAccounts(List<PascalAccount> value) {
+  set walletAccounts(List<PascalAccountExtended> value) {
     _$walletAccountsAtom.context.conditionallyRunInAction(() {
       super.walletAccounts = value;
       _$walletAccountsAtom.reportChanged();
@@ -220,6 +220,15 @@ mixin _$Wallet on WalletBase, Store {
   @override
   Future<void> initializeRpc() {
     return _$initializeRpcAsyncAction.run(() => super.initializeRpc());
+  }
+
+  final _$getBalanceAndInsertBorrowedAsyncAction =
+      AsyncAction('getBalanceAndInsertBorrowed');
+
+  @override
+  Future<void> getBalanceAndInsertBorrowed() {
+    return _$getBalanceAndInsertBorrowedAsyncAction
+        .run(() => super.getBalanceAndInsertBorrowed());
   }
 
   final _$updateBorrowedAsyncAction = AsyncAction('updateBorrowed');
