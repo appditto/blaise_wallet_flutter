@@ -28,5 +28,5 @@ with open(options.file) as arb_file:
             obj['term'] = key
             obj['definition'] = value
 with open(out_file, 'w') as outf:
-    json.dump(ret, outf, indent=4)
+    json.dump(ret, outf, indent=4, ensure_ascii=False)
     print(f"Wrote {out_file}")
