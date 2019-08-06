@@ -9,9 +9,8 @@ part of 'fcm_delete_account_request.dart';
 FcmDeleteAccountRequest _$FcmDeleteAccountRequestFromJson(
     Map<String, dynamic> json) {
   return FcmDeleteAccountRequest(
-    account: json['account'] as int,
-    fcmToken: json['fcm_token'] as String,
-  )..action = json['action'] as String;
+      account: json['account'] as int, fcmToken: json['fcm_token'] as String)
+    ..action = json['action'] as String;
 }
 
 Map<String, dynamic> _$FcmDeleteAccountRequestToJson(
