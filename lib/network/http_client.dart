@@ -24,6 +24,8 @@ class HttpAPI {
       if (jsonResp.containsKey('borrowed_account') && jsonResp['borrowed_account'] != '') {
         GetBorrowedResponse bResp = GetBorrowedResponse.fromJson(jsonResp);
         return bResp.account;
+      } else if (jsonResp['borrowed_account'] == '') {
+        return BorrowResponse();
       }
       return null;
     } catch (e) {
