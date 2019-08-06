@@ -198,6 +198,14 @@ class AppStyles {
         fontWeight: FontWeight.w300);
   }
 
+  static TextStyle textLightSmall600(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        color: StateContainer.of(context).curTheme.textLight,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w600);
+  }
+
   static TextStyle paragraphTextLightSmallSemiBold(BuildContext context) {
     return TextStyle(
         fontFamily: "Metropolis",

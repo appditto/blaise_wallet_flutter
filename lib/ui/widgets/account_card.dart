@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -12,7 +14,7 @@ import 'package:quiver/strings.dart';
 
 /// A widget for buttons
 class AccountCard extends StatefulWidget {
-  final PascalAccount account;
+  final PascalAccountExtended account;
 
   AccountCard({@required this.account});
 
@@ -98,28 +100,47 @@ class _AccountCardState extends State<AccountCard> {
                     width: MediaQuery.of(context).size.width * 0.53 - 24,
                     padding: EdgeInsetsDirectional.only(end: 16),
                     alignment: Alignment(1, 0),
-                    child: AutoSizeText.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "",
-                            style: AppStyles.iconFontPrimaryBalanceMediumPascal(
-                                context),
+                    child: !widget.account.isBorrowed
+                        ? AutoSizeText.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "",
+                                  style: AppStyles
+                                      .iconFontPrimaryBalanceMediumPascal(
+                                          context),
+                                ),
+                                TextSpan(
+                                    text: " ", style: TextStyle(fontSize: 7)),
+                                TextSpan(
+                                    text: widget.account.balance.toStringOpt(),
+                                    style: AppStyles.balanceMedium(context)),
+                              ],
+                            ),
+                            textAlign: TextAlign.end,
+                            maxLines: 1,
+                            minFontSize: 4,
+                            stepGranularity: 1,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                                gradient: StateContainer.of(context)
+                                    .curTheme
+                                    .gradientPrimary,
+                                borderRadius: BorderRadius.circular(100)),
+                            padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
+                            child: AutoSizeText(
+                              AppLocalization.of(context).borrowedHeader,
+                              style: AppStyles.textLightSmall600(context),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              minFontSize: 8,
+                              stepGranularity: 1,
+                            ),
                           ),
-                          TextSpan(text: " ", style: TextStyle(fontSize: 7)),
-                          TextSpan(
-                              text: widget.account.balance.toStringOpt(),
-                              style: AppStyles.balanceMedium(context)),
-                        ],
-                      ),
-                      textAlign: TextAlign.end,
-                      maxLines: 1,
-                      minFontSize: 4,
-                      stepGranularity: 1,
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
                   ),
                 ],
               ),
