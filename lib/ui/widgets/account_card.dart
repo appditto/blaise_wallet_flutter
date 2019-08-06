@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
+<<<<<<< HEAD
 import 'package:blaise_wallet_flutter/localization.dart';
+=======
+>>>>>>> 2aa303dc3ce3bf8a80d00a8f3b331edc23dc171f
 import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';

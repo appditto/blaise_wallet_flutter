@@ -27,6 +27,8 @@ class Wallet = WalletBase with _$Wallet;
 class PascalAccountExtended extends PascalAccount {
   bool isBorrowed;
   BorrowResponse accountBorrowed;
+
+  PascalAccountExtended({this.accountBorrowed, this.isBorrowed = false}) : super();
 }
 
 /// The global wallet state and mutation actions
