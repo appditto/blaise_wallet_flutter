@@ -1,9 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
-<<<<<<< HEAD
 import 'package:blaise_wallet_flutter/localization.dart';
-=======
->>>>>>> 2aa303dc3ce3bf8a80d00a8f3b331edc23dc171f
 import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
@@ -134,9 +131,12 @@ class _AccountCardState extends State<AccountCard> {
                                     .curTheme
                                     .gradientPrimary,
                                 borderRadius: BorderRadius.circular(100)),
-                            padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
                             child: AutoSizeText(
-                              AppLocalization.of(context).borrowedHeader,
+                              widget.account.state == AccountState.LISTED
+                                  ? AppLocalization.of(context).forSaleHeader
+                                  : AppLocalization.of(context).borrowedHeader,
                               style: AppStyles.textLightSmall600(context),
                               textAlign: TextAlign.center,
                               maxLines: 1,
