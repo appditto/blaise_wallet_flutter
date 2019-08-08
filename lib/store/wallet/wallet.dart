@@ -74,7 +74,7 @@ abstract class WalletBase with Store {
 
   @action
   Future<void> getBalanceAndInsertBorrowed() async {
-    if (borrowedAccount != null && !this.walletAccounts.contains(borrowedAccount)) {
+    if (borrowedAccount != null && !this.walletAccounts.contains(borrowedAccount.account)) {
       RPCResponse resp = await rpcClient.makeRpcRequest(GetAccountRequest(account: borrowedAccount.account.account));
       if (resp is PascalAccount) {
         resp.isBorrowed = true;

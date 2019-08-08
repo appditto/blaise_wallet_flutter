@@ -129,7 +129,6 @@ List<TextSpan> formatLocalizedColors(BuildContext context, String input) {
   while (input.contains('<colored>') && input.contains('</colored>')) {
     i = input.indexOf('<colored>');
     iEnd = input.indexOf('</colored>');
-    print(iEnd);
     ret.add(TextSpan(
         text: input.substring(0, i), style: AppStyles.paragraph(context)));
     ret.add(TextSpan(
@@ -154,7 +153,6 @@ List<TextSpan> formatLocalizedColorsDanger(BuildContext context, String input) {
   while (input.contains('<colored>') && input.contains('</colored>')) {
     i = input.indexOf('<colored>');
     iEnd = input.indexOf('</colored>');
-    print(iEnd);
     ret.add(TextSpan(
         text: input.substring(0, i), style: AppStyles.paragraph(context)));
     ret.add(TextSpan(
