@@ -166,461 +166,522 @@ class _SendSheetState extends State<SendSheet> {
       child: Column(
         children: <Widget>[
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: StateContainer.of(context).curTheme.backgroundPrimary,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                ),
-              ),
-              child: Column(
-                children: <Widget>[
-                  // Sheet header
-                  Container(
-                    height: 60,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      gradient:
-                          StateContainer.of(context).curTheme.gradientPrimary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        // Close Button
-                        Container(
-                          margin: EdgeInsetsDirectional.only(start: 5, end: 10),
-                          height: 50,
-                          width: 50,
-                          child: FlatButton(
-                              highlightColor: StateContainer.of(context)
-                                  .curTheme
-                                  .textLight15,
-                              splashColor: StateContainer.of(context)
-                                  .curTheme
-                                  .textLight30,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Icon(AppIcons.close,
-                                  color: StateContainer.of(context)
-                                      .curTheme
-                                      .textLight,
-                                  size: 20)),
-                        ),
-                        // Header
-                        Container(
-                          width: MediaQuery.of(context).size.width - 130,
-                          alignment: Alignment(0, 0),
-                          child: AutoSizeText(
-                            AppLocalization.of(context)
-                                .sendSheetHeader
-                                .toUpperCase(),
-                            style: AppStyles.header(context),
-                            maxLines: 1,
-                            stepGranularity: 0.1,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        // Sized Box
-                        SizedBox(
-                          height: 50,
-                          width: 65,
-                        ),
-                      ],
+            // Stack for everything else & account search button
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color:
+                        StateContainer.of(context).curTheme.backgroundPrimary,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin:
-                              EdgeInsetsDirectional.fromSTEB(30, 16, 30, 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  // Account name
-                                  isEmpty(widget.account.name.toString())
-                                      ? SizedBox()
-                                      : Container(
-                                          constraints: BoxConstraints(
-                                              maxWidth: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2 -
-                                                  45),
-                                          child: AutoSizeText(
-                                            widget.account.name.toString(),
-                                            style: AppStyles.settingsItemHeader(
-                                                context),
-                                            maxLines: 1,
-                                            minFontSize: 8,
-                                            stepGranularity: 0.1,
-                                          ),
-                                        ),
-                                  // Acccount address
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                45),
-                                    margin: EdgeInsetsDirectional.only(top: 2),
-                                    child: AutoSizeText(
-                                      widget.account.account.toString(),
-                                      style: AppStyles.monoTextDarkSmall400(
-                                          context),
-                                      maxLines: 1,
-                                      minFontSize: 8,
-                                      stepGranularity: 0.1,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  // Account balance
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                45),
-                                    child: AutoSizeText.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "",
-                                            style: AppStyles
-                                                .iconFontPrimaryBalanceSmallPascal(
-                                                    context),
-                                          ),
-                                          TextSpan(
-                                              text: " ",
-                                              style: TextStyle(fontSize: 7)),
-                                          TextSpan(
-                                              text: widget.account.balance
-                                                  .toStringOpt(),
-                                              style: AppStyles.balanceSmall(
-                                                  context)),
-                                        ],
-                                      ),
-                                      textAlign: TextAlign.end,
-                                      maxLines: 1,
-                                      minFontSize: 8,
-                                      stepGranularity: 0.1,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                  // Balance in fiat
-                                  Observer(
-                                    builder: (BuildContext context) {
-                                      if (walletState.localCurrencyPrice !=
-                                          null) {
-                                        return Container(
-                                          constraints: BoxConstraints(
-                                              maxWidth: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2 -
-                                                  45),
-                                          margin: EdgeInsetsDirectional.only(
-                                              top: 2),
-                                          child: AutoSizeText(
-                                            "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
-                                            style: AppStyles.primarySmallest400(
-                                                context),
-                                            maxLines: 1,
-                                            minFontSize: 8,
-                                            stepGranularity: 0.1,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        );
-                                      }
-                                      return SizedBox();
-                                    },
-                                  )
-                                ],
-                              ),
-                            ],
+                  child: Column(
+                    children: <Widget>[
+                      // Sheet header
+                      Container(
+                        height: 60,
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          gradient: StateContainer.of(context)
+                              .curTheme
+                              .gradientPrimary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
                           ),
                         ),
-                        Expanded(
-                          child: KeyboardAvoider(
-                            duration: Duration(milliseconds: 0),
-                            autoScroll: true,
-                            focusPadding: 40,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // Container for the address text field
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      30, 10, 30, 0),
-                                  child: _isDestinationFieldTypeContact
-                                      ? AppTextField(
-                                          label: AppLocalization.of(context)
-                                              .contactNameTextFieldHeader,
-                                          style: AppStyles.contactsItemName(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // Close Button
+                            Container(
+                              margin:
+                                  EdgeInsetsDirectional.only(start: 5, end: 10),
+                              height: 50,
+                              width: 50,
+                              child: FlatButton(
+                                  highlightColor: StateContainer.of(context)
+                                      .curTheme
+                                      .textLight15,
+                                  splashColor: StateContainer.of(context)
+                                      .curTheme
+                                      .textLight30,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(50.0)),
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Icon(AppIcons.close,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .textLight,
+                                      size: 20)),
+                            ),
+                            // Header
+                            Container(
+                              width: MediaQuery.of(context).size.width - 130,
+                              alignment: Alignment(0, 0),
+                              child: AutoSizeText(
+                                AppLocalization.of(context)
+                                    .sendSheetHeader
+                                    .toUpperCase(),
+                                style: AppStyles.header(context),
+                                maxLines: 1,
+                                stepGranularity: 0.1,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            // Sized Box
+                            SizedBox(
+                              height: 50,
+                              width: 65,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsetsDirectional.fromSTEB(
+                                  30, 16, 30, 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      // Account name
+                                      isEmpty(widget.account.name.toString())
+                                          ? SizedBox()
+                                          : Container(
+                                              constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              2 -
+                                                          45),
+                                              child: AutoSizeText(
+                                                widget.account.name.toString(),
+                                                style: AppStyles
+                                                    .settingsItemHeader(
+                                                        context),
+                                                maxLines: 1,
+                                                minFontSize: 8,
+                                                stepGranularity: 0.1,
+                                              ),
+                                            ),
+                                      // Acccount address
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2 -
+                                                45),
+                                        margin:
+                                            EdgeInsetsDirectional.only(top: 2),
+                                        child: AutoSizeText(
+                                          widget.account.account.toString(),
+                                          style: AppStyles.monoTextDarkSmall400(
                                               context),
-                                          prefix: _isValidContactAndUnfocused
-                                              ? Text(
-                                                  " ",
-                                                  style: AppStyles
-                                                      .iconFontPrimarySmall(
-                                                          context),
-                                                )
-                                              : null,
                                           maxLines: 1,
-                                          onChanged: (text) async {
-                                            if (destinationError != null &&
-                                                mounted) {
-                                              setState(() {
-                                                destinationError = null;
-                                              });
-                                            }
-                                            // Handle contacts
-                                            await _checkAndUpdateContacts();
-                                          },
-                                          focusNode: addressFocusNode,
-                                          controller: addressController,
-                                          firstButton: TextFieldButton(
-                                            icon: Icons.account_balance_wallet,
-                                            onPressed: () {
-                                              setState(() {
-                                                _isDestinationFieldTypeContact =
-                                                    !_isDestinationFieldTypeContact;
-                                              });
-                                              addressFocusNode.requestFocus();
-                                            },
+                                          minFontSize: 8,
+                                          stepGranularity: 0.1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      // Account balance
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2 -
+                                                45),
+                                        child: AutoSizeText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "",
+                                                style: AppStyles
+                                                    .iconFontPrimaryBalanceSmallPascal(
+                                                        context),
+                                              ),
+                                              TextSpan(
+                                                  text: " ",
+                                                  style:
+                                                      TextStyle(fontSize: 7)),
+                                              TextSpan(
+                                                  text: widget.account.balance
+                                                      .toStringOpt(),
+                                                  style: AppStyles.balanceSmall(
+                                                      context)),
+                                            ],
                                           ),
-                                        )
-                                      : AppTextField(
-                                          label: AppLocalization.of(context)
-                                              .addressTextFieldHeader,
-                                          style: _isValidContactAndUnfocused
-                                              ? AppStyles.contactsItemName(
-                                                  context)
-                                              : AppStyles.paragraphMedium(
-                                                  context),
-                                          prefix: _isValidContactAndUnfocused
-                                              ? Text(
-                                                  " ",
-                                                  style: AppStyles
-                                                      .iconFontPrimarySmall(
-                                                          context),
-                                                )
-                                              : null,
+                                          textAlign: TextAlign.end,
                                           maxLines: 1,
-                                          onChanged: (text) async {
-                                            if (destinationError != null &&
-                                                mounted) {
-                                              setState(() {
-                                                destinationError = null;
-                                              });
-                                            }
-                                            // Handle contacts
-                                            await _checkAndUpdateContacts();
-                                          },
-                                          focusNode: addressFocusNode,
-                                          controller: addressController,
-                                          secondButton: TextFieldButton(
-                                            icon: AppIcons.paste,
-                                            onPressed: () {
-                                              Clipboard.getData("text/plain")
-                                                  .then((data) {
-                                                try {
-                                                  AccountNumber num =
-                                                      AccountNumber(data.text);
-                                                  addressController.text =
-                                                      num.toString();
-                                                } catch (e) {
-                                                  checkAndValidateContact(
-                                                      name: data.text);
-                                                }
-                                              });
-                                            },
-                                          ),
-                                          firstButton: TextFieldButton(
-                                            icon: AppIcons.contacts,
-                                            onPressed: () {
-                                              setState(() {
-                                                _isDestinationFieldTypeContact =
-                                                    !_isDestinationFieldTypeContact;
-                                              });
-                                              addressFocusNode.requestFocus();
-                                            },
+                                          minFontSize: 8,
+                                          stepGranularity: 0.1,
+                                          style: TextStyle(
+                                            fontSize: 14,
                                           ),
                                         ),
-                                ),
-                                // A stack to display contacts pop up
-                                Stack(
+                                      ),
+                                      // Balance in fiat
+                                      Observer(
+                                        builder: (BuildContext context) {
+                                          if (walletState.localCurrencyPrice !=
+                                              null) {
+                                            return Container(
+                                              constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              2 -
+                                                          45),
+                                              margin:
+                                                  EdgeInsetsDirectional.only(
+                                                      top: 2),
+                                              child: AutoSizeText(
+                                                "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
+                                                style: AppStyles
+                                                    .primarySmallest400(
+                                                        context),
+                                                maxLines: 1,
+                                                minFontSize: 8,
+                                                stepGranularity: 0.1,
+                                                textAlign: TextAlign.end,
+                                              ),
+                                            );
+                                          }
+                                          return SizedBox();
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: KeyboardAvoider(
+                                duration: Duration(milliseconds: 0),
+                                autoScroll: true,
+                                focusPadding: 40,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    // Column for everything else except contacts pop up
-                                    Column(
-                                      children: <Widget>[
-                                        // Error Text
-                                        ErrorContainer(
-                                          errorText: destinationError == null
-                                              ? ""
-                                              : destinationError,
-                                        ),
-                                        // Container for the amount text field
-                                        Container(
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  30, 30, 30, 0),
-                                          child: AppTextField(
+                                    // Container for the address text field
+                                    Container(
+                                      margin: EdgeInsetsDirectional.fromSTEB(
+                                          30, 10, 30, 0),
+                                      child: _isDestinationFieldTypeContact
+                                          ? AppTextField(
                                               label: AppLocalization.of(context)
-                                                  .amountTextFieldHeader,
-                                              style: AppStyles.paragraphPrimary(
+                                                  .contactNameTextFieldHeader,
+                                              style: AppStyles.contactsItemName(
                                                   context),
+                                              prefix:
+                                                  _isValidContactAndUnfocused
+                                                      ? Text(
+                                                          " ",
+                                                          style: AppStyles
+                                                              .iconFontPrimarySmall(
+                                                                  context),
+                                                        )
+                                                      : null,
                                               maxLines: 1,
-                                              inputType: TextInputType
-                                                  .numberWithOptions(
-                                                      decimal: true),
-                                              prefix: _localCurrencyMode
-                                                  ? Text("")
-                                                  : Icon(
-                                                      AppIcons.pascalsymbol,
-                                                      size: 15,
-                                                      color: StateContainer.of(
-                                                              context)
-                                                          .curTheme
-                                                          .primary,
-                                                    ),
-                                              onChanged: (text) {
-                                                if (amountError != null) {
+                                              onChanged: (text) async {
+                                                if (destinationError != null &&
+                                                    mounted) {
                                                   setState(() {
-                                                    amountError = null;
+                                                    destinationError = null;
                                                   });
                                                 }
+                                                // Handle contacts
+                                                await _checkAndUpdateContacts();
                                               },
-                                              inputFormatters: [
-                                                LengthLimitingTextInputFormatter(
-                                                    13),
-                                                _localCurrencyMode
-                                                    ? CurrencyFormatter(
-                                                        decimalSeparator:
-                                                            _localCurrencyFormat
-                                                                .symbols
-                                                                .DECIMAL_SEP,
-                                                        commaSeparator:
-                                                            _localCurrencyFormat
-                                                                .symbols
-                                                                .GROUP_SEP,
-                                                        maxDecimalDigits: 2)
-                                                    : CurrencyFormatter(
-                                                        maxDecimalDigits:
-                                                            NumberUtil
-                                                                .maxDecimalDigits),
-                                                LocalCurrencyFormatter(
-                                                    active: _localCurrencyMode,
-                                                    currencyFormat:
-                                                        _localCurrencyFormat),
-                                              ],
-                                              focusNode: amountFocusNode,
-                                              controller: amountController,
+                                              focusNode: addressFocusNode,
+                                              controller: addressController,
                                               firstButton: TextFieldButton(
-                                                icon: AppIcons.max,
+                                                icon: Icons
+                                                    .account_balance_wallet,
                                                 onPressed: () {
-                                                  amountController.text = widget
-                                                      .account.balance
-                                                      .toStringOpt();
-                                                  amountFocusNode.unfocus();
+                                                  setState(() {
+                                                    _isDestinationFieldTypeContact =
+                                                        !_isDestinationFieldTypeContact;
+                                                  });
+                                                  addressFocusNode
+                                                      .requestFocus();
                                                 },
                                               ),
+                                            )
+                                          : AppTextField(
+                                              label: AppLocalization.of(context)
+                                                  .addressTextFieldHeader,
+                                              style: _isValidContactAndUnfocused
+                                                  ? AppStyles.contactsItemName(
+                                                      context)
+                                                  : AppStyles.paragraphMedium(
+                                                      context),
+                                              prefix:
+                                                  _isValidContactAndUnfocused
+                                                      ? Text(
+                                                          " ",
+                                                          style: AppStyles
+                                                              .iconFontPrimarySmall(
+                                                                  context),
+                                                        )
+                                                      : null,
+                                              maxLines: 1,
+                                              onChanged: (text) async {
+                                                if (destinationError != null &&
+                                                    mounted) {
+                                                  setState(() {
+                                                    destinationError = null;
+                                                  });
+                                                }
+                                                // Handle contacts
+                                                await _checkAndUpdateContacts();
+                                              },
+                                              focusNode: addressFocusNode,
+                                              controller: addressController,
                                               secondButton: TextFieldButton(
-                                                  icon: AppIcons.currencyswitch,
-                                                  onPressed: () {
-                                                    toggleLocalCurrency();
-                                                  })),
+                                                icon: AppIcons.paste,
+                                                onPressed: () {
+                                                  Clipboard.getData(
+                                                          "text/plain")
+                                                      .then((data) {
+                                                    try {
+                                                      AccountNumber num =
+                                                          AccountNumber(
+                                                              data.text);
+                                                      addressController.text =
+                                                          num.toString();
+                                                    } catch (e) {
+                                                      checkAndValidateContact(
+                                                          name: data.text);
+                                                    }
+                                                  });
+                                                },
+                                              ),
+                                              firstButton: TextFieldButton(
+                                                icon: AppIcons.contacts,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _isDestinationFieldTypeContact =
+                                                        !_isDestinationFieldTypeContact;
+                                                  });
+                                                  addressFocusNode
+                                                      .requestFocus();
+                                                },
+                                              ),
+                                            ),
+                                    ),
+                                    // A stack to display contacts pop up
+                                    Stack(
+                                      children: <Widget>[
+                                        // Column for everything else except contacts pop up
+                                        Column(
+                                          children: <Widget>[
+                                            // Error Text
+                                            ErrorContainer(
+                                              errorText:
+                                                  destinationError == null
+                                                      ? ""
+                                                      : destinationError,
+                                            ),
+                                            // Container for the amount text field
+                                            Container(
+                                              margin: EdgeInsetsDirectional
+                                                  .fromSTEB(30, 30, 30, 0),
+                                              child: AppTextField(
+                                                  label: AppLocalization.of(
+                                                          context)
+                                                      .amountTextFieldHeader,
+                                                  style: AppStyles
+                                                      .paragraphPrimary(
+                                                          context),
+                                                  maxLines: 1,
+                                                  inputType: TextInputType
+                                                      .numberWithOptions(
+                                                          decimal: true),
+                                                  prefix: _localCurrencyMode
+                                                      ? Text("")
+                                                      : Icon(
+                                                          AppIcons.pascalsymbol,
+                                                          size: 15,
+                                                          color:
+                                                              StateContainer.of(
+                                                                      context)
+                                                                  .curTheme
+                                                                  .primary,
+                                                        ),
+                                                  onChanged: (text) {
+                                                    if (amountError != null) {
+                                                      setState(() {
+                                                        amountError = null;
+                                                      });
+                                                    }
+                                                  },
+                                                  inputFormatters: [
+                                                    LengthLimitingTextInputFormatter(
+                                                        13),
+                                                    _localCurrencyMode
+                                                        ? CurrencyFormatter(
+                                                            decimalSeparator:
+                                                                _localCurrencyFormat
+                                                                    .symbols
+                                                                    .DECIMAL_SEP,
+                                                            commaSeparator:
+                                                                _localCurrencyFormat
+                                                                    .symbols
+                                                                    .GROUP_SEP,
+                                                            maxDecimalDigits: 2)
+                                                        : CurrencyFormatter(
+                                                            maxDecimalDigits:
+                                                                NumberUtil
+                                                                    .maxDecimalDigits),
+                                                    LocalCurrencyFormatter(
+                                                        active:
+                                                            _localCurrencyMode,
+                                                        currencyFormat:
+                                                            _localCurrencyFormat),
+                                                  ],
+                                                  focusNode: amountFocusNode,
+                                                  controller: amountController,
+                                                  firstButton: TextFieldButton(
+                                                    icon: AppIcons.max,
+                                                    onPressed: () {
+                                                      amountController.text =
+                                                          widget.account.balance
+                                                              .toStringOpt();
+                                                      amountFocusNode.unfocus();
+                                                    },
+                                                  ),
+                                                  secondButton: TextFieldButton(
+                                                      icon: AppIcons
+                                                          .currencyswitch,
+                                                      onPressed: () {
+                                                        toggleLocalCurrency();
+                                                      })),
+                                            ),
+                                            // Fee container
+                                            _hasFee
+                                                ? FeeContainer(
+                                                    feeText: walletState.MIN_FEE
+                                                        .toStringOpt())
+                                                : SizedBox(),
+                                            // Error Text
+                                            ErrorContainer(
+                                              errorText: amountError == null
+                                                  ? ""
+                                                  : amountError,
+                                            ),
+                                            Payload(
+                                              initialPayload: _payload,
+                                              onPayloadChanged:
+                                                  (newPayload, encrypted) {
+                                                setState(() {
+                                                  _payload = newPayload;
+                                                  _encryptedPayload = encrypted;
+                                                });
+                                              },
+                                            ),
+                                            // Bottom Margin
+                                            SizedBox(height: 24),
+                                          ],
                                         ),
-                                        // Fee container
-                                        _hasFee
-                                            ? FeeContainer(
-                                                feeText: walletState.MIN_FEE
-                                                    .toStringOpt())
-                                            : SizedBox(),
-                                        // Error Text
-                                        ErrorContainer(
-                                          errorText: amountError == null
-                                              ? ""
-                                              : amountError,
-                                        ),
-                                        Payload(
-                                          initialPayload: _payload,
-                                          onPayloadChanged:
-                                              (newPayload, encrypted) {
-                                            setState(() {
-                                              _payload = newPayload;
-                                              _encryptedPayload = encrypted;
-                                            });
-                                          },
-                                        ),
-                                        // Bottom Margin
-                                        SizedBox(height: 24),
+                                        // Contacts pop up
+                                        _getContactsPopup(),
                                       ],
                                     ),
-                                    // Contacts pop up
-                                    _getContactsPopup(),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  // "Send" button
-                  Row(
-                    children: <Widget>[
-                      AppButton(
-                        type: AppButtonType.Primary,
-                        text: AppLocalization.of(context).sendButton,
-                        buttonTop: true,
-                        onPressed: () async {
-                          await validateAndSend();
-                        },
+                      ),
+                      // "Send" button
+                      Row(
+                        children: <Widget>[
+                          AppButton(
+                            type: AppButtonType.Primary,
+                            text: AppLocalization.of(context).sendButton,
+                            buttonTop: true,
+                            onPressed: () async {
+                              await validateAndSend();
+                            },
+                          ),
+                        ],
+                      ),
+                      // "Scan QR Code" button
+                      Row(
+                        children: <Widget>[
+                          AppButton(
+                            type: AppButtonType.PrimaryOutline,
+                            text: AppLocalization.of(context).scanQRCodeButton,
+                            onPressed: () async {
+                              String text = await UserDataUtil.getQRData(
+                                  DataType.ACCOUNT);
+                              if (text != null) {
+                                addressController.text = text;
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  // "Scan QR Code" button
-                  Row(
-                    children: <Widget>[
-                      AppButton(
-                        type: AppButtonType.PrimaryOutline,
-                        text: AppLocalization.of(context).scanQRCodeButton,
-                        onPressed: () async {
-                          String text =
-                              await UserDataUtil.getQRData(DataType.ACCOUNT);
-                          if (text != null) {
-                            addressController.text = text;
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                // Account search button
+                this.addressFocusNode.hasFocus &&
+                        !_isDestinationFieldTypeContact
+                    ? Container(
+                        width: double.maxFinite,
+                        height: 50,
+                        margin: EdgeInsetsDirectional.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: StateContainer.of(context)
+                              .curTheme
+                              .gradientPrimary,
+                        ),
+                        child: FlatButton(
+                          onPressed: () => null,
+                          highlightColor: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary15,
+                          splashColor: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary30,
+                          padding: EdgeInsets.all(0),
+                          child: Text(AppLocalization.of(context).searchAccountNameButton,
+                              style: AppStyles.buttonPrimary(context)),
+                        ),
+                      )
+                    : SizedBox()
+              ],
             ),
           ),
         ],

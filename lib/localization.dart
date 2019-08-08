@@ -345,6 +345,11 @@ class AppLocalization {
     return Intl.message("Okay, Go Back",
         desc: 'A button to confirm and go back', name: 'okayGoBackButton');
   }
+
+  String get nextButton {
+    return Intl.message("Next",
+        desc: 'A button to the next screen', name: 'nextButton');
+  }
   // **** BUTTONS END **** //
 
   // **** PARAGRAPHS **** //
