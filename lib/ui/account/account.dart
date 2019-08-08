@@ -341,231 +341,318 @@ class _AccountPageState extends State<AccountPage>
                                   .curTheme
                                   .shadowMainCard,
                             ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            // Back icon and price text
-                            Container(
-                              height: 130,
-                              width: 60,
-                              alignment: Alignment(-1, 0),
-                              child: Column(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                showAppDialog(
+                                    context: context,
+                                    builder: (_) => DialogOverlay(
+                                        title: AppLocalization.of(context)
+                                            .otherOperationsHeader,
+                                        optionsList: getOperationsList()));
+                              },
+                              highlightColor: StateContainer.of(context)
+                                  .curTheme
+                                  .textLight15,
+                              splashColor: StateContainer.of(context)
+                                  .curTheme
+                                  .textLight30,
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  // Back icon
+                                  // Back icon and price text
                                   Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                        top: 2, start: 2),
-                                    height: 50,
-                                    width: 50,
-                                    child: FlatButton(
-                                        highlightColor:
-                                            StateContainer.of(context)
-                                                .curTheme
-                                                .textLight15,
-                                        splashColor: StateContainer.of(context)
-                                            .curTheme
-                                            .textLight30,
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0)),
-                                        padding:
-                                            EdgeInsetsDirectional.only(end: 10),
-                                        child: Icon(AppIcons.back,
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .textLight,
-                                            size: 22)),
-                                  ),
-                                  // Price text
-                                  Observer(builder: (BuildContext context) {
-                                    if (walletState.localCurrencyPrice ==
-                                        null) {
-                                      return SizedBox();
-                                    } else {
-                                      return Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                            start: 16, bottom: 12),
-                                        child: AutoSizeText(
-                                          walletState.getLocalCurrencyDisplay(
-                                              currency:
+                                    height: 130,
+                                    width: 60,
+                                    alignment: Alignment(-1, 0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        // Back icon
+                                        Container(
+                                          margin: EdgeInsetsDirectional.only(
+                                              top: 2, start: 2),
+                                          height: 50,
+                                          width: 50,
+                                          child: FlatButton(
+                                              highlightColor:
                                                   StateContainer.of(context)
-                                                      .curCurrency,
-                                              amount: Currency('1'),
-                                              decimalDigits: 3),
-                                          maxLines: 1,
-                                          stepGranularity: 0.1,
-                                          minFontSize: 8,
-                                          textAlign: TextAlign.start,
-                                          style: AppStyles
-                                              .paragraphTextLightSmallSemiBold(
-                                                  context),
+                                                      .curTheme
+                                                      .textLight15,
+                                              splashColor:
+                                                  StateContainer.of(context)
+                                                      .curTheme
+                                                      .textLight30,
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0)),
+                                              padding:
+                                                  EdgeInsetsDirectional.only(
+                                                      end: 10),
+                                              child: Icon(AppIcons.back,
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight,
+                                                  size: 22)),
                                         ),
-                                      );
-                                    }
-                                  })
-                                ],
-                              ),
-                            ),
-                            // Column for balance texts
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                // Container for "TOTAL BALANCE" text
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      12, 0, 12, 0),
-                                  child: AutoSizeText(
-                                    AppLocalization.of(context)
-                                        .accountBalanceHeader
-                                        .toUpperCase(),
-                                    style: AppStyles.paragraphTextLightSmall(
-                                        context),
+                                        // Price text
+                                        Observer(
+                                            builder: (BuildContext context) {
+                                          if (walletState.localCurrencyPrice ==
+                                              null) {
+                                            return Opacity(
+                                              opacity: _opacityAnimation.value,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight
+                                                          .withOpacity(0.75),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: AutoSizeText(
+                                                  "            ",
+                                                  style: AppStyles
+                                                      .paragraphTextLightSmallSemiBold(
+                                                          context),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return Container(
+                                              margin:
+                                                  EdgeInsetsDirectional.only(
+                                                      start: 16, bottom: 12),
+                                              child: AutoSizeText(
+                                                walletState
+                                                    .getLocalCurrencyDisplay(
+                                                        currency:
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .curCurrency,
+                                                        amount: Currency('1'),
+                                                        decimalDigits: 3),
+                                                maxLines: 1,
+                                                stepGranularity: 0.1,
+                                                minFontSize: 8,
+                                                textAlign: TextAlign.start,
+                                                style: AppStyles
+                                                    .paragraphTextLightSmallSemiBold(
+                                                        context),
+                                              ),
+                                            );
+                                          }
+                                        })
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                // Container for the balance
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 168,
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      12, 4, 12, 4),
-                                  child: Observer(
-                                    builder: (BuildContext context) {
-                                      Currency bal =
-                                          accountState.accountBalance;
-                                      return AutoSizeText.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: "",
-                                              style: AppStyles
-                                                  .iconFontTextLightPascal(
-                                                      context),
-                                            ),
-                                            TextSpan(
-                                                text: " ",
-                                                style: TextStyle(fontSize: 12)),
-                                            TextSpan(
-                                                text: bal.toStringOpt(),
-                                                style:
-                                                    AppStyles.header(context))
-                                          ],
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        minFontSize: 8,
-                                        stepGranularity: 1,
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                // Container for the fiat conversion
-                                Observer(
-                                  builder: (BuildContext context) {
-                                    if (walletState.localCurrencyPrice ==
-                                        null) {
-                                      return SizedBox();
-                                    } else {
-                                      return Container(
+                                  // Column for balance texts
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      // Container for "TOTAL BALANCE" text
+                                      Container(
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             12, 0, 12, 0),
                                         child: AutoSizeText(
-                                          "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
+                                          AppLocalization.of(context)
+                                              .accountBalanceHeader
+                                              .toUpperCase(),
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
                                         ),
-                                      );
-                                    }
-                                  },
-                                )
-                              ],
-                            ),
-                            // Column for settings icon and other operations icon
-                            Container(
-                              width: 60,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  // Settings Icon
-                                  Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                        top: 2, end: 2),
-                                    height: 50,
-                                    width: 50,
-                                    child: FlatButton(
-                                        highlightColor:
-                                            StateContainer.of(context)
-                                                .curTheme
-                                                .textLight15,
-                                        splashColor: StateContainer.of(context)
-                                            .curTheme
-                                            .textLight30,
-                                        onPressed: () {
-                                          _scaffoldKey.currentState
-                                              .openEndDrawer();
+                                      ),
+                                      // Container for the balance
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                168,
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            12, 4, 12, 4),
+                                        child: Observer(
+                                          builder: (BuildContext context) {
+                                            Currency bal =
+                                                accountState.accountBalance;
+                                            return AutoSizeText.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "",
+                                                    style: AppStyles
+                                                        .iconFontTextLightPascal(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                      text: " ",
+                                                      style: TextStyle(
+                                                          fontSize: 12)),
+                                                  TextSpan(
+                                                      text: bal.toStringOpt(),
+                                                      style: AppStyles.header(
+                                                          context))
+                                                ],
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              minFontSize: 8,
+                                              stepGranularity: 1,
+                                              style: TextStyle(
+                                                fontSize: 28,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      // Container for the fiat conversion
+                                      Observer(
+                                        builder: (BuildContext context) {
+                                          if (walletState.localCurrencyPrice ==
+                                              null) {
+                                            return Opacity(
+                                              opacity: _opacityAnimation.value,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight
+                                                          .withOpacity(0.75),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: AutoSizeText(
+                                                  "            ",
+                                                  style: AppStyles
+                                                      .paragraphTextLightSmallSemiBold(
+                                                          context),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return Container(
+                                              margin: EdgeInsetsDirectional
+                                                  .fromSTEB(12, 0, 12, 0),
+                                              child: AutoSizeText(
+                                                "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: accountState.accountBalance)})",
+                                                style: AppStyles
+                                                    .paragraphTextLightSmall(
+                                                        context),
+                                              ),
+                                            );
+                                          }
                                         },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0)),
-                                        padding: EdgeInsets.all(0.0),
-                                        child: Icon(AppIcons.settings,
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .textLight,
-                                            size: 24)),
+                                      )
+                                    ],
                                   ),
-                                  // Other Operations Icon
+                                  // Column for settings icon and other operations icon
                                   Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                        bottom: 2, end: 2),
-                                    height: 50,
-                                    width: 50,
-                                    child: !widget.account.isBorrowed? FlatButton(
-                                        highlightColor:
-                                            StateContainer.of(context)
-                                                .curTheme
-                                                .textLight15,
-                                        splashColor: StateContainer.of(context)
-                                            .curTheme
-                                            .textLight30,
-                                        onPressed: () {
-                                          showAppDialog(
-                                              context: context,
-                                              builder: (_) => DialogOverlay(
-                                                  title: AppLocalization.of(
-                                                          context)
-                                                      .otherOperationsHeader,
-                                                  optionsList:
-                                                      getOperationsList()));
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0)),
-                                        padding: EdgeInsetsDirectional.only(
-                                            start: 8, top: 6),
-                                        child: Icon(AppIcons.edit,
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .textLight,
-                                            size: 18)):SizedBox()
+                                    width: 60,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        // Settings Icon
+                                        Container(
+                                          margin: EdgeInsetsDirectional.only(
+                                              top: 2, end: 2),
+                                          height: 50,
+                                          width: 50,
+                                          child: FlatButton(
+                                              highlightColor:
+                                                  StateContainer.of(context)
+                                                      .curTheme
+                                                      .textLight15,
+                                              splashColor:
+                                                  StateContainer.of(context)
+                                                      .curTheme
+                                                      .textLight30,
+                                              onPressed: () {
+                                                _scaffoldKey.currentState
+                                                    .openEndDrawer();
+                                              },
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0)),
+                                              padding: EdgeInsets.all(0.0),
+                                              child: Icon(AppIcons.settings,
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .textLight,
+                                                  size: 24)),
+                                        ),
+                                        // Other Operations Icon
+                                        Container(
+                                            margin: EdgeInsetsDirectional.only(
+                                                bottom: 2, end: 2),
+                                            height: 50,
+                                            width: 50,
+                                            child: !widget.account.isBorrowed
+                                                ? FlatButton(
+                                                    highlightColor:
+                                                        StateContainer.of(context)
+                                                            .curTheme
+                                                            .textLight15,
+                                                    splashColor:
+                                                        StateContainer.of(context)
+                                                            .curTheme
+                                                            .textLight30,
+                                                    onPressed: () {
+                                                      showAppDialog(
+                                                          context: context,
+                                                          builder: (_) => DialogOverlay(
+                                                              title: AppLocalization
+                                                                      .of(
+                                                                          context)
+                                                                  .otherOperationsHeader,
+                                                              optionsList:
+                                                                  getOperationsList()));
+                                                    },
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50.0)),
+                                                    padding:
+                                                        EdgeInsetsDirectional.only(
+                                                            start: 8, top: 6),
+                                                    child: Icon(AppIcons.edit,
+                                                        color:
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .curTheme
+                                                                .textLight,
+                                                        size: 18))
+                                                : SizedBox()),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ],
@@ -824,7 +911,7 @@ class _AccountPageState extends State<AccountPage>
                                   text: AppLocalization.of(context).sendButton,
                                   type: AppButtonType.PrimaryRight,
                                   disabled: accountState.accountBalance >
-                                          Currency('0')  
+                                          Currency('0')
                                       ? false || widget.account.isBorrowed
                                       : true,
                                   onPressed: () {

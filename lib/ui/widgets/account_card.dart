@@ -100,7 +100,8 @@ class _AccountCardState extends State<AccountCard> {
                     width: MediaQuery.of(context).size.width * 0.53 - 24,
                     padding: EdgeInsetsDirectional.only(end: 16),
                     alignment: Alignment(1, 0),
-                    child: !widget.account.isBorrowed
+                    child: !widget.account.isBorrowed &&
+                            !(widget.account.state == AccountState.LISTED)
                         ? AutoSizeText.rich(
                             TextSpan(
                               children: [

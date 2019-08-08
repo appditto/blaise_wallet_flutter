@@ -52,16 +52,15 @@ class _OverviewPageState extends State<OverviewPage>
   bool walletLoaded;
 
   Future<void> walletLoad() async {
-      await walletState?.loadWallet();
-      if (accountToLogin != null && !walletState.walletLoading) {
-        _switchToAccount(accountToLogin);
-        accountToLogin = null;
-      }
-      if (!walletLoaded) {
-        walletLoaded = true;
-        walletState.fcmUpdateBulk();
-      }
-
+    await walletState?.loadWallet();
+    if (accountToLogin != null && !walletState.walletLoading) {
+      _switchToAccount(accountToLogin);
+      accountToLogin = null;
+    }
+    if (!walletLoaded) {
+      walletLoaded = true;
+      walletState.fcmUpdateBulk();
+    }
   }
 
   StreamSubscription<DaemonChangedEvent> _daemonChangeSub;
@@ -433,7 +432,11 @@ class _OverviewPageState extends State<OverviewPage>
                                       24, 0, 24, 0),
                                   child: Observer(
                                     builder: (BuildContext context) {
-                                      if (walletState.walletLoading) {
+                                      if (walletState.walletLoading ||
+                                          walletState.localCurrencyPrice ==
+                                              null ||
+                                          walletState.totalWalletBalance ==
+                                              null) {
                                         return Opacity(
                                           opacity: _opacityAnimation.value,
                                           child: Container(
@@ -453,12 +456,6 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
-                                      } else if (walletState
-                                                  .localCurrencyPrice ==
-                                              null ||
-                                          walletState.totalWalletBalance ==
-                                              null) {
-                                        return SizedBox();
                                       } else {
                                         return AutoSizeText(
                                           "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: walletState.totalWalletBalance)})",
@@ -509,7 +506,8 @@ class _OverviewPageState extends State<OverviewPage>
                                       end: 16, bottom: 12),
                                   child: Observer(
                                     builder: (BuildContext context) {
-                                      if (walletState.walletLoading) {
+                                      if (walletState.localCurrencyPrice ==
+                                          null) {
                                         return Opacity(
                                           opacity: _opacityAnimation.value,
                                           child: Container(
@@ -529,10 +527,6 @@ class _OverviewPageState extends State<OverviewPage>
                                             ),
                                           ),
                                         );
-                                      } else if (walletState
-                                              .localCurrencyPrice ==
-                                          null) {
-                                        return SizedBox();
                                       } else {
                                         return AutoSizeText(
                                           "${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: Currency('1'), decimalDigits: 3)}",
