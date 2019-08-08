@@ -21,12 +21,12 @@ with open(options.file) as arb_file:
         if key.startswith("@@"):
             continue
         if key.startswith("@"):
-            obj['comment'] = value['description']
+            obj['context'] = value['description']
             ret.append(obj)
             obj = {}
         else:
-            obj['term'] = key
-            obj['definition'] = value
+            obj['reference'] = key
+            obj['term'] = value
 with open(out_file, 'w') as outf:
     json.dump(ret, outf, indent=4, ensure_ascii=False)
     print(f"Wrote {out_file}")
