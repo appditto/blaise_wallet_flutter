@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pascaldart/pascaldart.dart';
 import 'package:quiver/strings.dart';
@@ -100,9 +101,22 @@ class _AccountCardState extends State<AccountCard> {
                     width: MediaQuery.of(context).size.width * 0.53 - 24,
                     padding: EdgeInsetsDirectional.only(end: 16),
                     alignment: Alignment(1, 0),
-                    child: !widget.account.isBorrowed &&
-                            !(widget.account.state == AccountState.LISTED)
-                        ? AutoSizeText.rich(
+                    child: Observer(
+                      builder: (context) {
+                        String status = "";
+                        if (walletState.borrowedAccount != null) {
+                          if (walletState.borrowedAccount.transferred) {
+                            status = AppLocalization.of(context).borrowedTransferredHeader;
+                          } else if (walletState.borrowedAccount.paid) {
+                            status = AppLocalization.of(context).borrowedPaidHeader;
+                          } else {
+                            status = AppLocalization.of(context).borrowedHeader;
+                          }
+                        } else if (widget.account.state == AccountState.LISTED) {
+                          status = AppLocalization.of(context).forSaleHeader;
+                        }
+                        if (!widget.account.isBorrowed && !(widget.account.state == AccountState.LISTED)) {
+                          return AutoSizeText.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
@@ -125,8 +139,9 @@ class _AccountCardState extends State<AccountCard> {
                             style: TextStyle(
                               fontSize: 18,
                             ),
-                          )
-                        : Container(
+                          );                          
+                        } else {
+                          return Container(
                             decoration: BoxDecoration(
                                 gradient: StateContainer.of(context)
                                     .curTheme
@@ -135,16 +150,17 @@ class _AccountCardState extends State<AccountCard> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
                             child: AutoSizeText(
-                              widget.account.state == AccountState.LISTED
-                                  ? AppLocalization.of(context).forSaleHeader
-                                  : AppLocalization.of(context).borrowedHeader,
+                              status,
                               style: AppStyles.textLightSmall600(context),
                               textAlign: TextAlign.center,
                               maxLines: 1,
                               minFontSize: 8,
                               stepGranularity: 1,
                             ),
-                          ),
+                          );
+                        }
+                      },
+                    ) 
                   ),
                 ],
               ),

@@ -16,4 +16,6 @@ GetBorrowedResponse _$GetBorrowedResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$GetBorrowedResponseToJson(
         GetBorrowedResponse instance) =>
-    <String, dynamic>{'borrowed_account': instance.account};
+    <String, dynamic>{
+      'borrowed_account': instance.account,
+    };

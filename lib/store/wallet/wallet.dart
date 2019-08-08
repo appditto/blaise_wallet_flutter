@@ -74,7 +74,7 @@ abstract class WalletBase with Store {
 
   @action
   Future<void> getBalanceAndInsertBorrowed() async {
-    if (borrowedAccount != null) {
+    if (borrowedAccount != null && !this.walletAccounts.contains(borrowedAccount)) {
       RPCResponse resp = await rpcClient.makeRpcRequest(GetAccountRequest(account: borrowedAccount.account.account));
       if (resp is PascalAccount) {
         resp.isBorrowed = true;
@@ -137,20 +137,14 @@ abstract class WalletBase with Store {
     }
     AccountsResponse accountsResponse = resp;
     PascalAccount borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
+    if (borrowedAccount != null && !accountsResponse.accounts.contains(borrowedAccount)) {
+      accountsResponse.accounts.add(borrowedAccount);
+    }
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
       totalBalance += acct.balance;
-      if (this.borrowedAccount != null) {
-        if (acct.account == this.borrowedAccount.account) {
-          this.borrowedAccount = null;
-          isBorrowEligible = true;
-        }
-      }
     });
-    if (borrowedAccount != null && !this.isBorrowEligible) {
-      this.walletAccounts.add(borrowedAccount);
-    }
     this.updateBorrowed();
     this.totalWalletBalance = totalBalance;
     this.walletLoading = false;

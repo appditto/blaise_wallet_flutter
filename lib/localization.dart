@@ -1528,6 +1528,17 @@ class AppLocalization {
         desc: 'Header for borrowed tag', name: 'borrowedHeader');
   }
 
+  String get borrowedPaidHeader {
+    return Intl.message("Paid",
+        desc: 'Header for borrowed tag, after account is paid for', name: 'borrowedPaidHeader');
+  }
+
+
+  String get borrowedTransferredHeader {
+    return Intl.message("Pending",
+        desc: 'Header for borrowed tag, after account is transferred but not confirmed', name: 'borrowedTransferredHeader');
+  }
+
   String get borrowedAccountHeader {
     return Intl.message("Borrowed Account",
         desc: 'Header for borrowed account tag', name: 'borrowedAccountHeader');

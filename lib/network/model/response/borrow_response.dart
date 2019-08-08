@@ -22,6 +22,12 @@ class BorrowResponse {
       fromJson: pascalToCurrency)
   Currency price;
 
+  @JsonKey(name: 'paid')
+  bool paid;
+
+  @JsonKey(name: 'transferred')
+  bool transferred;
+
   BorrowResponse();
 
   factory BorrowResponse.fromJson(Map<String, dynamic> json) => _$BorrowResponseFromJson(json);

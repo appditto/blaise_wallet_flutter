@@ -10,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class BuyAccountSheet extends StatefulWidget {
@@ -157,24 +158,33 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                 //"Borrow an Account" and "Cancel" buttons
                 Row(
                   children: <Widget>[
-                    AppButton(
-                      type: AppButtonType.Primary,
-                      text: AppLocalization.of(context)
-                          .borrowAnAccountButton
-                          .toUpperCase(),
-                      buttonTop: true,
-                      onPressed: () async {
-                        showOverlay(context);
-                        await walletState.initiateBorrow();
-                        if (walletState.borrowedAccount != null) {
-                          _overlay?.remove();
-                          Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
-                          UIUtil.showSnackbar("Purchase Started for PASA ${walletState.borrowedAccount.account.toString()}", context);
-                        } else {
-                          _overlay?.remove();
-                          Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
-                          UIUtil.showSnackbar("An erorr has occured, try again later", context);
-                        }
+                    Observer(
+                      builder: (context) {
+                        bool disabled = !walletState.isBorrowEligible;
+                        return AppButton(
+                          type: AppButtonType.Primary,
+                          text: AppLocalization.of(context)
+                              .borrowAnAccountButton
+                              .toUpperCase(),
+                          disabled: disabled,
+                          buttonTop: true,
+                          onPressed: () async {
+                            if (!walletState.isBorrowEligible) {
+                              return;
+                            }
+                            showOverlay(context);
+                            await walletState.initiateBorrow();
+                            if (walletState.borrowedAccount != null) {
+                              _overlay?.remove();
+                              Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
+                              UIUtil.showSnackbar("Purchase Started for PASA ${walletState.borrowedAccount.account.toString()}", context);
+                            } else {
+                              _overlay?.remove();
+                              Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
+                              UIUtil.showSnackbar("An erorr has occured, try again later", context);
+                            }
+                          },
+                        );
                       },
                     ),
                   ],

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-06T04:02:09.945334",
+  "@@last_modified": "2019-08-08T14:04:11.656515",
   "translatableString": "Hi, I'm a translatable string",
   "@translatableString": {
     "description": "sample",
@@ -333,6 +333,12 @@
   "okayGoBackButton": "Okay, Go Back",
   "@okayGoBackButton": {
     "description": "A button to confirm and go back",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nextButton": "Next",
+  "@nextButton": {
+    "description": "A button to the next screen",
     "type": "text",
     "placeholders": {}
   },
@@ -1437,6 +1443,18 @@
   "borrowedHeader": "Borrowed",
   "@borrowedHeader": {
     "description": "Header for borrowed tag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "borrowedPaidHeader": "Paid",
+  "@borrowedPaidHeader": {
+    "description": "Header for borrowed tag, after account is paid for",
+    "type": "text",
+    "placeholders": {}
+  },
+  "borrowedTransferredHeader": "Pending",
+  "@borrowedTransferredHeader": {
+    "description": "Header for borrowed tag, after account is transferred but not confirmed",
     "type": "text",
     "placeholders": {}
   },
