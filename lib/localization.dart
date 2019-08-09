@@ -709,7 +709,7 @@ class AppLocalization {
 
   // PIN Screen
   String get enterPINToUnlockParagraph {
-    return Intl.message("Enter PIN to Unlock Blaise",
+    return Intl.message("Enter PIN to unlock Blaise",
         desc:
             'A paragraph that tells the user to enter the PIN to unlock the wallet',
         name: 'enterPINToUnlockParagraph');
@@ -737,7 +737,7 @@ class AppLocalization {
   }
 
   String get authenticateToDelistParagraph {
-    return Intl.message("Authenticate to change account name to \"%1\"",
+    return Intl.message("Authenticate to delist the account from sale",
         desc:
             'A paragraph that tells the user to authenticate to delist the account from sale',
         name: 'authenticateToDelistParagraph');
