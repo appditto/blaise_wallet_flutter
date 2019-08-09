@@ -11,6 +11,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
+import 'package:quiver/strings.dart';
 
 class GetAccountSheet extends StatefulWidget {
   _GetAccountSheetState createState() => _GetAccountSheetState();
@@ -23,14 +24,16 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
   @override
   void initState() {
     super.initState();
-    fiatPrice = walletState.getLocalCurrencyDisplay(
-        currency: StateContainer.of(context).curCurrency,
-        amount: Currency(accountPrice),
-        decimalDigits: 2);    
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isEmpty(fiatPrice)) {
+      fiatPrice = walletState.getLocalCurrencyDisplay(
+          currency: StateContainer.of(context).curCurrency,
+          amount: Currency(accountPrice),
+          decimalDigits: 2);      
+    }
     return Column(
       children: <Widget>[
         Expanded(
