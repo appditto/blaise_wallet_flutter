@@ -91,8 +91,8 @@ class _PublicKeyOverviewSheetState extends State<PublicKeyOverviewSheet> {
                   children: <Widget>[
                     // Gradient
                     Container(
-                      width: 180,
-                      height: 180,
+                      width: 198,
+                      height: 198,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient:
@@ -101,8 +101,8 @@ class _PublicKeyOverviewSheetState extends State<PublicKeyOverviewSheet> {
                     ),
                     // White overlay
                     Container(
-                      width: 172,
-                      height: 172,
+                      width: 189,
+                      height: 189,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Colors.white),
@@ -111,23 +111,23 @@ class _PublicKeyOverviewSheetState extends State<PublicKeyOverviewSheet> {
                     QrImage(
                       data: PublicKeyCoder()
                           .encodeToBase58(walletState.publicKey),
-                      size: 180.0,
+                      size: 198,
                       errorCorrectionLevel: QrErrorCorrectLevel.Q,
                       gapless: false,
-                      version: 8,
+                      version: 9,
                     ),
                     // Logo background
                     Container(
-                      width: 58,
-                      height: 58,
+                      width: 64,
+                      height: 64,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           color: Colors.white),
                     ),
                     // Logo
                     Container(
-                      width: 48,
-                      height: 48,
+                      width: 53,
+                      height: 53,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient:
