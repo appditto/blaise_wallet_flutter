@@ -150,6 +150,9 @@ abstract class AccountBase with Store {
   @action
   bool shouldDisplayOperation(PascalOperation op) {
     if (op.optype == OpType.TRANSACTION) {
+      if (op.senders.length > 0 && op.receivers.length > 0 && op.senders[0].nOperation == 1 && op.receivers[0].receivingAccount == AccountNumber("1000")) {
+        return false;
+      }
       return true;
     } else if (op.optype == OpType.CHANGE_ACCOUNT_INFO) {
       if (op.changers.length > 0 && op.changers[0].newName != null) {
