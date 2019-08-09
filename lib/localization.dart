@@ -27,12 +27,6 @@ class AppLocalization {
     return Localizations.of<AppLocalization>(context, AppLocalization);
   }
 
-  /// -- GENERIC ITEMS
-  String get translatableString {
-    return Intl.message('Hi, I\'m a translatable string',
-        desc: 'sample', name: 'translatableString');
-  }
-
   // **** BUTTONS **** //
   String get newPrivateKeyButton {
     return Intl.message("New Private Key",

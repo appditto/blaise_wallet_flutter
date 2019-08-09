@@ -1,11 +1,5 @@
 {
-  "@@last_modified": "2019-08-08T14:04:11.656515",
-  "translatableString": "Hi, I'm a translatable string",
-  "@translatableString": {
-    "description": "sample",
-    "type": "text",
-    "placeholders": {}
-  },
+  "@@last_modified": "2019-08-09T02:02:54.278596",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
