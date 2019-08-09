@@ -356,13 +356,14 @@ class _AccountPageState extends State<AccountPage>
                 });
                 if (walletState.borrowedAccount == null) {
                   walletState.loadWallet();
-                  Navigator.of(context).pushReplacementNamed('/account', arguments: this.accountState.account);
+                  Navigator.of(context).pushReplacementNamed('/account',
+                      arguments: this.accountState.account);
                 }
               }
             });
           }
         }
-      });      
+      });
     }
   }
 
@@ -424,17 +425,19 @@ class _AccountPageState extends State<AccountPage>
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap:widget.account.isBorrowed
-                                    ? (){
+                              onTap: widget.account.isBorrowed
+                                  ? () {
                                       return null;
-                                    }:() {
-                                showAppDialog(
-                                    context: context,
-                                    builder: (_) => DialogOverlay(
-                                        title: AppLocalization.of(context)
-                                            .otherOperationsHeader,
-                                        optionsList: getOperationsList()));
-                              },
+                                    }
+                                  : () {
+                                      showAppDialog(
+                                          context: context,
+                                          builder: (_) => DialogOverlay(
+                                              title: AppLocalization.of(context)
+                                                  .otherOperationsHeader,
+                                              optionsList:
+                                                  getOperationsList()));
+                                    },
                               highlightColor: StateContainer.of(context)
                                   .curTheme
                                   .textLight15,
@@ -741,77 +744,113 @@ class _AccountPageState extends State<AccountPage>
                   widget.account.isBorrowed
                       ? // Paragraph and illustration
                       Expanded(
-                        child: ReactiveRefreshIndicator(
-                            backgroundColor: StateContainer.of(context)
-                                .curTheme
-                                .backgroundPrimary,
-                            onRefresh: _refresh,
-                            isRefreshing: _isRefreshing,
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  padding: EdgeInsets.all(0),                            
-                                  //Container for the paragraph
-                                  child: Column(
-                                    children: <Widget> [
-                                      Container(
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            30, 0, 30, 0),
-                                        child:
-                                          Observer(
-                                            builder: (context) {
-                                              String msgStr = "";
-                                              List<TextSpan> msg;
-                                              if ((walletState.borrowedAccount != null && walletState.borrowedAccount.paid)) {
-                                                msgStr = AppLocalization.of(context).borrowedAccountPaidParagraph;
-                                                msg = formatLocalizedColors(context, msgStr);
-                                              } else {
-                                                formatExpiryDate(walletState.borrowedAccount.expiry);
-                                                msgStr = AppLocalization.of(context)
-                                                  .borrowedAccountParagraph
-                                                  .replaceAll("%1", accountPrice)
-                                                  .replaceAll("%2", untilExpirationDays)
-                                                  .replaceAll(
-                                                      "%3", untilExpirationHours)
-                                                  .replaceAll('%4', untilExpirationMinutes);
-                                                msg = formatLocalizedColors(context, msgStr);
-                                              }
-                                              return AutoSizeText.rich(
-                                                TextSpan(
-                                                  children: msg
-                                                ),
-                                                stepGranularity: 0.5,
-                                                maxLines: 10,
-                                                minFontSize: 8,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(fontSize: 14),
-                                              );
-                                            },
-                                          )
-                                      ),
-                                      // Container for the illustration
-                                      Container(
-                                        margin: EdgeInsetsDirectional.only(
-                                          top: 24,
-                                          bottom: 24,
-                                        ),
-                                        child: SvgRepaintAsset(
-                                            asset: StateContainer.of(context)
+                          child: ReactiveRefreshIndicator(
+                              backgroundColor: StateContainer.of(context)
+                                  .curTheme
+                                  .backgroundPrimary,
+                              onRefresh: _refresh,
+                              isRefreshing: _isRefreshing,
+                              child: SingleChildScrollView(
+                                physics: AlwaysScrollableScrollPhysics(),
+                                padding: EdgeInsets.all(0),
+                                //Container for the paragraph
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height -
+                                      (130 +
+                                          ((MediaQuery.of(context)
+                                                  .padding
+                                                  .top) +
+                                              (20 -
+                                                  (MediaQuery.of(context)
+                                                          .padding
+                                                          .bottom) /
+                                                      2))) -
+                                      ((MediaQuery.of(context)
+                                              .padding
+                                              .bottom) +
+                                          (24 -
+                                              (MediaQuery.of(context)
+                                                      .padding
+                                                      .bottom) /
+                                                  2)) -
+                                      50 -
+                                      20,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                      margin: EdgeInsetsDirectional
+                                          .fromSTEB(30, 0, 30, 0),
+                                      child: Observer(
+                                        builder: (context) {
+                                          String msgStr = "";
+                                          List<TextSpan> msg;
+                                          if ((walletState
+                                                      .borrowedAccount !=
+                                                  null &&
+                                              walletState
+                                                  .borrowedAccount
+                                                  .paid)) {
+                                            msgStr = AppLocalization.of(
+                                                    context)
+                                                .borrowedAccountPaidParagraph;
+                                            msg = formatLocalizedColors(
+                                                context, msgStr);
+                                          } else {
+                                            formatExpiryDate(walletState
+                                                .borrowedAccount
+                                                .expiry);
+                                            msgStr = AppLocalization.of(
+                                                    context)
+                                                .borrowedAccountParagraph
+                                                .replaceAll("%1",
+                                                    accountPrice)
+                                                .replaceAll("%2",
+                                                    untilExpirationDays)
+                                                .replaceAll("%3",
+                                                    untilExpirationHours)
+                                                .replaceAll('%4',
+                                                    untilExpirationMinutes);
+                                            msg = formatLocalizedColors(
+                                                context, msgStr);
+                                          }
+                                          return AutoSizeText.rich(
+                                            TextSpan(children: msg),
+                                            stepGranularity: 0.5,
+                                            maxLines: 10,
+                                            minFontSize: 8,
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                TextStyle(fontSize: 14),
+                                          );
+                                        },
+                                      )),
+                                  // Container for the illustration
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(
+                                      top: 24,
+                                      bottom: 24,
+                                    ),
+                                    child: SvgRepaintAsset(
+                                        asset:
+                                            StateContainer.of(context)
                                                 .curTheme
                                                 .illustrationBorrowed,
-                                            width:
-                                                MediaQuery.of(context).size.width * 0.8,
-                                            height: MediaQuery.of(context).size.width *
-                                                0.8 *
-                                                132 /
-                                                295),
-                                      ),
-                                    ],
+                                        width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                            0.8,
+                                        height: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                            0.8 *
+                                            132 /
+                                            295),
                                   ),
-                                )
-                              )
-                          )
-                        )
+                                ],
+                              ),
+                                ),
+                              )))
                       :
                       // Wallet Cards
                       Expanded(

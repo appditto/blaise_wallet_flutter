@@ -648,75 +648,69 @@ class _OverviewPageState extends State<OverviewPage>
                                   .backgroundPrimary,
                               onRefresh: _refresh,
                               isRefreshing: _isRefreshing,
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  padding: EdgeInsets.all(0),
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height -
-                                        (130 +
-                                            ((MediaQuery.of(context)
-                                                    .padding
-                                                    .top) +
-                                                (20 -
-                                                    (MediaQuery.of(context)
-                                                            .padding
-                                                            .bottom) /
-                                                        2))) -
-                                        ((MediaQuery.of(context)
-                                                .padding
-                                                .bottom) +
-                                            (24 -
-                                                (MediaQuery.of(context)
-                                                        .padding
-                                                        .bottom) /
-                                                    2)) -
-                                        50 -
-                                        20,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Container(
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    30, 0, 30, 0),
-                                            child: AutoSizeText.rich(
-                                              TextSpan(
-                                                  children: formatLocalizedColors(
-                                                      context,
-                                                      AppLocalization.of(
-                                                              context)
-                                                          .newWalletGreetingParagraph)),
-                                              stepGranularity: 0.5,
-                                              maxLines: 10,
-                                              minFontSize: 8,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(fontSize: 14),
-                                            ),
+                              child: SingleChildScrollView(
+                                physics: AlwaysScrollableScrollPhysics(),
+                                padding: EdgeInsets.all(0),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height -
+                                      (130 +
+                                          ((MediaQuery.of(context)
+                                                  .padding
+                                                  .top) +
+                                              (20 -
+                                                  (MediaQuery.of(context)
+                                                          .padding
+                                                          .bottom) /
+                                                      2))) -
+                                      ((MediaQuery.of(context).padding.bottom) +
+                                          (24 -
+                                              (MediaQuery.of(context)
+                                                      .padding
+                                                      .bottom) /
+                                                  2)) -
+                                      50 -
+                                      20,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  30, 0, 30, 0),
+                                          child: AutoSizeText.rich(
+                                            TextSpan(
+                                                children: formatLocalizedColors(
+                                                    context,
+                                                    AppLocalization.of(context)
+                                                        .newWalletGreetingParagraph)),
+                                            stepGranularity: 0.5,
+                                            maxLines: 10,
+                                            minFontSize: 8,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 14),
                                           ),
-                                          // Container for the illustration
-                                          Container(
-                                            margin: EdgeInsetsDirectional.only(
-                                              top: 24,
-                                            ),
-                                            child: SvgRepaintAsset(
-                                                asset:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .illustrationNewWallet,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.55,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.55),
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        // Container for the illustration
+                                        Container(
+                                          margin: EdgeInsetsDirectional.only(
+                                            top: 24,
+                                          ),
+                                          child: SvgRepaintAsset(
+                                              asset: StateContainer.of(context)
+                                                  .curTheme
+                                                  .illustrationNewWallet,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.55,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.55),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ),
