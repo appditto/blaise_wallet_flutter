@@ -556,7 +556,7 @@ class AppLocalization {
 
   String get borrowedAccountPaidParagraph {
     return Intl.message(
-        "Your account has been purchased! \nThe transfer is currently processing, it will be yours soon.",
+        "<colored>Your account has been purchased!</colored>\nThe transfer is currently processing, it will be yours soon.",
         desc: 'A paragraph that explains what a borrowed account is',
         name: 'borrowedAccountParagraph');
   }
