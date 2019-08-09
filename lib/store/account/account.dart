@@ -81,7 +81,7 @@ abstract class AccountBase with Store {
     /// 1) We don't have it
     /// 2) We do have it, but it has since been confirmed
     /// 3) This account is not borrowed
-    if (this.account.isBorrowed) {
+    if (this.operations == null) {
       return;
     }
     if (!this.operations.contains(op) || this.operations.contains(op) && this.operations.firstWhere((nOp) => nOp == op).maturation == null && op.maturation != null) {
