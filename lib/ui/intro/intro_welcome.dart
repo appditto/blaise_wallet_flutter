@@ -110,47 +110,49 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                       .shadowTextDark,
                                 ],
                               ),
-                              padding:
-                                  EdgeInsetsDirectional.only(start: 4, end: 4),
                               margin:
                                   EdgeInsetsDirectional.fromSTEB(30, 20, 30, 0),
                               child: FlatButton(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100.0)),
-                                child: AutoSizeText.rich(
-                                  TextSpan(children: [
-                                    TextSpan(
-                                      text: "Language:",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .primary,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    TextSpan(
-                                      text: " ",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .primary,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    TextSpan(
-                                      text: "English (en)",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .textDark,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ]),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
-                                  style: TextStyle(fontSize: 16),
+                                    borderRadius: BorderRadius.circular(120.0)),
+                                child: Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-100),
+                                  padding: EdgeInsetsDirectional.only(start: 4, end: 4),
+                                  child: AutoSizeText.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                        text: "Language:",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .primary,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      TextSpan(
+                                        text: " ",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .primary,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      TextSpan(
+                                        text: "English (en)",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .textDark,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    stepGranularity: 0.1,
+                                    style: TextStyle(fontSize: 14),
+                                  ),
                                 ),
                                 onPressed: () {
                                   showAppDialog(
