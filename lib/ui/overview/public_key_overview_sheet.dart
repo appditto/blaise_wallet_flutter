@@ -137,7 +137,7 @@ class _PublicKeyOverviewSheetState extends State<PublicKeyOverviewSheet> {
                           color: StateContainer.of(context)
                               .curTheme
                               .backgroundPrimary,
-                          size: 30),
+                          size: 33),
                     ),
                   ],
                 ),

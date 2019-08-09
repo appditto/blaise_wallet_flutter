@@ -3,6 +3,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -12,7 +13,22 @@ class IntroWelcomePage extends StatefulWidget {
 }
 
 class _IntroWelcomePageState extends State<IntroWelcomePage> {
+  List<DialogListItem> languageList = [];
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    languageList = [
+      DialogListItem(
+        option: "English (en)",
+        action: () {
+          Navigator.pop(context);
+        },
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
@@ -65,15 +81,90 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                   ),
                   //Container for the paragraph
                   Expanded(
-                    child: Container(
-                      alignment: Alignment(-1, -0.2),
-                      margin: EdgeInsets.symmetric(horizontal: 30),
-                      child: AutoSizeText(
-                        AppLocalization.of(context).welcomeParagraph,
-                        maxLines: 4,
-                        stepGranularity: 0.1,
-                        style: AppStyles.paragraph(context),
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 30),
+                          child: AutoSizeText(
+                            AppLocalization.of(context).welcomeParagraph,
+                            maxLines: 4,
+                            stepGranularity: 0.1,
+                            style: AppStyles.paragraph(context),
+                          ),
+                        ),
+                        // "Language" button
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              height: 40.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100.0),
+                                color: StateContainer.of(context)
+                                    .curTheme
+                                    .backgroundPrimary,
+                                boxShadow: [
+                                  StateContainer.of(context)
+                                      .curTheme
+                                      .shadowTextDark,
+                                ],
+                              ),
+                              padding:
+                                  EdgeInsetsDirectional.only(start: 4, end: 4),
+                              margin:
+                                  EdgeInsetsDirectional.fromSTEB(30, 20, 30, 0),
+                              child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100.0)),
+                                child: AutoSizeText.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text: "Language:",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .primary,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    TextSpan(
+                                      text: " ",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .primary,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    TextSpan(
+                                      text: "English (en)",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .textDark,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ]),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  stepGranularity: 0.1,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                onPressed: () {
+                                  showAppDialog(
+                                      context: context,
+                                      builder: (_) => DialogOverlay(
+                                          title: AppLocalization.of(context)
+                                              .languageHeader,
+                                          optionsList: languageList));
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
