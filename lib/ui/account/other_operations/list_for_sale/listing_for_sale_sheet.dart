@@ -441,7 +441,7 @@ class _ListingForSaleSheetState extends State<ListingForSaleSheet> {
           .listAccountForSale(widget.price, widget.receiver, fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
-        UIUtil.showSnackbar(errResp.errorMessage, context);
+        UIUtil.showSnackbar(errResp.errorMessage.replaceAll("founds", "funds"), context);
         _overlay?.remove();
         Navigator.of(context).pop();
       } else {

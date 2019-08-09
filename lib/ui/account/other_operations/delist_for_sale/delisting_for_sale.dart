@@ -333,7 +333,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
       RPCResponse result = await accountState.delistAccountForSale(fee: fee);
       if (result.isError) {
         ErrorResponse errResp = result;
-        UIUtil.showSnackbar(errResp.errorMessage, context);
+        UIUtil.showSnackbar(errResp.errorMessage.replaceAll("founds", "funds"), context);
         _overlay?.remove();
         Navigator.of(context).pop();
       } else {
