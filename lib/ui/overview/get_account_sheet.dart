@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
@@ -11,7 +12,6 @@ import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';
-import 'package:quiver/strings.dart';
 
 class GetAccountSheet extends StatefulWidget {
   _GetAccountSheetState createState() => _GetAccountSheetState();
@@ -19,7 +19,6 @@ class GetAccountSheet extends StatefulWidget {
 
 class _GetAccountSheetState extends State<GetAccountSheet> {
   String accountPrice = "0.25";
-  String fiatPrice = "";
 
   @override
   void initState() {
@@ -28,12 +27,6 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
 
   @override
   Widget build(BuildContext context) {
-    if (isEmpty(fiatPrice)) {
-      fiatPrice = walletState.getLocalCurrencyDisplay(
-          currency: StateContainer.of(context).curCurrency,
-          amount: Currency(accountPrice),
-          decimalDigits: 2);      
-    }
     return Column(
       children: <Widget>[
         Expanded(
@@ -126,7 +119,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                   margin: EdgeInsetsDirectional.fromSTEB(30, 12, 30, 24),
                   child: AutoSizeText.rich(
                     TextSpan(
-                      children: getAccountSheetParagraphs(),
+                      children: getAccountSheetParagraphs(StateContainer.of(context).curCurrency),
                     ),
                     stepGranularity: 0.1,
                     maxLines: 9,
@@ -168,7 +161,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
     );
   }
 
-  getAccountSheetParagraphs() {
+  getAccountSheetParagraphs(AvailableCurrency curCurrency) {
     List<TextSpan> ret = [];
     ret.add(
       TextSpan(
@@ -190,7 +183,10 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
           context,
           AppLocalization.of(context)
               .getAccountThirdParagraph
-              .replaceAll("%1", accountPrice).replaceAll("%2","~" + fiatPrice)));
+              .replaceAll("%1", accountPrice).replaceAll("%2",curCurrency == null ? "N/A" : "~" + walletState.getLocalCurrencyDisplay(
+                currency: curCurrency,
+                amount: Currency(accountPrice),
+                decimalDigits: 2))));
     return ret;
   }
 }

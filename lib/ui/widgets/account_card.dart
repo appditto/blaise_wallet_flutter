@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
-import 'package:blaise_wallet_flutter/store/wallet/wallet.dart';
 import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
@@ -105,10 +104,8 @@ class _AccountCardState extends State<AccountCard> {
                       builder: (context) {
                         String status = "";
                         if (walletState.borrowedAccount != null) {
-                          if (walletState.borrowedAccount.transferred) {
+                          if (walletState.borrowedAccount.paid) {
                             status = AppLocalization.of(context).borrowedTransferredHeader;
-                          } else if (walletState.borrowedAccount.paid) {
-                            status = AppLocalization.of(context).borrowedPaidHeader;
                           } else {
                             status = AppLocalization.of(context).borrowedHeader;
                           }

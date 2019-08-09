@@ -73,19 +73,21 @@ abstract class WalletBase with Store {
   }
 
   @action
-  Future<void> getBalanceAndInsertBorrowed() async {
+  Future<dynamic> getBalanceAndInsertBorrowed() async {
     if (borrowedAccount != null && !this.walletAccounts.contains(borrowedAccount.account)) {
       RPCResponse resp = await rpcClient.makeRpcRequest(GetAccountRequest(account: borrowedAccount.account.account));
       if (resp is PascalAccount) {
         resp.isBorrowed = true;
         this.walletAccounts.removeWhere((acct) => acct.account == borrowedAccount.account);
         this.walletAccounts.add(resp);
+        return resp;
       }
     }
+    return null;
   }
 
   @action
-  Future<void> updateBorrowed() async {
+  Future<dynamic> updateBorrowed() async {
     BorrowResponse resp = await HttpAPI.getBorrowed(PublicKeyCoder().encodeToBase58(this.publicKey));
     if (resp == null) {
       isBorrowEligible = false;
@@ -95,12 +97,13 @@ abstract class WalletBase with Store {
     } else {
       isBorrowEligible = false;
       borrowedAccount = resp;
-      await this.getBalanceAndInsertBorrowed();
+      return await this.getBalanceAndInsertBorrowed();
     }
+    return null;
   }
 
   @action
-  Future<void> initiateBorrow() async {
+  Future<dynamic> initiateBorrow() async {
     if (isBorrowEligible) {
       BorrowResponse resp = await HttpAPI.borrowAccount(PublicKeyCoder().encodeToBase58(this.publicKey));
       if (resp == null) {
@@ -108,9 +111,10 @@ abstract class WalletBase with Store {
       } else {
         isBorrowEligible = false;
         borrowedAccount = resp;
-        await this.getBalanceAndInsertBorrowed();
+        return await this.getBalanceAndInsertBorrowed();
       }      
     }
+    return null;
   }
 
   @action
@@ -273,7 +277,9 @@ abstract class WalletBase with Store {
     String fcmToken = await FirebaseMessaging().getToken();
     List<int> accounts = [];
     for (PascalAccount acct in walletAccounts) {
-      accounts.add(acct.account.account);
+      if (!acct.isBorrowed) {
+        accounts.add(acct.account.account);
+      }
     }
     sl.get<WSClient>().sendRequest(FcmUpdateBulkRequest(accounts: accounts, enabled: enabled, fcmToken: fcmToken));
   }

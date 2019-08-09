@@ -226,7 +226,7 @@ mixin _$Wallet on WalletBase, Store {
       AsyncAction('getBalanceAndInsertBorrowed');
 
   @override
-  Future<void> getBalanceAndInsertBorrowed() {
+  Future<dynamic> getBalanceAndInsertBorrowed() {
     return _$getBalanceAndInsertBorrowedAsyncAction
         .run(() => super.getBalanceAndInsertBorrowed());
   }
@@ -234,14 +234,14 @@ mixin _$Wallet on WalletBase, Store {
   final _$updateBorrowedAsyncAction = AsyncAction('updateBorrowed');
 
   @override
-  Future<void> updateBorrowed() {
+  Future<dynamic> updateBorrowed() {
     return _$updateBorrowedAsyncAction.run(() => super.updateBorrowed());
   }
 
   final _$initiateBorrowAsyncAction = AsyncAction('initiateBorrow');
 
   @override
-  Future<void> initiateBorrow() {
+  Future<dynamic> initiateBorrow() {
     return _$initiateBorrowAsyncAction.run(() => super.initiateBorrow());
   }
 

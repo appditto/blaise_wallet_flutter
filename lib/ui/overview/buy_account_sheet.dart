@@ -173,15 +173,19 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                               return;
                             }
                             showOverlay(context);
-                            await walletState.initiateBorrow();
+                            dynamic resp = await walletState.initiateBorrow();
                             if (walletState.borrowedAccount != null) {
                               _overlay?.remove();
-                              Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
-                              UIUtil.showSnackbar("Purchase Started for PASA ${walletState.borrowedAccount.account.toString()}", context);
+                              if (resp is PascalAccount) {
+                                Navigator.of(context).pushReplacementNamed('/account', arguments: resp);
+                              } else {
+                                Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
+                                UIUtil.showSnackbar(AppLocalization.of(context).borrowStarted.replaceAll('%1', walletState.borrowedAccount.account.toString()), context);
+                              }
                             } else {
                               _overlay?.remove();
                               Navigator.of(context).popUntil(RouteUtils.withNameLike('/overview'));
-                              UIUtil.showSnackbar("An erorr has occured, try again later", context);
+                              UIUtil.showSnackbar(AppLocalization.of(context).somethingWentWrongError, context);
                             }
                           },
                         );

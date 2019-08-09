@@ -66,8 +66,71 @@ class _AccountPageState extends State<AccountPage>
   String accountPrice = "0.25";
 
   // Borrowed account expiration
-  String untilExpirationDays = "5";
-  String untilExpirationHours = "12";
+  String untilExpirationDays = "";
+  String untilExpirationHours = "";
+  String untilExpirationMinutes = "";
+
+  void formateExpiryDate() {
+    if (walletState.borrowedAccount != null) {
+      DateTime expiry = walletState.borrowedAccount.expiry;
+      if (expiry == null) {
+        print("NULL EXPIRY");
+      }
+      DateTime now = DateTime.now().toUtc();
+      int diffS = expiry.difference(now).inSeconds;
+      print("DIFFS S ${diffS}");
+      if (diffS <= 60) {
+        // Seconds only
+        setState(() {
+          untilExpirationDays = "0";
+          untilExpirationHours = "0";
+          untilExpirationMinutes = "0";
+        });
+      } else if (diffS <= 3600) {
+        // Minutes
+        String minutesStr = "";
+        int minutes = diffS ~/ 60;
+        minutesStr = minutes.toString();
+        setState(() {
+          untilExpirationDays = "0";
+          untilExpirationHours = "0";
+          untilExpirationMinutes = minutesStr;
+        });
+      } else if (diffS <= 86400) {
+        // Hours:Minutes
+        String hoursStr = "";
+        int hours = diffS ~/ 3600;
+        hoursStr = hours.toString();
+        diffS = diffS % 3600;
+        String minutesStr = "";
+        int minutes = diffS ~/ 60;
+        minutesStr = minutes.toString();
+        setState(() {
+          untilExpirationDays = "0";
+          untilExpirationHours = hoursStr;
+          untilExpirationMinutes = minutesStr;
+        });
+      } else {
+        // Days:Hours:Minutes
+        String daysStr = "";
+        int days = diffS ~/ 86400;
+        daysStr = days.toString();
+        diffS = diffS % 86400;
+        String hoursStr = "";
+        int hours = diffS ~/ 3600;
+        hoursStr = hours.toString();
+        diffS = diffS % 3600;
+        String minutesStr = "";
+        int minutes = diffS ~/ 60;
+        minutesStr = minutes.toString();
+        setState(() {
+          untilExpirationDays = daysStr;
+          untilExpirationHours = hoursStr;
+          untilExpirationMinutes = minutesStr;
+        });        
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -77,7 +140,9 @@ class _AccountPageState extends State<AccountPage>
     _registerBus();
     this.accountState = walletState.getAccountState(widget.account);
     this.accountState.updateAccount();
-    this.accountState.getAccountOperations();
+    if (!this.accountState.account.isBorrowed) {
+      this.accountState.getAccountOperations();
+    }
     walletState.activeAccount = widget.account.account;
     // Opacity Animation
     _opacityAnimationController = new AnimationController(
@@ -97,7 +162,11 @@ class _AccountPageState extends State<AccountPage>
     // Subscribe for updates
     walletState.requestUpdate();
     // Update FCM token
-    walletState.fcmUpdate(widget.account.account);
+    if (!this.accountState.account.isBorrowed) {
+      walletState.fcmUpdate(widget.account.account);
+    } else {
+      formateExpiryDate();
+    }
   }
 
   void _animationStatusListener(AnimationStatus status) {
@@ -667,24 +736,36 @@ class _AccountPageState extends State<AccountPage>
                               Container(
                                 margin: EdgeInsetsDirectional.fromSTEB(
                                     30, 0, 30, 0),
-                                child: AutoSizeText.rich(
-                                  TextSpan(
-                                    children: formatLocalizedColors(
-                                      context,
-                                      AppLocalization.of(context)
+                                child:
+                                  Observer(
+                                    builder: (context) {
+                                      String msgStr = "";
+                                      List<TextSpan> msg;
+                                      if (walletState.borrowedAccount != null && walletState.borrowedAccount.paid) {
+                                        msgStr = AppLocalization.of(context).borrowedAccountPaidParagraph;
+                                        msg = formatLocalizedColors(context, msgStr);
+                                      } else {
+                                        msgStr = AppLocalization.of(context)
                                           .borrowedAccountParagraph
                                           .replaceAll("%1", accountPrice)
                                           .replaceAll("%2", untilExpirationDays)
                                           .replaceAll(
-                                              "%3", untilExpirationHours),
-                                    ),
-                                  ),
-                                  stepGranularity: 0.5,
-                                  maxLines: 10,
-                                  minFontSize: 8,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 14),
-                                ),
+                                              "%3", untilExpirationHours)
+                                          .replaceAll('%4', untilExpirationMinutes);
+                                        msg = formatLocalizedColors(context, msgStr);
+                                      }
+                                      return AutoSizeText.rich(
+                                        TextSpan(
+                                          children: msg
+                                        ),
+                                        stepGranularity: 0.5,
+                                        maxLines: 10,
+                                        minFontSize: 8,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 14),
+                                      );
+                                    },
+                                  )
                               ),
                               // Container for the illustration
                               Container(

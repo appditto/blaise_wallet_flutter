@@ -9,7 +9,7 @@ part of 'borrow_response.dart';
 BorrowResponse _$BorrowResponseFromJson(Map<String, dynamic> json) {
   return BorrowResponse()
     ..account = intToAccountNum(json['pasa'] as int)
-    ..expiry = toDateTime(json['expiry'] as int)
+    ..expiry = toDateTime(json['expires'] as int)
     ..price = pascalToCurrency(json['price'] as num)
     ..paid = json['paid'] as bool
     ..transferred = json['transferred'] as bool;
@@ -26,7 +26,7 @@ Map<String, dynamic> _$BorrowResponseToJson(BorrowResponse instance) {
     }
   }
 
-  writeNotNull('expiry', fromDateTime(instance.expiry));
+  writeNotNull('expires', fromDateTime(instance.expiry));
   writeNotNull('price', currencyToDouble(instance.price));
   val['paid'] = instance.paid;
   val['transferred'] = instance.transferred;

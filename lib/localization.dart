@@ -431,6 +431,14 @@ class AppLocalization {
         name: 'enterConfirmationCodeParagraph');
   }
 
+  String get borrowStarted {
+    return Intl.message(
+      "Purchase Started for %1",
+      desc: "Users may see this after starting the account purchase process",
+      name: 'borrowStarted'
+    );
+  }
+
   String get borrowAccountParagraph {
     return Intl.message(
         "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account in the following <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.",
@@ -541,10 +549,18 @@ class AppLocalization {
 
   String get borrowedAccountParagraph {
     return Intl.message(
-        "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days %3 hours</colored>, it’ll be yours.",
-        desc: 'A paragraph that explains what a public key is',
+        "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days, %3 hours, and %4 minutes</colored>, it’ll be yours.",
+        desc: 'A paragraph that explains what a borrowed account is',
         name: 'borrowedAccountParagraph');
   }
+
+  String get borrowedAccountPaidParagraph {
+    return Intl.message(
+        "Your account has been purchased! \nThe transfer is currently processing, it will be yours soon.",
+        desc: 'A paragraph that explains what a borrowed account is',
+        name: 'borrowedAccountParagraph');
+  }
+
 
   String get logoutFirstDisclaimerParagraph {
     return Intl.message(
@@ -1527,14 +1543,8 @@ class AppLocalization {
         desc: 'Header for borrowed tag', name: 'borrowedHeader');
   }
 
-  String get borrowedPaidHeader {
-    return Intl.message("Paid",
-        desc: 'Header for borrowed tag, after account is paid for', name: 'borrowedPaidHeader');
-  }
-
-
   String get borrowedTransferredHeader {
-    return Intl.message("Pending",
+    return Intl.message("Transfer Pending",
         desc: 'Header for borrowed tag, after account is transferred but not confirmed', name: 'borrowedTransferredHeader');
   }
 

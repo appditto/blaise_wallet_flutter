@@ -9,7 +9,7 @@ class BorrowResponse {
   AccountNumber account;
 
   @JsonKey(
-      name: 'expiry',
+      name: 'expires',
       fromJson: toDateTime,
       toJson: fromDateTime,
       includeIfNull: false)
