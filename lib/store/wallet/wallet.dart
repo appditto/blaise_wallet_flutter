@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/network/http_client.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_delete_account_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_update_bulk_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/fcm_update_request.dart';
 import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.dart';
+import 'package:blaise_wallet_flutter/network/model/response/accounts_response_borrowed.dart';
 import 'package:blaise_wallet_flutter/network/model/response/borrow_response.dart';
 import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
 import 'package:blaise_wallet_flutter/network/ws_client.dart';
@@ -118,6 +121,26 @@ abstract class WalletBase with Store {
   }
 
   @action
+  Future<RPCResponse> findAccountsRequest(FindAccountsRequest request) async {
+    /// This custom request includes borrowed accounts
+    request.id = this.rpcClient.id;
+    String responseJson = await this.rpcClient.rpcPost(request.toJson());
+    if (responseJson == null) {
+      throw Exception('Did not receive a response');
+    }
+    // Parse base response
+    BaseResponse resp = BaseResponse.fromJson(json.decode(responseJson));
+    // Determine if error response
+    if (resp is Map &&
+        resp.result.containsKey('code') &&
+        resp.result.containsKey('message')) {
+      return ErrorResponse.fromJson(resp.result);
+    }
+    // Determine correct response type
+    return AccountsResponseBorrowed.fromJson(json.decode(responseJson));
+  }
+
+  @action
   Future<bool> loadWallet() async {
     if (this.publicKey == null) {
       PrivateKey privKey = PrivateKeyCoder().decodeFromBytes(
@@ -133,23 +156,37 @@ abstract class WalletBase with Store {
     // TODO - pagination?
     FindAccountsRequest findAccountsRequest = FindAccountsRequest(
         b58Pubkey: PublicKeyCoder().encodeToBase58(this.publicKey), max: 25);
-    RPCResponse resp = await this.rpcClient.makeRpcRequest(findAccountsRequest);
+    RPCResponse resp = await this.findAccountsRequest(findAccountsRequest);
     if (resp.isError) {
       ErrorResponse err = resp;
       log.d("findaccounts returned error ${err.errorMessage}");
       return false;
     }
-    AccountsResponse accountsResponse = resp;
-    PascalAccount borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
-    if (borrowedAccount != null && !accountsResponse.accounts.contains(borrowedAccount)) {
-      accountsResponse.accounts.add(borrowedAccount);
+    AccountsResponseBorrowed accountsResponse = resp;
+    bool hasCustomDaemon = (await sl.get<SharedPrefsUtil>().getRpcUrl()) != AppConstants.DEFAULT_RPC_HTTP_URL;
+    if (hasCustomDaemon) {
+      PascalAccount borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
+      if (borrowedAccount != null && !accountsResponse.accounts.contains(borrowedAccount)) {
+        accountsResponse.accounts.add(borrowedAccount);
+      }
+    } else if (accountsResponse.borrowedAccount != null) {
+      accountsResponse.accounts.where((acct) => acct.account == accountsResponse.borrowedAccount.account).forEach((acct) {
+        acct.isBorrowed = true;
+      });
+      this.borrowedAccount = accountsResponse.borrowedAccount;
+      this.isBorrowEligible = false;
+    } else if (accountsResponse.borrowedAccount == null) {
+      this.isBorrowEligible = true;
+      this.borrowedAccount = null;
     }
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
       totalBalance += acct.balance;
     });
-    this.updateBorrowed();
+    if (hasCustomDaemon) { 
+      this.updateBorrowed();
+    }
     this.totalWalletBalance = totalBalance;
     this.walletLoading = false;
     return true;

@@ -70,32 +70,23 @@ class _AccountPageState extends State<AccountPage>
   String untilExpirationHours = "";
   String untilExpirationMinutes = "";
 
-  void formateExpiryDate() {
+  void formatExpiryDate(DateTime expiry) {
     if (walletState.borrowedAccount != null) {
-      DateTime expiry = walletState.borrowedAccount.expiry;
-      if (expiry == null) {
-        print("NULL EXPIRY");
-      }
       DateTime now = DateTime.now().toUtc();
       int diffS = expiry.difference(now).inSeconds;
-      print("DIFFS S ${diffS}");
       if (diffS <= 60) {
         // Seconds only
-        setState(() {
-          untilExpirationDays = "0";
-          untilExpirationHours = "0";
-          untilExpirationMinutes = "0";
-        });
+        untilExpirationDays = "0";
+        untilExpirationHours = "0";
+        untilExpirationMinutes = "0";
       } else if (diffS <= 3600) {
         // Minutes
         String minutesStr = "";
         int minutes = diffS ~/ 60;
         minutesStr = minutes.toString();
-        setState(() {
-          untilExpirationDays = "0";
-          untilExpirationHours = "0";
-          untilExpirationMinutes = minutesStr;
-        });
+        untilExpirationDays = "0";
+        untilExpirationHours = "0";
+        untilExpirationMinutes = minutesStr;
       } else if (diffS <= 86400) {
         // Hours:Minutes
         String hoursStr = "";
@@ -105,11 +96,9 @@ class _AccountPageState extends State<AccountPage>
         String minutesStr = "";
         int minutes = diffS ~/ 60;
         minutesStr = minutes.toString();
-        setState(() {
-          untilExpirationDays = "0";
-          untilExpirationHours = hoursStr;
-          untilExpirationMinutes = minutesStr;
-        });
+        untilExpirationDays = "0";
+        untilExpirationHours = hoursStr;
+        untilExpirationMinutes = minutesStr;
       } else {
         // Days:Hours:Minutes
         String daysStr = "";
@@ -123,11 +112,9 @@ class _AccountPageState extends State<AccountPage>
         String minutesStr = "";
         int minutes = diffS ~/ 60;
         minutesStr = minutes.toString();
-        setState(() {
-          untilExpirationDays = daysStr;
-          untilExpirationHours = hoursStr;
-          untilExpirationMinutes = minutesStr;
-        });        
+        untilExpirationDays = daysStr;
+        untilExpirationHours = hoursStr;
+        untilExpirationMinutes = minutesStr;
       }
     }
   }
@@ -164,8 +151,6 @@ class _AccountPageState extends State<AccountPage>
     // Update FCM token
     if (!this.accountState.account.isBorrowed) {
       walletState.fcmUpdate(widget.account.account);
-    } else {
-      formateExpiryDate();
     }
   }
 
@@ -347,14 +332,38 @@ class _AccountPageState extends State<AccountPage>
     if (socketUpdate) {
       walletState.requestUpdate();
     }
-    this.accountState?.updateAccount();
-    this.accountState?.getAccountOperations()?.whenComplete(() {
-      if (mounted) {
-        setState(() {
-          _isRefreshing = false;
-        });
-      }
-    });
+    if (!widget.account.isBorrowed) {
+      this.accountState?.updateAccount();
+      this.accountState?.getAccountOperations()?.whenComplete(() {
+        if (mounted) {
+          setState(() {
+            _isRefreshing = false;
+          });
+        }
+      });
+    } else {
+      this.accountState?.updateAccount()?.whenComplete(() {
+        if (mounted) {
+          if (this.accountState.account.isBorrowed) {
+            setState(() {
+              _isRefreshing = false;
+            });
+          } else {
+            walletState.updateBorrowed().then((_) {
+              if (mounted) {
+                setState(() {
+                  _isRefreshing = false;
+                });
+                if (walletState.borrowedAccount == null) {
+                  walletState.loadWallet();
+                  Navigator.of(context).pushReplacementNamed('/account', arguments: this.accountState.account);
+                }
+              }
+            });
+          }
+        }
+      });      
+    }
   }
 
   @override
@@ -729,63 +738,76 @@ class _AccountPageState extends State<AccountPage>
                   widget.account.isBorrowed
                       ? // Paragraph and illustration
                       Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              //Container for the paragraph
-                              Container(
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    30, 0, 30, 0),
-                                child:
-                                  Observer(
-                                    builder: (context) {
-                                      String msgStr = "";
-                                      List<TextSpan> msg;
-                                      if (walletState.borrowedAccount != null && walletState.borrowedAccount.paid) {
-                                        msgStr = AppLocalization.of(context).borrowedAccountPaidParagraph;
-                                        msg = formatLocalizedColors(context, msgStr);
-                                      } else {
-                                        msgStr = AppLocalization.of(context)
-                                          .borrowedAccountParagraph
-                                          .replaceAll("%1", accountPrice)
-                                          .replaceAll("%2", untilExpirationDays)
-                                          .replaceAll(
-                                              "%3", untilExpirationHours)
-                                          .replaceAll('%4', untilExpirationMinutes);
-                                        msg = formatLocalizedColors(context, msgStr);
-                                      }
-                                      return AutoSizeText.rich(
-                                        TextSpan(
-                                          children: msg
+                        child: ReactiveRefreshIndicator(
+                            backgroundColor: StateContainer.of(context)
+                                .curTheme
+                                .backgroundPrimary,
+                            onRefresh: _refresh,
+                            isRefreshing: _isRefreshing,
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  padding: EdgeInsets.all(0),                            
+                                  //Container for the paragraph
+                                  child: Column(
+                                    children: <Widget> [
+                                      Container(
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            30, 0, 30, 0),
+                                        child:
+                                          Observer(
+                                            builder: (context) {
+                                              String msgStr = "";
+                                              List<TextSpan> msg;
+                                              if ((walletState.borrowedAccount != null && walletState.borrowedAccount.paid)) {
+                                                msgStr = AppLocalization.of(context).borrowedAccountPaidParagraph;
+                                                msg = formatLocalizedColors(context, msgStr);
+                                              } else {
+                                                formatExpiryDate(walletState.borrowedAccount.expiry);
+                                                msgStr = AppLocalization.of(context)
+                                                  .borrowedAccountParagraph
+                                                  .replaceAll("%1", accountPrice)
+                                                  .replaceAll("%2", untilExpirationDays)
+                                                  .replaceAll(
+                                                      "%3", untilExpirationHours)
+                                                  .replaceAll('%4', untilExpirationMinutes);
+                                                msg = formatLocalizedColors(context, msgStr);
+                                              }
+                                              return AutoSizeText.rich(
+                                                TextSpan(
+                                                  children: msg
+                                                ),
+                                                stepGranularity: 0.5,
+                                                maxLines: 10,
+                                                minFontSize: 8,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(fontSize: 14),
+                                              );
+                                            },
+                                          )
+                                      ),
+                                      // Container for the illustration
+                                      Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                          top: 24,
+                                          bottom: 24,
                                         ),
-                                        stepGranularity: 0.5,
-                                        maxLines: 10,
-                                        minFontSize: 8,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 14),
-                                      );
-                                    },
-                                  )
-                              ),
-                              // Container for the illustration
-                              Container(
-                                margin: EdgeInsetsDirectional.only(
-                                  top: 24,
-                                  bottom: 24,
-                                ),
-                                child: SvgRepaintAsset(
-                                    asset: StateContainer.of(context)
-                                        .curTheme
-                                        .illustrationBorrowed,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.8 *
-                                        132 /
-                                        295),
-                              ),
-                            ],
-                          ),
+                                        child: SvgRepaintAsset(
+                                            asset: StateContainer.of(context)
+                                                .curTheme
+                                                .illustrationBorrowed,
+                                            width:
+                                                MediaQuery.of(context).size.width * 0.8,
+                                            height: MediaQuery.of(context).size.width *
+                                                0.8 *
+                                                132 /
+                                                295),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              )
+                          )
                         )
                       :
                       // Wallet Cards

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
@@ -61,6 +62,14 @@ abstract class AccountBase with Store {
       return false;
     }
     PascalAccount updatedAccount = resp;
+    // See if this accounts borrowed status has changed
+    if (this.account.isBorrowed) {
+      String curAcctPubkey = PublicKeyCoder().encodeToBase58(updatedAccount.encPubkey);
+      String curWalletPubkey = PublicKeyCoder().encodeToBase58(walletState.publicKey);
+      if (curAcctPubkey != curWalletPubkey) {
+        updatedAccount.isBorrowed = true;
+      }
+    }
     this.account = updatedAccount;
     this.accountBalance = updatedAccount.balance;
     return true;
@@ -71,6 +80,10 @@ abstract class AccountBase with Store {
     /// Add operation if:
     /// 1) We don't have it
     /// 2) We do have it, but it has since been confirmed
+    /// 3) This account is not borrowed
+    if (this.account.isBorrowed) {
+      return;
+    }
     if (!this.operations.contains(op) || this.operations.contains(op) && this.operations.firstWhere((nOp) => nOp == op).maturation == null && op.maturation != null) {
       if (this.operations.contains(op)) {
         this.operations.remove(op);

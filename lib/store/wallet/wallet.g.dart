@@ -245,6 +245,14 @@ mixin _$Wallet on WalletBase, Store {
     return _$initiateBorrowAsyncAction.run(() => super.initiateBorrow());
   }
 
+  final _$findAccountsRequestAsyncAction = AsyncAction('findAccountsRequest');
+
+  @override
+  Future<RPCResponse> findAccountsRequest(FindAccountsRequest request) {
+    return _$findAccountsRequestAsyncAction
+        .run(() => super.findAccountsRequest(request));
+  }
+
   final _$loadWalletAsyncAction = AsyncAction('loadWallet');
 
   @override

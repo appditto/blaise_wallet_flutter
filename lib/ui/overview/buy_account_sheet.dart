@@ -176,6 +176,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                             dynamic resp = await walletState.initiateBorrow();
                             if (walletState.borrowedAccount != null) {
                               _overlay?.remove();
+                              walletState.loadWallet();
                               if (resp is PascalAccount) {
                                 Navigator.of(context).pushReplacementNamed('/account', arguments: resp);
                               } else {
