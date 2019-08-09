@@ -415,7 +415,10 @@ class _AccountPageState extends State<AccountPage>
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {
+                              onTap:widget.account.isBorrowed
+                                    ? (){
+                                      return null;
+                                    }:() {
                                 showAppDialog(
                                     context: context,
                                     builder: (_) => DialogOverlay(
