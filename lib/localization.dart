@@ -877,6 +877,11 @@ class AppLocalization {
         desc: 'Header for the languages', name: 'languageHeader');
   }
 
+  String get languageColonHeader {
+    return Intl.message("Language:",
+        desc: 'Header for the language option on welcome page', name: 'languageColonHeader');
+  }
+
   String get systemDefaultHeader {
     return Intl.message("System Default",
         desc: 'Header for system default', name: 'systemDefaultHeader');
