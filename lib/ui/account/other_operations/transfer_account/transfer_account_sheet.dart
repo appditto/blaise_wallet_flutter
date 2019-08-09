@@ -101,7 +101,7 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
                           AppLocalization.of(context)
-                              .transferredSheetHeader
+                              .transferSheetHeader
                               .toUpperCase(),
                           style: AppStyles.header(context),
                           maxLines: 1,

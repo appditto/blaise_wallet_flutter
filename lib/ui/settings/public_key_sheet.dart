@@ -55,27 +55,10 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      // Close Button
-                      Container(
-                        margin: EdgeInsetsDirectional.only(start: 5, end: 10),
+                      // Sized Box
+                      SizedBox(
                         height: 50,
-                        width: 50,
-                        child: FlatButton(
-                            highlightColor:
-                                StateContainer.of(context).curTheme.textLight15,
-                            splashColor:
-                                StateContainer.of(context).curTheme.textLight30,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Icon(AppIcons.close,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textLight,
-                                size: 20)),
+                        width: 65,
                       ),
                       // Header
                       Container(

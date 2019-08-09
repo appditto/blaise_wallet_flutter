@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/overview/buy_account_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/overview/get_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/overview/public_key_overview_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/settings/settings.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -340,207 +341,248 @@ class _OverviewPageState extends State<OverviewPage>
                                   .curTheme
                                   .shadowMainCard,
                             ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            // Column for balance texts
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // Container for "TOTAL BALANCE" text
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      24, 0, 24, 0),
-                                  child: AutoSizeText(
-                                    AppLocalization.of(context)
-                                        .totalBalanceHeader
-                                        .toUpperCase(),
-                                    style: AppStyles.paragraphTextLightSmall(
-                                        context),
-                                  ),
-                                ),
-                                // Container for the balance
-                                Container(
-                                    width:
-                                        MediaQuery.of(context).size.width - 160,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        24, 4, 24, 4),
-                                    child: Observer(
-                                        builder: (BuildContext context) {
-                                      if (walletState.walletLoading) {
-                                        return Opacity(
-                                          opacity: _opacityAnimation.value,
-                                          child: Align(
-                                            alignment: Alignment(-1, 0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .textLight
-                                                        .withOpacity(0.75),
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                              ),
-                                              child: AutoSizeText(
-                                                "             ",
-                                                style:
-                                                    AppStyles.header(context),
-                                                maxLines: 1,
-                                                minFontSize: 8,
-                                                stepGranularity: 1,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return AutoSizeText.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: "",
-                                                style: AppStyles
-                                                    .iconFontTextLightPascal(
-                                                        context),
-                                              ),
-                                              TextSpan(
-                                                  text: " ",
-                                                  style:
-                                                      TextStyle(fontSize: 12)),
-                                              TextSpan(
-                                                  text: walletState
-                                                      .totalWalletBalance
-                                                      .toStringOpt(),
-                                                  style: AppStyles.header(
-                                                      context)),
-                                            ],
-                                          ),
-                                          maxLines: 1,
-                                          minFontSize: 8,
-                                          stepGranularity: 1,
-                                          style: TextStyle(
-                                            fontSize: 28,
-                                          ),
-                                        );
-                                      }
-                                    })),
-                                // Container for the fiat conversion
-                                Container(
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      24, 0, 24, 0),
-                                  child: Observer(
-                                    builder: (BuildContext context) {
-                                      if (walletState.walletLoading ||
-                                          walletState.localCurrencyPrice ==
-                                              null ||
-                                          walletState.totalWalletBalance ==
-                                              null) {
-                                        return Opacity(
-                                          opacity: _opacityAnimation.value,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: StateContainer.of(context)
-                                                  .curTheme
-                                                  .textLight
-                                                  .withOpacity(0.75),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: AutoSizeText(
-                                              "                  ",
-                                              style: AppStyles
-                                                  .paragraphTextLightSmall(
-                                                      context),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return AutoSizeText(
-                                          "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: walletState.totalWalletBalance)})",
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                AppSheets.showBottomSheet(
+                                    context: context,
+                                    widget: PublicKeyOverviewSheet());
+                              },
+                              highlightColor: StateContainer.of(context)
+                                  .curTheme
+                                  .textLight15,
+                              splashColor: StateContainer.of(context)
+                                  .curTheme
+                                  .textLight30,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  // Column for balance texts
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      // Container for "TOTAL BALANCE" text
+                                      Container(
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            24, 0, 24, 0),
+                                        child: AutoSizeText(
+                                          AppLocalization.of(context)
+                                              .totalBalanceHeader
+                                              .toUpperCase(),
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
-                                        );
-                                      }
-                                    },
+                                        ),
+                                      ),
+                                      // Container for the balance
+                                      Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              160,
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  24, 4, 24, 4),
+                                          child: Observer(
+                                              builder: (BuildContext context) {
+                                            if (walletState.walletLoading) {
+                                              return Opacity(
+                                                opacity:
+                                                    _opacityAnimation.value,
+                                                child: Align(
+                                                  alignment: Alignment(-1, 0),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: StateContainer.of(
+                                                              context)
+                                                          .curTheme
+                                                          .textLight
+                                                          .withOpacity(0.75),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                    ),
+                                                    child: AutoSizeText(
+                                                      "             ",
+                                                      style: AppStyles.header(
+                                                          context),
+                                                      maxLines: 1,
+                                                      minFontSize: 8,
+                                                      stepGranularity: 1,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return AutoSizeText.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "",
+                                                      style: AppStyles
+                                                          .iconFontTextLightPascal(
+                                                              context),
+                                                    ),
+                                                    TextSpan(
+                                                        text: " ",
+                                                        style: TextStyle(
+                                                            fontSize: 12)),
+                                                    TextSpan(
+                                                        text: walletState
+                                                            .totalWalletBalance
+                                                            .toStringOpt(),
+                                                        style: AppStyles.header(
+                                                            context)),
+                                                  ],
+                                                ),
+                                                maxLines: 1,
+                                                minFontSize: 8,
+                                                stepGranularity: 1,
+                                                style: TextStyle(
+                                                  fontSize: 28,
+                                                ),
+                                              );
+                                            }
+                                          })),
+                                      // Container for the fiat conversion
+                                      Container(
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            24, 0, 24, 0),
+                                        child: Observer(
+                                          builder: (BuildContext context) {
+                                            if (walletState.walletLoading ||
+                                                walletState
+                                                        .localCurrencyPrice ==
+                                                    null ||
+                                                walletState
+                                                        .totalWalletBalance ==
+                                                    null) {
+                                              return Opacity(
+                                                opacity:
+                                                    _opacityAnimation.value,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textLight
+                                                        .withOpacity(0.75),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                  child: AutoSizeText(
+                                                    "                  ",
+                                                    style: AppStyles
+                                                        .paragraphTextLightSmall(
+                                                            context),
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return AutoSizeText(
+                                                "(${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: walletState.totalWalletBalance)})",
+                                                style: AppStyles
+                                                    .paragraphTextLightSmall(
+                                                        context),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                            // Column for settings icon and price text
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                // Settings Icon
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      top: 2, end: 2),
-                                  height: 50,
-                                  width: 50,
-                                  child: FlatButton(
-                                      highlightColor: StateContainer.of(context)
-                                          .curTheme
-                                          .textLight15,
-                                      splashColor: StateContainer.of(context)
-                                          .curTheme
-                                          .textLight30,
-                                      onPressed: () {
-                                        _scaffoldKey.currentState
-                                            .openEndDrawer();
-                                      },
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0)),
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Icon(AppIcons.settings,
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .textLight,
-                                          size: 24)),
-                                ),
-                                Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      end: 16, bottom: 12),
-                                  child: Observer(
-                                    builder: (BuildContext context) {
-                                      if (walletState.localCurrencyPrice ==
-                                          null) {
-                                        return Opacity(
-                                          opacity: _opacityAnimation.value,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: StateContainer.of(context)
-                                                  .curTheme
-                                                  .textLight
-                                                  .withOpacity(0.75),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: AutoSizeText(
-                                              "            ",
-                                              style: AppStyles
-                                                  .paragraphTextLightSmallSemiBold(
-                                                      context),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return AutoSizeText(
-                                          "${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: Currency('1'), decimalDigits: 3)}",
-                                          style: AppStyles
-                                              .paragraphTextLightSmallSemiBold(
-                                                  context),
-                                        );
-                                      }
-                                    },
+                                  // Column for settings icon and price text
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      // Settings Icon
+                                      Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                            top: 2, end: 2),
+                                        height: 50,
+                                        width: 50,
+                                        child: FlatButton(
+                                            highlightColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight15,
+                                            splashColor:
+                                                StateContainer.of(context)
+                                                    .curTheme
+                                                    .textLight30,
+                                            onPressed: () {
+                                              _scaffoldKey.currentState
+                                                  .openEndDrawer();
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        50.0)),
+                                            padding: EdgeInsets.all(0.0),
+                                            child: Icon(AppIcons.settings,
+                                                color:
+                                                    StateContainer.of(context)
+                                                        .curTheme
+                                                        .textLight,
+                                                size: 24)),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                            end: 16, bottom: 12),
+                                        child: Observer(
+                                          builder: (BuildContext context) {
+                                            if (walletState
+                                                    .localCurrencyPrice ==
+                                                null) {
+                                              return Opacity(
+                                                opacity:
+                                                    _opacityAnimation.value,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: StateContainer.of(
+                                                            context)
+                                                        .curTheme
+                                                        .textLight
+                                                        .withOpacity(0.75),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                  child: AutoSizeText(
+                                                    "            ",
+                                                    style: AppStyles
+                                                        .paragraphTextLightSmallSemiBold(
+                                                            context),
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return AutoSizeText(
+                                                "${walletState.getLocalCurrencyDisplay(currency: StateContainer.of(context).curCurrency, amount: Currency('1'), decimalDigits: 3)}",
+                                                style: AppStyles
+                                                    .paragraphTextLightSmallSemiBold(
+                                                        context),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ],
