@@ -141,6 +141,24 @@ abstract class WalletBase with Store {
   }
 
   @action
+  Future<List<PascalAccount>> findAccountsWithNameLike(String name) async {
+    // TODO - this RPC request is broken when exact is set to false
+    FindAccountsRequest findAccountsRequest = FindAccountsRequest(
+      name: name,
+      exact: true
+    );
+    RPCResponse resp = await this.rpcClient.makeRpcRequest(findAccountsRequest);
+    if (resp.isError) {
+      ErrorResponse err = resp;
+      log.d("findaccounts returned error ${err.errorMessage}");
+      return null;      
+    }
+    AccountsResponse accountsResponse = resp;
+    print(json.encode(accountsResponse.toJson()));
+    return accountsResponse.accounts;
+  }
+
+  @action
   Future<bool> loadWallet() async {
     if (this.publicKey == null) {
       PrivateKey privKey = PrivateKeyCoder().decodeFromBytes(

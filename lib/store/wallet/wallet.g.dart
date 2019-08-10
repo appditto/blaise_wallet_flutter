@@ -253,6 +253,15 @@ mixin _$Wallet on WalletBase, Store {
         .run(() => super.findAccountsRequest(request));
   }
 
+  final _$findAccountsWithNameLikeAsyncAction =
+      AsyncAction('findAccountsWithNameLike');
+
+  @override
+  Future<List<PascalAccount>> findAccountsWithNameLike(String name) {
+    return _$findAccountsWithNameLikeAsyncAction
+        .run(() => super.findAccountsWithNameLike(name));
+  }
+
   final _$loadWalletAsyncAction = AsyncAction('loadWallet');
 
   @override

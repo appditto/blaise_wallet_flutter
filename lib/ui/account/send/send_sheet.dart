@@ -18,6 +18,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/payload.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,6 +67,11 @@ class _SendSheetState extends State<SendSheet> {
   List<Contact> _contacts;
   bool _isValidContactAndUnfocused;
 
+  // Account name list
+  List<PascalAccount> _accountNames;
+  List<PascalAccount> _accountNamesUnfocused;
+  bool _accountNamesLoading;
+
   // Account State
   Account accountState;
 
@@ -88,6 +94,9 @@ class _SendSheetState extends State<SendSheet> {
     this._isValidContactAndUnfocused = false;
     this._isDestinationFieldTypeContact = false;
     this._contacts = [];
+    this._accountNames = [];
+    this._accountNamesUnfocused = [];
+    this._accountNamesLoading = false;
     this._encryptedPayload = false;
     this.accountState = walletState.getAccountState(widget.account);
     // TODO this is a placeholder
@@ -104,27 +113,35 @@ class _SendSheetState extends State<SendSheet> {
           } catch (e) {}
         }
         // Reset contacts list and check if contact is valid
-        if (mounted) {
+        if (_isDestinationFieldTypeContact) {
+          if (mounted) {
+            setState(() {
+              _contacts = [];
+            });
+          }
+          sl
+              .get<DBHelper>()
+              .getContactWithName(this.addressController.text)
+              .then((contact) {
+            if (contact != null && mounted) {
+              this.addressController.text =
+                  this.addressController.text;
+              setState(() {
+                _isValidContactAndUnfocused = true;
+                _payload = contact.payload;
+                _encryptedPayload = false;
+              });
+              EventTaxiImpl.singleton()
+                  .fire(PayloadChangedEvent(payload: contact.payload));
+            }
+          });
+        } else {
+          // Hide the account name list
+          print("1111111 HIDING LIST");
           setState(() {
-            _contacts = [];
+            _accountNames = [];
           });
         }
-        sl
-            .get<DBHelper>()
-            .getContactWithName(this.addressController.text)
-            .then((contact) {
-          if (contact != null && mounted) {
-            this.addressController.text =
-                this.addressController.text.substring(1);
-            setState(() {
-              _isValidContactAndUnfocused = true;
-              _payload = contact.payload;
-              _encryptedPayload = false;
-            });
-            EventTaxiImpl.singleton()
-                .fire(PayloadChangedEvent(payload: contact.payload));
-          }
-        });
       } else {
         // When focused
         if (this._isValidContactAndUnfocused) {
@@ -152,12 +169,18 @@ class _SendSheetState extends State<SendSheet> {
               });
             }
           });
+        } else {
+          // Show account names list
+          print("222222 SHOWING LIST");
+          setState(() {
+            _accountNames = _accountNamesUnfocused;
+          });
         }
       }
     });
     // Initial contact information
     if (widget.contact != null) {
-      this.addressController.text = widget.contact.name.toString().substring(1);
+      this.addressController.text = widget.contact.name.toString();
       this._payload = widget.contact.payload;
       this._isValidContactAndUnfocused = true;
     }
@@ -621,6 +644,8 @@ class _SendSheetState extends State<SendSheet> {
                                         ),
                                         // Contacts pop up
                                         _getContactsPopup(),
+                                        // Account name pop up
+                                        _getAccountNameList(),
                                       ],
                                     ),
                                   ],
@@ -665,7 +690,8 @@ class _SendSheetState extends State<SendSheet> {
                 // Account search button
                 this.addressFocusNode.hasFocus &&
                         !_isDestinationFieldTypeContact &&
-                        (this.addressController.text.length == 0 || !isDigit(this.addressController.text, 0))
+                        (this.addressController.text.length > 0 && !isDigit(this.addressController.text, 0))
+                        && !_accountNamesLoading
                     ? Container(
                         width: double.maxFinite,
                         height: 50,
@@ -678,7 +704,31 @@ class _SendSheetState extends State<SendSheet> {
                               .gradientPrimary,
                         ),
                         child: FlatButton(
-                          onPressed: () => null,
+                          onPressed: () async {
+                            if (mounted) {
+                              setState(() {
+                                _accountNamesLoading = true;
+                              });
+                            }
+                            List<PascalAccount> accounts = await walletState.findAccountsWithNameLike(this.addressController.text);
+                            if (accounts == null) {
+                              UIUtil.showSnackbar("Account search returned an error", context);
+                              setState(() {
+                                _accountNamesLoading = false;
+                              });
+                            } else {
+                              if (mounted) {
+                                if (accounts.isEmpty) {
+                                  UIUtil.showSnackbar("No results found", context);
+                                }
+                                setState(() {
+                                  _accountNames = accounts;
+                                  _accountNamesUnfocused = accounts;
+                                  _accountNamesLoading = false;
+                                });
+                              }
+                            }
+                          },
                           highlightColor: StateContainer.of(context)
                               .curTheme
                               .backgroundPrimary15,
@@ -879,9 +929,85 @@ class _SendSheetState extends State<SendSheet> {
                 style: AppStyles.iconFontPrimarySmall(context),
               ),
               TextSpan(
-                text: contact.name.substring(1),
+                text: contact.name,
                 style: AppStyles.contactsItemName(context),
               ),
+            ]),
+            maxLines: 1,
+            stepGranularity: 0.1,
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getAccountNameList() {
+    return !_isDestinationFieldTypeContact && !_accountNamesLoading && _accountNames.isNotEmpty
+        ? Material(
+            color: StateContainer.of(context).curTheme.backgroundPrimary,
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 138),
+              width: MediaQuery.of(context).size.width - 60,
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4),
+              decoration: BoxDecoration(
+                  color: StateContainer.of(context).curTheme.backgroundPrimary,
+                  boxShadow: [
+                    StateContainer.of(context).curTheme.shadowAccountCard
+                  ]),
+              child: ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: _accountNames.length,
+                itemBuilder: (context, index) {
+                  return _buildAccountNameItem(_accountNames[index]);
+                },
+              ),
+            ))
+        : _accountNamesLoading ?
+        Material(
+            color: StateContainer.of(context).curTheme.backgroundPrimary,
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 138),
+              width: MediaQuery.of(context).size.width - 60,
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4),
+              decoration: BoxDecoration(
+                  color: StateContainer.of(context).curTheme.backgroundPrimary,
+                  boxShadow: [
+                    StateContainer.of(context).curTheme.shadowAccountCard
+                  ]),
+              child: Center(
+                child: CircularProgressIndicator()
+              )
+            )          
+        )
+        : SizedBox();
+  }
+
+  Widget _buildAccountNameItem(PascalAccount account) {
+    return Container(
+      width: double.maxFinite,
+      height: 46,
+      child: FlatButton(
+        padding: EdgeInsets.all(0),
+        onPressed: () {
+          // TODO
+        },
+        child: Container(
+          alignment: Alignment(-1, 0),
+          margin: EdgeInsetsDirectional.only(start: 16, end: 16),
+          child: AutoSizeText.rich(
+            TextSpan(children: [
+              TextSpan(
+                text: account.name.toString(),
+                style: AppStyles.contactsItemNamePrimary(context),
+              ),
+              TextSpan(
+                text: ' (${account.account.toString()})',
+                style: AppStyles.contactsItemName(context)
+              )
             ]),
             maxLines: 1,
             stepGranularity: 0.1,
@@ -927,7 +1053,7 @@ class _SendSheetState extends State<SendSheet> {
         : contact;
     if (c != null && mounted) {
       addressFocusNode.unfocus();
-      addressController.text = c.name.substring(1);
+      addressController.text = c.name;
       setState(() {
         _isValidContactAndUnfocused = true;
         _payload = c.payload;
