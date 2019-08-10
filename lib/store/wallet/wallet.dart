@@ -259,14 +259,7 @@ abstract class WalletBase with Store {
     }
     currency = currency ?? AvailableCurrency(AvailableCurrencyEnum.USD);
     Decimal converted = Decimal.parse(localCurrencyPrice.toString()) * Decimal.parse(amount.toStringOpt());
-    switch (currency.getLocale().countryCode) {
-      case "VE":
-        return NumberFormat.currency(locale: currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: "Bs.S", decimalDigits: 4).format(converted.toDouble());
-      case "TR":
-        return NumberFormat.currency(locale:currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: "₺", decimalDigits: decimalDigits).format(converted.toDouble());
-      default:
-        return NumberFormat.currency(locale:currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: currency.getCurrencySymbol(), decimalDigits: decimalDigits).format(converted.toDouble());
-    }
+    return NumberFormat.currency(locale:currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: currency.getCurrencySymbol(), decimalDigits: decimalDigits).format(converted.toDouble());
   }
 
   /// Websocket Actions

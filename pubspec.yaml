@@ -159,6 +159,9 @@ flutter:
           weight: 200
         - asset: fonts/Metropolis-Thin.ttf
           weight: 100
+    - family: Symbola
+      fonts:
+        - asset: fonts/Symbola.ttf
     - family: SourceCodePro
       fonts:
         - asset: fonts/SourceCodePro-Black.ttf

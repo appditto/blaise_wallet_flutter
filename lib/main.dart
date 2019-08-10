@@ -156,6 +156,7 @@ class _AppState extends State<App> {
           }
         },
         supportedLocales: [
+          const Locale('tr'),
           // Currency-default requires country included
           const Locale("es", "AR"),
           const Locale("en", "AU"),
