@@ -71,6 +71,10 @@ class _SendSheetState extends State<SendSheet> {
 
   // Switch to Contacts field
   bool _isDestinationFieldTypeContact;
+  String _lastContactFieldValue = "";
+  String _lastNameFieldValue = "";
+
+  bool isDigit(String s, int idx) => (s.codeUnitAt(idx) ^ 0x30) <= 9;
 
   @override
   void initState() {
@@ -92,7 +96,7 @@ class _SendSheetState extends State<SendSheet> {
     this.addressFocusNode.addListener(() {
       if (!this.addressFocusNode.hasFocus) {
         // When unfocused, add checksum to account if applicable
-        if (!this.addressController.text.startsWith("@")) {
+        if (this.addressController.text.length > 0 && isDigit(this.addressController.text, 0)) {
           try {
             AccountNumber numberFormatted =
                 AccountNumber(this.addressController.text);
@@ -127,9 +131,8 @@ class _SendSheetState extends State<SendSheet> {
           setState(() {
             _isValidContactAndUnfocused = false;
           });
-          this.addressController.text = "@${addressController.text}";
         }
-        if (this.addressController.text.length == 0) {
+        if (this.addressController.text.length == 0 && _isDestinationFieldTypeContact) {
           // Show contacts list
           sl.get<DBHelper>().getContacts().then((contacts) {
             if (mounted) {
@@ -138,7 +141,7 @@ class _SendSheetState extends State<SendSheet> {
               });
             }
           });
-        } else if (this.addressController.text.startsWith("@")) {
+        } else if (_isDestinationFieldTypeContact) {
           sl
               .get<DBHelper>()
               .getContactsWithNameLike(this.addressController.text)
@@ -426,11 +429,14 @@ class _SendSheetState extends State<SendSheet> {
                                                     .account_balance_wallet,
                                                 onPressed: () {
                                                   setState(() {
-                                                    _isDestinationFieldTypeContact =
-                                                        !_isDestinationFieldTypeContact;
+                                                    _isDestinationFieldTypeContact = false;
+                                                    _lastContactFieldValue = addressController.text;
+                                                    addressController.text = _lastNameFieldValue;
                                                   });
                                                   addressFocusNode
                                                       .requestFocus();
+                                                  addressController.selection = TextSelection.fromPosition(
+                                                      TextPosition(offset: addressController.text.length));
                                                 },
                                               ),
                                             )
@@ -487,11 +493,14 @@ class _SendSheetState extends State<SendSheet> {
                                                 icon: AppIcons.contacts,
                                                 onPressed: () {
                                                   setState(() {
-                                                    _isDestinationFieldTypeContact =
-                                                        !_isDestinationFieldTypeContact;
+                                                    _isDestinationFieldTypeContact = true;
+                                                    _lastNameFieldValue = addressController.text;
+                                                    addressController.text = _lastContactFieldValue;                                                    
                                                   });
                                                   addressFocusNode
                                                       .requestFocus();
+                                                  addressController.selection = TextSelection.fromPosition(
+                                                      TextPosition(offset: addressController.text.length));
                                                 },
                                               ),
                                             ),
@@ -655,7 +664,8 @@ class _SendSheetState extends State<SendSheet> {
                 ),
                 // Account search button
                 this.addressFocusNode.hasFocus &&
-                        !_isDestinationFieldTypeContact
+                        !_isDestinationFieldTypeContact &&
+                        (this.addressController.text.length == 0 || !isDigit(this.addressController.text, 0))
                     ? Container(
                         width: double.maxFinite,
                         height: 50,
@@ -708,12 +718,7 @@ class _SendSheetState extends State<SendSheet> {
         amountError = AppLocalization.of(context).zeroAmountError;
       });
     }
-    String contactNameToCheck;
-    if (_isValidContactAndUnfocused) {
-      contactNameToCheck = "@${addressController.text}";
-    } else if (addressController.text.startsWith("@")) {
-      contactNameToCheck = addressController.text;
-    }
+    String contactNameToCheck = addressController.text;
     if (contactNameToCheck != null) {
       contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
       if (contact == null) {
@@ -890,8 +895,7 @@ class _SendSheetState extends State<SendSheet> {
 
   /// When address text field is changed
   Future<void> _checkAndUpdateContacts() async {
-    bool isContact = addressController.text.startsWith("@");
-    if (isContact) {
+    if (_isDestinationFieldTypeContact) {
       List<Contact> matches = await sl
           .get<DBHelper>()
           .getContactsWithNameLike(addressController.text);
