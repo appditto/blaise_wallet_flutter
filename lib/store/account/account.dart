@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/update_history_event.dart';
+import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +40,12 @@ abstract class AccountBase with Store {
   @observable
   List<PascalOperation> operationsToDisplay;
 
+  @observable
+  bool paid;
+
   AccountBase({@required this.rpcClient, @required this.account}) {
     this.accountBalance = account.balance;
+    this.paid = false;
   }
 
   @action
@@ -53,11 +60,40 @@ abstract class AccountBase with Store {
     this.accountBalance += delta;
   }
 
+ @action
+  Future<RPCResponse> jRpcRequest(Map<String, dynamic> request) async {
+    /// This custom request includes borrowed accounts
+    request['id'] = this.rpcClient.id;
+    String responseJson = await this.rpcClient.rpcPost(request);
+    if (responseJson == null) {
+      throw Exception('Did not receive a response');
+    }
+    // Parse base response
+    BaseResponse resp = BaseResponse.fromJson(json.decode(responseJson));
+    // Determine if error response
+    if (resp is Map &&
+        resp.result.containsKey('code') &&
+        resp.result.containsKey('message')) {
+      return ErrorResponse.fromJson(resp.result);
+    }
+    // Determine correct response type
+    if (resp.result.containsKey('paid')) {
+      this.paid = resp.result['paid'];
+      resp.result.remove('paid');
+    }
+    return PascalAccount.fromJson(resp.result);
+  }
+
   @action
   Future<bool> updateAccount() async {
     // Update account information via getaccount, return false is unsuccessful true otherwise
+    bool hasCustomDaemon = (await sl.get<SharedPrefsUtil>().getRpcUrl()) != AppConstants.DEFAULT_RPC_HTTP_URL;
     GetAccountRequest request = GetAccountRequest(account: this.account.account.account);
-    RPCResponse resp = await this.rpcClient.makeRpcRequest(request);
+    Map<String, dynamic> requestJson = request.toJson();
+    if (!hasCustomDaemon && account.isBorrowed) {
+      requestJson['params'].putIfAbsent('borrowed', () => true);
+    }
+    RPCResponse resp = await this.jRpcRequest(requestJson);
     if (resp.isError) {
       return false;
     }

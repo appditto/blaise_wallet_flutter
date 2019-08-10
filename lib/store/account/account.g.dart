@@ -114,6 +114,30 @@ mixin _$Account on AccountBase, Store {
         name: '${_$operationsToDisplayAtom.name}_set');
   }
 
+  final _$paidAtom = Atom(name: 'AccountBase.paid');
+
+  @override
+  bool get paid {
+    _$paidAtom.context.enforceReadPolicy(_$paidAtom);
+    _$paidAtom.reportObserved();
+    return super.paid;
+  }
+
+  @override
+  set paid(bool value) {
+    _$paidAtom.context.conditionallyRunInAction(() {
+      super.paid = value;
+      _$paidAtom.reportChanged();
+    }, _$paidAtom, name: '${_$paidAtom.name}_set');
+  }
+
+  final _$jRpcRequestAsyncAction = AsyncAction('jRpcRequest');
+
+  @override
+  Future<RPCResponse> jRpcRequest(Map<String, dynamic> request) {
+    return _$jRpcRequestAsyncAction.run(() => super.jRpcRequest(request));
+  }
+
   final _$updateAccountAsyncAction = AsyncAction('updateAccount');
 
   @override

@@ -71,7 +71,7 @@ class _AccountPageState extends State<AccountPage>
   String untilExpirationMinutes = "";
 
   void formatExpiryDate(DateTime expiry) {
-    if (walletState.borrowedAccount != null) {
+    if (expiry != null) {
       DateTime now = DateTime.now().toUtc();
       int diffS = expiry.difference(now).inSeconds;
       if (diffS <= 60) {
@@ -790,7 +790,7 @@ class _AccountPageState extends State<AccountPage>
                                                   null &&
                                               walletState
                                                   .borrowedAccount
-                                                  .paid)) {
+                                                  .paid) || accountState.paid) {
                                             msgStr = AppLocalization.of(
                                                     context)
                                                 .borrowedAccountPaidParagraph;
@@ -799,7 +799,7 @@ class _AccountPageState extends State<AccountPage>
                                           } else {
                                             formatExpiryDate(walletState
                                                 .borrowedAccount
-                                                .expiry);
+                                                ?.expiry);
                                             msgStr = AppLocalization.of(
                                                     context)
                                                 .borrowedAccountParagraph
