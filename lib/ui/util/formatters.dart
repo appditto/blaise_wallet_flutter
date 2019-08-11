@@ -95,7 +95,7 @@ class LocalCurrencyFormatter extends TextInputFormatter {
   LocalCurrencyFormatter({this.currencyFormat, this.active});
 
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.trim() == currencyFormat.currencySymbol.trim() || newValue.text.isEmpty) {
+    if (newValue.text.isEmpty) {
       // Return empty string
       return newValue.copyWith(
         text: "",
@@ -103,17 +103,17 @@ class LocalCurrencyFormatter extends TextInputFormatter {
     }
     // Ensure our input is in the right formatting here
     if (active) {
-      // Make local currency = symbol + amount with correct decimal separator
+      // Make local currency = amount with correct decimal separator
       String curText = newValue.text;
       String shouldBeText = NumberUtil.sanitizeNumber(curText.replaceAll(",", "."));
-      shouldBeText = currencyFormat.currencySymbol + shouldBeText.replaceAll(".", currencyFormat.symbols.DECIMAL_SEP);
+      shouldBeText = shouldBeText.replaceAll(".", currencyFormat.symbols.DECIMAL_SEP);
       if (shouldBeText != curText) {
         return newValue.copyWith(
           text: shouldBeText,
           selection: TextSelection.collapsed(offset: shouldBeText.length));
       }
     } else {
-      // Make crypto amount have no symbol and formatted as US locale
+      // Make crypto amount formatted as US locale
       String curText = newValue.text;
       String shouldBeText = NumberUtil.sanitizeNumber(curText.replaceAll(",", "."));
       if (shouldBeText != curText) {

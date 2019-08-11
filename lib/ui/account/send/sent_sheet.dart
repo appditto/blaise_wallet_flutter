@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -13,6 +14,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class SentSheet extends StatefulWidget {
   final String destination;
   final String amount;
+  final String localCurrencyAmount;
+  final AvailableCurrency localCurrency;
   final String payload;
   final Currency fee;
   final Contact contact;
@@ -22,6 +25,8 @@ class SentSheet extends StatefulWidget {
       {@required this.destination,
       @required this.amount,
       @required this.fee,
+      this.localCurrencyAmount,
+      this.localCurrency,
       this.contact,
       this.payload = "",
       this.encryptedPayload = false});
@@ -193,7 +198,7 @@ class _SentSheetState extends State<SentSheet> {
                                       ),
                                       TextSpan(
                                           text:
-                                              widget.contact.name.substring(1),
+                                              widget.contact.name,
                                           style: AppStyles.contactsItemName(
                                               context)),
                                       TextSpan(
@@ -260,7 +265,7 @@ class _SentSheetState extends State<SentSheet> {
                                     ),
                                     child: AutoSizeText.rich(
                                       TextSpan(
-                                        children: [
+                                        children: widget.localCurrencyAmount == null ? [
                                           TextSpan(
                                             text: "",
                                             style: AppStyles
@@ -275,6 +280,37 @@ class _SentSheetState extends State<SentSheet> {
                                               style:
                                                   AppStyles.balanceSmallSuccess(
                                                       context)),
+                                        ] :
+                                        [
+                                          TextSpan(
+                                            text: "",
+                                            style: AppStyles
+                                                .iconFontSuccessBalanceSmallPascal(
+                                                    context),
+                                          ),
+                                          TextSpan(
+                                              text: " ",
+                                              style: TextStyle(fontSize: 8)),
+                                          TextSpan(
+                                              text: widget.amount,
+                                              style: AppStyles.balanceSmallSuccess(
+                                                  context)),
+                                          TextSpan(
+                                              text: " (",
+                                              style: AppStyles.balanceSmallSuccess(
+                                                  context)),
+                                          TextSpan(
+                                            text: widget.localCurrency.getCurrencySymbol(),
+                                            style: AppStyles.iconFontSuccessBalanceSmallPascal(context)
+                                          ),
+                                          TextSpan(
+                                              text: widget.localCurrencyAmount,
+                                              style: AppStyles.balanceSmallSuccess(
+                                                  context)),
+                                          TextSpan(
+                                              text: ")",
+                                              style: AppStyles.balanceSmallSuccess(
+                                                  context)),
                                         ],
                                       ),
                                       textAlign: TextAlign.center,

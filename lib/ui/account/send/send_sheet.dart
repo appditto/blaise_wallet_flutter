@@ -453,6 +453,7 @@ class _SendSheetState extends State<SendSheet> {
                                                     .account_balance_wallet,
                                                 onPressed: () {
                                                   setState(() {
+                                                    destinationError = null;
                                                     _isDestinationFieldTypeContact = false;
                                                     _lastContactFieldValue = addressController.text;
                                                     addressController.text = _lastNameFieldValue;
@@ -517,6 +518,7 @@ class _SendSheetState extends State<SendSheet> {
                                                 icon: AppIcons.contacts,
                                                 onPressed: () {
                                                   setState(() {
+                                                    destinationError = null;
                                                     _isDestinationFieldTypeContact = true;
                                                     _lastNameFieldValue = addressController.text;
                                                     addressController.text = _lastContactFieldValue;                                                    
@@ -546,76 +548,87 @@ class _SendSheetState extends State<SendSheet> {
                                             Container(
                                               margin: EdgeInsetsDirectional
                                                   .fromSTEB(30, 30, 30, 0),
-                                              child: AppTextField(
-                                                  label: AppLocalization.of(
-                                                          context)
-                                                      .amountTextFieldHeader,
-                                                  style: AppStyles
-                                                      .paragraphPrimary(
-                                                          context),
-                                                  maxLines: 1,
-                                                  inputType: TextInputType
-                                                      .numberWithOptions(
-                                                          decimal: true),
-                                                  prefix: _localCurrencyMode
-                                                      ? Text("")
-                                                      : Icon(
-                                                          AppIcons.pascalsymbol,
-                                                          size: 15,
-                                                          color:
-                                                              StateContainer.of(
-                                                                      context)
-                                                                  .curTheme
-                                                                  .primary,
-                                                        ),
-                                                  onChanged: (text) {
-                                                    if (amountError != null) {
-                                                      setState(() {
-                                                        amountError = null;
-                                                      });
-                                                    }
-                                                  },
-                                                  inputFormatters: [
-                                                    LengthLimitingTextInputFormatter(
-                                                        13),
-                                                    _localCurrencyMode
-                                                        ? CurrencyFormatter(
-                                                            decimalSeparator:
-                                                                _localCurrencyFormat
-                                                                    .symbols
-                                                                    .DECIMAL_SEP,
-                                                            commaSeparator:
-                                                                _localCurrencyFormat
-                                                                    .symbols
-                                                                    .GROUP_SEP,
-                                                            maxDecimalDigits: 2)
-                                                        : CurrencyFormatter(
-                                                            maxDecimalDigits:
-                                                                NumberUtil
-                                                                    .maxDecimalDigits),
-                                                    LocalCurrencyFormatter(
-                                                        active:
-                                                            _localCurrencyMode,
-                                                        currencyFormat:
-                                                            _localCurrencyFormat),
-                                                  ],
-                                                  focusNode: amountFocusNode,
-                                                  controller: amountController,
-                                                  firstButton: TextFieldButton(
-                                                    icon: AppIcons.max,
-                                                    onPressed: () {
-                                                      amountController.text =
-                                                          widget.account.balance
-                                                              .toStringOpt();
-                                                      amountFocusNode.unfocus();
+                                              child: Observer(
+                                                builder: (context) {
+                                                  bool showCurrencySwitch = walletState.localCurrencyPrice != null;
+                                                  return AppTextField(
+                                                    label: AppLocalization.of(
+                                                            context)
+                                                        .amountTextFieldHeader,
+                                                    style: AppStyles
+                                                        .paragraphPrimary(
+                                                            context),
+                                                    maxLines: 1,
+                                                    inputType: TextInputType
+                                                        .numberWithOptions(
+                                                            decimal: true),
+                                                    prefix: _localCurrencyMode
+                                                        ? Text(
+                                                          widget.localCurrency.getCurrencySymbol(),
+                                                          style: AppStyles.iconFontPrimarySmall(
+                                                                    context),
+                                                        )
+                                                        : Icon(
+                                                            AppIcons.pascalsymbol,
+                                                            size: 15,
+                                                            color:
+                                                                StateContainer.of(
+                                                                        context)
+                                                                    .curTheme
+                                                                    .primary,
+                                                          ),
+                                                    onChanged: (text) {
+                                                      if (amountError != null) {
+                                                        setState(() {
+                                                          amountError = null;
+                                                        });
+                                                      }
                                                     },
-                                                  ),
-                                                  secondButton: TextFieldButton(
-                                                      icon: AppIcons
-                                                          .currencyswitch,
+                                                    inputFormatters: [
+                                                      LengthLimitingTextInputFormatter(
+                                                          13),
+                                                      _localCurrencyMode
+                                                          ? CurrencyFormatter(
+                                                              decimalSeparator:
+                                                                  _localCurrencyFormat
+                                                                      .symbols
+                                                                      .DECIMAL_SEP,
+                                                              commaSeparator:
+                                                                  _localCurrencyFormat
+                                                                      .symbols
+                                                                      .GROUP_SEP,
+                                                              maxDecimalDigits: 2)
+                                                          : CurrencyFormatter(
+                                                              maxDecimalDigits:
+                                                                  NumberUtil
+                                                                      .maxDecimalDigits),
+                                                      LocalCurrencyFormatter(
+                                                          active:
+                                                              _localCurrencyMode,
+                                                          currencyFormat:
+                                                              _localCurrencyFormat),
+                                                    ],
+                                                    focusNode: amountFocusNode,
+                                                    controller: amountController,
+                                                    firstButton: TextFieldButton(
+                                                      icon: AppIcons.max,
                                                       onPressed: () {
-                                                        toggleLocalCurrency();
-                                                      })),
+                                                        amountController.text =
+                                                            widget.account.balance
+                                                                .toStringOpt();
+                                                        amountFocusNode.unfocus();
+                                                      },
+                                                    ),
+                                                    secondButton: showCurrencySwitch ? TextFieldButton(
+                                                        icon: AppIcons
+                                                            .currencyswitch,
+                                                        onPressed: () {
+                                                          toggleLocalCurrency();
+                                                        }
+                                                      ) : null
+                                                  );
+                                                }
+                                              )
                                             ),
                                             // Fee container
                                             _hasFee
@@ -753,24 +766,25 @@ class _SendSheetState extends State<SendSheet> {
   Future<void> validateAndSend() async {
     bool hasError = false;
     Contact contact;
+    Currency sendAmount = _localCurrencyMode ? Currency(_convertLocalCurrencyToCrypto()) :Currency(amountController.text);
     if (amountController.text.length == 0) {
       hasError = true;
       setState(() {
         amountError = AppLocalization.of(context).amountRequiredError;
       });
-    } else if (accountState.accountBalance < Currency(amountController.text)) {
+    } else if (accountState.accountBalance < sendAmount) {
       hasError = true;
       setState(() {
         amountError = AppLocalization.of(context).insufficientBalanceError;
       });
-    } else if (Currency(amountController.text) <= Currency("0")) {
+    } else if (sendAmount <= Currency("0")) {
       hasError = true;
       setState(() {
         amountError = AppLocalization.of(context).zeroAmountError;
       });
     }
     String contactNameToCheck = addressController.text;
-    if (contactNameToCheck != null) {
+    if (contactNameToCheck != null && _isDestinationFieldTypeContact) {
       contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
       if (contact == null) {
         hasError = true;
@@ -802,7 +816,9 @@ class _SendSheetState extends State<SendSheet> {
           context: context,
           widget: SendingSheet(
               destination: addressController.text,
-              amount: amountController.text,
+              amount: sendAmount.toStringOpt(),
+              localCurrencyAmount: _localCurrencyMode ? amountController.text : null,
+              localCurrency: widget.localCurrency, 
               source: widget.account,
               fee: _hasFee ? walletState.MIN_FEE : walletState.NO_FEE,
               payload: _payload,
@@ -881,7 +897,7 @@ class _SendSheetState extends State<SendSheet> {
             .toString();
     convertedAmt =
         convertedAmt.replaceAll(".", _localCurrencyFormat.symbols.DECIMAL_SEP);
-    convertedAmt = _localCurrencyFormat.currencySymbol + convertedAmt;
+    convertedAmt = convertedAmt;
     return convertedAmt;
   }
 

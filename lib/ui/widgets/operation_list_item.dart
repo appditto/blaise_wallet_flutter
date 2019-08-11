@@ -236,7 +236,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                               context),
                                         ),
                                         TextSpan(
-                                          text: widget.address.substring(1),
+                                          text: widget.address,
                                           style: AppStyles.contactsItemName(
                                               context),
                                         ),

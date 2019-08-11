@@ -227,7 +227,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                               context),
                                     ),
                                     TextSpan(
-                                      text: widget.contact.name.substring(1),
+                                      text: widget.contact.name,
                                       style: contactNameCopied
                                           ? AppStyles.contactsItemNameSuccess(
                                               context)
@@ -474,7 +474,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
   void _copyToClipboard(String toCopy) {
     if (toCopy == "Contact Name") {
       Clipboard.setData(
-          ClipboardData(text: (widget.contact.name.toString().substring(1))));
+          ClipboardData(text: (widget.contact.name.toString())));
       setState(() {
         contactNameCopied = true;
         contactAddressCopied = false;

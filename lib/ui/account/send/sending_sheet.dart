@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/bus/authenticated_event.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/sent_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
@@ -29,6 +30,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class SendingSheet extends StatefulWidget {
   final String destination;
   final String amount;
+  final String localCurrencyAmount;
+  final AvailableCurrency localCurrency;
   final String payload;
   final PascalAccount source;
   final Currency fee;
@@ -41,6 +44,8 @@ class SendingSheet extends StatefulWidget {
       @required this.amount,
       @required this.source,
       @required this.fee,
+      this.localCurrencyAmount,
+      this.localCurrency,
       this.contact,
       this.payload = "",
       this.fromOverview = false,
@@ -231,7 +236,7 @@ class _SendingSheetState extends State<SendingSheet> {
                                           context),
                                     ),
                                     TextSpan(
-                                        text: widget.contact.name.substring(1),
+                                        text: widget.contact.name,
                                         style: AppStyles.contactsItemName(
                                             context)),
                                     TextSpan(
@@ -298,7 +303,7 @@ class _SendingSheetState extends State<SendingSheet> {
                                     ),
                                     child: AutoSizeText.rich(
                                       TextSpan(
-                                        children: [
+                                        children: widget.localCurrencyAmount == null ? [
                                           TextSpan(
                                             text: "",
                                             style: AppStyles
@@ -310,6 +315,37 @@ class _SendingSheetState extends State<SendingSheet> {
                                               style: TextStyle(fontSize: 8)),
                                           TextSpan(
                                               text: widget.amount,
+                                              style: AppStyles.balanceSmall(
+                                                  context)),
+                                        ] :
+                                        [
+                                          TextSpan(
+                                            text: "",
+                                            style: AppStyles
+                                                .iconFontPrimaryBalanceSmallPascal(
+                                                    context),
+                                          ),
+                                          TextSpan(
+                                              text: " ",
+                                              style: TextStyle(fontSize: 8)),
+                                          TextSpan(
+                                              text: widget.amount,
+                                              style: AppStyles.balanceSmall(
+                                                  context)),
+                                          TextSpan(
+                                              text: " (",
+                                              style: AppStyles.balanceSmall(
+                                                  context)),
+                                          TextSpan(
+                                            text: widget.localCurrency.getCurrencySymbol(),
+                                            style: AppStyles.iconFontPrimaryBalanceSmallPascal(context)
+                                          ),
+                                          TextSpan(
+                                              text: widget.localCurrencyAmount,
+                                              style: AppStyles.balanceSmall(
+                                                  context)),
+                                          TextSpan(
+                                              text: ")",
                                               style: AppStyles.balanceSmall(
                                                   context)),
                                         ],
@@ -578,6 +614,8 @@ class _SendingSheetState extends State<SendingSheet> {
                       ? widget.destination
                       : widget.contact.account.toString(),
                   amount: widget.amount,
+                  localCurrencyAmount: widget.localCurrencyAmount,
+                  localCurrency: widget.localCurrency,
                   fee: fee,
                   payload: widget.payload,
                   contact: widget.contact,

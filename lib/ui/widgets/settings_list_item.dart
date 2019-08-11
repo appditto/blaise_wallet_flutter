@@ -61,7 +61,7 @@ class _SettingsListItemState extends State<SettingsListItem> {
                               style: AppStyles.iconFontPrimarySmall(context),
                             ),
                             TextSpan(
-                              text: widget.contactName.substring(1),
+                              text: widget.contactName,
                               style: AppStyles.contactsItemName(context),
                             ),
                           ]),
