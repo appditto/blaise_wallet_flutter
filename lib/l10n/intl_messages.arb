@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-11T11:59:48.640010",
+  "@@last_modified": "2019-08-11T12:22:56.392932",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
@@ -513,6 +513,12 @@
   "logoutSecondDisclaimerParagraph": "Are you sure that you've backed up your private key? <colored>As long as you've backed up your private key, you have nothing to worry about.</colored>",
   "@logoutSecondDisclaimerParagraph": {
     "description": "The second part of the disclaimer that is shown when the user tries to log out.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noResultsFound": "No results found",
+  "@noResultsFound": {
+    "description": "When searching for account name has returned 0 results",
     "type": "text",
     "placeholders": {}
   },

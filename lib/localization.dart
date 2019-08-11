@@ -580,6 +580,12 @@ class AppLocalization {
   // Settings related paragraphs END
 
   // Operation Related Paragraphs
+  String get noResultsFound {
+    return Intl.message("No results found",
+      desc: 'When searching for account name has returned 0 results',
+      name: 'noResultsFound');
+  }
+
   String get sendingConfirmParagraph {
     return Intl.message("Confirm the transaction details to send.",
         desc:

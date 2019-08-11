@@ -712,14 +712,14 @@ class _SendSheetState extends State<SendSheet> {
                             }
                             List<PascalAccount> accounts = await walletState.findAccountsWithNameLike(this.addressController.text);
                             if (accounts == null) {
-                              UIUtil.showSnackbar("Account search returned an error", context);
+                              UIUtil.showSnackbar(AppLocalization.of(context).somethingWentWrongError, context);
                               setState(() {
                                 _accountNamesLoading = false;
                               });
                             } else {
                               if (mounted) {
                                 if (accounts.isEmpty) {
-                                  UIUtil.showSnackbar("No results found", context);
+                                  UIUtil.showSnackbar(AppLocalization.of(context).noResultsFound, context);
                                 }
                                 setState(() {
                                   _accountNames = accounts;
