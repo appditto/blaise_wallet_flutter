@@ -301,7 +301,7 @@ class _SentSheetState extends State<SentSheet> {
                                                   context)),
                                           TextSpan(
                                             text: widget.localCurrency.getCurrencySymbol(),
-                                            style: AppStyles.iconFontSuccessBalanceSmallPascal(context)
+                                            style: AppStyles.balanceSmallSuccess(context)
                                           ),
                                           TextSpan(
                                               text: widget.localCurrencyAmount,
