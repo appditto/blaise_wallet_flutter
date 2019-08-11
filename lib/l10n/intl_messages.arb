@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-11T16:39:12.048224",
+  "@@last_modified": "2019-08-11T11:59:48.640010",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
@@ -260,7 +260,7 @@
   },
   "encryptButton": "Encrypt",
   "@encryptButton": {
-    "description": "A button to view the unencrypted key",
+    "description": "A button to encrypt the private key with a password",
     "type": "text",
     "placeholders": {}
   },

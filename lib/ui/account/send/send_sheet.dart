@@ -690,7 +690,7 @@ class _SendSheetState extends State<SendSheet> {
                 // Account search button
                 this.addressFocusNode.hasFocus &&
                         !_isDestinationFieldTypeContact &&
-                        (this.addressController.text.length > 0 && !isDigit(this.addressController.text, 0))
+                        (this.addressController.text.length > 2 && !isDigit(this.addressController.text, 0))
                         && !_accountNamesLoading
                     ? Container(
                         width: double.maxFinite,
@@ -970,9 +970,9 @@ class _SendSheetState extends State<SendSheet> {
         Material(
             color: StateContainer.of(context).curTheme.backgroundPrimary,
             child: Container(
-              constraints: BoxConstraints(maxHeight: 138),
+              height: 46,
               width: MediaQuery.of(context).size.width - 60,
-              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4),
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 6, bottom: 6),
               decoration: BoxDecoration(
                   color: StateContainer.of(context).curTheme.backgroundPrimary,
                   boxShadow: [

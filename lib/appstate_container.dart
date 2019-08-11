@@ -117,13 +117,13 @@ class StateContainerState extends State<StateContainer> {
       if (addressExists) {
         return;
       }
-      bool nameExists = await sl.get<DBHelper>().contactExistsWithName("@BlaiseDonations");
+      bool nameExists = await sl.get<DBHelper>().contactExistsWithName("BlaiseDonations");
       if (nameExists) {
         return;
       }
       await sl.get<SharedPrefsUtil>().setFirstContactAdded(true);
       Contact c = Contact(
-          name: "@BlaiseDonations",
+          name: "BlaiseDonations",
           account:
               AccountNumber.fromInt(1185729),
           payload: "Thanks!");

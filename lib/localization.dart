@@ -276,7 +276,7 @@ class AppLocalization {
 
   String get encryptButton {
     return Intl.message("Encrypt",
-        desc: 'A button to view the unencrypted key', name: 'encryptButton');
+        desc: 'A button to encrypt the private key with a password', name: 'encryptButton');
   }
 
   String get showButton {
