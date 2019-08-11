@@ -402,7 +402,8 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                   context: context,
                                   widget: SendSheet(
                                       account: widget.account.account,
-                                      contact: widget.contact),
+                                      contact: widget.contact,
+                                      localCurrency: StateContainer.of(context).curCurrency),
                                 );
                               } else {
                                 showAppDialog(
@@ -462,6 +463,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                 account: acct,
                 contact: widget.contact,
                 fromOverview: true,
+                localCurrency: StateContainer.of(context).curCurrency
               ),
             );
           }));

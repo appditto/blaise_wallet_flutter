@@ -1063,7 +1063,8 @@ class _AccountPageState extends State<AccountPage>
                                     AppSheets.showBottomSheet(
                                       context: context,
                                       widget: SendSheet(
-                                          account: accountState.account),
+                                          account: accountState.account,
+                                          localCurrency: StateContainer.of(context).curCurrency),
                                     );
                                   },
                                 );

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/model/available_currency.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/bus/events.dart';
 import 'package:blaise_wallet_flutter/model/db/appdb.dart';
@@ -34,8 +35,9 @@ class SendSheet extends StatefulWidget {
   final PascalAccount account;
   final Contact contact;
   final bool fromOverview;
+  final AvailableCurrency localCurrency;
 
-  SendSheet({@required this.account, this.contact, this.fromOverview = false});
+  SendSheet({@required this.account, @required this.localCurrency, this.contact, this.fromOverview = false});
 
   _SendSheetState createState() => _SendSheetState();
 }
@@ -99,9 +101,8 @@ class _SendSheetState extends State<SendSheet> {
     this._accountNamesLoading = false;
     this._encryptedPayload = false;
     this.accountState = walletState.getAccountState(widget.account);
-    // TODO this is a placeholder
     _localCurrencyFormat =
-        NumberFormat.simpleCurrency(locale: Locale("en", "US").toString());
+        NumberFormat.currency(locale: widget.localCurrency.getLocale().toString(), symbol: widget.localCurrency.getCurrencySymbol());
     this.addressFocusNode.addListener(() {
       if (!this.addressFocusNode.hasFocus) {
         // When unfocused, add checksum to account if applicable
@@ -863,7 +864,7 @@ class _SendSheetState extends State<SendSheet> {
       return "";
     }
     Decimal valueLocal = Decimal.parse(convertedAmt);
-    Decimal conversion = Decimal.parse("1.0"); // TODO this is a fake conversion
+    Decimal conversion = Decimal.parse(walletState.localCurrencyPrice.toString());
     return NumberUtil.truncateDecimal(valueLocal / conversion).toString();
   }
 
@@ -874,7 +875,7 @@ class _SendSheetState extends State<SendSheet> {
       return "";
     }
     Decimal valueCrypto = Decimal.parse(convertedAmt);
-    Decimal conversion = Decimal.parse("1.0");
+    Decimal conversion = Decimal.parse(walletState.localCurrencyPrice.toString());
     convertedAmt =
         NumberUtil.truncateDecimal(valueCrypto * conversion, digits: 2)
             .toString();

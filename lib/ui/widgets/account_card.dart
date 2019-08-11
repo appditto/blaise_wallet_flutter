@@ -249,7 +249,7 @@ class _AccountCardState extends State<AccountCard> {
                             arguments: widget.account);
                         AppSheets.showBottomSheet(
                             context: context,
-                            widget: SendSheet(account: widget.account));
+                            widget: SendSheet(account: widget.account, localCurrency: StateContainer.of(context).curCurrency));
                       }
                     },
                     shape: RoundedRectangleBorder(
