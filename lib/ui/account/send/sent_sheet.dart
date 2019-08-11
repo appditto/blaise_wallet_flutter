@@ -20,6 +20,7 @@ class SentSheet extends StatefulWidget {
   final Currency fee;
   final Contact contact;
   final bool encryptedPayload;
+  final AccountName accountName;
 
   SentSheet(
       {@required this.destination,
@@ -29,7 +30,8 @@ class SentSheet extends StatefulWidget {
       this.localCurrency,
       this.contact,
       this.payload = "",
-      this.encryptedPayload = false});
+      this.encryptedPayload = false,
+      this.accountName});
 
   _SentSheetState createState() => _SentSheetState();
 }
@@ -179,7 +181,7 @@ class _SentSheetState extends State<SentSheet> {
                                   .curTheme
                                   .textDark10,
                             ),
-                            child: widget.contact == null
+                            child: widget.contact == null && widget.accountName == null
                                 ? AutoSizeText(
                                     widget.destination,
                                     maxLines: 1,
@@ -189,7 +191,7 @@ class _SentSheetState extends State<SentSheet> {
                                     style:
                                         AppStyles.privateKeyTextDark(context),
                                   )
-                                : AutoSizeText.rich(
+                                : widget.contact != null ? AutoSizeText.rich(
                                     TextSpan(children: [
                                       TextSpan(
                                         text: " ",
@@ -214,7 +216,31 @@ class _SentSheetState extends State<SentSheet> {
                                       fontSize: 14,
                                     ),
                                     minFontSize: 8,
-                                    stepGranularity: 0.1)),
+                                    stepGranularity: 0.1)
+                                  : 
+                                  AutoSizeText.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                          text:
+                                              widget.accountName.toString(),
+                                          style: AppStyles.contactsItemName(
+                                              context)),
+                                      TextSpan(
+                                          text: " (" +
+                                              widget.destination
+                                                  .toString() +
+                                              ")",
+                                          style:
+                                              AppStyles.privateKeyTextDarkFaded(
+                                                  context)),
+                                    ]),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1
+                                  )
+                        ),
                         // Amount and Fee
                         Container(
                           margin: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),

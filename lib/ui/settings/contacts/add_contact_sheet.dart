@@ -238,7 +238,7 @@ class _AddContactSheetState extends State<AddContactSheet> {
                               account: widget.account == null
                                   ? AccountNumber(addressController.text)
                                   : widget.account,
-                              name: "@${nameController.text}",
+                              name: nameController.text,
                               payload: payload);
                           await sl.get<DBHelper>().saveContact(newContact);
                           EventTaxiImpl.singleton()

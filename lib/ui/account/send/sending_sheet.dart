@@ -38,6 +38,7 @@ class SendingSheet extends StatefulWidget {
   final bool fromOverview;
   final Contact contact;
   final bool encryptPayload;
+  final AccountName accountName;
 
   SendingSheet(
       {@required this.destination,
@@ -49,7 +50,8 @@ class SendingSheet extends StatefulWidget {
       this.contact,
       this.payload = "",
       this.fromOverview = false,
-      this.encryptPayload = false});
+      this.encryptPayload = false,
+      this.accountName});
 
   _SendingSheetState createState() => _SendingSheetState();
 }
@@ -219,7 +221,7 @@ class _SendingSheetState extends State<SendingSheet> {
                             color:
                                 StateContainer.of(context).curTheme.textDark10,
                           ),
-                          child: widget.contact == null
+                          child: widget.contact == null && widget.accountName == null
                               ? AutoSizeText(
                                   widget.destination,
                                   maxLines: 1,
@@ -228,7 +230,7 @@ class _SendingSheetState extends State<SendingSheet> {
                                   textAlign: TextAlign.center,
                                   style: AppStyles.privateKeyTextDark(context),
                                 )
-                              : AutoSizeText.rich(
+                              : widget.contact != null ? AutoSizeText.rich(
                                   TextSpan(children: [
                                     TextSpan(
                                       text: " ",
@@ -252,7 +254,28 @@ class _SendingSheetState extends State<SendingSheet> {
                                   ),
                                   minFontSize: 8,
                                   stepGranularity: 0.1,
-                                ),
+                                ) :
+                                   AutoSizeText.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                          text: widget.accountName.toString(),
+                                          style: AppStyles.contactsItemName(
+                                              context)),
+                                      TextSpan(
+                                        text: " (" +
+                                            widget.destination.toString() +
+                                            ")",
+                                        style: AppStyles.privateKeyTextDarkFaded(
+                                            context),
+                                      ),
+                                    ]),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                    minFontSize: 8,
+                                    stepGranularity: 0.1,
+                                  ) 
+                                ,
                         ),
                         // Amount and Fee
                         Container(
@@ -619,7 +642,8 @@ class _SendingSheetState extends State<SendingSheet> {
                   fee: fee,
                   payload: widget.payload,
                   contact: widget.contact,
-                  encryptedPayload: widget.encryptPayload));
+                  encryptedPayload: widget.encryptPayload,
+                  accountName: widget.accountName));
         } else {
           if (op.errors.contains("zero fee") &&
               widget.fee == walletState.NO_FEE) {

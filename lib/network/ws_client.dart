@@ -63,13 +63,13 @@ class WSClient {
       reconnectStream.cancel();
     }
     _isInRetryState = true;
-    print("Retrying connection in 3 seconds...");
+    log.d("Retrying connection in 3 seconds...");
     Future<dynamic> delayed = new Future.delayed(new Duration(seconds: 3));
     delayed.then((_) {
       return true;
     });
     reconnectStream = delayed.asStream().listen((_) {
-      print("Attempting connection to service");
+      log.d("Attempting connection to service");
       initCommunication(unsuspend: true);
       _isInRetryState = false;
     });
@@ -96,7 +96,7 @@ class WSClient {
                                headers: {
                                 'X-Client-Version': packageInfo.buildNumber
                                });
-      print("Connected to service");
+      log.d("Connected to service");
       _isConnecting = false;
       _isConnected = true;
       EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.CONNECTED));
@@ -114,7 +114,7 @@ class WSClient {
     _isConnected = false;
     _isConnecting = false;
     clearQueue();
-    print("disconnected from service");
+    log.d("disconnected from service");
     // Send disconnected message
     EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.DISCONNECTED));
   }
@@ -124,7 +124,7 @@ class WSClient {
     _isConnected = false;
     _isConnecting = false;
     clearQueue();
-    print("disconnected from service with error ${e.toString()}");
+    log.d("disconnected from service with error ${e.toString()}");
     // Send disconnected message
     EventTaxiImpl.singleton().fire(ConnStatusEvent(status: ConnectionStatus.DISCONNECTED));
   }
@@ -171,8 +171,8 @@ class WSClient {
       _isConnected = true;
       _isConnecting = false;
       // TODO showing full length for debugging
-      print(message);
-      //print("Received ${message.length > 30 ? message.substring(0, 30) : message}");
+      log.d(message);
+      //log.d("Received ${message.length > 30 ? message.substring(0, 30) : message}");
       Map msg = await compute(decodeJson, message);
       // Determine response type
       if (msg.containsKey("uuid") || msg.containsKey("currency") ||
@@ -197,20 +197,20 @@ class WSClient {
   /* Send Request */
   Future<void> sendRequest(BaseRequest request) async {
     // We don't care about order or server response in these requests
-    print("sending ${json.encode(request.toJson())}");
+    log.d("sending ${json.encode(request.toJson())}");
     _send(await compute(encodeRequestItem, request));
   }
 
   /* Enqueue Request */
   void queueRequest(BaseRequest request) {
-    print("requetest ${json.encode(request.toJson())}, q length: ${_requestQueue.length}");
+    log.d("requetest ${json.encode(request.toJson())}, q length: ${_requestQueue.length}");
     _requestQueue.add(new RequestItem(request));
   }
 
   /* Process Queue */
   Future<void> processQueue() async {
     await _lock.synchronized(() async {
-      print("Request Queue length ${_requestQueue.length}");
+      log.d("Request Queue length ${_requestQueue.length}");
       if (_requestQueue != null && _requestQueue.length > 0) {
         RequestItem requestItem = _requestQueue.first;
         if (requestItem != null && !requestItem.isProcessing) {
@@ -222,7 +222,7 @@ class WSClient {
           }
           requestItem.isProcessing = true;
           String requestJson = await compute(encodeRequestItem, requestItem.request);
-          print("Sending: $requestJson");
+          log.d("Sending: $requestJson");
           await _send(requestJson);
         } else if (requestItem != null && (DateTime
             .now()

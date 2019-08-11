@@ -154,7 +154,6 @@ abstract class WalletBase with Store {
       return null;      
     }
     AccountsResponse accountsResponse = resp;
-    print(json.encode(accountsResponse.toJson()));
     return accountsResponse.accounts;
   }
 

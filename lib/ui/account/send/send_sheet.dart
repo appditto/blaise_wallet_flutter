@@ -43,6 +43,7 @@ class SendSheet extends StatefulWidget {
 }
 
 class _SendSheetState extends State<SendSheet> {
+  String addressControllerText = "";
   TextEditingController addressController;
   TextEditingController amountController;
   FocusNode addressFocusNode;
@@ -70,6 +71,7 @@ class _SendSheetState extends State<SendSheet> {
   bool _isValidContactAndUnfocused;
 
   // Account name list
+  PascalAccount _selectedAccountName;
   List<PascalAccount> _accountNames;
   List<PascalAccount> _accountNamesUnfocused;
   bool _accountNamesLoading;
@@ -88,6 +90,13 @@ class _SendSheetState extends State<SendSheet> {
   void initState() {
     super.initState();
     this.addressController = TextEditingController();
+    this.addressController.addListener(() {
+      if (mounted) {
+        setState(() {
+          addressControllerText = addressController.text;
+        });
+      }
+    });
     this.amountController = TextEditingController();
     this.addressFocusNode = FocusNode();
     this.amountFocusNode = FocusNode();
@@ -138,10 +147,15 @@ class _SendSheetState extends State<SendSheet> {
           });
         } else {
           // Hide the account name list
-          print("1111111 HIDING LIST");
-          setState(() {
-            _accountNames = [];
-          });
+          if (_accountNames.isNotEmpty) {
+            setState(() {
+              _accountNames = [];
+            });
+          }
+          // Change text for selected account name
+          if (_selectedAccountName != null) {
+            addressController.text = "${_selectedAccountName.name.toString()} (${_selectedAccountName.account.toString()})";
+          }
         }
       } else {
         // When focused
@@ -172,10 +186,17 @@ class _SendSheetState extends State<SendSheet> {
           });
         } else {
           // Show account names list
-          print("222222 SHOWING LIST");
-          setState(() {
-            _accountNames = _accountNamesUnfocused;
-          });
+          if (_accountNamesUnfocused.isNotEmpty) {
+            setState(() {
+              _accountNames = _accountNamesUnfocused;
+            });
+          }
+          // Change text for selected account name
+          if (_selectedAccountName != null) {
+            addressController.text =_selectedAccountName.name.toString();
+            addressController.selection = TextSelection.fromPosition(
+                                            TextPosition(offset: addressController.text.length));
+          }
         }
       }
     });
@@ -458,10 +479,14 @@ class _SendSheetState extends State<SendSheet> {
                                                     _lastContactFieldValue = addressController.text;
                                                     addressController.text = _lastNameFieldValue;
                                                   });
-                                                  addressFocusNode
-                                                      .requestFocus();
-                                                  addressController.selection = TextSelection.fromPosition(
-                                                      TextPosition(offset: addressController.text.length));
+                                                  if (_selectedAccountName == null) {
+                                                    addressFocusNode
+                                                        .requestFocus();
+                                                    addressController.selection = TextSelection.fromPosition(
+                                                        TextPosition(offset: addressController.text.length));
+                                                  } else {
+                                                    addressFocusNode.unfocus();
+                                                  }
                                                 },
                                               ),
                                             )
@@ -490,8 +515,12 @@ class _SendSheetState extends State<SendSheet> {
                                                     destinationError = null;
                                                   });
                                                 }
-                                                // Handle contacts
-                                                await _checkAndUpdateContacts();
+                                                // Reset selected name
+                                                if (mounted && _selectedAccountName != null) {
+                                                  setState(() {
+                                                    _selectedAccountName = null;
+                                                  });
+                                                }
                                               },
                                               focusNode: addressFocusNode,
                                               controller: addressController,
@@ -704,8 +733,8 @@ class _SendSheetState extends State<SendSheet> {
                 // Account search button
                 this.addressFocusNode.hasFocus &&
                         !_isDestinationFieldTypeContact &&
-                        (this.addressController.text.length > 2 && !isDigit(this.addressController.text, 0))
-                        && !_accountNamesLoading
+                        (this.addressControllerText.length > 2 && !isDigit(this.addressControllerText, 0))
+                        && !_accountNamesLoading && _selectedAccountName == null
                     ? Container(
                         width: double.maxFinite,
                         height: 50,
@@ -783,39 +812,41 @@ class _SendSheetState extends State<SendSheet> {
         amountError = AppLocalization.of(context).zeroAmountError;
       });
     }
-    String contactNameToCheck = addressController.text;
-    if (contactNameToCheck != null && _isDestinationFieldTypeContact) {
-      contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
-      if (contact == null) {
-        hasError = true;
-        setState(() {
-          destinationError =
-              AppLocalization.of(context).contactDoesntExistError;
-        });
-      }
-    } else {
-      try {
-        AccountNumber destination = AccountNumber(addressController.text);
-        if (destination == accountState.account.account) {
+    if (_selectedAccountName == null && !_isDestinationFieldTypeContact) {
+      String contactNameToCheck = addressController.text;
+      if (contactNameToCheck != null && _isDestinationFieldTypeContact) {
+        contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
+        if (contact == null) {
           hasError = true;
           setState(() {
             destinationError =
-                AppLocalization.of(context).cantSendToYourselfError;
+                AppLocalization.of(context).contactDoesntExistError;
           });
         }
-      } catch (e) {
-        hasError = true;
-        setState(() {
-          destinationError =
-              AppLocalization.of(context).invalidDestinationError;
-        });
+      } else {
+        try {
+          AccountNumber destination = AccountNumber(addressController.text);
+          if (destination == accountState.account.account) {
+            hasError = true;
+            setState(() {
+              destinationError =
+                  AppLocalization.of(context).cantSendToYourselfError;
+            });
+          }
+        } catch (e) {
+          hasError = true;
+          setState(() {
+            destinationError =
+                AppLocalization.of(context).invalidDestinationError;
+          });
+        }
       }
     }
     if (!hasError) {
       AppSheets.showBottomSheet(
           context: context,
           widget: SendingSheet(
-              destination: addressController.text,
+              destination: _selectedAccountName != null && !_isDestinationFieldTypeContact ? _selectedAccountName.account.toString() : addressController.text,
               amount: sendAmount.toStringOpt(),
               localCurrencyAmount: _localCurrencyMode ? amountController.text : null,
               localCurrency: widget.localCurrency, 
@@ -824,7 +855,8 @@ class _SendSheetState extends State<SendSheet> {
               payload: _payload,
               fromOverview: widget.fromOverview,
               contact: contact,
-              encryptPayload: _encryptedPayload),
+              encryptPayload: _encryptedPayload,
+              accountName: _selectedAccountName != null && !_isDestinationFieldTypeContact ? _selectedAccountName.name : null),
           noBlur: true);
     }
   }
@@ -1010,7 +1042,12 @@ class _SendSheetState extends State<SendSheet> {
       child: FlatButton(
         padding: EdgeInsets.all(0),
         onPressed: () {
-          // TODO
+          setState(() {
+            _selectedAccountName = account;
+            _accountNames = [];
+            _accountNamesUnfocused = [];
+          });
+          addressFocusNode.unfocus();
         },
         child: Container(
           alignment: Alignment(-1, 0),
@@ -1072,6 +1109,7 @@ class _SendSheetState extends State<SendSheet> {
       addressFocusNode.unfocus();
       addressController.text = c.name;
       setState(() {
+        _isDestinationFieldTypeContact = true;
         _isValidContactAndUnfocused = true;
         _payload = c.payload;
         _encryptedPayload = false;

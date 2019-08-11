@@ -26,7 +26,7 @@ with open(options.file) as arb_file:
             obj = {}
         else:
             obj['reference'] = key
-            obj['term'] = value.replace("\n", "%n")
+            obj['term'] = value.replace("\n", "<newline>")
 with open(out_file, 'w') as outf:
     json.dump(ret, outf, indent=4, ensure_ascii=False)
     print(f"Wrote {out_file}")
