@@ -557,8 +557,8 @@ class AppLocalization {
   String get borrowedAccountPaidParagraph {
     return Intl.message(
         "<colored>Your account has been purchased!</colored>\nThe transfer is currently processing. This process usually takes about <colored>15 minutes</colored>, in some cases it may take slightly longer.",
-        desc: 'A paragraph that explains what a borrowed account is',
-        name: 'borrowedAccountParagraph');
+        desc: 'A paragraph that explains that the account has been purchased and transfer is currently processing',
+        name: 'borrowedAccountPaidParagraph');
   }
 
 

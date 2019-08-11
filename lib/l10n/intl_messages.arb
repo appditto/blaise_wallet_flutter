@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-09T02:02:54.278596",
+  "@@last_modified": "2019-08-11T16:39:12.048224",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
@@ -402,7 +402,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "borrowAccountParagraph": "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account in the following <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.",
+  "borrowStarted": "Purchase Started for %1",
+  "@borrowStarted": {
+    "description": "Users may see this after starting the account purchase process",
+    "type": "text",
+    "placeholders": {}
+  },
+  "borrowAccountParagraph": "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account within <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.\nIt is recommended you only send a small amount of coins until you own the account.",
   "@borrowAccountParagraph": {
     "description": "A paragraph that explains the process of borrowing & buying an account",
     "type": "text",
@@ -486,9 +492,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "borrowedAccountParagraph": "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days %3 hours</colored>, it’ll be yours.",
+  "borrowedAccountParagraph": "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days, %3 hours, and %4 minutes</colored>, it’ll be yours.",
   "@borrowedAccountParagraph": {
-    "description": "A paragraph that explains what a public key is",
+    "description": "A paragraph that explains what a borrowed account is",
+    "type": "text",
+    "placeholders": {}
+  },
+  "borrowedAccountPaidParagraph": "<colored>Your account has been purchased!</colored>\nThe transfer is currently processing. This process usually takes about <colored>15 minutes</colored>, in some cases it may take slightly longer.",
+  "@borrowedAccountPaidParagraph": {
+    "description": "A paragraph that explains that the account has been purchased and transfer is currently processing",
     "type": "text",
     "placeholders": {}
   },
@@ -618,7 +630,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "enterPINToUnlockParagraph": "Enter PIN to Unlock Blaise",
+  "enterPINToUnlockParagraph": "Enter PIN to unlock Blaise",
   "@enterPINToUnlockParagraph": {
     "description": "A paragraph that tells the user to enter the PIN to unlock the wallet",
     "type": "text",
@@ -642,7 +654,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "authenticateToDelistParagraph": "Authenticate to change account name to \"%1\"",
+  "authenticateToDelistParagraph": "Authenticate to delist the account from sale",
   "@authenticateToDelistParagraph": {
     "description": "A paragraph that tells the user to authenticate to delist the account from sale",
     "type": "text",
@@ -765,6 +777,12 @@
   "languageHeader": "Language",
   "@languageHeader": {
     "description": "Header for the languages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageColonHeader": "Language:",
+  "@languageColonHeader": {
+    "description": "Header for the language option on welcome page",
     "type": "text",
     "placeholders": {}
   },
@@ -1440,13 +1458,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "borrowedPaidHeader": "Paid",
-  "@borrowedPaidHeader": {
-    "description": "Header for borrowed tag, after account is paid for",
-    "type": "text",
-    "placeholders": {}
-  },
-  "borrowedTransferredHeader": "Pending",
+  "borrowedTransferredHeader": "Transfer Pending",
   "@borrowedTransferredHeader": {
     "description": "Header for borrowed tag, after account is transferred but not confirmed",
     "type": "text",

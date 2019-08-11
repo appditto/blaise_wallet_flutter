@@ -335,8 +335,13 @@
         "context": "A paragraph that tells users to enter the confirmation code to the text field below"
     },
     {
+        "reference": "borrowStarted",
+        "term": "Purchase Started for %1",
+        "context": "Users may see this after starting the account purchase process"
+    },
+    {
         "reference": "borrowAccountParagraph",
-        "term": "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account in the following <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.",
+        "term": "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account within <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.\nIt is recommended you only send a small amount of coins until you own the account.",
         "context": "A paragraph that explains the process of borrowing & buying an account"
     },
     {
@@ -406,8 +411,13 @@
     },
     {
         "reference": "borrowedAccountParagraph",
-        "term": "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days %3 hours</colored>, it’ll be yours.",
-        "context": "A paragraph that explains what a public key is"
+        "term": "This is a <colored>borrowed account</colored>.\nIf you send at least <colored>%1 Pascal</colored> to it in the next <colored>%2 days, %3 hours, and %4 minutes</colored>, it’ll be yours.",
+        "context": "A paragraph that explains what a borrowed account is"
+    },
+    {
+        "reference": "borrowedAccountPaidParagraph",
+        "term": "<colored>Your account has been purchased!</colored>\nThe transfer is currently processing. This process usually takes about <colored>15 minutes</colored>, in some cases it may take slightly longer.",
+        "context": "A paragraph that explains that the account has been purchased and transfer is currently processing"
     },
     {
         "reference": "logoutFirstDisclaimerParagraph",
@@ -516,7 +526,7 @@
     },
     {
         "reference": "enterPINToUnlockParagraph",
-        "term": "Enter PIN to Unlock Blaise",
+        "term": "Enter PIN to unlock Blaise",
         "context": "A paragraph that tells the user to enter the PIN to unlock the wallet"
     },
     {
@@ -536,7 +546,7 @@
     },
     {
         "reference": "authenticateToDelistParagraph",
-        "term": "Authenticate to change account name to \"%1\"",
+        "term": "Authenticate to delist the account from sale",
         "context": "A paragraph that tells the user to authenticate to delist the account from sale"
     },
     {
@@ -638,6 +648,11 @@
         "reference": "languageHeader",
         "term": "Language",
         "context": "Header for the languages"
+    },
+    {
+        "reference": "languageColonHeader",
+        "term": "Language:",
+        "context": "Header for the language option on welcome page"
     },
     {
         "reference": "systemDefaultHeader",
@@ -1200,13 +1215,8 @@
         "context": "Header for borrowed tag"
     },
     {
-        "reference": "borrowedPaidHeader",
-        "term": "Paid",
-        "context": "Header for borrowed tag, after account is paid for"
-    },
-    {
         "reference": "borrowedTransferredHeader",
-        "term": "Pending",
+        "term": "Transfer Pending",
         "context": "Header for borrowed tag, after account is transferred but not confirmed"
     },
     {
