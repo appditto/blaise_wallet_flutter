@@ -441,7 +441,7 @@ class AppLocalization {
 
   String get borrowAccountParagraph {
     return Intl.message(
-        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account in the following <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.",
+        "To buy an account, first you’ll need to borrow one for free. If you send at least <colored>%1 Pascal (%2)</colored> to the account within <colored>%3 days</colored>, the account will be yours and <colored>%1 Pascal</colored> will be deducted from your balance automatically.\nOtherwise, it’ll return back to us at the end of <colored>%3 days</colored> and won’t belong to your wallet anymore.\nIt is recommended you only send a small amount of coins until you own the account.",
         desc:
             'A paragraph that explains the process of borrowing & buying an account',
         name: 'borrowAccountParagraph');
@@ -556,7 +556,7 @@ class AppLocalization {
 
   String get borrowedAccountPaidParagraph {
     return Intl.message(
-        "<colored>Your account has been purchased!</colored>\nThe transfer is currently processing, it will be yours soon.",
+        "<colored>Your account has been purchased!</colored>\nThe transfer is currently processing. This process usually takes about <colored>15 minutes</colored>, in some cases it may take slightly longer.",
         desc: 'A paragraph that explains what a borrowed account is',
         name: 'borrowedAccountParagraph');
   }
