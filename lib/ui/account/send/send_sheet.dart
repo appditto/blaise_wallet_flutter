@@ -205,6 +205,7 @@ class _SendSheetState extends State<SendSheet> {
       this.addressController.text = widget.contact.name.toString();
       this._payload = widget.contact.payload;
       this._isValidContactAndUnfocused = true;
+      this._isDestinationFieldTypeContact = true;
     }
   }
 
