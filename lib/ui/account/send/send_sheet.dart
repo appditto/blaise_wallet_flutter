@@ -21,6 +21,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/number_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/user_data_util.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -1027,7 +1028,15 @@ class _SendSheetState extends State<SendSheet> {
                     StateContainer.of(context).curTheme.shadowAccountCard
                   ]),
               child: Center(
-                child: CircularProgressIndicator()
+                child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: FlareActor(
+                    StateContainer.of(context).curTheme.animationSearch,
+                    animation: "main",
+                    fit: BoxFit.contain,
+                    color: StateContainer.of(context).curTheme.primary,
+                  ),
+                ),
               )
             )          
         )

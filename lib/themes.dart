@@ -91,6 +91,7 @@ abstract class BaseTheme {
   String animationSale;
   String animationTransfer;
   String animationGetAccount;
+  String animationSearch;
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
@@ -264,6 +265,7 @@ class BlaiseLightTheme extends BaseTheme {
   String animationSale = 'assets/animation_sale.flr';
   String animationTransfer = 'assets/animation_transfer.flr';
   String animationGetAccount = 'assets/animation_get_account.flr';
+  String animationSearch = 'assets/animation_search.flr';
 
   Brightness brightness = Brightness.dark;
   SystemUiOverlayStyle statusBar =
@@ -432,7 +434,7 @@ class BlaiseDarkTheme extends BaseTheme {
   String animationSale = 'assets/animation_sale_dark.flr';
   String animationTransfer = 'assets/animation_transfer_dark.flr';
   String animationGetAccount = 'assets/animation_get_account_dark.flr';
-
+  String animationSearch = 'assets/animation_search.flr';
 
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =
@@ -601,7 +603,7 @@ class BlaiseCopperTheme extends BaseTheme {
   String animationSale = 'assets/animation_sale_copper.flr';
   String animationTransfer = 'assets/animation_transfer_copper.flr';
   String animationGetAccount = 'assets/animation_get_account_copper.flr';
-
+  String animationSearch = 'assets/animation_search.flr';
 
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =

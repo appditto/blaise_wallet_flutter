@@ -201,6 +201,7 @@ flutter:
     - assets/animation_get_account.flr
     - assets/animation_get_account_copper.flr
     - assets/animation_get_account_dark.flr
+    - assets/animation_search.flr
     - assets/illustration_backup.svg
     - assets/illustration_new_wallet.svg
     - assets/illustration_two_options.svg
