@@ -1020,7 +1020,7 @@ class _SendSheetState extends State<SendSheet> {
             child: Container(
               height: 46,
               width: MediaQuery.of(context).size.width - 60,
-              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 6, bottom: 6),
+              margin: EdgeInsetsDirectional.only(start: 30, end: 30, top: 4),
               decoration: BoxDecoration(
                   color: StateContainer.of(context).curTheme.backgroundPrimary,
                   boxShadow: [
@@ -1055,11 +1055,11 @@ class _SendSheetState extends State<SendSheet> {
             TextSpan(children: [
               TextSpan(
                 text: account.name.toString(),
-                style: AppStyles.contactsItemNamePrimary(context),
+                style: AppStyles.contactsItemName(context),
               ),
               TextSpan(
                 text: ' (${account.account.toString()})',
-                style: AppStyles.contactsItemName(context)
+                style: AppStyles.privateKeyTextDarkFaded(context)
               )
             ]),
             maxLines: 1,

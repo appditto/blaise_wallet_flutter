@@ -368,6 +368,26 @@ class AppStyles {
     return TextStyle(fontSize: 10);
   }
 
+  static TextStyle accountsItemName(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        fontFamilyFallback: ["RobotoRegular"],
+        color: StateContainer.of(context).curTheme.textDark,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w700);
+  }
+
+  static TextStyle accountsItemNumber(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        fontFamilyFallback: ["RobotoRegular"],
+        color: StateContainer.of(context).curTheme.textDark60,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
+  }
+
   // Contacts item name
   static TextStyle contactsItemName(BuildContext context) {
     return TextStyle(
