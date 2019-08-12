@@ -813,34 +813,32 @@ class _SendSheetState extends State<SendSheet> {
         amountError = AppLocalization.of(context).zeroAmountError;
       });
     }
-    if (_selectedAccountName == null && !_isDestinationFieldTypeContact) {
-      String contactNameToCheck = addressController.text;
-      if (contactNameToCheck != null && _isDestinationFieldTypeContact) {
-        contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
-        if (contact == null) {
+    String contactNameToCheck = addressController.text;
+    if (contactNameToCheck != null && _isDestinationFieldTypeContact) {
+      contact = await sl.get<DBHelper>().getContactWithName(contactNameToCheck);
+      if (contact == null) {
+        hasError = true;
+        setState(() {
+          destinationError =
+              AppLocalization.of(context).contactDoesntExistError;
+        });
+      }
+    } else if (!_isDestinationFieldTypeContact && _selectedAccountName == null) {
+      try {
+        AccountNumber destination = AccountNumber(addressController.text);
+        if (destination == accountState.account.account) {
           hasError = true;
           setState(() {
             destinationError =
-                AppLocalization.of(context).contactDoesntExistError;
+                AppLocalization.of(context).cantSendToYourselfError;
           });
         }
-      } else {
-        try {
-          AccountNumber destination = AccountNumber(addressController.text);
-          if (destination == accountState.account.account) {
-            hasError = true;
-            setState(() {
-              destinationError =
-                  AppLocalization.of(context).cantSendToYourselfError;
-            });
-          }
-        } catch (e) {
-          hasError = true;
-          setState(() {
-            destinationError =
-                AppLocalization.of(context).invalidDestinationError;
-          });
-        }
+      } catch (e) {
+        hasError = true;
+        setState(() {
+          destinationError =
+              AppLocalization.of(context).invalidDestinationError;
+        });
       }
     }
     if (!hasError) {
