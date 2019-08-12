@@ -25,6 +25,7 @@ class OperationListItem extends StatefulWidget {
   final Function onPressed;
   final String name;
   final String price;
+  final bool isContact;
 
   OperationListItem({
     this.type,
@@ -35,6 +36,7 @@ class OperationListItem extends StatefulWidget {
     this.onPressed,
     this.name,
     this.price,
+    this.isContact = false
   });
 
   _OperationListItemState createState() => _OperationListItemState();
@@ -220,7 +222,7 @@ class _OperationListItemState extends State<OperationListItem> {
                                 widget.type == OperationType.Sent
                             ?
                             // Address
-                            widget.address[0] == "@"
+                            widget.isContact
                                 ? Container(
                                     width:
                                         MediaQuery.of(context).size.width / 2 -

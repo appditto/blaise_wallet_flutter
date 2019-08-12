@@ -1105,6 +1105,7 @@ class _AccountPageState extends State<AccountPage>
         type: type,
         amount: op.receivers[0].amount.toStringOpt(),
         address: c == null ? accountToCheck.toString() : c.name,
+        isContact: c != null,
         date: op.maturation != null
             ? UIUtil.formatDateStr(op.time)
             : AppLocalization.of(context).pendingHeader,
