@@ -135,7 +135,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                   child: AutoSizeText.rich(
                                     TextSpan(children: [
                                       TextSpan(
-                                        text: "Language:",
+                                        text: AppLocalization.of(context).languageColonHeader,
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: StateContainer.of(context)
