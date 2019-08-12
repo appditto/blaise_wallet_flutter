@@ -16,7 +16,7 @@ Private keys are stored on the device and never transmitted to the server. Signi
 
 Blaise can interact with any PascalCoin Daemon, a high-performance Python server is used for push notifications, periodic price updates, and the PASA purchase APIs.
 
-Blaise's backend server source code can be found [here](https://github.com/appditto/blaise-wallet-server)
+Blaise's backend server source code can be found [here](https://github.com/appditto/blaise_wallet_server)
 
 ## Contributing
 
