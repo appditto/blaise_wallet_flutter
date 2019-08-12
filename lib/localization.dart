@@ -985,29 +985,29 @@ class AppLocalization {
   }
 
   String get lock1Header {
-    return Intl.message("After 1% minute",
+    return Intl.message("After %1 minute",
         desc: 'Header for locking after 1 minute option', name: 'lock1Header');
   }
 
   String get lock5Header {
-    return Intl.message("After 1% minutes",
+    return Intl.message("After %1 minutes",
         desc: 'Header for locking after 5 minutes option', name: 'lock5Header');
   }
 
   String get lock15Header {
-    return Intl.message("After 1% minutes",
+    return Intl.message("After %1 minutes",
         desc: 'Header for locking after 15 minutes option',
         name: 'lock15Header');
   }
 
   String get lock30Header {
-    return Intl.message("After 1% minutes",
+    return Intl.message("After %1 minutes",
         desc: 'Header for locking after 30 minutes option',
         name: 'lock30Header');
   }
 
   String get lock60Header {
-    return Intl.message("After 1% minutes",
+    return Intl.message("After %1 minutes",
         desc: 'Header for locking after 60 minutes option',
         name: 'lock60Header');
   }
