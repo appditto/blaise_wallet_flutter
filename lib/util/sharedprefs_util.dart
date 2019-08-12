@@ -227,7 +227,7 @@ class SharedPrefsUtil {
   }
 
   Future<LanguageSetting> getLanguage() async {
-    String langEnumStr = await get(cur_language, defaultValue: AvailableLanguage.DEFAULT.toString);
+    String langEnumStr = await get(cur_language, defaultValue: AvailableLanguage.DEFAULT.toString());
     AvailableLanguage lang;
     for (AvailableLanguage aLang in AvailableLanguage.values) {
       if (aLang.toString() == langEnumStr) {
