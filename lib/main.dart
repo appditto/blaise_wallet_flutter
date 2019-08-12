@@ -69,6 +69,7 @@ class _AppState extends State<App> {
         localizationsDelegates: [
           AppLocalizationsDelegate(StateContainer.of(context).curLanguage),
           GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
         initialRoute: '/',
@@ -155,8 +156,8 @@ class _AppState extends State<App> {
               return null;
           }
         },
+        locale: StateContainer.of(context).curLanguage == null ? Locale('en') : StateContainer.of(context).curLanguage.getLocale(),
         supportedLocales: [
-          const Locale('tr'),
           // Currency-default requires country included
           const Locale("es", "AR"),
           const Locale("en", "AU"),
@@ -291,7 +292,6 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
   }
 
   void setLanguage() {
-    /*
     setState(() {
       StateContainer.of(context).deviceLocale = Localizations.localeOf(context);
     });
@@ -299,7 +299,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
       setState(() {
         StateContainer.of(context).updateLanguage(setting);
       });
-    });*/
+    });    
   }
 
   void setDeviceLocaleAndCurrency() {
@@ -314,6 +314,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     setDeviceLocaleAndCurrency();
+    setLanguage();
     return Scaffold(
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
     );

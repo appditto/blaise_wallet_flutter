@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/lock_timeout.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +32,8 @@ class SharedPrefsUtil {
   static const String price_api_cache = 'price_api_cache_v1';
   // Local currency
   static const String cur_currency = 'blaise_currency_pref';
+  // Language setting
+  static const String cur_language = 'blaise_lang_pref';
   // UUID for our WS subscription
   static const String app_uuid_key = 'blaise_app_uuid';
   // Push notifications
@@ -218,6 +221,23 @@ class SharedPrefsUtil {
   Future<AvailableCurrency> getCurrency(Locale deviceLocale) async {
     return AvailableCurrency(AvailableCurrencyEnum.values[await get(cur_currency, defaultValue: AvailableCurrency.getBestForLocale(deviceLocale).currency.index)]);
   }
+
+  Future<void> setLanguage(LanguageSetting language) async {
+   return await set(cur_language, language.getId());
+  }
+
+  Future<LanguageSetting> getLanguage() async {
+    String langEnumStr = await get(cur_language, defaultValue: AvailableLanguage.DEFAULT.toString);
+    AvailableLanguage lang;
+    for (AvailableLanguage aLang in AvailableLanguage.values) {
+      if (aLang.toString() == langEnumStr) {
+        lang = aLang;
+        break;
+      }
+    }
+    return LanguageSetting(lang);
+  }
+
 
   Future<void> setUuid(String uuid) async {
     return await set(app_uuid_key, uuid);

@@ -42,7 +42,7 @@ class LanguageSetting extends SettingSelectionItem {
   }
 
   // For saving to shared prefs
-  int getIndex() {
-    return language.index;
+  String getId() {
+    return language.toString();
   }
 }

@@ -192,6 +192,12 @@ class StateContainerState extends State<StateContainer> {
         curCurrency = currency;
       });
     });
+    // Get default language setting
+    sl.get<SharedPrefsUtil>().getLanguage().then((language) {
+      setState(() {
+        curLanguage = language;
+      });
+    });
   }
 
   @override
