@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/constants.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/available_currency.dart';
+import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/model/notification_enabled.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/store/account/account.dart';
@@ -39,7 +40,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<DialogListItem> languageList = [];
 
   List<DialogListItem> getThemeList() {
     List<DialogListItem> ret = [];
@@ -101,6 +101,27 @@ class _SettingsPageState extends State<SettingsPage> {
     return ret;
   }
 
+  List<DialogListItem> getLanguageList() {
+    List<DialogListItem> ret = [];
+    AvailableLanguage.values.forEach((AvailableLanguage value) {
+      LanguageSetting setting = LanguageSetting(value);
+      ret.add(DialogListItem(
+          option: setting.getDisplayName(context),
+          action: () {
+            if (setting != StateContainer.of(context).curLanguage) {
+              sl
+                  .get<SharedPrefsUtil>()
+                  .setLanguage(setting)
+                  .then((result) {
+                StateContainer.of(context).updateLanguage(setting);
+              });
+            }
+            Navigator.of(context).pop();
+          }));
+    });
+    return ret;
+  }
+
   String daemonURL;
   String versionString = "";
   NotificationSetting _curNotificiationSetting =
@@ -122,13 +143,6 @@ class _SettingsPageState extends State<SettingsPage> {
         versionString = "v${packageInfo.version}";
       });
     });
-    languageList = [
-      DialogListItem(
-          option: "English (en)",
-          action: () {
-            Navigator.pop(context);
-          }),
-    ];
     // Get default notification setting
     sl.get<SharedPrefsUtil>().getNotificationsOn().then((notificationsOn) {
       setState(() {
@@ -271,8 +285,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           SettingsListItem(
                             header: AppLocalization.of(context).languageHeader,
-                            subheader:
-                                AppLocalization.of(context).systemDefaultHeader,
+                            subheader: StateContainer.of(context).curLanguage.getDisplayName(context),
                             icon: AppIcons.language,
                             onPressed: () {
                               showAppDialog(
@@ -280,7 +293,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   builder: (_) => DialogOverlay(
                                       title: AppLocalization.of(context)
                                           .languageHeader,
-                                      optionsList: languageList));
+                                      optionsList: getLanguageList()));
                             },
                           ),
                           SettingsListItem(

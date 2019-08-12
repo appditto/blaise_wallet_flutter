@@ -158,6 +158,9 @@ class _AppState extends State<App> {
         },
         locale: StateContainer.of(context).curLanguage == null ? Locale('en') : StateContainer.of(context).curLanguage.getLocale(),
         supportedLocales: [
+          // Languages
+          const Locale('en', 'US'), // English
+          const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), // Chinese Simplified
           // Currency-default requires country included
           const Locale("es", "AR"),
           const Locale("en", "AU"),

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 enum AvailableLanguage {
   DEFAULT,
-  ENGLISH
+  ENGLISH,
+  CHINESE_SIMPLIFIED
 }
 
 /// Represent the available languages our app supports
@@ -17,6 +18,8 @@ class LanguageSetting extends SettingSelectionItem {
     switch (language) {
       case AvailableLanguage.ENGLISH:
         return "English (en)";
+      case AvailableLanguage.CHINESE_SIMPLIFIED:
+        return "简体字 (zh-Hans)";
       default:
         return AppLocalization.of(context).systemDefaultHeader;
     }
@@ -26,6 +29,8 @@ class LanguageSetting extends SettingSelectionItem {
     switch (language) {
       case AvailableLanguage.ENGLISH:
         return "en";
+      case AvailableLanguage.CHINESE_SIMPLIFIED:
+        return "zh-Hans";
       default:
         return "DEFAULT";
     }

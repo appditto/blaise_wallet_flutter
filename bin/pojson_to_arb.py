@@ -17,7 +17,7 @@ ret = {}
 with open(options.file) as json_file:
     data = json.load(json_file)
     for obj in data:
-        ret[obj['reference']] = obj['term'].replace("<newline>", "\n")
+        ret[obj['reference']] = obj['definition'].replace("<newline>", "\n")
 with open(out_file, 'w') as outf:
     json.dump(ret, outf, indent=2, ensure_ascii=False)
     print(f"Wrote {out_file}")

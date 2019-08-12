@@ -96,6 +96,13 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  // Change language
+  void updateLanguage(LanguageSetting language) {
+    setState(() {
+      curLanguage = language;
+    });
+  }
+
   // Change the theme
   Future<void> updateTheme(ThemeSetting theme) async {
     if (theme != null && theme.getTheme() != curTheme) {
