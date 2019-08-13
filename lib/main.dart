@@ -160,6 +160,7 @@ class _AppState extends State<App> {
         supportedLocales: [
           // Languages
           const Locale('en', 'US'), // English
+          const Locale('de', 'DE'), // German
           const Locale('tr'), // Turkish
           const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), // Chinese Simplified
           // Currency-default requires country included

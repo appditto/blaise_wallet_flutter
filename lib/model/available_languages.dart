@@ -6,6 +6,7 @@ enum AvailableLanguage {
   DEFAULT,
   ENGLISH,
   CHINESE_SIMPLIFIED,
+  GERMAN,
   TURKISH
 }
 
@@ -21,6 +22,8 @@ class LanguageSetting extends SettingSelectionItem {
         return "English (en)";
       case AvailableLanguage.CHINESE_SIMPLIFIED:
         return "简体字 (zh-Hans)";
+      case AvailableLanguage.GERMAN:
+        return "Deutsch (de)";
       case AvailableLanguage.TURKISH:
         return "Türkçe (tr)";
       default:
@@ -34,6 +37,8 @@ class LanguageSetting extends SettingSelectionItem {
         return "en";
       case AvailableLanguage.CHINESE_SIMPLIFIED:
         return "zh-Hans";
+      case AvailableLanguage.GERMAN:
+        return "de";
       case AvailableLanguage.TURKISH:
         return "tr";
       default:
