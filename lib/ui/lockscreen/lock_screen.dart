@@ -4,6 +4,7 @@ import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/util/authentication.dart';
@@ -215,7 +216,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
                                 MediaQuery.of(context).size.width * 0.08),
                         alignment: Alignment(0, 0),
                         child: Text(
-                          AppLocalization.of(context).lockedHeader,
+                          toUppercase(AppLocalization.of(context).lockedHeader, context),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 30,
