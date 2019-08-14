@@ -103,3 +103,4 @@ coverage/
 
 # Translations
 lib/l10n/*.json
+bin/settings.py

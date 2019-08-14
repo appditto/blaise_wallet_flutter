@@ -5,7 +5,7 @@
   "goBackButton": "返回",
   "copyButton": "复制",
   "copiedButton": "复制成功",
-  "keyCopiedButton": "成功复制私钥",
+  "keyCopiedButton": "成功复制密钥",
   "iHaveBackedItUpButton": "我已做好备份",
   "yesImSureButton": "确定",
   "noGoBackButton": "返回",

@@ -183,7 +183,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidPrivateKeyError" : MessageLookupByLibrary.simpleMessage("无效的私钥"),
     "invalidPublicKeyError" : MessageLookupByLibrary.simpleMessage("无效的公钥"),
     "invalidReceivingAccountError" : MessageLookupByLibrary.simpleMessage("无效的收款账号"),
-    "keyCopiedButton" : MessageLookupByLibrary.simpleMessage("成功复制私钥"),
+    "keyCopiedButton" : MessageLookupByLibrary.simpleMessage("成功复制密钥"),
     "keyTypeNotSupportedHeader" : MessageLookupByLibrary.simpleMessage("不被支持的私钥"),
     "keyTypeNotSupportedParagraph" : MessageLookupByLibrary.simpleMessage("Blaise钱包目前还不支持这种类型的私钥。您可以创建一个新的私钥，并使用其它钱包将您的帐户转移给该私钥。"),
     "languageColonHeader" : MessageLookupByLibrary.simpleMessage("语言："),
