@@ -15,17 +15,17 @@ class LockTimeoutSetting extends SettingSelectionItem {
       case LockTimeoutOption.ZERO:
         return AppLocalization.of(context).lockInstantHeader;
       case LockTimeoutOption.ONE:
-        return AppLocalization.of(context).lock1Header;
+        return AppLocalization.of(context).lock1Header.replaceAll("%1", "1");
       case LockTimeoutOption.FIVE:
-        return AppLocalization.of(context).lock5Header;
+        return AppLocalization.of(context).lock5Header.replaceAll("%1", "5");
       case LockTimeoutOption.FIFTEEN:
-        return AppLocalization.of(context).lock15Header;
+        return AppLocalization.of(context).lock15Header.replaceAll("%1", "15");
       case LockTimeoutOption.THIRTY:
-        return AppLocalization.of(context).lock30Header;
+        return AppLocalization.of(context).lock30Header.replaceAll("%1", "30");
       case LockTimeoutOption.SIXTY:
-        return AppLocalization.of(context).lock60Header;
+        return AppLocalization.of(context).lock60Header.replaceAll("%1", "60");
       default:
-        return AppLocalization.of(context).lock1Header;
+        return AppLocalization.of(context).lock1Header.replaceAll("%1", "1");
     }
   }
 
@@ -42,7 +42,7 @@ class LockTimeoutSetting extends SettingSelectionItem {
       case LockTimeoutOption.THIRTY:
         return Duration(minutes: 30);
       case LockTimeoutOption.SIXTY:
-        return Duration(minutes: 1);
+        return Duration(minutes: 60);
       default:
         return Duration(minutes: 1);
     }
