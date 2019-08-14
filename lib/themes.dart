@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,6 +97,7 @@ abstract class BaseTheme {
 
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
+  AppIconEnum appIcon;
 
   /// Operator overrides
   bool operator ==(o) => (o != null && o.hashCode == hashCode);
@@ -270,6 +273,8 @@ class BlaiseLightTheme extends BaseTheme {
   Brightness brightness = Brightness.dark;
   SystemUiOverlayStyle statusBar =
       SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent);
+  
+  AppIconEnum appIcon = AppIconEnum.LIGHT;
 }
 
 class BlaiseDarkTheme extends BaseTheme {
@@ -439,6 +444,8 @@ class BlaiseDarkTheme extends BaseTheme {
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent);
+  
+  AppIconEnum appIcon = AppIconEnum.DARK;
 }
 
 class BlaiseCopperTheme extends BaseTheme {
@@ -608,4 +615,34 @@ class BlaiseCopperTheme extends BaseTheme {
   Brightness brightness = Brightness.light;
   SystemUiOverlayStyle statusBar =
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent);
+
+  AppIconEnum appIcon = AppIconEnum.COPPER;
+}
+
+enum AppIconEnum { LIGHT, DARK, COPPER }
+class AppIcon {
+  static const _channel = const MethodChannel('fappchannel');
+
+  static Future<void> setAppIcon(AppIconEnum iconToChange) async {
+    if (!Platform.isIOS) {
+      return null;
+    }
+    String iconStr = "Light";
+    switch (iconToChange) {
+      case AppIconEnum.DARK:
+        iconStr = "Dark";
+        break;
+      case AppIconEnum.COPPER:
+        iconStr = "Copper";
+        break;
+      case AppIconEnum.LIGHT:
+      default:
+        iconStr = "Light";
+        break;
+    }
+    final Map<String, dynamic> params = <String, dynamic>{
+     'icon': iconStr,
+    };
+    return await _channel.invokeMethod('changeIcon', params);
+  }
 }
