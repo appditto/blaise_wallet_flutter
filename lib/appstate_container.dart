@@ -104,7 +104,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   // Change the theme
-  Future<void> updateTheme(ThemeSetting theme) async {
+  Future<void> updateTheme(ThemeSetting theme, {bool setIcon = true}) async {
     if (theme != null && theme.getTheme() != curTheme) {
       if (mounted) {
         setState(() {
@@ -112,6 +112,9 @@ class StateContainerState extends State<StateContainer> {
         });
       }
       await sl.get<SharedPrefsUtil>().setTheme(theme);
+    }
+    if (setIcon) {
+      AppIcon.setAppIcon(theme.getTheme().appIcon);
     }
   }
 
@@ -188,7 +191,7 @@ class StateContainerState extends State<StateContainer> {
     _precacheSvgs();
     // Set initial theme
     sl.get<SharedPrefsUtil>().getTheme().then((themeSetting) {
-      updateTheme(themeSetting);
+      updateTheme(themeSetting, setIcon: false);
     });
     // Add initial contact if not already present
     _addSampleContact();
