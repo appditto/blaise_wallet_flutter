@@ -107,7 +107,7 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		3961A6A82304916B0088A4FD /* resources */ = {
+		3961A6BB230491C40088A4FD /* resources */ = {
 			isa = PBXGroup;
 			children = (
 				3961A6AF2304917A0088A4FD /* Copper-Icon-App@1x.png */,
@@ -120,7 +120,7 @@
 				3961A6B12304917B0088A4FD /* Icon-App@2x.png */,
 				3961A6AA2304917A0088A4FD /* Icon-App@3x.png */,
 			);
-			name = resources;
+			path = resources;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
@@ -158,7 +158,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				3961A6A82304916B0088A4FD /* resources */,
+				3961A6BB230491C40088A4FD /* resources */,
 				7693980222F35413009A1CF6 /* Runner.entitlements */,
 				7693980022F353FF009A1CF6 /* GoogleService-Info.plist */,
 				7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */,

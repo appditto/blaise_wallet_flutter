@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
-#import <uni_links/UniLinksPlugin.h>
 
 @implementation AppDelegate
 
