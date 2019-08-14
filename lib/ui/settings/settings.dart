@@ -479,11 +479,11 @@ class _SettingsPageState extends State<SettingsPage> {
     showAppDialog(
         context: context,
         builder: (_) => DialogOverlay(
-              title: AppLocalization.of(context).warningHeader.toUpperCase(),
+              title: toUppercase(AppLocalization.of(context).warningHeader, context),
               warningStyle: true,
-              confirmButtonText: AppLocalization.of(context)
+              confirmButtonText: toUppercase(AppLocalization.of(context)
                   .deletePrivateKeyAndLogoutButton
-                  .toUpperCase(),
+                  ,context),
               body: TextSpan(
                 children: formatLocalizedColorsDanger(context,
                     AppLocalization.of(context).logoutFirstDisclaimerParagraph),
@@ -493,13 +493,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 showAppDialog(
                     context: context,
                     builder: (_) => DialogOverlay(
-                        title: AppLocalization.of(context)
+                        title: toUppercase(AppLocalization.of(context)
                             .areYouSureHeader
-                            .toUpperCase(),
+                            ,context),
                         warningStyle: true,
-                        confirmButtonText: AppLocalization.of(context)
+                        confirmButtonText: toUppercase(AppLocalization.of(context)
                             .yesImSureButton
-                            .toUpperCase(),
+                            ,context),
                         body: TextSpan(
                           children: formatLocalizedColorsDanger(
                               context,

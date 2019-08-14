@@ -156,9 +156,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context)
+                          toUppercase(AppLocalization.of(context)
                               .delistingSheetHeader
-                              .toUpperCase(),
+                              ,context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -291,9 +291,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .confirmButton
-                          .toUpperCase(),
+                          ,context),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -309,9 +309,9 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .cancelButton
-                          .toUpperCase(),
+                          ,context),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

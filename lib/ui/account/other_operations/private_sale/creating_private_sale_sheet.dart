@@ -167,9 +167,9 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context)
+                          toUppercase(AppLocalization.of(context)
                               .creatingPrivateSaleSheetHeader
-                              .toUpperCase(),
+                              ,context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -450,9 +450,9 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .confirmButton
-                          .toUpperCase(),
+                          ,context),
                       buttonTop: true,
                       onPressed: () async {
                         if (await authenticate()) {
@@ -468,9 +468,9 @@ class _CreatingPrivateSaleSheetState extends State<CreatingPrivateSaleSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .cancelButton
-                          .toUpperCase(),
+                          ,context),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

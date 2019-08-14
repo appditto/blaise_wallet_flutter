@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +101,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: AppLocalization.of(context).yesImSureButton.toUpperCase(),
+                      text: toUppercase(AppLocalization.of(context).yesImSureButton, context),
                       buttonTop: true,
                       onPressed: () {
                         sl
@@ -133,7 +134,7 @@ class _IntroBackupConfirmPageState extends State<IntroBackupConfirmPage> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: AppLocalization.of(context).noGoBackButton.toUpperCase(),
+                      text: toUppercase(AppLocalization.of(context).noGoBackButton, context),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

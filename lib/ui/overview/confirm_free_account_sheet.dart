@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -152,7 +153,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.Primary,
-                        text: AppLocalization.of(context).confirmButton.toUpperCase(),
+                        text: toUppercase(AppLocalization.of(context).confirmButton, context),
                         buttonTop: true,
                         onPressed: () async {
                           return;
@@ -172,7 +173,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.PrimaryOutline,
-                        text: AppLocalization.of(context).goBackButton.toUpperCase(),
+                        text: toUppercase(AppLocalization.of(context).goBackButton, context),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

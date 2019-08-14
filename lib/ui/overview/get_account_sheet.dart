@@ -82,9 +82,9 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context)
+                          toUppercase(AppLocalization.of(context)
                               .getAccountSheetHeader
-                              .toUpperCase(),
+                              ,context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,

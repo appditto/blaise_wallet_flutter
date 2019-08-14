@@ -557,9 +557,9 @@ class _AccountPageState extends State<AccountPage>
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             12, 0, 12, 0),
                                         child: AutoSizeText(
-                                          AppLocalization.of(context)
+                                          toUppercase(AppLocalization.of(context)
                                               .accountBalanceHeader
-                                              .toUpperCase(),
+                                              ,context),
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -864,9 +864,9 @@ class _AccountPageState extends State<AccountPage>
                                           24, 18, 24, 4),
                                       alignment: Alignment(-1, 0),
                                       child: AutoSizeText(
-                                        AppLocalization.of(context)
+                                        toUppercase(AppLocalization.of(context)
                                             .operationsHeader
-                                            .toUpperCase(),
+                                            ,context),
                                         style: AppStyles.headerSmall(context),
                                         textAlign: TextAlign.left,
                                         stepGranularity: 0.5,

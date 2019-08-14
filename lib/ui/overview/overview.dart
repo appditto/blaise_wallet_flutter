@@ -107,7 +107,7 @@ class _OverviewPageState extends State<OverviewPage>
         return true;
       });
       lockStreamListener = delayed.asStream().listen((_) {
-        Navigator.of(context).pushReplacementNamed('/');
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
       });
     }
   }
@@ -373,9 +373,9 @@ class _OverviewPageState extends State<OverviewPage>
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             24, 0, 24, 0),
                                         child: AutoSizeText(
-                                          AppLocalization.of(context)
+                                          toUppercase(AppLocalization.of(context)
                                               .totalBalanceHeader
-                                              .toUpperCase(),
+                                              ,context),
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -599,9 +599,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                AppLocalization.of(context)
+                                toUppercase(AppLocalization.of(context)
                                     .accountsHeader
-                                    .toUpperCase(),
+                                    ,context),
                                 style: AppStyles.headerSmall(context),
                                 textAlign: TextAlign.left,
                                 stepGranularity: 0.5,
@@ -726,9 +726,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                AppLocalization.of(context)
+                                toUppercase(AppLocalization.of(context)
                                     .accountsHeader
-                                    .toUpperCase(),
+                                    ,context),
                                 style: AppStyles.headerSmall(context),
                                 textAlign: TextAlign.left,
                                 stepGranularity: 0.5,

@@ -81,7 +81,7 @@ class UIUtil {
             title: AppLocalization.of(context).addFeeHeader,
             feeDialog: true,
             confirmButtonText:
-                AppLocalization.of(context).confirmButton.toUpperCase(),
+                toUppercase(AppLocalization.of(context).confirmButton, context),
             body: TextSpan(
               children: [
                 TextSpan(
@@ -164,4 +164,14 @@ List<TextSpan> formatLocalizedColorsDanger(BuildContext context, String input) {
     ret.add(TextSpan(text: input, style: AppStyles.paragraph(context)));
   }
   return ret;
+}
+
+String toUppercase(String input, BuildContext context) {
+    Locale locale = Locale(StateContainer.of(context).curLanguage.getLocaleString());
+    if (locale != null && locale.languageCode == 'tr') {
+      input = input.replaceAll("i", "İ");
+    } else if (locale != null && locale.languageCode == 'de') {
+      input = input.replaceAll("ß", "SS");
+    }
+    return input.toUpperCase();
 }

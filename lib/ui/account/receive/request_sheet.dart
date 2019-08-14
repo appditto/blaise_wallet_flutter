@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:qr/qr.dart';
@@ -73,9 +74,9 @@ class _RequestSheetState extends State<RequestSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            AppLocalization.of(context)
+                            toUppercase(AppLocalization.of(context)
                                 .requestSheetHeader
-                                .toUpperCase(),
+                                ,context),
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,

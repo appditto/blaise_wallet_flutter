@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 
 /// An overlay that supports a list of options as well as text/confirm actions
@@ -198,7 +199,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                                       type: widget.feeDialog
                                           ? AppButtonType.PrimaryOutline
                                           : AppButtonType.DangerOutline,
-                                      text: AppLocalization.of(context).cancelButton.toUpperCase(),
+                                      text: toUppercase(AppLocalization.of(context).cancelButton, context),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },

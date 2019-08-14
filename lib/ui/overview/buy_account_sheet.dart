@@ -100,9 +100,9 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context)
+                          toUppercase(AppLocalization.of(context)
                               .buyAccountSheetHeader
-                              .toUpperCase(),
+                              ,context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -163,9 +163,9 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                         bool disabled = !walletState.isBorrowEligible;
                         return AppButton(
                           type: AppButtonType.Primary,
-                          text: AppLocalization.of(context)
+                          text: toUppercase(AppLocalization.of(context)
                               .borrowAnAccountButton
-                              .toUpperCase(),
+                              ,context),
                           disabled: disabled,
                           buttonTop: true,
                           onPressed: () async {
@@ -199,9 +199,9 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .cancelButton
-                          .toUpperCase(),
+                          ,context),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

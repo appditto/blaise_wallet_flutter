@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -65,9 +66,9 @@ class _PublicKeySheetState extends State<PublicKeySheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context)
+                          toUppercase(AppLocalization.of(context)
                               .publicKeySheetHeader
-                              .toUpperCase(),
+                              ,context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,

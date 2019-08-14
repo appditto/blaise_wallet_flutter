@@ -109,9 +109,9 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context)
+                          toUppercase(AppLocalization.of(context)
                               .changeDaemonSheetHeader
-                              .toUpperCase(),
+                              ,context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -237,9 +237,9 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.Primary,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .changeDaemonButton
-                          .toUpperCase(),
+                          ,context),
                       onPressed: () async {
                         if (validateFormData()) {
                           String daemon = daemonController.text;
@@ -269,9 +269,9 @@ class _ChangeDaemonSheetState extends State<ChangeDaemonSheet> {
                   children: <Widget>[
                     AppButton(
                       type: AppButtonType.PrimaryOutline,
-                      text: AppLocalization.of(context)
+                      text: toUppercase(AppLocalization.of(context)
                           .cancelButton
-                          .toUpperCase(),
+                          ,context),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

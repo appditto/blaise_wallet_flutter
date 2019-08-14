@@ -10,6 +10,7 @@ import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -190,7 +191,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
           context: context,
           builder: (_) => DialogOverlay(
                 title: AppLocalization.of(context).keyTypeNotSupportedHeader,
-                confirmButtonText: AppLocalization.of(context).okayGoBackButton.toUpperCase(),
+                confirmButtonText: toUppercase(AppLocalization.of(context).okayGoBackButton, context),
                 feeDialog: true,
                 body: TextSpan(
                   children: [
