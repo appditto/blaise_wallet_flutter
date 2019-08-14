@@ -182,7 +182,7 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
                         width: double.maxFinite,
                         margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                         child: AutoSizeText(
-                          AppLocalization.of(context).delistedFromSaleParagraph,
+                          AppLocalization.of(context).delistFromSaleParagraph,
                           style: AppStyles.paragraph(context),
                           stepGranularity: 0.1,
                           maxLines: 3,
