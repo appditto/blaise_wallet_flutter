@@ -1,5 +1,6 @@
 import os
 import json
+import subprocess
 from poeditor import POEditorAPI
 from settings import PO_API_KEY, PROJECT_ID
 
@@ -29,3 +30,5 @@ for fname in os.listdir('lib/l10n'):
                     json.dump(ret, outf, indent=2, ensure_ascii=False)
                     print(f"Wrote {out_file}")
                 os.remove(fname)
+
+subprocess.run('flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/localization.dart lib/l10n/intl_*.arb', shell=True)
