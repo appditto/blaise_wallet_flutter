@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-12T09:52:03.270553",
+  "@@last_modified": "2019-08-15T17:16:22.116898",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
@@ -386,6 +386,18 @@
   },
   "getAccountThirdParagraph": "2- You can buy as many accounts as you want for <colored>%1 Pascal (%2).</colored>",
   "@getAccountThirdParagraph": {
+    "description": "The third paragraph of the explanation for the process of getting an account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "getAccountThirdParagraphAlternative": "2- You can buy an account for <colored>%1 Pascal (%2). Only 1 account per user is allowed.</colored>",
+  "@getAccountThirdParagraphAlternative": {
+    "description": "The third paragraph of the explanation for the process of getting an account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "getAccountThirdParagraphAlternative2": "2- You can buy an account for <colored>%1 Pascal (%2). Only 2 accounts per user is allowed.</colored>",
+  "@getAccountThirdParagraphAlternative2": {
     "description": "The third paragraph of the explanation for the process of getting an account",
     "type": "text",
     "placeholders": {}

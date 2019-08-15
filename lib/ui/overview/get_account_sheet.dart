@@ -182,7 +182,7 @@ class _GetAccountSheetState extends State<GetAccountSheet> {
       ..addAll(formatLocalizedColors(
           context,
           AppLocalization.of(context)
-              .getAccountThirdParagraph
+              .getAccountThirdParagraphAlternative
               .replaceAll("%1", accountPrice).replaceAll("%2",curCurrency == null ? "N/A" : "~" + walletState.getLocalCurrencyDisplay(
                 currency: curCurrency,
                 amount: Currency(accountPrice),

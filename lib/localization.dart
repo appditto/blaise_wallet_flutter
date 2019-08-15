@@ -416,6 +416,22 @@ class AppLocalization {
         name: 'getAccountThirdParagraph');
   }
 
+  String get getAccountThirdParagraphAlternative {
+    return Intl.message(
+        "2- You can buy an account for <colored>%1 Pascal (%2). Only 1 account per user is allowed.</colored>",
+        desc:
+            'The third paragraph of the explanation for the process of getting an account',
+        name: 'getAccountThirdParagraphAlternative');
+  }
+
+  String get getAccountThirdParagraphAlternative2 {
+    return Intl.message(
+        "2- You can buy an account for <colored>%1 Pascal (%2). Only 2 accounts per user is allowed.</colored>",
+        desc:
+            'The third paragraph of the explanation for the process of getting an account',
+        name: 'getAccountThirdParagraphAlternative2');
+  }
+
   String get enterPhoneNumberParagraph {
     return Intl.message("Enter your phone number below.",
         desc:
