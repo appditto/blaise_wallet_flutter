@@ -418,7 +418,7 @@ class AppLocalization {
 
   String get getAccountThirdParagraphAlternative {
     return Intl.message(
-        "2- You can buy an account for <colored>%1 Pascal (%2). Only 1 account per user is allowed.</colored>",
+        "2- You can buy an account for <colored>%1 Pascal (%2).</colored><colored> Buying only 1 account is allowed per user.</colored>",
         desc:
             'The third paragraph of the explanation for the process of getting an account',
         name: 'getAccountThirdParagraphAlternative');
@@ -426,7 +426,7 @@ class AppLocalization {
 
   String get getAccountThirdParagraphAlternative2 {
     return Intl.message(
-        "2- You can buy an account for <colored>%1 Pascal (%2). Only 2 accounts per user is allowed.</colored>",
+        "2- You can buy an account for <colored>%1 Pascal (%2).</colored><colored> You can buy up to %3 accounts.</colored>",
         desc:
             'The third paragraph of the explanation for the process of getting an account',
         name: 'getAccountThirdParagraphAlternative2');
