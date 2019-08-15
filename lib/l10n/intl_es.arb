@@ -308,5 +308,7 @@
   "noperationOPDetails": "n_operation",
   "accountOPDetails": "cuenta",
   "signeraccountOPDetails": "signer_account",
-  "noResultsFound": "No se han encontrado resultados"
+  "noResultsFound": "No se han encontrado resultados",
+  "getAccountThirdParagraphAlternative": "2- Puede comprar una cuenta por <colored>%1 Pascal (%2).</colored><colored> Se permite comprar solo 1 cuenta por usuario.</colored>",
+  "getAccountThirdParagraphAlternative2": "2- Puede comprar una cuenta por <colored>%1 Pascal (%2).</colored><colored> Puede comprar hasta %3 cuentas.</colored>"
 }

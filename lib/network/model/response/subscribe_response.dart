@@ -23,6 +23,9 @@ class SubscribeResponse {
   @JsonKey(name:'btc', fromJson:_toDouble)
   double btcPrice;
 
+  @JsonKey(name:'borrow_eligible', defaultValue: false)
+  bool borrowEligible;
+
   SubscribeResponse();
 
   factory SubscribeResponse.fromJson(Map<String, dynamic> json) => _$SubscribeResponseFromJson(json);

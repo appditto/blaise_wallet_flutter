@@ -81,7 +81,7 @@
   "backupEncryptedKeySecondParagraph": "Anahtar şifreli olduğu için, şifreni unutman veya kaybetmen durumunda, şifrelemeyi açıp cüzdanına erişmen mümkün olmayacak.",
   "backupUnencryptedKeyParagraph": "Ham gizli anahtarını aşağıda görebilirsin. <colored>Bir şifre ile korunmadığı için, ham anahtarını güvenli ve çevrim dışı bir yerde saklaman çok önemli.</colored> Anahtarını bir kağıda yazarak saklamanı tavsiye ediyoruz.",
   "publicKeyParagraph": "Açık anahtarını aşağıda görebilirsin. Bu anahtar, herkese açık şekilde paylaşılmak ve bir operasyonun senin gizli anahtarına ait olduğu kanıtlamak için var.",
-  "borrowedAccountParagraph": "Bu bir <colored>ödünç hesap</colored>.\n<colored>%2 gün, %3 saat, %4 dakika içinde bu hesaba en az <colored>%1 Pascal</colored> gönderirsen, hesap senin olacak.",
+  "borrowedAccountParagraph": "Bu bir <colored>ödünç hesap</colored>.\n<colored>%2 gün, %3 saat, %4 dakika içinde bu hesaba en az </colored>%1 Pascal</colored> gönderirsen, hesap senin olacak.",
   "borrowedAccountPaidParagraph": "<colored>Hesap satın alındı!</colored>\nTransfer işlemi şuan devam ediyor. Transfer genellikle <colored>15 dakika</colored>, bazen ise biraz daha uzun sürebilir.",
   "logoutFirstDisclaimerParagraph": "<colored>Çıkış yaparsan, gizli anahtarın ve Blaise ile alakalı tüm veriler bu cihazdan silinecek.</colored> Gizli anahtarını yedeklemediysen, cüzdanına ve bakiyene bir daha ulaşamazsın. Yedeklediysen, endişelenecek hiçbir şey yok.",
   "logoutSecondDisclaimerParagraph": "Gizli anahtarını yedeklediğine emin misin? <colored>Yedeklediysen endişelenecek bir şey yok.</colored>",
@@ -308,5 +308,7 @@
   "noperationOPDetails": "Toplam Operasyon",
   "accountOPDetails": "Hesap",
   "signeraccountOPDetails": "İmzalayan Hesap",
-  "noResultsFound": "Sonuç bulunamadı"
+  "noResultsFound": "Sonuç bulunamadı",
+  "getAccountThirdParagraphAlternative": "<colored>%1 Pascal (%2)</colored> karşılığında bir hesap satın alabilirsin.<colored> Her kullanıcı en fazla 1 adet hesap satın alabilir.</colored>",
+  "getAccountThirdParagraphAlternative2": "<colored>%1 Pascal (%2)</colored> karşılığında bir hesap satın alabilirsin.<colored> Her kullanıcı en fazla %3 adet hesap satın alabilir.</colored>"
 }

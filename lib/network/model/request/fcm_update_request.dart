@@ -12,17 +12,17 @@ class FcmUpdateRequest extends BaseRequest {
   @JsonKey(name:'account', includeIfNull: false)
   int account;
 
+  @JsonKey(name:'b58_pubkey', includeIfNull: false)
+  String b58pubkey;
+
   @JsonKey(name:'fcm_token', includeIfNull: false)
   String fcmToken;
 
   @JsonKey(name:'enabled')
   bool enabled;
 
-  FcmUpdateRequest({@required int account, @required String fcmToken, @required bool enabled}) : super() {
+  FcmUpdateRequest({@required this.account, @required this.fcmToken, @required this.enabled, @required this.b58pubkey}) : super() {
     this.action = 'fcm_update';
-    this.account = account;
-    this.fcmToken = fcmToken;
-    this.enabled = enabled;
   }
 
   factory FcmUpdateRequest.fromJson(Map<String, dynamic> json) => _$FcmUpdateRequestFromJson(json);

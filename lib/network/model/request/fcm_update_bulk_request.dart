@@ -12,17 +12,17 @@ class FcmUpdateBulkRequest extends BaseRequest {
   @JsonKey(name:'account', includeIfNull: false)
   List<int> accounts;
 
+  @JsonKey(name:'b58_pubkey', includeIfNull: false)
+  String b58pubkey;
+
   @JsonKey(name:'fcm_token', includeIfNull: false)
   String fcmToken;
 
   @JsonKey(name:'enabled')
   bool enabled;
 
-  FcmUpdateBulkRequest({@required List<int> accounts, @required String fcmToken, @required bool enabled}) : super() {
+  FcmUpdateBulkRequest({@required this.accounts, @required this.fcmToken, @required this.enabled, @required this.b58pubkey}) : super() {
     this.action = 'fcm_update_bulk';
-    this.accounts = accounts;
-    this.fcmToken = fcmToken;
-    this.enabled = enabled;
   }
 
   factory FcmUpdateBulkRequest.fromJson(Map<String, dynamic> json) => _$FcmUpdateBulkRequestFromJson(json);

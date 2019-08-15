@@ -69,6 +69,9 @@ abstract class WalletBase with Store {
   @observable
   bool isBorrowEligible = false;
 
+  @observable
+  bool hasExceededBorrowLimit = false;
+
   @action
   Future<void> initializeRpc() async {
     this.rpcClient =
@@ -298,7 +301,7 @@ abstract class WalletBase with Store {
     String fcmToken = await FirebaseMessaging().getToken();
     bool notificationsEnabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
     sl.get<WSClient>().clearQueue();
-    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: this.activeAccount == null ? null : this.activeAccount.account, fcmToken: fcmToken, notificationEnabled: notificationsEnabled));
+    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: this.activeAccount == null ? null : this.activeAccount.account, fcmToken: fcmToken, notificationEnabled: notificationsEnabled, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
     sl.get<WSClient>().processQueue();
   }
 
@@ -306,7 +309,7 @@ abstract class WalletBase with Store {
   Future<void> fcmUpdate(AccountNumber account) async {
     bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
     String fcmToken = await FirebaseMessaging().getToken();
-    sl.get<WSClient>().sendRequest(FcmUpdateRequest(account: account.account, enabled: enabled, fcmToken: fcmToken));
+    sl.get<WSClient>().sendRequest(FcmUpdateRequest(account: account.account, enabled: enabled, fcmToken: fcmToken, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
   }
 
   @action
@@ -328,7 +331,7 @@ abstract class WalletBase with Store {
         accounts.add(acct.account.account);
       }
     }
-    sl.get<WSClient>().sendRequest(FcmUpdateBulkRequest(accounts: accounts, enabled: enabled, fcmToken: fcmToken));
+    sl.get<WSClient>().sendRequest(FcmUpdateBulkRequest(accounts: accounts, enabled: enabled, fcmToken: fcmToken, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
   }
 
   @action
@@ -354,5 +357,6 @@ abstract class WalletBase with Store {
     this.accountStateMap = Map();
     this.borrowedAccount = null;
     this.isBorrowEligible = false;
+    this.hasExceededBorrowLimit = false;
   }
 }

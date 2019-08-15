@@ -11,6 +11,7 @@ FcmUpdateRequest _$FcmUpdateRequestFromJson(Map<String, dynamic> json) {
     account: json['account'] as int,
     fcmToken: json['fcm_token'] as String,
     enabled: json['enabled'] as bool,
+    b58pubkey: json['b58_pubkey'] as String,
   )..action = json['action'] as String;
 }
 
@@ -26,6 +27,7 @@ Map<String, dynamic> _$FcmUpdateRequestToJson(FcmUpdateRequest instance) {
   }
 
   writeNotNull('account', instance.account);
+  writeNotNull('b58_pubkey', instance.b58pubkey);
   writeNotNull('fcm_token', instance.fcmToken);
   val['enabled'] = instance.enabled;
   return val;

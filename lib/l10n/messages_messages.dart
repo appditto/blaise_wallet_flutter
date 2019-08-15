@@ -164,6 +164,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getAccountSecondParagraph" : MessageLookupByLibrary.simpleMessage("1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>"),
     "getAccountSheetHeader" : MessageLookupByLibrary.simpleMessage("Get Account"),
     "getAccountThirdParagraph" : MessageLookupByLibrary.simpleMessage("2- You can buy as many accounts as you want for <colored>%1 Pascal (%2).</colored>"),
+    "getAccountThirdParagraphAlternative" : MessageLookupByLibrary.simpleMessage("2- You can buy an account for <colored>%1 Pascal (%2).</colored><colored> Buying only 1 account is allowed per user.</colored>"),
+    "getAccountThirdParagraphAlternative2" : MessageLookupByLibrary.simpleMessage("2- You can buy an account for <colored>%1 Pascal (%2).</colored><colored> You can buy up to %3 accounts.</colored>"),
     "getAnAccountButton" : MessageLookupByLibrary.simpleMessage("Get an Account"),
     "goBackButton" : MessageLookupByLibrary.simpleMessage("Go Back"),
     "gotItButton" : MessageLookupByLibrary.simpleMessage("Got It!"),

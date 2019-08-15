@@ -160,7 +160,7 @@ class _BuyAccountSheetState extends State<BuyAccountSheet> {
                   children: <Widget>[
                     Observer(
                       builder: (context) {
-                        bool disabled = !walletState.isBorrowEligible;
+                        bool disabled = !walletState.isBorrowEligible || walletState.hasExceededBorrowLimit;
                         return AppButton(
                           type: AppButtonType.Primary,
                           text: toUppercase(AppLocalization.of(context)

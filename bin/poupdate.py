@@ -15,7 +15,9 @@ for l in languages:
         language_codes.append(l['code'])
 
 for code in language_codes:
+        print(f"Downloading {code}...")
         client.export(PROJECT_ID, code, file_type='json', local_file=f'lib/l10n/intl_{code}.json')
+        print(f"Downloaded {code}")
 
 for fname in os.listdir('lib/l10n'):
         if fname.endswith('.json'):
@@ -25,7 +27,8 @@ for fname in os.listdir('lib/l10n'):
                 with open(fname) as json_file:
                     data = json.load(json_file)
                     for obj in data:
-                        ret[obj['reference']] = obj['definition'].replace("<newline>", "\n")
+                        if 'reference' in obj and 'definition' in obj and obj['definition'] is not None:
+                                ret[obj['reference']] = obj['definition'].replace("<newline>", "\n")
                 with open(out_file, 'w') as outf:
                     json.dump(ret, outf, indent=2, ensure_ascii=False)
                     print(f"Wrote {out_file}")

@@ -164,6 +164,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getAccountSecondParagraph" : MessageLookupByLibrary.simpleMessage("1- 通过手机号码获得账号，<colored>每个手机号码只能获得一个。</colored>"),
     "getAccountSheetHeader" : MessageLookupByLibrary.simpleMessage("获取一个账号"),
     "getAccountThirdParagraph" : MessageLookupByLibrary.simpleMessage("2- 您可以以单价<colored>%1 Pascal (%2)</colored>购买任意数量的账号。"),
+    "getAccountThirdParagraphAlternative" : MessageLookupByLibrary.simpleMessage("2- 您可以花费<colored>%1 Pascal (%2)</colored>购买一个账号。<colored> 每个用户只允许购买一个账号。</colored>"),
+    "getAccountThirdParagraphAlternative2" : MessageLookupByLibrary.simpleMessage("2- 您可以花费<colored>%1 Pascal (%2)</colored>购买一个账号。<colored> 您最多可以购买%3个账号。</colored>"),
     "getAnAccountButton" : MessageLookupByLibrary.simpleMessage("获取账号"),
     "goBackButton" : MessageLookupByLibrary.simpleMessage("返回"),
     "gotItButton" : MessageLookupByLibrary.simpleMessage("确认"),
