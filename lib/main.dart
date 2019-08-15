@@ -163,6 +163,7 @@ class _AppState extends State<App> {
           const Locale('de', 'DE'), // German
           const Locale('es'), // Spanish
           const Locale('tr'), // Turkish
+          const Locale('ar'), // Arabic
           const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), // Chinese Simplified
           // Currency-default requires country included
           const Locale("es", "AR"),
