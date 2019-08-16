@@ -349,7 +349,7 @@ class AppLocalization {
         desc: 'A button to open up the public key sheet(screen) that displays a QR code to receive an account', name: 'receiveAccountButton');
   }
   String get receiveAnAccountButton {
-    return Intl.message("Receive Account",
+    return Intl.message("Receive an Account",
         desc: 'A button to open up the public key sheet(screen) that displays a QR code to receive an account', name: 'receiveAnAccountButton');
   }
   // **** BUTTONS END **** //
