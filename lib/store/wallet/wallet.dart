@@ -72,6 +72,9 @@ abstract class WalletBase with Store {
   @observable
   bool hasExceededBorrowLimit = false;
 
+  @observable
+  bool hasReceivedSubscribeResponse = false;
+
   @action
   Future<void> initializeRpc() async {
     this.rpcClient =

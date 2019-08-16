@@ -232,6 +232,7 @@ class StateContainerState extends State<StateContainer> {
     walletState.localCurrencyPrice = response.price;
     walletState.btcPrice = response.btcPrice;
     walletState.hasExceededBorrowLimit = !response.borrowEligible;
+    walletState.hasReceivedSubscribeResponse = true;
     sl.get<WSClient>().pop();
     sl.get<WSClient>().processQueue();
   }

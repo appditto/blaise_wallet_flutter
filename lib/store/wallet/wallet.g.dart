@@ -235,6 +235,26 @@ mixin _$Wallet on WalletBase, Store {
         name: '${_$hasExceededBorrowLimitAtom.name}_set');
   }
 
+  final _$hasReceivedSubscribeResponseAtom =
+      Atom(name: 'WalletBase.hasReceivedSubscribeResponse');
+
+  @override
+  bool get hasReceivedSubscribeResponse {
+    _$hasReceivedSubscribeResponseAtom.context
+        .enforceReadPolicy(_$hasReceivedSubscribeResponseAtom);
+    _$hasReceivedSubscribeResponseAtom.reportObserved();
+    return super.hasReceivedSubscribeResponse;
+  }
+
+  @override
+  set hasReceivedSubscribeResponse(bool value) {
+    _$hasReceivedSubscribeResponseAtom.context.conditionallyRunInAction(() {
+      super.hasReceivedSubscribeResponse = value;
+      _$hasReceivedSubscribeResponseAtom.reportChanged();
+    }, _$hasReceivedSubscribeResponseAtom,
+        name: '${_$hasReceivedSubscribeResponseAtom.name}_set');
+  }
+
   final _$initializeRpcAsyncAction = AsyncAction('initializeRpc');
 
   @override

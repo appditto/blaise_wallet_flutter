@@ -780,38 +780,42 @@ class _OverviewPageState extends State<OverviewPage>
                   // Bottom bar
                   Observer(builder: (BuildContext context) {
                     if (walletState.walletAccounts.length > 0) {
-                      return Container(
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          color: StateContainer.of(context)
-                              .curTheme
-                              .backgroundPrimary,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12),
-                          ),
-                          boxShadow: [
-                            StateContainer.of(context).curTheme.shadowBottomBar,
-                          ],
-                        ),
-                        child: Container(
-                          margin: EdgeInsetsDirectional.only(top: 4),
-                          child: Row(
-                            children: <Widget>[
-                              AppButton(
-                                text: AppLocalization.of(context)
-                                    .getAnAccountButton,
-                                type: AppButtonType.Primary,
-                                onPressed: () {
-                                  AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: BuyAccountSheet());
-                                },
-                              ),
+                      if (walletState.isBorrowEligible && walletState.hasReceivedSubscribeResponse && !walletState.hasExceededBorrowLimit) {
+                        return Container(
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            color: StateContainer.of(context)
+                                .curTheme
+                                .backgroundPrimary,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                            boxShadow: [
+                              StateContainer.of(context).curTheme.shadowBottomBar,
                             ],
                           ),
-                        ),
-                      );
+                          child: Container(
+                            margin: EdgeInsetsDirectional.only(top: 4),
+                            child: Row(
+                              children: <Widget>[
+                                AppButton(
+                                  text: AppLocalization.of(context)
+                                      .getAnAccountButton,
+                                  type: AppButtonType.Primary,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                        context: context,
+                                        widget: BuyAccountSheet());
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Text("emptyness :bebes:");
+                      }
                     } else {
                       return Container(
                         width: double.maxFinite,
