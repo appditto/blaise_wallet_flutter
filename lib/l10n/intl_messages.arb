@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-16T01:45:30.071397",
+  "@@last_modified": "2019-08-17T00:56:55.174030",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
@@ -333,6 +333,18 @@
   "nextButton": "Next",
   "@nextButton": {
     "description": "A button to the next screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "receiveAccountButton": "Receive Account",
+  "@receiveAccountButton": {
+    "description": "A button to open up the public key sheet(screen) that displays a QR code to receive an account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "receiveAnAccountButton": "Receive Account",
+  "@receiveAnAccountButton": {
+    "description": "A button to open up the public key sheet(screen) that displays a QR code to receive an account",
     "type": "text",
     "placeholders": {}
   },

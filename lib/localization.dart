@@ -344,6 +344,14 @@ class AppLocalization {
     return Intl.message("Next",
         desc: 'A button to the next screen', name: 'nextButton');
   }
+  String get receiveAccountButton {
+    return Intl.message("Receive Account",
+        desc: 'A button to open up the public key sheet(screen) that displays a QR code to receive an account', name: 'receiveAccountButton');
+  }
+  String get receiveAnAccountButton {
+    return Intl.message("Receive Account",
+        desc: 'A button to open up the public key sheet(screen) that displays a QR code to receive an account', name: 'receiveAnAccountButton');
+  }
   // **** BUTTONS END **** //
 
   // **** PARAGRAPHS **** //
