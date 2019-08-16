@@ -107,7 +107,8 @@ class _OverviewPageState extends State<OverviewPage>
         return true;
       });
       lockStreamListener = delayed.asStream().listen((_) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
       });
     }
   }
@@ -373,9 +374,10 @@ class _OverviewPageState extends State<OverviewPage>
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             24, 0, 24, 0),
                                         child: AutoSizeText(
-                                          toUppercase(AppLocalization.of(context)
-                                              .totalBalanceHeader
-                                              ,context),
+                                          toUppercase(
+                                              AppLocalization.of(context)
+                                                  .totalBalanceHeader,
+                                              context),
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -599,9 +601,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                toUppercase(AppLocalization.of(context)
-                                    .accountsHeader
-                                    ,context),
+                                toUppercase(
+                                    AppLocalization.of(context).accountsHeader,
+                                    context),
                                 style: AppStyles.headerSmall(context),
                                 textAlign: TextAlign.left,
                                 stepGranularity: 0.5,
@@ -726,9 +728,9 @@ class _OverviewPageState extends State<OverviewPage>
                                   EdgeInsetsDirectional.fromSTEB(24, 18, 24, 4),
                               alignment: Alignment(-1, 0),
                               child: AutoSizeText(
-                                toUppercase(AppLocalization.of(context)
-                                    .accountsHeader
-                                    ,context),
+                                toUppercase(
+                                    AppLocalization.of(context).accountsHeader,
+                                    context),
                                 style: AppStyles.headerSmall(context),
                                 textAlign: TextAlign.left,
                                 stepGranularity: 0.5,
@@ -780,7 +782,9 @@ class _OverviewPageState extends State<OverviewPage>
                   // Bottom bar
                   Observer(builder: (BuildContext context) {
                     if (walletState.walletAccounts.length > 0) {
-                      if (walletState.isBorrowEligible && walletState.hasReceivedSubscribeResponse && !walletState.hasExceededBorrowLimit) {
+                      if (walletState.isBorrowEligible &&
+                          walletState.hasReceivedSubscribeResponse &&
+                          !walletState.hasExceededBorrowLimit) {
                         return Container(
                           width: double.maxFinite,
                           decoration: BoxDecoration(
@@ -792,7 +796,9 @@ class _OverviewPageState extends State<OverviewPage>
                               topRight: Radius.circular(12),
                             ),
                             boxShadow: [
-                              StateContainer.of(context).curTheme.shadowBottomBar,
+                              StateContainer.of(context)
+                                  .curTheme
+                                  .shadowBottomBar,
                             ],
                           ),
                           child: Container(
@@ -814,7 +820,40 @@ class _OverviewPageState extends State<OverviewPage>
                           ),
                         );
                       } else {
-                        return Text("emptyness :bebes:");
+                        return Container(
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            color: StateContainer.of(context)
+                                .curTheme
+                                .backgroundPrimary,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                            boxShadow: [
+                              StateContainer.of(context)
+                                  .curTheme
+                                  .shadowBottomBar,
+                            ],
+                          ),
+                          child: Container(
+                            margin: EdgeInsetsDirectional.only(top: 4),
+                            child: Row(
+                              children: <Widget>[
+                                AppButton(
+                                  text: AppLocalization.of(context)
+                                      .viewPublicKeyHeader,
+                                  type: AppButtonType.Primary,
+                                  onPressed: () {
+                                    AppSheets.showBottomSheet(
+                                        context: context,
+                                        widget: PublicKeyOverviewSheet());
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       }
                     } else {
                       return Container(
