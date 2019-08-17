@@ -202,6 +202,9 @@ abstract class WalletBase with Store {
       this.isBorrowEligible = true;
       this.borrowedAccount = null;
     }
+    if (accountsResponse.borrowEligible != null) {
+      this.hasExceededBorrowLimit = !accountsResponse.borrowEligible;
+    }
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
@@ -299,6 +302,11 @@ abstract class WalletBase with Store {
 
   @action
   Future<void> requestUpdate() async {
+    if (this.publicKey == null) {
+      PrivateKey privKey = PrivateKeyCoder().decodeFromBytes(
+          PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey()));
+      this.publicKey = Keys.fromPrivateKey(privKey).publicKey;
+    }
     String uuid = await sl.get<SharedPrefsUtil>().getUuid();
     AvailableCurrency curCurrency = await sl.get<SharedPrefsUtil>().getCurrency(Locale("en", "US"));
     String fcmToken = await FirebaseMessaging().getToken();
@@ -310,6 +318,11 @@ abstract class WalletBase with Store {
 
   @action
   Future<void> fcmUpdate(AccountNumber account) async {
+    if (this.publicKey == null) {
+      PrivateKey privKey = PrivateKeyCoder().decodeFromBytes(
+          PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey()));
+      this.publicKey = Keys.fromPrivateKey(privKey).publicKey;
+    }
     bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
     String fcmToken = await FirebaseMessaging().getToken();
     sl.get<WSClient>().sendRequest(FcmUpdateRequest(account: account.account, enabled: enabled, fcmToken: fcmToken, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
@@ -323,6 +336,11 @@ abstract class WalletBase with Store {
 
   @action
   Future<void> fcmUpdateBulk({bool forceDisable = false}) async {
+    if (this.publicKey == null) {
+      PrivateKey privKey = PrivateKeyCoder().decodeFromBytes(
+          PDUtil.hexToBytes(await sl.get<Vault>().getPrivateKey()));
+      this.publicKey = Keys.fromPrivateKey(privKey).publicKey;
+    }
     if (walletLoading) {
       return;
     }

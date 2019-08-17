@@ -175,7 +175,7 @@ class WSClient {
       //log.d("Received ${message.length > 30 ? message.substring(0, 30) : message}");
       Map msg = await compute(decodeJson, message);
       // Determine response type
-      if (msg.containsKey("uuid") || msg.containsKey("currency") ||
+      if (msg.containsKey("subscribe") ||
           msg.containsKey("error") && msg.containsKey("currency")) {
         // Subscribe response
         SubscribeResponse resp = await compute(subscribeResponseFromJson, msg);

@@ -9,8 +9,10 @@ class AccountsResponseBorrowed extends AccountsResponse {
   @JsonKey(name: 'borrowed_account')
   BorrowResponse borrowedAccount;
 
+  @JsonKey(name: 'borrow_eligible')
+  bool borrowEligible;
 
-  AccountsResponseBorrowed({this.borrowedAccount}) : super();
+  AccountsResponseBorrowed({this.borrowedAccount, this.borrowEligible}) : super();
 
   factory AccountsResponseBorrowed.fromJson(Map<String, dynamic> json) => _$AccountsResponseBorrowedFromJson(json);
   Map<String, dynamic> toJson() => _$AccountsResponseBorrowedToJson(this);

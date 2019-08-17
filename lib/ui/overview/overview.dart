@@ -781,9 +781,11 @@ class _OverviewPageState extends State<OverviewPage>
                   }),
                   // Bottom bar
                   Observer(builder: (BuildContext context) {
-                    if (walletState.walletAccounts.length > 0) {
+                    if (walletState.walletLoading) {
+                      // TODO - Something else
+                      return SizedBox();
+                    } else if (walletState.walletAccounts.length > 0) {
                       if (walletState.isBorrowEligible &&
-                          walletState.hasReceivedSubscribeResponse &&
                           !walletState.hasExceededBorrowLimit) {
                         return Container(
                           width: double.maxFinite,

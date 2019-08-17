@@ -13,6 +13,7 @@ AccountsResponseBorrowed _$AccountsResponseBorrowedFromJson(
         ? null
         : BorrowResponse.fromJson(
             json['borrowed_account'] as Map<String, dynamic>),
+    borrowEligible: json['borrow_eligible'] as bool,
   )..accounts = (json['result'] as List)
       ?.map((e) =>
           e == null ? null : PascalAccount.fromJson(e as Map<String, dynamic>))
@@ -24,4 +25,5 @@ Map<String, dynamic> _$AccountsResponseBorrowedToJson(
     <String, dynamic>{
       'result': instance.accounts,
       'borrowed_account': instance.borrowedAccount,
+      'borrow_eligible': instance.borrowEligible,
     };
