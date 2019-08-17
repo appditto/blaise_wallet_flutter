@@ -782,8 +782,40 @@ class _OverviewPageState extends State<OverviewPage>
                   // Bottom bar
                   Observer(builder: (BuildContext context) {
                     if (walletState.walletLoading) {
-                      // TODO - Something else
-                      return SizedBox();
+                      // Animated button when loading
+                      return Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          boxShadow: [
+                            StateContainer.of(context).curTheme.shadowBottomBar,
+                          ],
+                        ),
+                        child: Container(
+                          margin: EdgeInsetsDirectional.only(top: 4),
+                          child: Opacity(
+                            opacity: _opacityAnimation.value,
+                            child: Row(
+                              children: <Widget>[
+                                AppButton(
+                                  text: "                           ",
+                                  type: AppButtonType.Primary,
+                                  onPressed: () {
+                                    return null;
+                                  },
+                                  placeholder: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
                     } else if (walletState.walletAccounts.length > 0) {
                       if (walletState.isBorrowEligible &&
                           !walletState.hasExceededBorrowLimit) {

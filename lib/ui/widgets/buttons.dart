@@ -22,6 +22,7 @@ class AppButton extends StatefulWidget {
   final bool disabled;
   final bool buttonTop;
   final bool buttonMiddle;
+  final bool placeholder;
 
   AppButton(
       {this.type,
@@ -29,6 +30,7 @@ class AppButton extends StatefulWidget {
       this.onPressed,
       this.disabled = false,
       this.buttonTop = false,
+      this.placeholder = false,
       this.buttonMiddle = false});
 
   _AppButtonState createState() => _AppButtonState();
@@ -106,15 +108,32 @@ class _AppButtonState extends State<AppButton> {
             ? FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0)),
-                child: AutoSizeText(
-                  widget.text,
-                  textAlign: TextAlign.center,
-                  maxLines: widget.type == AppButtonType.Danger ? 2 : 1,
-                  stepGranularity: 0.1,
-                  style: widget.type == AppButtonType.Danger
-                      ? AppStyles.buttonDanger(context)
-                      : AppStyles.buttonPrimary(context),
-                ),
+                child: !widget.placeholder
+                    ? AutoSizeText(
+                        widget.text,
+                        textAlign: TextAlign.center,
+                        maxLines: widget.type == AppButtonType.Danger ? 2 : 1,
+                        stepGranularity: 0.1,
+                        style: widget.type == AppButtonType.Danger
+                            ? AppStyles.buttonDanger(context)
+                            : AppStyles.buttonPrimary(context),
+                      )
+                    // Placeholder button rectangle
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: StateContainer.of(context).curTheme.textLight.withOpacity(0.75),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: AutoSizeText(
+                          widget.text,
+                          textAlign: TextAlign.center,
+                          maxLines: widget.type == AppButtonType.Danger ? 2 : 1,
+                          stepGranularity: 0.1,
+                          style: widget.type == AppButtonType.Danger
+                              ? AppStyles.buttonDanger(context)
+                              : AppStyles.buttonPrimary(context),
+                        ),
+                      ),
                 splashColor:
                     StateContainer.of(context).curTheme.backgroundPrimary30,
                 highlightColor:
