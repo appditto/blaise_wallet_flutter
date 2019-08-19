@@ -23,24 +23,22 @@ dependencies:
     sdk: flutter
 
   # PascalCoin signing/rpc/etc.
-  pascaldart:
-    git:
-      url: https://github.com/appditto/pascaldart.git
+  pascaldart: ^0.1.5
 
   # Localization
   intl: ^0.15.8
 
   # AutoSizeText widget
-  auto_size_text: ^2.0.1
+  auto_size_text: ^2.1.0
 
   # Flare for animations
-  flare_flutter: ^1.5.4
+  flare_flutter: ^1.5.5
 
   # SVG
-  flutter_svg: ^0.13.0+2
+  flutter_svg: ^0.14.0
 
   # Font awesome
-  font_awesome_flutter: ^8.4.0
+  font_awesome_flutter: ^8.5.0
 
   # Share files
   share:
@@ -59,7 +57,7 @@ dependencies:
   oktoast: ^2.2.0
 
   # Service locator
-  get_it: ^1.0.3+2
+  get_it: ^2.0.1
 
   # To avoid keyboard overlap
   keyboard_avoider: ^0.1.2
@@ -68,23 +66,23 @@ dependencies:
   flutter_secure_storage: ^3.2.1+1
 
   # shared prefs
-  shared_preferences: ^0.5.3+2
+  shared_preferences: ^0.5.3+4
 
   # Biometrics
-  local_auth: ^0.5.2+3
+  local_auth: ^0.5.2+4
 
   # mobx for state
-  mobx: ^0.3.3+2
+  mobx: ^0.3.5+1
   flutter_mobx: ^0.3.0+1
 
   # Nicer logging
   logger: ^0.7.0+2
 
   # quiver - various Dart utilities
-  quiver: ^2.0.2
+  quiver: ^2.0.3
 
   # big decimal
-  decimal: ^0.3.3
+  decimal: ^0.3.4
 
   # Event Bus
   event_taxi: ^0.1.5
@@ -96,41 +94,41 @@ dependencies:
       ref: master
 
   # Device-specific info
-  device_info: ^0.4.0+1
+  device_info: ^0.4.0+2
 
   # App build info
-  package_info: ^0.4.0+4
+  package_info: ^0.4.0+6
 
   # Serialization
   json_annotation: ^2.4.0
 
   # SQLite
-  sqflite: ^1.1.6+1
+  sqflite: ^1.1.6+3
 
   # OS Path Info
-  path_provider: ^1.1.2
+  path_provider: ^1.2.0
 
   # Native file chooser
-  file_picker: ^1.3.7
+  file_picker: ^1.3.8
 
   # Various string validations
   validators: ^2.0.0+1
 
   # Webview
-  flutter_webview_plugin: ^0.3.5
+  flutter_webview_plugin: ^0.3.7
 
   # QR scanning
   barcode_scan: ^1.0.0
 
   # Push notifications
-  firebase_messaging: ^5.1.2
+  firebase_messaging: ^5.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^1.5.0
+  build_runner: ^1.6.6
   intl_translation: ^0.17.5
-  mobx_codegen: ^0.3.3+1
+  mobx_codegen: ^0.3.4
   json_serializable: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
