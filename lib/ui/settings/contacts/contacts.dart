@@ -164,7 +164,7 @@ class _ContactsPageState extends State<ContactsPage> {
           // Contact doesnt exist, make sure name and address are valid
           if (contact.account != null &&
               contact.account.toString().length > 0) {
-            if (contact.name.startsWith("@") && contact.name.length <= 20) {
+            if (contact.name.length <= 20) {
               contactsToAdd.add(contact);
             }
           }
