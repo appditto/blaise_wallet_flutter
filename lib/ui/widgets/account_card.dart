@@ -103,7 +103,7 @@ class _AccountCardState extends State<AccountCard> {
                     child: Observer(
                       builder: (context) {
                         String status = "";
-                        if (walletState.borrowedAccount != null) {
+                        if (walletState.borrowedAccount != null && walletState.borrowedAccount.account == widget.account.account) {
                           if (walletState.borrowedAccount.paid) {
                             status = AppLocalization.of(context).borrowedTransferredHeader;
                           } else {
