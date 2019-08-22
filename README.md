@@ -1,8 +1,12 @@
 # Blaise - Simple, Sleek & Secure PASCAL Wallet
 
 ## What is Blaise?
+![Blaise Hero](https://blaisewallet.com/assets/hero-mockup.png)
 
 Blaise is a cross-platform mobile wallet for the PASCAL cryptocurrency. It is written in Dart using [Flutter](https://flutter.io).
+
+![Blaise Borrow](https://blaisewallet.com/assets/blaise-borrow.gif) ![Blaise Send](https://blaisewallet.com/assets/blaise-send.gif)
+
 
 Private keys are stored on the device and never transmitted to the server. Signing and other low-level operations are performed using [PascalDart](https://pub.dev/packages/pascaldart)
 
