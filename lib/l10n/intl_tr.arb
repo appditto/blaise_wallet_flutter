@@ -310,5 +310,7 @@
   "signeraccountOPDetails": "İmzalayan Hesap",
   "noResultsFound": "Sonuç bulunamadı",
   "getAccountThirdParagraphAlternative": "<colored>%1 Pascal (%2)</colored> karşılığında bir hesap satın alabilirsin.<colored> Her kullanıcı en fazla 1 adet hesap satın alabilir.</colored>",
-  "getAccountThirdParagraphAlternative2": "<colored>%1 Pascal (%2)</colored> karşılığında bir hesap satın alabilirsin.<colored> Her kullanıcı en fazla %3 adet hesap satın alabilir.</colored>"
+  "getAccountThirdParagraphAlternative2": "<colored>%1 Pascal (%2)</colored> karşılığında bir hesap satın alabilirsin.<colored> Her kullanıcı en fazla %3 adet hesap satın alabilir.</colored>",
+  "receiveAccountButton": "Hesap İste",
+  "receiveAnAccountButton": "Hesap İste"
 }

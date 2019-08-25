@@ -310,5 +310,7 @@
   "signeraccountOPDetails": "签署账号",
   "noResultsFound": "未找到结果",
   "getAccountThirdParagraphAlternative": "2- 您可以花费<colored>%1 Pascal (%2)</colored>购买一个账号。<colored> 每个用户只允许购买一个账号。</colored>",
-  "getAccountThirdParagraphAlternative2": "2- 您可以花费<colored>%1 Pascal (%2)</colored>购买一个账号。<colored> 您最多可以购买%3个账号。</colored>"
+  "getAccountThirdParagraphAlternative2": "2- 您可以花费<colored>%1 Pascal (%2)</colored>购买一个账号。<colored> 您最多可以购买%3个账号。</colored>",
+  "receiveAccountButton": "接收账号",
+  "receiveAnAccountButton": "接收一个账号"
 }

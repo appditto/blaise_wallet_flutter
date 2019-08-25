@@ -268,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "publicKeyParagraph" : MessageLookupByLibrary.simpleMessage("以下是您的公钥。顾名思义，它可用作公开共享，并证明某个特定操作属于您的私钥。"),
     "publicKeySheetHeader" : MessageLookupByLibrary.simpleMessage("公钥"),
     "publicKeyTextFieldHeader" : MessageLookupByLibrary.simpleMessage("公钥"),
+    "receiveAccountButton" : MessageLookupByLibrary.simpleMessage("接收账号"),
+    "receiveAnAccountButton" : MessageLookupByLibrary.simpleMessage("接收一个账号"),
     "receiveButton" : MessageLookupByLibrary.simpleMessage("接收"),
     "receivedHeader" : MessageLookupByLibrary.simpleMessage("已收到"),
     "receivingAccountOPDetails" : MessageLookupByLibrary.simpleMessage("收款方账号"),

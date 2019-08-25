@@ -310,5 +310,7 @@
   "signeraccountOPDetails": "Signierer",
   "noResultsFound": "Keine Ergebnisse",
   "getAccountThirdParagraphAlternative": "2- Du kannst ein Konto für <colored>%1 Pascal (%2)</colored> kaufen.<colored> Der Blaise-Service erlaubt den Erwerb von einem Konto pro Benutzer. Im Normalfall brauchst Du auch nur eins.</colored>",
-  "getAccountThirdParagraphAlternative2": "2- Du kannst ein Konto für <colored>%1 Pascal (%2)</colored> kaufen.<colored> Der Blaise-Service erlaubt den Erwerb von 3 Konten pro Benutzer. Im Normalfall brauchst Du lediglich eins.</colored>"
+  "getAccountThirdParagraphAlternative2": "2- Du kannst ein Konto für <colored>%1 Pascal (%2)</colored> kaufen.<colored> Der Blaise-Service erlaubt den Erwerb von 3 Konten pro Benutzer. Im Normalfall brauchst Du lediglich eins.</colored>",
+  "receiveAccountButton": "Konto erhalten",
+  "receiveAnAccountButton": "Ein Konto erhalten"
 }

@@ -268,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "publicKeyParagraph" : MessageLookupByLibrary.simpleMessage("Below is your public key. As the name suggests, it is intended to be shared publicly and prove that a particular operation belongs to your private key."),
     "publicKeySheetHeader" : MessageLookupByLibrary.simpleMessage("Public Key"),
     "publicKeyTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Public Key"),
+    "receiveAccountButton" : MessageLookupByLibrary.simpleMessage("Receive Account"),
+    "receiveAnAccountButton" : MessageLookupByLibrary.simpleMessage("Receive an Account"),
     "receiveButton" : MessageLookupByLibrary.simpleMessage("Receive"),
     "receivedHeader" : MessageLookupByLibrary.simpleMessage("Received"),
     "receivingAccountOPDetails" : MessageLookupByLibrary.simpleMessage("Receiving Account"),

@@ -268,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "publicKeyParagraph" : MessageLookupByLibrary.simpleMessage("Açık anahtarını aşağıda görebilirsin. Bu anahtar, herkese açık şekilde paylaşılmak ve bir operasyonun senin gizli anahtarına ait olduğu kanıtlamak için var."),
     "publicKeySheetHeader" : MessageLookupByLibrary.simpleMessage("Açık Anahtar"),
     "publicKeyTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Açık Anahtar"),
+    "receiveAccountButton" : MessageLookupByLibrary.simpleMessage("Hesap İste"),
+    "receiveAnAccountButton" : MessageLookupByLibrary.simpleMessage("Hesap İste"),
     "receiveButton" : MessageLookupByLibrary.simpleMessage("İste"),
     "receivedHeader" : MessageLookupByLibrary.simpleMessage("Alındı"),
     "receivingAccountOPDetails" : MessageLookupByLibrary.simpleMessage("Alıcı Hesap"),
