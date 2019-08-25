@@ -73,6 +73,16 @@ class AppStyles {
         fontWeight: FontWeight.w500);
   }
 
+  static TextStyle paragraphMediumPrimary(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        fontFamilyFallback: ["RobotoRegular"],
+        color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
+  }
+
   // For paragraphs
   static TextStyle paragraphPrimary(BuildContext context) {
     return TextStyle(

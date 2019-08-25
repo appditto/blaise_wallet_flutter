@@ -235,7 +235,6 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
 
   void onKeyTextChanged(String newText) {
     if (privateKeyIsValid(newText)) {
-      privateKeyFocusNode.unfocus();
       setState(() {
         _privateKeyValid = true;
         _showPrivateKeyError = false;

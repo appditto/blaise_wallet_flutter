@@ -27,9 +27,12 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
 
   String passwordError;
 
+  bool passwordsMatch;
+
   @override
   void initState() {
     super.initState();
+    this.passwordsMatch = false;
     this.passwordFocusNode = FocusNode();
     this.confirmPasswordFocusNode = FocusNode();
     this.passwordController = TextEditingController();
@@ -142,7 +145,7 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                 child: AppTextField(
                                   label: AppLocalization.of(context)
                                       .newPasswordTextFieldHeader,
-                                  style: AppStyles.paragraphMedium(context),
+                                  style: this.passwordsMatch ? AppStyles.paragraphMediumPrimary(context) : AppStyles.paragraphMedium(context),
                                   maxLines: 1,
                                   passwordField: true,
                                   focusNode: passwordFocusNode,
@@ -152,6 +155,20 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                       setState(() {
                                         passwordError = null;
                                       });
+                                    }
+                                    if (confirmPasswordController.text ==
+                                        passwordController.text) {
+                                      if (mounted) {
+                                        setState(() {
+                                          passwordsMatch = true;
+                                        });
+                                      }
+                                    } else {
+                                      if (mounted) {
+                                        setState(() {
+                                          passwordsMatch = false;
+                                        });
+                                      }
                                     }
                                   },
                                 ),
@@ -163,7 +180,7 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                 child: AppTextField(
                                   label: AppLocalization.of(context)
                                       .confirmPasswordTextFieldHeader,
-                                  style: AppStyles.paragraphMedium(context),
+                                  style: this.passwordsMatch ? AppStyles.paragraphMediumPrimary(context) : AppStyles.paragraphMedium(context),
                                   maxLines: 1,
                                   passwordField: true,
                                   focusNode: confirmPasswordFocusNode,
@@ -176,8 +193,17 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                     }
                                     if (confirmPasswordController.text ==
                                         passwordController.text) {
-                                      confirmPasswordFocusNode.unfocus();
-                                      passwordFocusNode.unfocus();
+                                      if (mounted) {
+                                        setState(() {
+                                          passwordsMatch = true;
+                                        });
+                                      }
+                                    } else {
+                                      if (mounted) {
+                                        setState(() {
+                                          passwordsMatch = false;
+                                        });
+                                      }
                                     }
                                   },
                                 ),
