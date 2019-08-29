@@ -35,7 +35,6 @@ class AppIcons {
   static const IconData import_icon = const IconData(0xe80c, fontFamily: _kFontFam);
   static const IconData language = const IconData(0xe80d, fontFamily: _kFontFam);
   static const IconData lock = const IconData(0xe80e, fontFamily: _kFontFam);
-  static const IconData logout = const IconData(0xe80f, fontFamily: _kFontFam);
   static const IconData notifications = const IconData(0xe810, fontFamily: _kFontFam);
   static const IconData contact = const IconData(0xe811, fontFamily: _kFontFam);
   static const IconData pascalcurrency = const IconData(0xe812, fontFamily: _kFontFam);
@@ -56,4 +55,5 @@ class AppIcons {
   static const IconData pascalsymbol = const IconData(0xe821, fontFamily: _kFontFam);
   static const IconData chatbubble = const IconData(0xe822, fontFamily: _kFontFam);
   static const IconData max = const IconData(0xe823, fontFamily: _kFontFam);
+  static const IconData logout = const IconData(0xe824, fontFamily: _kFontFam);
 }
