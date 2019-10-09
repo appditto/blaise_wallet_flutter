@@ -156,7 +156,7 @@ class _AppState extends State<App> {
               return null;
           }
         },
-        locale: StateContainer.of(context).curLanguage == null ? Locale('en') : StateContainer.of(context).curLanguage.getLocale(),
+        locale: StateContainer.of(context).curLanguage == null || StateContainer.of(context).curLanguage.language == AvailableLanguage.DEFAULT ? null : StateContainer.of(context).curLanguage.getLocale(),
         supportedLocales: [
           // Languages
           const Locale('en', 'US'), // English
