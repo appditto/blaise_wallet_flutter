@@ -434,11 +434,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                             .curTheme
                                             .primary
                                             .toString()
-                                            .substring(10, 16) + "&fcForegroundColor=" + StateContainer.of(context)
-                                            .curTheme
-                                            .backgroundPrimary
-                                            .toString()
-                                            .substring(10, 16));
+                                            .substring(10, 16) +
+                                        "&fcForegroundColor=" +
+                                        "ffffff" + "&loadingText=" + AppLocalization.of(context).connectingHeader);
                               }),
                           SettingsListItem(
                             header: AppLocalization.of(context).logoutHeader,

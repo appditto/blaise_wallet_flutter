@@ -1525,6 +1525,15 @@ class AppLocalization {
   }
   // Operation List Item Headers END
 
+  // Live chat
+  String get connectingHeader {
+    return Intl.message(
+        "Connecting",
+        desc:
+            'A header to let the user now that Blaise is currently connecting to (or loading) live chat.',
+        name: 'connectingHeader');
+  }
+
   // Miscellaneous Headers
   String get balanceHeader {
     return Intl.message("Balance",

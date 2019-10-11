@@ -11,6 +11,7 @@ class AppWebView {
       MaterialPageRoute<void>(
         builder: (BuildContext context) => 
           WebviewScaffold(
+            resizeToAvoidBottomInset: true,
             url: url,
             appBar: AppBar(
                 backgroundColor: StateContainer.of(context).curTheme.primary,         
