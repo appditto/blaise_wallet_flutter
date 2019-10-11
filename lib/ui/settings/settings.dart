@@ -426,17 +426,6 @@ class _SettingsPageState extends State<SettingsPage> {
                               header: "Live Support",
                               icon: Icons.chat,
                               onPressed: () {
-                                print('https://blaisewallet.com/support/' +
-                                        "?fcBackgroundColor=" +
-                                        StateContainer.of(context)
-                                            .curTheme
-                                            .primary
-                                            .toString()
-                                            .substring(10, 16) + "&?fcForegroundColor=" + StateContainer.of(context)
-                                            .curTheme
-                                            .backgroundPrimary
-                                            .toString()
-                                            .substring(10, 16));
                                 AppWebView.showWebView(
                                     context,
                                     'https://blaisewallet.com/support/' +
