@@ -503,7 +503,14 @@ class _SettingsPageState extends State<SettingsPage> {
                         height: 40,
                         padding: EdgeInsets.all(0),
                         margin: EdgeInsetsDirectional.only(top: 12, end: 24),
+                        // Support Button
                         child: FlatButton(
+                          splashColor: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary30,
+                          highlightColor: StateContainer.of(context)
+                              .curTheme
+                              .backgroundPrimary15,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           onPressed: () {
@@ -523,28 +530,37 @@ class _SettingsPageState extends State<SettingsPage> {
                                         .connectingHeader);
                           },
                           padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                          // A row for support icon and text
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              // Support Icon
+                              // Support icon
                               Container(
+                                margin: EdgeInsetsDirectional.only(end: 8),
                                 child: Icon(AppIcons.support,
                                     size: 20,
                                     color: StateContainer.of(context)
                                         .curTheme
                                         .backgroundPrimary),
                               ),
-                              // Support Text
+                              // Support text
                               Container(
-                                margin: EdgeInsetsDirectional.only(start: 8),
-                                child: Text(
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        (MediaQuery.of(context).size.width -
+                                                100) *
+                                            0.4),
+                                child: AutoSizeText(
                                   AppLocalization.of(context).supportButton,
                                   style: TextStyle(
-                                      color: StateContainer.of(context)
-                                          .curTheme
-                                          .backgroundPrimary,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    fontFamily: "Metropolis",
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  minFontSize: 8,
+                                  stepGranularity: 0.1,
                                 ),
                               ),
                             ],
