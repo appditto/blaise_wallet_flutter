@@ -109,10 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
           option: setting.getDisplayName(context),
           action: () {
             if (setting != StateContainer.of(context).curLanguage) {
-              sl
-                  .get<SharedPrefsUtil>()
-                  .setLanguage(setting)
-                  .then((result) {
+              sl.get<SharedPrefsUtil>().setLanguage(setting).then((result) {
                 StateContainer.of(context).updateLanguage(setting);
               });
             }
@@ -285,7 +282,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           SettingsListItem(
                             header: AppLocalization.of(context).languageHeader,
-                            subheader: StateContainer.of(context).curLanguage.getDisplayName(context),
+                            subheader: StateContainer.of(context)
+                                .curLanguage
+                                .getDisplayName(context),
                             icon: AppIcons.language,
                             onPressed: () {
                               showAppDialog(
@@ -322,7 +321,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                           SettingsListItem(
-                            header: AppLocalization.of(context).notificationsHeader,
+                            header:
+                                AppLocalization.of(context).notificationsHeader,
                             subheader: _curNotificiationSetting
                                 .getDisplayName(context),
                             icon: AppIcons.notifications,
@@ -330,7 +330,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               showAppDialog(
                                   context: context,
                                   builder: (_) => DialogOverlay(
-                                      title: AppLocalization.of(context).notificationsHeader,
+                                      title: AppLocalization.of(context)
+                                          .notificationsHeader,
                                       optionsList: getNotificationList()));
                             },
                           ),
@@ -422,6 +423,35 @@ class _SettingsPageState extends State<SettingsPage> {
                                     .checkOutBlaiseParagraph);
                               }),
                           SettingsListItem(
+                              header: "Live Support",
+                              icon: Icons.chat,
+                              onPressed: () {
+                                print('https://blaisewallet.com/support/' +
+                                        "?fcBackgroundColor=" +
+                                        StateContainer.of(context)
+                                            .curTheme
+                                            .primary
+                                            .toString()
+                                            .substring(10, 16) + "&?fcForegroundColor=" + StateContainer.of(context)
+                                            .curTheme
+                                            .backgroundPrimary
+                                            .toString()
+                                            .substring(10, 16));
+                                AppWebView.showWebView(
+                                    context,
+                                    'https://blaisewallet.com/support/' +
+                                        "?fcBackgroundColor=" +
+                                        StateContainer.of(context)
+                                            .curTheme
+                                            .primary
+                                            .toString()
+                                            .substring(10, 16) + "&fcForegroundColor=" + StateContainer.of(context)
+                                            .curTheme
+                                            .backgroundPrimary
+                                            .toString()
+                                            .substring(10, 16));
+                              }),
+                          SettingsListItem(
                             header: AppLocalization.of(context).logoutHeader,
                             icon: AppIcons.logout,
                             onPressed: () {
@@ -479,11 +509,12 @@ class _SettingsPageState extends State<SettingsPage> {
     showAppDialog(
         context: context,
         builder: (_) => DialogOverlay(
-              title: toUppercase(AppLocalization.of(context).warningHeader, context),
+              title: toUppercase(
+                  AppLocalization.of(context).warningHeader, context),
               warningStyle: true,
-              confirmButtonText: toUppercase(AppLocalization.of(context)
-                  .deletePrivateKeyAndLogoutButton
-                  ,context),
+              confirmButtonText: toUppercase(
+                  AppLocalization.of(context).deletePrivateKeyAndLogoutButton,
+                  context),
               body: TextSpan(
                 children: formatLocalizedColorsDanger(context,
                     AppLocalization.of(context).logoutFirstDisclaimerParagraph),
@@ -493,13 +524,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 showAppDialog(
                     context: context,
                     builder: (_) => DialogOverlay(
-                        title: toUppercase(AppLocalization.of(context)
-                            .areYouSureHeader
-                            ,context),
+                        title: toUppercase(
+                            AppLocalization.of(context).areYouSureHeader,
+                            context),
                         warningStyle: true,
-                        confirmButtonText: toUppercase(AppLocalization.of(context)
-                            .yesImSureButton
-                            ,context),
+                        confirmButtonText: toUppercase(
+                            AppLocalization.of(context).yesImSureButton,
+                            context),
                         body: TextSpan(
                           children: formatLocalizedColorsDanger(
                               context,
