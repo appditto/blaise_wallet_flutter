@@ -1,5 +1,6 @@
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/account/account.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_security_first.dart';
