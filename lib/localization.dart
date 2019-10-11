@@ -352,6 +352,15 @@ class AppLocalization {
     return Intl.message("Receive an Account",
         desc: 'A button to open up the public key sheet(screen) that displays a QR code to receive an account', name: 'receiveAnAccountButton');
   }
+
+  String get supportButton {
+    return Intl.message("Support",
+        desc: 'A button to open up the live support window', name: 'supportButton');
+  }
+  String get liveSupportButton {
+    return Intl.message("Support",
+        desc: 'A button to open up the live support window', name: 'liveSupportButton');
+  }
   // **** BUTTONS END **** //
 
   // **** PARAGRAPHS **** //

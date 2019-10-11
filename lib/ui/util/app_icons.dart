@@ -35,6 +35,7 @@ class AppIcons {
   static const IconData import_icon = const IconData(0xe80c, fontFamily: _kFontFam);
   static const IconData language = const IconData(0xe80d, fontFamily: _kFontFam);
   static const IconData lock = const IconData(0xe80e, fontFamily: _kFontFam);
+  static const IconData support = const IconData(0xe80f, fontFamily: _kFontFam);
   static const IconData notifications = const IconData(0xe810, fontFamily: _kFontFam);
   static const IconData contact = const IconData(0xe811, fontFamily: _kFontFam);
   static const IconData pascalcurrency = const IconData(0xe812, fontFamily: _kFontFam);
