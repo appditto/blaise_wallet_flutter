@@ -32,10 +32,10 @@ dependencies:
   auto_size_text: ^2.1.0
 
   # Flare for animations
-  flare_flutter: ^1.5.5
+  flare_flutter: ^1.6.1
 
   # SVG
-  flutter_svg: ^0.14.0
+  flutter_svg: ^0.14.2
 
   # Font awesome
   font_awesome_flutter: ^8.5.0
@@ -48,32 +48,32 @@ dependencies:
       ref: master
   
   # Slidable
-  flutter_slidable: ^0.5.3
+  flutter_slidable: ^0.5.4
 
   # QR Code Generator
-  qr_flutter: ^2.1.0+55
+  qr_flutter: ^3.0.1
 
   # Banner style alerts
   oktoast: ^2.2.0
 
   # Service locator
-  get_it: ^2.0.1
+  get_it: ^3.0.1
 
   # To avoid keyboard overlap
   keyboard_avoider: ^0.1.2
 
   # KeyStore/keychain
-  flutter_secure_storage: ^3.2.1+1
+  flutter_secure_storage: ^3.3.1+1
 
   # shared prefs
   shared_preferences: ^0.5.3+4
 
   # Biometrics
-  local_auth: ^0.5.2+4
+  local_auth: ^0.6.0+1
 
   # mobx for state
-  mobx: ^0.3.5+1
-  flutter_mobx: ^0.3.0+1
+  mobx: ^0.3.8+1
+  flutter_mobx: ^0.3.3+1
 
   # Nicer logging
   logger: ^0.7.0+2
@@ -82,7 +82,7 @@ dependencies:
   quiver: ^2.0.3
 
   # big decimal
-  decimal: ^0.3.4
+  decimal: ^0.3.5
 
   # Event Bus
   event_taxi: ^0.1.5
@@ -103,32 +103,32 @@ dependencies:
   json_annotation: ^2.4.0
 
   # SQLite
-  sqflite: ^1.1.6+3
+  sqflite: ^1.1.7+1
 
   # OS Path Info
-  path_provider: ^1.2.0
+  path_provider: ^1.3.0
 
   # Native file chooser
-  file_picker: ^1.3.8
+  file_picker: ^1.4.2
 
   # Various string validations
   validators: ^2.0.0+1
 
   # Webview
-  flutter_webview_plugin: ^0.3.7
+  flutter_webview_plugin: ^0.3.8
 
   # QR scanning
   barcode_scan: ^1.0.0
 
   # Push notifications
-  firebase_messaging: ^5.1.3
+  firebase_messaging: ^5.1.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^1.6.6
   intl_translation: ^0.17.5
-  mobx_codegen: ^0.3.4
+  mobx_codegen: ^0.3.9+1
   json_serializable: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
