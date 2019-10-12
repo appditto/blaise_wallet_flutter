@@ -556,6 +556,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                     fontFamily: "Metropolis",
+                                    color: StateContainer.of(context).curTheme.backgroundPrimary
                                   ),
                                   textAlign: TextAlign.center,
                                   maxLines: 1,
