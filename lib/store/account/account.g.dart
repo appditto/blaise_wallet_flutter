@@ -157,8 +157,8 @@ mixin _$Account on AccountBase, Store {
 
   @override
   Future<RPCResponse> doSend(
-      {String amount,
-      String destination,
+      {@required String amount,
+      @required String destination,
       Currency fee,
       Uint8List encryptedPayload,
       String payload = ""}) {
