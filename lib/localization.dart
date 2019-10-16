@@ -456,6 +456,11 @@ class AppLocalization {
         name: 'enterPhoneNumberParagraph');
   }
 
+  String get invalidPhoneNumberParagraph {
+    return Intl.message("Phone number is not valid",
+      desc: 'User has entered an invalid phone number', name: 'invalidPhoneNumberParagraph');
+  }
+
   String get enterConfirmationCodeParagraph {
     return Intl.message(
         "We have sent you a confirmation code, please enter it below.",

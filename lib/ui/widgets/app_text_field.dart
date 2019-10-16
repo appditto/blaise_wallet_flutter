@@ -55,6 +55,8 @@ class AppTextField extends StatefulWidget {
   final Function onChanged;
   final Function onTap;
   final bool readOnly;
+  final TextInputAction textInputAction;
+  final Function onSubmitted;
 
   AppTextField(
       {@required this.label,
@@ -70,8 +72,10 @@ class AppTextField extends StatefulWidget {
       this.inputFormatters,
       this.onChanged,
       this.onTap,
+      this.onSubmitted,
       this.passwordField = false,
-      this.readOnly = false});
+      this.readOnly = false,
+      this.textInputAction = TextInputAction.done});
 
   _AppTextFieldState createState() => _AppTextFieldState();
 }
@@ -112,10 +116,16 @@ class _AppTextFieldState extends State<AppTextField> {
                     autocorrect: false,
                     textCapitalization:
                         widget.textCapitalization ?? TextCapitalization.none,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: widget.textInputAction,
                     maxLines: widget.maxLines,
                     minLines: 1,
-                    
+                    onSubmitted: (text) {
+                      if (widget.textInputAction == TextInputAction.done && widget.onSubmitted == null) {
+                        FocusScope.of(context).unfocus();
+                      } else if (widget.onSubmitted != null) {
+                        widget.onSubmitted();
+                      }
+                    },
                     inputFormatters: widget.inputFormatters,
                     onTap: widget.onTap,
                     onChanged: (String newValue) {

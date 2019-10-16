@@ -13,6 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class ConfirmFreeAccountSheet extends StatefulWidget {
+  final String requestId;
+
+  ConfirmFreeAccountSheet({@required this.requestId}) : super();
+
   _ConfirmFreeAccountSheetState createState() =>
       _ConfirmFreeAccountSheetState();
 }

@@ -171,6 +171,10 @@ class _EncryptPrivateKeySheetState extends State<EncryptPrivateKeySheet> {
                                       }
                                     }
                                   },
+                                  textInputAction: TextInputAction.next,
+                                  onSubmitted: (text) {
+                                    confirmPasswordFocusNode.requestFocus();
+                                  },
                                 ),
                               ),
                               // Container for confirm password field

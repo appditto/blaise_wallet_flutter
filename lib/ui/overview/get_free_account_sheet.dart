@@ -1,17 +1,24 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/network/http_client.dart';
 import 'package:blaise_wallet_flutter/ui/overview/confirm_free_account_sheet.dart';
+import 'package:blaise_wallet_flutter/ui/util/formatters.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/error_container.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class CountryCode {
   String isoCode;
@@ -39,6 +46,9 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   List<CountryCode> _countryCodes;
   CountryCode _selectedCountry;
   FixedExtentScrollController _cupertinoPickerController;
+  TextEditingController _phoneNumberController;
+  bool _showPhoneError;
+  OverlayEntry _overlay;
 
   Future<List<CountryCode>> readCountryCodeFromAssets() async {
     return CountryCode.fromJsonList(
@@ -65,6 +75,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   @override
   void initState() {
     super.initState();
+    _phoneNumberController = TextEditingController();
+    this._showPhoneError = false;
     _cupertinoPickerController = FixedExtentScrollController();
     readCountryCodeFromAssets().then((values) {
       setState(() {
@@ -224,9 +236,25 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                   child: AppTextField(
                                     label: AppLocalization.of(context).phoneNumberTextFieldHeader,
                                     style: AppStyles.paragraphMedium(context),
+                                    controller: _phoneNumberController,
                                     maxLines: 1,
                                     inputType: TextInputType.phone,
+                                    inputFormatters: [
+                                      PhoneNumberFormatter(),
+                                      WhitelistingTextInputFormatter(r"[0-9\-]")
+                                    ],
+                                    onChanged: (text) {
+                                      if (mounted && this._showPhoneError) {
+                                        setState(() {
+                                          this._showPhoneError = false;
+                                        });
+                                      }
+                                    },
                                   ),
+                                ),
+                                // Error Text
+                                ErrorContainer(
+                                  errorText: this._showPhoneError ? AppLocalization.of(context).invalidPhoneNumberParagraph : "",
                                 ),
                               ],
                             ),
@@ -242,10 +270,17 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                         type: AppButtonType.Primary,
                         text: AppLocalization.of(context).sendConfirmationButton,
                         buttonTop: true,
-                        onPressed: () {
+                        onPressed: () async {
+                          showOverlay(context);
+                          String result = await onSubmitted();
+                          _overlay?.remove();
+                          Navigator.pop(context);
                           AppSheets.showBottomSheet(
-                              context: context,
-                              widget: ConfirmFreeAccountSheet());
+                            context: context,
+                            widget: ConfirmFreeAccountSheet(
+                              requestId: result,
+                            )
+                          );
                         },
                       ),
                     ],
@@ -269,6 +304,38 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
         ],
       ),
     );
+  }
+
+  void showOverlay(BuildContext context) {
+    OverlayState overlayState = Overlay.of(context);
+    _overlay = OverlayEntry(
+      builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              color: StateContainer.of(context).curTheme.overlay20,
+              child: Center(
+                child: //Container for the animation
+                    Container(
+                  margin: EdgeInsetsDirectional.only(
+                      top: MediaQuery.of(context).padding.top),
+                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
+                  width: double.maxFinite,
+                  height: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: FlareActor(
+                      StateContainer.of(context).curTheme.animationGetAccount,
+                      animation: "main",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+    overlayState.insert(_overlay);
   }
 
   Future<void> showCountryCodePicker() async {
@@ -300,5 +367,30 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
         _cupertinoPickerController = FixedExtentScrollController(initialItem: _countryCodes.indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
       });
     }
+  }
+
+  // Submit request, return request ID if successful
+  Future<String> onSubmitted() async {
+    // Validate phone number
+    if (_phoneNumberController.text.replaceAll(RegExp(r"[^0-9]"), "").length != 7) {
+      if (mounted) {
+        setState(() {
+          _showPhoneError = true;
+        });
+      }
+      return null;
+    }
+    // Make free pasa request
+    String response = await HttpAPI.getFreePASA(
+      _selectedCountry.isoCode,
+      _phoneNumberController.text,
+      PublicKeyCoder().encodeToBase58(walletState.publicKey)
+    );
+    // Error occured if null, otherwise move on to verification screen
+    if (response == null) {
+      UIUtil.showSnackbar(AppLocalization.of(context).somethingWentWrongError, context);
+      return null;
+    }
+    return response;
   }
 }

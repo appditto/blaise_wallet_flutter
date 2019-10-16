@@ -32,6 +32,24 @@ class PascalNameFormatter extends TextInputFormatter {
   }
 }
 
+/// For phone numbers
+/// Ensures no more than 7 digits
+/// Ensures hyphens only occur after a number
+class PhoneNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    // Check digit count, 7 is max
+    if (newValue.text.replaceAll(RegExp(r"[^0-9]"), "").length > 7) {
+      return oldValue;
+    }
+    // Ensure only 1 hyphen after a number
+    if (newValue.text.endsWith("-") && oldValue.text.endsWith("-")) {
+      return oldValue;
+    }
+    return newValue;
+  }
+}
+
 /// Input formatter for Crpto/Fiat amounts
 class CurrencyFormatter extends TextInputFormatter {
 

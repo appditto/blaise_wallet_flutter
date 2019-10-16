@@ -197,6 +197,10 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                         maxDecimalDigits:
                                             NumberUtil.maxDecimalDigits)
                                   ],
+                                  textInputAction: TextInputAction.next,
+                                  onSubmitted: (text) {
+                                    receiverFocusNode.requestFocus();
+                                  },
                                 ),
                               ),
                               _hasFee
@@ -252,6 +256,10 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                   },
                                   focusNode: receiverFocusNode,
                                   controller: receiverController,
+                                  textInputAction: TextInputAction.next,
+                                  onSubmitted: (text) {
+                                    publicKeyFocusNode.requestFocus();
+                                  },
                                 ),
                               ),
                               ErrorContainer(errorText: _receiverErr ?? ""),

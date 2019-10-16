@@ -187,6 +187,10 @@ class _RequestSheetState extends State<RequestSheet> {
                               firstButton: TextFieldButton(icon: AppIcons.max),
                               secondButton: TextFieldButton(
                                   icon: AppIcons.currencyswitch),
+                              textInputAction: TextInputAction.next,
+                              onSubmitted: (text) {
+                                payloadFocusNode.requestFocus();
+                              },
                             ),
                           ),
                           // Container for the payload text field

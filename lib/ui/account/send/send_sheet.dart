@@ -491,6 +491,10 @@ class _SendSheetState extends State<SendSheet> {
                                                   }
                                                 },
                                               ),
+                                              textInputAction: TextInputAction.next,
+                                              onSubmitted: (text) {
+                                                amountFocusNode.requestFocus();
+                                              },
                                             )
                                           : AppTextField(
                                               label: AppLocalization.of(context)
@@ -560,6 +564,10 @@ class _SendSheetState extends State<SendSheet> {
                                                       TextPosition(offset: addressController.text.length));
                                                 },
                                               ),
+                                              textInputAction: TextInputAction.next,
+                                              onSubmitted: (text) {
+                                                amountFocusNode.requestFocus();
+                                              },
                                             ),
                                     ),
                                     // A stack to display contacts pop up

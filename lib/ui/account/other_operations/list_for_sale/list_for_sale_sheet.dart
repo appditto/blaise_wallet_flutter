@@ -190,6 +190,10 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                         maxDecimalDigits:
                                             NumberUtil.maxDecimalDigits)
                                   ],
+                                  textInputAction: TextInputAction.next,
+                                  onSubmitted: (text) {
+                                    receiverFocusNode.requestFocus();
+                                  },
                                 ),
                               ),
                               _hasFee

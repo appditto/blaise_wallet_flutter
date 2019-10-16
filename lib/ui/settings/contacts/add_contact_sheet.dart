@@ -154,6 +154,10 @@ class _AddContactSheetState extends State<AddContactSheet> {
                                   });
                                 }
                               },
+                              textInputAction: TextInputAction.newline,
+                              onSubmitted: (text) {
+                                addressFocusNode.requestFocus();
+                              },
                             )),
                         ErrorContainer(
                           errorText: nameError ?? "",
