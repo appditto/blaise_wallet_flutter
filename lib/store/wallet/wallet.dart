@@ -32,7 +32,7 @@ abstract class WalletBase with Store {
   final Currency NO_FEE = Currency('0');
   final Currency MIN_FEE = Currency('0.0001');
 
-  Logger log = Logger();
+  final Logger log = sl.get<Logger>();
 
   @observable
   bool walletLoading = true;

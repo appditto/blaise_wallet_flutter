@@ -57,7 +57,7 @@ class SendingSheet extends StatefulWidget {
 }
 
 class _SendingSheetState extends State<SendingSheet> {
-  final Logger log = Logger();
+  final Logger log = sl.get<Logger>();
 
   OverlayEntry _overlay;
 

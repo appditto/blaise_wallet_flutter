@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/network/model/request/subscribe_request.da
 import 'package:blaise_wallet_flutter/network/model/request_item.dart';
 import 'package:blaise_wallet_flutter/network/model/response/price_response.dart';
 import 'package:blaise_wallet_flutter/network/model/response/subscribe_response.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pascaldart/pascaldart.dart' as pd;
 
@@ -25,7 +26,7 @@ Map decodeJson(dynamic src) {
 
 // WSClient singleton
 class WSClient {
-  final Logger log = Logger();
+  final Logger log = sl.get<Logger>();
 
   // For all requests we place them on a queue with expiry to be processed sequentially
   Queue<RequestItem> _requestQueue;

@@ -17,15 +17,23 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logger/logger.dart';
 import 'package:oktoast/oktoast.dart';
 
 void main() async {
   // Register services
   setupServiceLocator();
+  // Setup logger, only show warning and higher in release mode.
+  if (kReleaseMode) {
+    Logger.level = Level.warning;
+  } else {
+    Logger.level = Level.debug;
+  }
   // Run app
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

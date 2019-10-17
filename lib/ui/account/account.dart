@@ -45,7 +45,7 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  final Logger log = Logger();
+  final Logger log = sl.get<Logger>();
 
   GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
   Account accountState;

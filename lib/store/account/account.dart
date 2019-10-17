@@ -20,7 +20,7 @@ class Account = AccountBase with _$Account;
 
 /// State for a specific account
 abstract class AccountBase with Store {
-  Logger log = Logger();
+  Logger log = sl.get<Logger>();
 
   @observable
   bool operationsLoading = true;

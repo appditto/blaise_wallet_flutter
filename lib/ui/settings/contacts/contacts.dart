@@ -36,7 +36,7 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  final Logger log = Logger();
+  final Logger log = sl.get<Logger>();
 
   List<Contact> _contacts;
   String documentsDirectory;

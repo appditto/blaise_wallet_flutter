@@ -15,6 +15,7 @@ import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:logger/logger.dart';
 import 'package:pascaldart/pascaldart.dart';
 
 class ConfirmFreeAccountSheet extends StatefulWidget {
@@ -27,6 +28,7 @@ class ConfirmFreeAccountSheet extends StatefulWidget {
 }
 
 class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
+  final Logger log = sl.get<Logger>();
   OverlayEntry _overlay;
   TextEditingController codeController;
 
@@ -209,14 +211,17 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
   /// Verify a freepasa request, return true if valid, false if not
   Future<bool> verifyFreepasaAccount() async {
     try {
+      log.d("Sending request to verify freePASA rid: '${widget.requestId}', code ${codeController.text}");
       int response = await HttpAPI.verifyFreePASA(
         widget.requestId,
         codeController.text
       );
       if (response == null) {
+        log.w("Null response from HttpAPI.verifyFreePASA");
         UIUtil.showSnackbar(AppLocalization.of(context).somethingWentWrongError, context);
         return false;
       } else if (response < 0) {
+        log.d("Invalid confirmation code entered at freepasa verify");
         UIUtil.showSnackbar(AppLocalization.of(context).confirmationCodeError, context);
         return false;
       }
@@ -224,6 +229,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
       await sl.get<SharedPrefsUtil>().setFreepasaAccount(account);
       return true;
     } catch (e) {
+      log.e("Caught exception at freepasa verify ${e.toString()}", e);
       return false;
     } 
   }
