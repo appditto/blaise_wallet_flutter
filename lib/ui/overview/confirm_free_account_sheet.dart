@@ -5,6 +5,7 @@ import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/network/http_client.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
@@ -177,7 +178,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                           _overlay?.remove();
                           if (success) {
                             walletState.loadWallet();
-                            Navigator.of(context).pop();
+                            Navigator.popUntil(context, RouteUtils.withNameLike('/overview'));
                             UIUtil.showSnackbar(AppLocalization.of(context).freepasaComplete, context);
                           }
                         },

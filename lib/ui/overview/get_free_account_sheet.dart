@@ -275,7 +275,6 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           String result = await onSubmitted();
                           _overlay?.remove();
                           if (result != null) {
-                            Navigator.pop(context);
                             AppSheets.showBottomSheet(
                               context: context,
                               widget: ConfirmFreeAccountSheet(
