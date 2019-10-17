@@ -33,13 +33,13 @@ class PascalNameFormatter extends TextInputFormatter {
 }
 
 /// For phone numbers
-/// Ensures no more than 7 digits
+/// Ensures no more than 10 digits
 /// Ensures hyphens only occur after a number
 class PhoneNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    // Check digit count, 7 is max
-    if (newValue.text.replaceAll(RegExp(r"[^0-9]"), "").length > 7) {
+    // Check digit count, 10 is max
+    if (newValue.text.replaceAll(RegExp(r"[^0-9]"), "").length > 10) {
       return oldValue;
     }
     // Ensure only 1 hyphen after a number
