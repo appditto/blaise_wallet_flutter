@@ -50,6 +50,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   bool _showPhoneError;
   OverlayEntry _overlay;
 
+  String requestId;
+
   Future<List<CountryCode>> readCountryCodeFromAssets() async {
     return CountryCode.fromJsonList(
       json.decode(await DefaultAssetBundle.of(context).loadString("assets/country_phone_map.json"))
@@ -78,6 +80,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
     _phoneNumberController = TextEditingController();
     this._showPhoneError = false;
     _cupertinoPickerController = FixedExtentScrollController();
+    this.requestId = null;
     readCountryCodeFromAssets().then((values) {
       setState(() {
         _countryCodes = values;
@@ -271,17 +274,28 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                         text: AppLocalization.of(context).sendConfirmationButton,
                         buttonTop: true,
                         onPressed: () async {
-                          showOverlay(context);
-                          String result = await onSubmitted();
-                          _overlay?.remove();
-                          if (result != null) {
-                            AppSheets.showBottomSheet(
-                              context: context,
-                              widget: ConfirmFreeAccountSheet(
-                                requestId: result,
-                              ),
-                              noBlur: true
-                            );
+                          if (this.requestId == null) {
+                            showOverlay(context);
+                            String result = await onSubmitted();
+                            _overlay?.remove();
+                            if (result != null) {
+                              this.requestId = result;
+                              AppSheets.showBottomSheet(
+                                context: context,
+                                widget: ConfirmFreeAccountSheet(
+                                  requestId: result,
+                                ),
+                                noBlur: true
+                              );
+                            }
+                          } else {
+                              AppSheets.showBottomSheet(
+                                context: context,
+                                widget: ConfirmFreeAccountSheet(
+                                  requestId: this.requestId
+                                ),
+                                noBlur: true
+                              );                            
                           }
                         },
                       ),
