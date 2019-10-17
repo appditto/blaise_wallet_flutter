@@ -41,6 +41,8 @@ class SharedPrefsUtil {
   static const String notification_enabled = 'blaise_notification_on';
   // Freepasa account before confirmation
   static const String freepasa_account_pending = 'blaise_fpasa_pending_acct';
+  // For certain keystore incompatible androids
+  static const String use_legacy_storage = 'blaise_legacy_storage';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -274,6 +276,14 @@ class SharedPrefsUtil {
     await setWithExpiry(freepasa_account_pending, account.account, 2000);
   }
 
+  Future<bool> useLegacyStorage() async {
+    return await get(use_legacy_storage, defaultValue: false);
+  }
+
+  Future<void> setUseLegacyStorage() async {
+    await set(use_legacy_storage, true);
+  }
+
   // For logging out
   Future<void> deleteAll({bool firstLaunch = false}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -289,6 +299,7 @@ class SharedPrefsUtil {
       await prefs.remove(lock_app);
       await prefs.remove(cur_currency);
       await prefs.remove(app_uuid_key);
+      await prefs.remove(use_legacy_storage);
     }
   }
 }

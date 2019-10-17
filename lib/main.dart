@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/available_languages.dart';
@@ -250,25 +252,47 @@ class Splash extends StatefulWidget {
 
 class SplashState extends State<Splash> with WidgetsBindingObserver {
   bool _hasCheckedLoggedIn;
-  Future checkLoggedIn() async {
-    if (!_hasCheckedLoggedIn) {
-      _hasCheckedLoggedIn = true;
-      if (await sl.get<SharedPrefsUtil>().getFirstLaunch()) {
-        await sl.get<SharedPrefsUtil>().deleteAll(firstLaunch: true);
-        await sl.get<Vault>().deleteAll();
-        await sl.get<SharedPrefsUtil>().setFirstLaunch();
-        Navigator.of(context).pushReplacementNamed('/intro_welcome');
-      } else if ((await sl.get<Vault>().getPrivateKey() != null) &&
-          (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
-        if (await sl.get<SharedPrefsUtil>().getLock() || await sl.get<SharedPrefsUtil>().shouldLock()) {
-          Navigator.of(context).pushReplacementNamed('/lock_screen', arguments: TransitionOption.NONE);
+
+  Future checkLoggedIn({bool retry = false, bool legacyStorage = false}) async {
+    try {
+      if (!_hasCheckedLoggedIn) {
+        _hasCheckedLoggedIn = true;
+        if (await sl.get<SharedPrefsUtil>().getFirstLaunch()) {
+          await sl.get<SharedPrefsUtil>().deleteAll(firstLaunch: true);
+          await sl.get<Vault>().deleteAll();
+          await sl.get<SharedPrefsUtil>().setFirstLaunch();
+          Navigator.of(context).pushReplacementNamed('/intro_welcome');
+        } else if ((await sl.get<Vault>().getPrivateKey() != null) &&
+            (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
+          if (await sl.get<SharedPrefsUtil>().getLock() || await sl.get<SharedPrefsUtil>().shouldLock()) {
+            Navigator.of(context).pushReplacementNamed('/lock_screen', arguments: TransitionOption.NONE);
+          } else {
+            walletState.requestUpdate();
+            Navigator.of(context).pushReplacementNamed('/overview',
+              arguments: TransitionOption.NONE);
+          }
         } else {
-          walletState.requestUpdate();
-          Navigator.of(context).pushReplacementNamed('/overview',
-             arguments: TransitionOption.NONE);
+          Navigator.of(context).pushReplacementNamed('/intro_welcome');
         }
-      } else {
-        Navigator.of(context).pushReplacementNamed('/intro_welcome');
+      }
+    } catch (e) {
+      // Attempt to retry if this failed
+      if (!retry) {
+        await sl.get<Vault>().deleteAll();
+        await sl.get<SharedPrefsUtil>().deleteAll();
+        checkLoggedIn(retry: true, legacyStorage: false);
+      } else if (Platform.isAndroid && e.toString().contains("flutter_secure") && !legacyStorage) {
+        /// Fallback secure storage
+        /// A very small percentage of users are encountering issues writing to the
+        /// Android keyStore using the flutter_secure_storage plugin.
+        ///
+        /// Instead of telling them they are out of luck, this is an automatic "fallback"
+        /// It will generate a 64-byte secret using the native android "bottlerocketstudios" Vault
+        /// This secret is used to encrypt sensitive data and save it in SharedPreferences
+        if (!(await sl.get<SharedPrefsUtil>().useLegacyStorage())) {
+          await sl.get<SharedPrefsUtil>().setUseLegacyStorage();
+          checkLoggedIn(retry: true, legacyStorage: true);
+        }
       }
     }
   }
