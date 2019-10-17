@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
+#import "Runner-Swift.h"
 
 @implementation AppDelegate
 
@@ -48,6 +49,10 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
             } else if ([@"Copper" isEqualToString:icon]) {
                 [self lc_setAlternateIconName:@"Copper"];
             }
+        } else if ([@"setSecureClipboardItem" isEqualToString:call.method]) {
+            NSDictionary *arguments = [call arguments];
+            NSString *value = arguments[@"value"];
+            [SecureClipboard setClipboardItem:value];
         } else {
             result(FlutterMethodNotImplemented);
         }

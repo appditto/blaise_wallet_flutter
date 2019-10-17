@@ -8,6 +8,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -215,7 +216,7 @@ class _UnencryptedPrivateKeySheetState
                       buttonTop: true,
                       onPressed: () {
                         sl.get<Vault>().getPrivateKey().then((key) {
-                          Clipboard.setData(ClipboardData(text: key));
+                          UserDataUtil.setSecureClipboardItem(key);
                         });
                         setState(() {
                           _keyCopied = true;

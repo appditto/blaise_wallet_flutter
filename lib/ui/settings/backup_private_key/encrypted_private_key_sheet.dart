@@ -7,6 +7,7 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -213,8 +214,7 @@ class _EncryptedPrivateKeySheetState extends State<EncryptedPrivateKeySheet> {
                           : AppLocalization.of(context).copyEncryptedKeyButton,
                       buttonTop: true,
                       onPressed: () {
-                        Clipboard.setData(
-                            ClipboardData(text: widget.encryptedKey));
+                        UserDataUtil.setSecureClipboardItem(widget.encryptedKey);
                         setState(() {
                           _keyCopied = true;
                         });

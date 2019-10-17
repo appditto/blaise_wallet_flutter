@@ -6,6 +6,7 @@ import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
+import 'package:blaise_wallet_flutter/util/user_data_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -155,7 +156,7 @@ class _IntroNewPrivateKeyPageState extends State<IntroNewPrivateKeyPage> {
                               .backgroundPrimary30,
                           onPressed: () {
                             sl.get<Vault>().getPrivateKey().then((key) {
-                              Clipboard.setData(ClipboardData(text: key));
+                              UserDataUtil.setSecureClipboardItem(key);
                             });
                             setState(() {
                               _keyCopied = true;
