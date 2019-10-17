@@ -63,9 +63,9 @@ class _AccountCardState extends State<AccountCard> {
                       builder: (_) => DialogOverlay(
                             title: toUppercase(
                                 AppLocalization.of(context).unconfirmedAccountHeader, context),
-                            confirmButtonText: toUppercase(
-                                AppLocalization.of(context).okayButton,
-                                context),
+                            confirmButtonText: AppLocalization.of(context).okayButton,
+                            singleButton: true,
+                            onConfirm: ()=>Navigator.pop(context),
                             body: TextSpan(
                               children: formatLocalizedColors(context,
                                   AppLocalization.of(context).unconfirmedAccountParagraph),

@@ -108,7 +108,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            AppLocalization.of(context).freeAccountSheetHeader,
+                            AppLocalization.of(context).freeAccountSheetHeader.toUpperCase(),
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,

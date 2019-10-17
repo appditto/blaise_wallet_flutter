@@ -18,6 +18,7 @@ class DialogOverlay extends StatefulWidget {
   final String confirmButtonText;
   final Function onConfirm;
   final bool feeDialog;
+  final bool singleButton;
 
   DialogOverlay(
       {this.title,
@@ -26,6 +27,7 @@ class DialogOverlay extends StatefulWidget {
       this.confirmButtonText,
       this.onConfirm,
       this.warningStyle = false,
+      this.singleButton = false,
       this.feeDialog = false});
 
   @override
@@ -180,11 +182,11 @@ class _DialogOverlayState extends State<DialogOverlay>
                                 Row(
                                   children: <Widget>[
                                     AppButton(
-                                      type: widget.feeDialog
+                                      type: widget.feeDialog || widget.singleButton
                                           ? AppButtonType.Primary
                                           : AppButtonType.Danger,
                                       text: widget.confirmButtonText,
-                                      buttonTop: true,
+                                      buttonTop: widget.singleButton?false:true,
                                       onPressed: () {
                                         if (widget.onConfirm != null) {
                                           widget.onConfirm();
@@ -193,7 +195,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                                     ),
                                   ],
                                 ),
-                                Row(
+                                !widget.singleButton? Row(
                                   children: <Widget>[
                                     AppButton(
                                       type: widget.feeDialog
@@ -205,7 +207,7 @@ class _DialogOverlayState extends State<DialogOverlay>
                                       },
                                     ),
                                   ],
-                                ),
+                                ):SizedBox(),
                               ],
                             )
                           : Container(
