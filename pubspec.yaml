@@ -23,7 +23,7 @@ dependencies:
     sdk: flutter
 
   # PascalCoin signing/rpc/etc.
-  pascaldart: ^0.1.5
+  pascaldart: ^0.1.6
 
   # Localization
   intl: ^0.15.8

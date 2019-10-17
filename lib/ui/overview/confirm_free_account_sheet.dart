@@ -3,14 +3,18 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
+import 'package:blaise_wallet_flutter/network/http_client.dart';
+import 'package:blaise_wallet_flutter/service_locator.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/app_text_field.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/tap_outside_unfocus.dart';
+import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:pascaldart/pascaldart.dart';
 
 class ConfirmFreeAccountSheet extends StatefulWidget {
   final String requestId;
@@ -22,9 +26,18 @@ class ConfirmFreeAccountSheet extends StatefulWidget {
 }
 
 class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
-  showOverlay(BuildContext context) async {
+  OverlayEntry _overlay;
+  TextEditingController codeController;
+
+  @override
+  void initState() {
+    super.initState();
+    this.codeController = TextEditingController();
+  }
+
+  void showOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
@@ -51,9 +64,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
             ),
           ),
     );
-    overlayState.insert(overlayEntry);
-    await Future.delayed(Duration(milliseconds: 1500));
-    overlayEntry.remove();
+    overlayState.insert(_overlay);
   }
 
   @override
@@ -134,7 +145,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                // Container for country code field
+                                // Container for SMS confirmation code
                                 Container(
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 30, 30, 30),
@@ -143,6 +154,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                                     style: AppStyles.paragraphMedium(context),
                                     inputType: TextInputType.number,
                                     maxLines: 1,
+                                    controller: codeController,
                                   ),
                                 ),
                               ],
@@ -160,14 +172,14 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
                         text: toUppercase(AppLocalization.of(context).confirmButton, context),
                         buttonTop: true,
                         onPressed: () async {
-                          return;
-                          // TODO
-                          /*
-                          await showOverlay(context);
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                          Navigator.pushNamed(context, '/account_new');
-                          */
+                          showOverlay(context);
+                          bool success = await verifyFreepasaAccount();
+                          _overlay?.remove();
+                          if (success) {
+                            walletState.loadWallet();
+                            Navigator.of(context).pop();
+                            UIUtil.showSnackbar(AppLocalization.of(context).freepasaComplete, context);
+                          }
                         },
                       ),
                     ],
@@ -191,5 +203,27 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
         ],
       ),
     );
+  }
+
+  /// Verify a freepasa request, return true if valid, false if not
+  Future<bool> verifyFreepasaAccount() async {
+    try {
+      int response = await HttpAPI.verifyFreePASA(
+        widget.requestId,
+        codeController.text
+      );
+      if (response == null) {
+        UIUtil.showSnackbar(AppLocalization.of(context).somethingWentWrongError, context);
+        return false;
+      } else if (response < 0) {
+        UIUtil.showSnackbar(AppLocalization.of(context).confirmationCodeError, context);
+        return false;
+      }
+      AccountNumber account = AccountNumber.fromInt(response);
+      await sl.get<SharedPrefsUtil>().setFreepasaAccount(account);
+      return true;
+    } catch (e) {
+      return false;
+    } 
   }
 }

@@ -5,7 +5,9 @@ import 'package:blaise_wallet_flutter/ui/account/receive/receive_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/account/send/send_sheet.dart';
 import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
+import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -52,8 +54,25 @@ class _AccountCardState extends State<AccountCard> {
             ),
             FlatButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/account',
-                    arguments: widget.account);
+                if (!widget.account.isFreepasa) {
+                  Navigator.pushNamed(context, '/account',
+                      arguments: widget.account);
+                } else {
+                  showAppDialog(
+                      context: context,
+                      builder: (_) => DialogOverlay(
+                            title: toUppercase(
+                                AppLocalization.of(context).unconfirmedAccountHeader, context),
+                            confirmButtonText: toUppercase(
+                                AppLocalization.of(context).okayButton,
+                                context),
+                            body: TextSpan(
+                              children: formatLocalizedColors(context,
+                                  AppLocalization.of(context).unconfirmedAccountParagraph),
+                            ),
+                      )
+                  );
+                }
               },
               padding: EdgeInsets.all(0),
               shape: RoundedRectangleBorder(
@@ -103,7 +122,9 @@ class _AccountCardState extends State<AccountCard> {
                     child: Observer(
                       builder: (context) {
                         String status = "";
-                        if (walletState.borrowedAccount != null && walletState.borrowedAccount.account == widget.account.account) {
+                        if (widget.account.isFreepasa) {
+                          status = AppLocalization.of(context).pendingHeader;
+                        } else if (walletState.borrowedAccount != null && walletState.borrowedAccount.account == widget.account.account) {
                           if (walletState.borrowedAccount.paid) {
                             status = AppLocalization.of(context).borrowedTransferredHeader;
                           } else {
@@ -112,7 +133,7 @@ class _AccountCardState extends State<AccountCard> {
                         } else if (widget.account.state == AccountState.LISTED) {
                           status = AppLocalization.of(context).forSaleHeader;
                         }
-                        if (!widget.account.isBorrowed && !(widget.account.state == AccountState.LISTED)) {
+                        if (!widget.account.isBorrowed && !widget.account.isFreepasa && !(widget.account.state == AccountState.LISTED)) {
                           return AutoSizeText.rich(
                             TextSpan(
                               children: [
@@ -176,6 +197,9 @@ class _AccountCardState extends State<AccountCard> {
   // Widget that returns the hidden buttons
   List<Widget> _getButtons() {
     List<Widget> ret = [];
+    if (widget.account.isFreepasa) {
+      return ret;
+    }
     ret.add(
       // Receive Icon
       Container(

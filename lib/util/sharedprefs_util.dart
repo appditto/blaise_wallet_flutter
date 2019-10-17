@@ -9,6 +9,7 @@ import 'package:blaise_wallet_flutter/model/available_languages.dart';
 import 'package:blaise_wallet_flutter/model/available_themes.dart';
 import 'package:blaise_wallet_flutter/model/lock_timeout.dart';
 import 'package:intl/intl.dart';
+import 'package:pascaldart/pascaldart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Singleton wrapper for shared preferences
@@ -38,6 +39,8 @@ class SharedPrefsUtil {
   static const String app_uuid_key = 'blaise_app_uuid';
   // Push notifications
   static const String notification_enabled = 'blaise_notification_on';
+  // Freepasa account before confirmation
+  static const String freepasa_account_pending = 'blaise_fpasa_pending_acct';
 
   // For plain-text data
   Future<void> set(String key, dynamic value) async {
@@ -260,6 +263,15 @@ class SharedPrefsUtil {
   /// If notifications have been set by user/app
   Future<bool> getNotificationsSet() async {
     return await get(notification_enabled, defaultValue: null) == null ? false : true;
+  }
+
+  Future<AccountNumber> getFreepasaAccount() async {
+    int acct = await getWithExpiry(freepasa_account_pending);
+    return acct == null ? null : AccountNumber.fromInt(acct);
+  }
+
+  Future<void> setFreepasaAccount(AccountNumber account) async {
+    await setWithExpiry(freepasa_account_pending, account.account, 2000);
   }
 
   // For logging out

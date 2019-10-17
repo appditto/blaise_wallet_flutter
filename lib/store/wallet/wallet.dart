@@ -205,6 +205,19 @@ abstract class WalletBase with Store {
     if (accountsResponse.borrowEligible != null) {
       this.hasExceededBorrowLimit = !accountsResponse.borrowEligible;
     }
+    // Check for freepasa account
+    AccountNumber freepasaAccount = await sl.get<SharedPrefsUtil>().getFreepasaAccount();
+    if (freepasaAccount != null) {
+      PascalAccount fpasaAccount = PascalAccount(
+        account: freepasaAccount,
+        balance: Currency('0'),
+        isFreepasa: true
+      );
+      fpasaAccount.name = AccountName("");
+      if (!accountsResponse.accounts.contains(fpasaAccount)) {
+        accountsResponse.accounts.add(fpasaAccount);
+      }
+    } 
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {

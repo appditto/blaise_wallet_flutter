@@ -340,6 +340,11 @@ class AppLocalization {
         desc: 'A button to confirm and go back', name: 'okayGoBackButton');
   }
 
+  String get okayButton {
+    return Intl.message("Okay",
+      desc: 'A button that simply indicates a neutral action, like closing an informative dialog', name: 'okayButton');
+  }
+
   String get nextButton {
     return Intl.message("Next",
         desc: 'A button to the next screen', name: 'nextButton');
@@ -468,6 +473,31 @@ class AppLocalization {
             'A paragraph that tells users to enter the confirmation code to the text field below',
         name: 'enterConfirmationCodeParagraph');
   }
+
+  String get confirmationCodeError {
+    return Intl.message("Failed to verify code, ensure you've entered it correctly",
+      desc: 'When a user enters their freepasa SMS code but it can\'t be verified',
+      name: 'confirmationCodeError');
+  }
+
+  String get freepasaComplete {
+    return Intl.message("Success, your new account will be available after 1 network confirmation",
+      desc: 'After the freepasa process is complete',
+      name: 'freepasaComplete');
+  }
+
+  String get unconfirmedAccountHeader {
+    return Intl.message("Unconfirmed Account",
+      desc: 'A user has an account in their wallet that has been transferred to them, but isnt confirmed yet. This is the info dialog header.',
+      name: 'unconfirmedAccountHeader');
+  }
+
+  String get unconfirmedAccountParagraph {
+    return Intl.message("This is an <colored>unconfirmed account</colored>. It has been transferred to you, but there needs to be 1 network confirmation before you can use it. This usually takes about 5 minutes, once it's complete you'll be able to use this account.",
+      desc: 'Explaining that an account can\'t be used until 1 network confirmation to the user.',
+      name: 'unconfirmedAccountParagraph');
+  }
+
 
   String get borrowStarted {
     return Intl.message(
