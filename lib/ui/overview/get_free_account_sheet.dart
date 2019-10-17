@@ -241,7 +241,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                     inputType: TextInputType.phone,
                                     inputFormatters: [
                                       PhoneNumberFormatter(),
-                                      WhitelistingTextInputFormatter(r"[0-9\-]")
+                                      WhitelistingTextInputFormatter(RegExp("[0-9-]"))
                                     ],
                                     onChanged: (text) {
                                       if (mounted && this._showPhoneError) {
