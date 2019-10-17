@@ -279,7 +279,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                               context: context,
                               widget: ConfirmFreeAccountSheet(
                                 requestId: result,
-                              )
+                              ),
+                              noBlur: true
                             );
                           }
                         },
