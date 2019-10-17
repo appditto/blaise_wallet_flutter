@@ -274,13 +274,15 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           showOverlay(context);
                           String result = await onSubmitted();
                           _overlay?.remove();
-                          Navigator.pop(context);
-                          AppSheets.showBottomSheet(
-                            context: context,
-                            widget: ConfirmFreeAccountSheet(
-                              requestId: result,
-                            )
-                          );
+                          if (result != null) {
+                            Navigator.pop(context);
+                            AppSheets.showBottomSheet(
+                              context: context,
+                              widget: ConfirmFreeAccountSheet(
+                                requestId: result,
+                              )
+                            );
+                          }
                         },
                       ),
                     ],
