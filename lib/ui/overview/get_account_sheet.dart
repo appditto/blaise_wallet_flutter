@@ -9,7 +9,6 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/sheets.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/svg_repaint.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/webview.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:flutter/material.dart';
 import 'package:pascaldart/pascaldart.dart';

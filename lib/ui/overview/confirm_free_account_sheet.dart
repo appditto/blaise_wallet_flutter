@@ -36,6 +36,7 @@ class _ConfirmFreeAccountSheetState extends State<ConfirmFreeAccountSheet> {
   void initState() {
     super.initState();
     this.codeController = TextEditingController();
+    log.d("confirming with request ID '${widget.requestId}'");
   }
 
   void showOverlay(BuildContext context) {

@@ -155,6 +155,7 @@ class _ReceiveSheetState extends State<ReceiveSheet> {
                       data: widget.accountNumber.toString(),
                       size: 180.0,
                       errorCorrectionLevel: QrErrorCorrectLevel.Q,
+                      version: 4,
                       gapless: false,
                     ),
                     // Logo background
