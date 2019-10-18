@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-17T01:01:14.140042",
+  "@@last_modified": "2019-10-18T09:27:20.827100",
   "newPrivateKeyButton": "New Private Key",
   "@newPrivateKeyButton": {
     "description": "A button that creates a new private key",
@@ -330,6 +330,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "okayButton": "Okay",
+  "@okayButton": {
+    "description": "A button that simply indicates a neutral action, like closing an informative dialog",
+    "type": "text",
+    "placeholders": {}
+  },
   "nextButton": "Next",
   "@nextButton": {
     "description": "A button to the next screen",
@@ -345,6 +351,18 @@
   "receiveAnAccountButton": "Receive an Account",
   "@receiveAnAccountButton": {
     "description": "A button to open up the public key sheet(screen) that displays a QR code to receive an account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "supportButton": "Support",
+  "@supportButton": {
+    "description": "A button to open up the live support window",
+    "type": "text",
+    "placeholders": {}
+  },
+  "liveSupportButton": "Support",
+  "@liveSupportButton": {
+    "description": "A button to open up the live support window",
     "type": "text",
     "placeholders": {}
   },
@@ -420,9 +438,39 @@
     "type": "text",
     "placeholders": {}
   },
+  "invalidPhoneNumberParagraph": "Phone number is not valid",
+  "@invalidPhoneNumberParagraph": {
+    "description": "User has entered an invalid phone number",
+    "type": "text",
+    "placeholders": {}
+  },
   "enterConfirmationCodeParagraph": "We have sent you a confirmation code, please enter it below.",
   "@enterConfirmationCodeParagraph": {
     "description": "A paragraph that tells users to enter the confirmation code to the text field below",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmationCodeError": "Failed to verify code, ensure you've entered it correctly",
+  "@confirmationCodeError": {
+    "description": "When a user enters their freepasa SMS code but it can't be verified",
+    "type": "text",
+    "placeholders": {}
+  },
+  "freepasaComplete": "Success, your new account will be available after 1 network confirmation",
+  "@freepasaComplete": {
+    "description": "After the freepasa process is complete",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unconfirmedAccountHeader": "Unconfirmed Account",
+  "@unconfirmedAccountHeader": {
+    "description": "A user has an account in their wallet that has been transferred to them, but isnt confirmed yet. This is the info dialog header.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unconfirmedAccountParagraph": "This is an <colored>unconfirmed account</colored>. It has been transferred to you, but there needs to be 1 network confirmation before you can use it. This usually takes about 5 minutes, once it's complete you'll be able to use this account.",
+  "@unconfirmedAccountParagraph": {
+    "description": "Explaining that an account can't be used until 1 network confirmation to the user.",
     "type": "text",
     "placeholders": {}
   },
@@ -1431,6 +1479,12 @@
   "transferredHeader": "Transferred",
   "@transferredHeader": {
     "description": "Header for transferred type operation list item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "connectingHeader": "Connecting",
+  "@connectingHeader": {
+    "description": "A header to let the user now that Blaise is currently connecting to (or loading) live chat.",
     "type": "text",
     "placeholders": {}
   },
