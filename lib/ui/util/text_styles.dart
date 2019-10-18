@@ -40,6 +40,14 @@ class AppStyles {
         fontWeight: FontWeight.w700,
         color: StateContainer.of(context).curTheme.primary);
   }
+  static TextStyle headerSmallBoldSuccess(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        fontFamilyFallback: ["RobotoRegular"],
+        fontSize: AppFontSizes.medium,
+        fontWeight: FontWeight.w700,
+        color: StateContainer.of(context).curTheme.success);
+  }
 
   // For paragraphs
   static TextStyle paragraph(BuildContext context) {
@@ -78,6 +86,16 @@ class AppStyles {
         fontFamily: "Metropolis",
         fontFamilyFallback: ["RobotoRegular"],
         color: StateContainer.of(context).curTheme.primary,
+        fontSize: 14.0,
+        height: 1.3,
+        fontWeight: FontWeight.w500);
+  }
+
+  static TextStyle paragraphMediumSuccess(BuildContext context) {
+    return TextStyle(
+        fontFamily: "Metropolis",
+        fontFamilyFallback: ["RobotoRegular"],
+        color: StateContainer.of(context).curTheme.success,
         fontSize: 14.0,
         height: 1.3,
         fontWeight: FontWeight.w500);

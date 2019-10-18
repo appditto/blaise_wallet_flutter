@@ -37,11 +37,13 @@ class _OperationSheetState extends State<OperationSheet> {
   bool _addressCopied;
   Timer _addressCopiedTimer;
   String payload;
-
+  bool payloadCopied;
+  Timer payloadCopiedTimer;
   @override
   void initState() {
     super.initState();
     _addressCopied = false;
+    payloadCopied = false;
     if (isNotEmpty(widget.payload)) {
       try {
         payload = PDUtil.bytesToUtf8String(PDUtil.hexToBytes(widget.payload));
@@ -79,38 +81,64 @@ class _OperationSheetState extends State<OperationSheet> {
           child: Column(
             children: <Widget>[
               isNotEmpty(payload)
-                  ? Container(
-                      margin: EdgeInsetsDirectional.only(top: 20),
-                      child: AutoSizeText(
-                        AppLocalization.of(context).payloadTextFieldHeader,
-                        maxLines: 1,
-                        stepGranularity: 1,
-                        minFontSize: 8,
-                        textAlign: TextAlign.start,
-                        style: AppStyles.headerSmallBold(context),
-                      ),
-                    )
-                  : SizedBox(),
-              isNotEmpty(payload)
-                  ? Container(
-                      margin: EdgeInsetsDirectional.only(
-                          start: 24, end: 24, top: 10, bottom: 4),
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                            width: 1,
-                            color:
-                                StateContainer.of(context).curTheme.textDark15),
-                        color: StateContainer.of(context).curTheme.textDark10,
-                      ),
-                      child: AutoSizeText(
-                        payload,
-                        maxLines: 6,
-                        stepGranularity: 0.1,
-                        minFontSize: 8,
-                        textAlign: TextAlign.center,
-                        style: AppStyles.paragraphMedium(context),
+                  ? GestureDetector(
+                      onTapDown: (details) {
+                        _copyPayloadToClipboard();
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsetsDirectional.only(top: 20),
+                            child: AutoSizeText(
+                              payloadCopied
+                                  ? AppLocalization.of(context).copiedButton
+                                  : AppLocalization.of(context)
+                                      .payloadTextFieldHeader,
+                              maxLines: 1,
+                              stepGranularity: 1,
+                              minFontSize: 8,
+                              textAlign: TextAlign.start,
+                              style: payloadCopied
+                                  ? AppStyles.headerSmallBoldSuccess(context)
+                                  : AppStyles.headerSmallBold(context),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsetsDirectional.only(
+                                start: 24, end: 24, top: 10, bottom: 4),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  width: 1,
+                                  color: payloadCopied
+                                      ? StateContainer.of(context)
+                                          .curTheme
+                                          .success15
+                                      : StateContainer.of(context)
+                                          .curTheme
+                                          .textDark15),
+                              color: payloadCopied
+                                  ? StateContainer.of(context)
+                                      .curTheme
+                                      .success10
+                                  : StateContainer.of(context)
+                                      .curTheme
+                                      .textDark10,
+                            ),
+                            child: AutoSizeText(
+                              payload,
+                              maxLines: 6,
+                              stepGranularity: 0.1,
+                              minFontSize: 8,
+                              textAlign: TextAlign.center,
+                              style: payloadCopied
+                                  ? AppStyles.paragraphMediumSuccess(context)
+                                  : AppStyles.paragraphMedium(context),
+                            ),
+                          )
+                        ],
                       ),
                     )
                   : SizedBox(),
@@ -191,5 +219,22 @@ class _OperationSheetState extends State<OperationSheet> {
         ),
       ],
     );
+  }
+
+  void _copyPayloadToClipboard() {
+    Clipboard.setData(ClipboardData(text: this.payload));
+    setState(() {
+      payloadCopied = true;
+    });
+    if (payloadCopiedTimer != null) {
+      payloadCopiedTimer.cancel();
+    }
+    payloadCopiedTimer = Timer(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        setState(() {
+          payloadCopied = false;
+        });
+      }
+    });
   }
 }
