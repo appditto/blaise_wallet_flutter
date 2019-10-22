@@ -1,9 +1,12 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blaise_wallet_flutter/appstate_container.dart';
 import 'package:blaise_wallet_flutter/localization.dart';
 import 'package:blaise_wallet_flutter/model/authentication_method.dart';
 import 'package:blaise_wallet_flutter/service_locator.dart';
+import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
+import 'package:blaise_wallet_flutter/ui/widgets/overlay_dialog.dart';
 import 'package:blaise_wallet_flutter/util/ui_util.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/pin_screen.dart';
@@ -26,16 +29,6 @@ class _LockScreenPageState extends State<LockScreenPage> {
     walletState.requestUpdate();
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/overview', (Route<dynamic> route) => false);
-  }
-
-  Widget _buildPinScreen(BuildContext context, String expectedPin) {
-    return PinScreen(
-        type: PinOverlayType.ENTER_PIN,
-        expectedPin: expectedPin,
-        description: AppLocalization.of(context).enterPINToUnlockParagraph,
-        onSuccess: (pin) {
-          _goHome();
-        });
   }
 
   String _formatCountDisplay(int count) {
@@ -129,57 +122,108 @@ class _LockScreenPageState extends State<LockScreenPage> {
     setState(() {
       _lockedOut = false;
     });
-    sl.get<SharedPrefsUtil>().getAuthMethod().then((authMethod) {
-      AuthUtil().hasBiometrics().then((hasBiometrics) {
-        if (authMethod.method == AuthMethod.BIOMETRICS && hasBiometrics) {
+    AuthenticationMethod authMethod = await sl.get<SharedPrefsUtil>().getAuthMethod();
+    bool hasBiometrics = await AuthUtil().hasBiometrics();
+    if (authMethod.method == AuthMethod.BIOMETRICS && hasBiometrics) {
+      setState(() {
+        _showUnlockButton = true;
+      });
+      bool authenticated = await AuthUtil().authenticateWithBiometrics(AppLocalization.of(context).authenticateToUnlockParagraph);
+      if (authenticated) {
+        _goHome();
+      } else {
+        setState(() {
+          _showUnlockButton = true;
+        });
+      }
+    } else {
+      // PIN authentication
+      String expectedPin = await sl.get<Vault>().getPin();
+      if (transitions) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) {
+            return PinScreen(
+              type: PinOverlayType.ENTER_PIN,
+              expectedPin: expectedPin,
+              description: AppLocalization.of(context).enterPINToUnlockParagraph,
+              onSuccess: (pin) {
+                _goHome();
+              });
+          }),
+        );
+      } else {
+        Navigator.of(context).push(
+          NoPushTransitionRoute(builder: (BuildContext context) {
+            return PinScreen(
+              type: PinOverlayType.ENTER_PIN,
+              expectedPin: expectedPin,
+              description: AppLocalization.of(context).enterPINToUnlockParagraph,
+              onSuccess: (pin) {
+                _goHome();
+              });
+          }),
+        );
+      }
+      Future.delayed(Duration(milliseconds: 200), () {
+        if (mounted) {
           setState(() {
             _showUnlockButton = true;
           });
-          AuthUtil()
-              .authenticateWithBiometrics(
-                  AppLocalization.of(context).authenticateToUnlockParagraph)
-              .then((authenticated) {
-            if (authenticated) {
-              _goHome();
-            } else {
-              setState(() {
-                _showUnlockButton = true;
-              });
-            }
-          });
-        } else {
-          // PIN Authentication
-          sl.get<Vault>().getPin().then((expectedPin) {
-            if (transitions) {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (BuildContext context) {
-                  return _buildPinScreen(context, expectedPin);
-                }),
-              );
-            } else {
-              Navigator.of(context).push(
-                NoPushTransitionRoute(builder: (BuildContext context) {
-                  return _buildPinScreen(context, expectedPin);
-                }),
-              );
-            }
-            Future.delayed(Duration(milliseconds: 200), () {
-              if (mounted) {
-                setState(() {
-                  _showUnlockButton = true;
-                });
-              }
-            });
-          });
         }
       });
-    });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     _authenticate();
+  }
+
+  void logoutPressed() {
+    showAppDialog(
+        context: context,
+        builder: (_) => DialogOverlay(
+              title: toUppercase(
+                  AppLocalization.of(context).warningHeader, context),
+              warningStyle: true,
+              confirmButtonText: toUppercase(
+                  AppLocalization.of(context).deletePrivateKeyAndLogoutButton,
+                  context),
+              body: TextSpan(
+                children: formatLocalizedColorsDanger(context,
+                    AppLocalization.of(context).logoutFirstDisclaimerParagraph),
+              ),
+              onConfirm: () {
+                Navigator.of(context).pop();
+                showAppDialog(
+                    context: context,
+                    builder: (_) => DialogOverlay(
+                        title: toUppercase(
+                            AppLocalization.of(context).areYouSureHeader,
+                            context),
+                        warningStyle: true,
+                        confirmButtonText: toUppercase(
+                            AppLocalization.of(context).yesImSureButton,
+                            context),
+                        body: TextSpan(
+                          children: formatLocalizedColorsDanger(
+                              context,
+                              AppLocalization.of(context)
+                                  .logoutSecondDisclaimerParagraph),
+                        ),
+                        onConfirm: () {
+                          // Handle logging out
+                          walletState.reset();
+                          sl.get<Vault>().deleteAll().then((_) {
+                            sl.get<SharedPrefsUtil>().deleteAll().then((_) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
+                            });
+                          });
+                        }));
+              },
+            ));
   }
 
   @override
@@ -247,6 +291,67 @@ class _LockScreenPageState extends State<LockScreenPage> {
                           ),
                         ],
                       ),
+                      // Logout button
+                      Container(
+                        margin: EdgeInsetsDirectional.only(start: 5, top: 30),
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            FlatButton(
+                              splashColor: StateContainer.of(context)
+                                  .curTheme
+                                  .backgroundPrimary30,
+                              highlightColor: StateContainer.of(context)
+                                  .curTheme
+                                  .backgroundPrimary15,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              onPressed: () {
+                                logoutPressed();
+                              },
+                              padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              // A row for logout icon and text
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  // log out icon
+                                  Container(
+                                    margin: EdgeInsetsDirectional.only(end: 8),
+                                    child: Icon(AppIcons.logout,
+                                        size: 20,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .backgroundPrimary),
+                                  ),
+                                  // Support text
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth:
+                                            (MediaQuery.of(context).size.width -
+                                                    100) *
+                                                0.4),
+                                    child: AutoSizeText(
+                                      AppLocalization.of(context).logoutHeader,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                        fontFamily: "Metropolis",
+                                        color: StateContainer.of(context).curTheme.backgroundPrimary
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      minFontSize: 8,
+                                      stepGranularity: 0.1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -274,9 +379,9 @@ class _LockScreenPageState extends State<LockScreenPage> {
                         text: _lockedOut
                             ? _countDownTxt
                             : AppLocalization.of(context).unlockButton,
-                        onPressed: () {
+                        onPressed: () async {
                           if (!_lockedOut) {
-                            _authenticate(transitions: true);
+                            await _authenticate(transitions: true);
                           }
                         },
                         disabled: _lockedOut,

@@ -388,7 +388,7 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   // Submit request, return request ID if successful
   Future<String> onSubmitted() async {
     // Validate phone number
-    if (_phoneNumberController.text.replaceAll(RegExp(r"[^0-9]"), "").length != 10) {
+    if (_phoneNumberController.text.replaceAll(RegExp(r"[^0-9]"), "").length < 5) {
       if (mounted) {
         setState(() {
           _showPhoneError = true;
