@@ -14,7 +14,7 @@ class AuthUtil {
     bool canCheck = await localAuth.canCheckBiometrics;
     if (canCheck) {
       List<BiometricType> availableBiometrics = await localAuth.getAvailableBiometrics();
-      if (Platform.isIOS && availableBiometrics.contains(BiometricType.face)) {
+      if (availableBiometrics.contains(BiometricType.face)) {
         return true;
       } else if (availableBiometrics.contains(BiometricType.fingerprint)) {
         return true;

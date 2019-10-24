@@ -171,46 +171,58 @@ class _BackupPrivateKeySheetState extends State<BackupPrivateKeySheet> {
     );
   }
 
+  Future<void> _authenticateBiometrics(AuthUtil authUtil, String message, bool encrypted) async {
+    bool authenticated = await authUtil.authenticateWithBiometrics(message);
+    if (authenticated) {
+      HapticUtil.fingerprintSucess();
+      Navigator.of(context).pop();
+      if (encrypted) {
+        AppSheets.showBottomSheet(
+            context: context, widget: EncryptPrivateKeySheet());
+      } else {
+        AppSheets.showBottomSheet(
+            context: context, widget: UnencryptedPrivateKeySheet());
+      }
+    }    
+  }
+
+  Future<void> _authenticatePin(bool encrypted, String message) async {
+    String expectedPin = await sl.get<Vault>().getPin();
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context) {
+        return PinScreen(
+          type: PinOverlayType.ENTER_PIN,
+          onSuccess: (pin) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            if (encrypted) {
+              AppSheets.showBottomSheet(
+                  context: context, widget: EncryptPrivateKeySheet());
+            } else {
+              AppSheets.showBottomSheet(
+                  context: context, widget: UnencryptedPrivateKeySheet());
+            }
+          },
+          expectedPin: expectedPin,
+          description: message,
+        );
+      },
+    ));    
+  }
+
   Future<void> authenticate(bool encrypted) async {
     String message = AppLocalization.of(context).authenticateToBackUpParagraph;
     // Authenticate
     AuthUtil authUtil = AuthUtil();
     if (await authUtil.useBiometrics()) {
       // Biometric auth
-      bool authenticated = await authUtil.authenticateWithBiometrics(message);
-      if (authenticated) {
-        HapticUtil.fingerprintSucess();
-        Navigator.of(context).pop();
-        if (encrypted) {
-          AppSheets.showBottomSheet(
-              context: context, widget: EncryptPrivateKeySheet());
-        } else {
-          AppSheets.showBottomSheet(
-              context: context, widget: UnencryptedPrivateKeySheet());
-        }
+      try {
+        await _authenticateBiometrics(authUtil, message, encrypted);
+      } catch (e) {
+        await _authenticatePin(encrypted, message);
       }
     } else {
-      String expectedPin = await sl.get<Vault>().getPin();
-      await Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) {
-          return PinScreen(
-            type: PinOverlayType.ENTER_PIN,
-            onSuccess: (pin) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              if (encrypted) {
-                AppSheets.showBottomSheet(
-                    context: context, widget: EncryptPrivateKeySheet());
-              } else {
-                AppSheets.showBottomSheet(
-                    context: context, widget: UnencryptedPrivateKeySheet());
-              }
-            },
-            expectedPin: expectedPin,
-            description: message,
-          );
-        },
-      ));
+      await _authenticatePin(encrypted, message);
     }
   }
 }

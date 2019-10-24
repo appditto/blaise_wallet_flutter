@@ -377,18 +377,16 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
     }
   }
 
-  Future<bool> authenticate() async {
-    String message = "Authenticate to delist account for sale";
-    // Authenticate
-    AuthUtil authUtil = AuthUtil();
-    if (await authUtil.useBiometrics()) {
-      // Biometric auth
-      bool authenticated = await authUtil.authenticateWithBiometrics(message);
-      if (authenticated) {
-        HapticUtil.fingerprintSucess();
-      }
-      return authenticated;
-    } else {
+  Future<bool> _authenticateBiometrics(AuthUtil authUtil, String message) async {
+    // Biometric auth
+    bool authenticated = await authUtil.authenticateWithBiometrics(message);
+    if (authenticated) {
+      HapticUtil.fingerprintSucess();
+    }
+    return authenticated;
+  }
+
+  Future<bool> _authenticatePin(String message) async {
       String expectedPin = await sl.get<Vault>().getPin();
       bool result = await Navigator.of(context)
           .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
@@ -402,7 +400,22 @@ class _DelistingForSaleSheetState extends State<DelistingForSaleSheet> {
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
-      return result != null && result;
+      return result != null && result;    
+  }
+
+  Future<bool> authenticate() async {
+    String message = AppLocalization.of(context).authenticateToDelistParagraph;
+    // Authenticate
+    AuthUtil authUtil = AuthUtil();
+    if (await authUtil.useBiometrics()) {
+      // Biometric auth
+      try {
+        return await _authenticateBiometrics(authUtil, message);
+      } catch (e) {
+        return await _authenticatePin(message);
+      }
+    } else {
+      return await _authenticatePin(message);
     }
   }
 }

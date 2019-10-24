@@ -666,20 +666,16 @@ class _SendingSheetState extends State<SendingSheet> {
     }
   }
 
-  Future<bool> authenticate() async {
-    String message = AppLocalization.of(context)
-        .authenticateToSendParagraph
-        .replaceAll("%1", widget.amount);
-    // Authenticate
-    AuthUtil authUtil = AuthUtil();
-    if (await authUtil.useBiometrics()) {
-      // Biometric auth
-      bool authenticated = await authUtil.authenticateWithBiometrics(message);
-      if (authenticated) {
-        HapticUtil.fingerprintSucess();
-      }
-      return authenticated;
-    } else {
+  Future<bool> _authenticateBiometrics(AuthUtil authUtil, String message) async {
+    // Biometric auth
+    bool authenticated = await authUtil.authenticateWithBiometrics(message);
+    if (authenticated) {
+      HapticUtil.fingerprintSucess();
+    }
+    return authenticated;
+  }
+
+  Future<bool> _authenticatePin(String message) async {
       String expectedPin = await sl.get<Vault>().getPin();
       bool result = await Navigator.of(context)
           .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
@@ -693,7 +689,24 @@ class _SendingSheetState extends State<SendingSheet> {
         );
       }));
       await Future.delayed(Duration(milliseconds: 200));
-      return result != null && result;
+      return result != null && result;    
+  }
+
+  Future<bool> authenticate() async {
+    String message = AppLocalization.of(context)
+        .authenticateToSendParagraph
+        .replaceAll("%1", widget.amount);
+    // Authenticate
+    AuthUtil authUtil = AuthUtil();
+    if (await authUtil.useBiometrics()) {
+      // Biometric auth
+      try {
+        return await _authenticateBiometrics(authUtil, message);
+      } catch (e) {
+        return await _authenticatePin(message);
+      }
+    } else {
+      return await _authenticatePin(message);
     }
   }
 }

@@ -105,6 +105,57 @@ class _LockScreenPageState extends State<LockScreenPage> {
     }
   }
 
+  Future<void> _authenticateBiometrics() async {
+    setState(() {
+      _showUnlockButton = true;
+    });
+    bool authenticated = await AuthUtil().authenticateWithBiometrics(AppLocalization.of(context).authenticateToUnlockParagraph);
+    if (authenticated) {
+      _goHome();
+    } else {
+      setState(() {
+        _showUnlockButton = true;
+      });
+    }    
+  }
+
+  Future<void> _authenticatePin({bool transitions = false}) async {
+    // PIN authentication
+    String expectedPin = await sl.get<Vault>().getPin();
+    if (transitions) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (BuildContext context) {
+          return PinScreen(
+            type: PinOverlayType.ENTER_PIN,
+            expectedPin: expectedPin,
+            description: AppLocalization.of(context).enterPINToUnlockParagraph,
+            onSuccess: (pin) {
+              _goHome();
+            });
+        }),
+      );
+    } else {
+      Navigator.of(context).push(
+        NoPushTransitionRoute(builder: (BuildContext context) {
+          return PinScreen(
+            type: PinOverlayType.ENTER_PIN,
+            expectedPin: expectedPin,
+            description: AppLocalization.of(context).enterPINToUnlockParagraph,
+            onSuccess: (pin) {
+              _goHome();
+            });
+        }),
+      );
+    }
+    Future.delayed(Duration(milliseconds: 200), () {
+      if (mounted) {
+        setState(() {
+          _showUnlockButton = true;
+        });
+      }
+    });    
+  }
+
   Future<void> _authenticate({bool transitions = false}) async {
     // Test if user is locked out
     // Get duration of lockout
@@ -122,55 +173,15 @@ class _LockScreenPageState extends State<LockScreenPage> {
     setState(() {
       _lockedOut = false;
     });
-    AuthenticationMethod authMethod = await sl.get<SharedPrefsUtil>().getAuthMethod();
-    bool hasBiometrics = await AuthUtil().hasBiometrics();
-    if (authMethod.method == AuthMethod.BIOMETRICS && hasBiometrics) {
-      setState(() {
-        _showUnlockButton = true;
-      });
-      bool authenticated = await AuthUtil().authenticateWithBiometrics(AppLocalization.of(context).authenticateToUnlockParagraph);
-      if (authenticated) {
-        _goHome();
-      } else {
-        setState(() {
-          _showUnlockButton = true;
-        });
+    bool useBiometrics = await AuthUtil().useBiometrics();
+    if (useBiometrics) {
+      try {
+        await _authenticateBiometrics();
+      } catch (e) {
+        await _authenticatePin(transitions: transitions);
       }
     } else {
-      // PIN authentication
-      String expectedPin = await sl.get<Vault>().getPin();
-      if (transitions) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return PinScreen(
-              type: PinOverlayType.ENTER_PIN,
-              expectedPin: expectedPin,
-              description: AppLocalization.of(context).enterPINToUnlockParagraph,
-              onSuccess: (pin) {
-                _goHome();
-              });
-          }),
-        );
-      } else {
-        Navigator.of(context).push(
-          NoPushTransitionRoute(builder: (BuildContext context) {
-            return PinScreen(
-              type: PinOverlayType.ENTER_PIN,
-              expectedPin: expectedPin,
-              description: AppLocalization.of(context).enterPINToUnlockParagraph,
-              onSuccess: (pin) {
-                _goHome();
-              });
-          }),
-        );
-      }
-      Future.delayed(Duration(milliseconds: 200), () {
-        if (mounted) {
-          setState(() {
-            _showUnlockButton = true;
-          });
-        }
-      });
+      await _authenticatePin(transitions: transitions);
     }
   }
 
