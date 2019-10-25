@@ -3,22 +3,21 @@
 // messages from the main program should be duplicated here with the same
 // function name.
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// Ignore issues from commonly used lints in this file.
+// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
+// ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-// ignore: unnecessary_new
 final messages = new MessageLookup();
 
-// ignore: unused_element
-final _keepAnalysisHappy = Intl.defaultLocale;
-
-// ignore: non_constant_identifier_names
-typedef MessageIfAbsent(String message_str, List args);
+typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  get localeName => 'de';
+  String get localeName => 'de';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -99,7 +98,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPINParagraph" : MessageLookupByLibrary.simpleMessage("PIN bestätigen"),
     "confirmPasswordTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Passwort bestätigen"),
     "confirmTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Bestätigen"),
+    "confirmationCodeError" : MessageLookupByLibrary.simpleMessage("Der Code war falsch, bitte probiere es erneut"),
     "confirmationCodeTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Bestätigungs-Code"),
+    "connectingHeader" : MessageLookupByLibrary.simpleMessage("Verbinde"),
     "contactAlreadyExistsError" : MessageLookupByLibrary.simpleMessage("Kontakt existiert bereits"),
     "contactDoesntExistError" : MessageLookupByLibrary.simpleMessage("Kontakt existiert nicht"),
     "contactNameTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Name"),
@@ -159,6 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "feeTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Gebühr"),
     "forSaleHeader" : MessageLookupByLibrary.simpleMessage("zu verkaufen"),
     "freeAccountSheetHeader" : MessageLookupByLibrary.simpleMessage("Kostenfreies Konto"),
+    "freepasaComplete" : MessageLookupByLibrary.simpleMessage("Dein neues Konto wird nach dem nächsten Block zur Verfügung stehen"),
     "getAFreeAccountButton" : MessageLookupByLibrary.simpleMessage("Kostenloses Konto erhalten"),
     "getAccountFirstParagraph" : MessageLookupByLibrary.simpleMessage("Es gibt 2 Möglichkeiten, um Dein erstes Konto erhalten:"),
     "getAccountSecondParagraph" : MessageLookupByLibrary.simpleMessage("1- Du kannst ein kostenfreies Konto mit Hilfe Deiner Telefonnummer erhalten. <colored>Nur 1 Konto pro Telefonnummer erlaubt.</colored>"),
@@ -182,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidDestinationError" : MessageLookupByLibrary.simpleMessage("Ungültiger Empfänger"),
     "invalidPINParagraph" : MessageLookupByLibrary.simpleMessage("Ungültige PIN"),
     "invalidPasswordError" : MessageLookupByLibrary.simpleMessage("Falsches Passwort"),
+    "invalidPhoneNumberParagraph" : MessageLookupByLibrary.simpleMessage("Keine valide Telefonnummer"),
     "invalidPrivateKeyError" : MessageLookupByLibrary.simpleMessage("Ungültiger privater Schlüssel"),
     "invalidPublicKeyError" : MessageLookupByLibrary.simpleMessage("Ungültiger öffentl. Schlüssel"),
     "invalidReceivingAccountError" : MessageLookupByLibrary.simpleMessage("Ungültiger Empfänger"),
@@ -200,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "listedForSaleSheetHeader" : MessageLookupByLibrary.simpleMessage("Zum Verkauf gelistet"),
     "listingForSaleParagraph" : MessageLookupByLibrary.simpleMessage("Bitte bestätige den Betrag und den Empfänger der Überweisung."),
     "listingForSaleSheetHeader" : MessageLookupByLibrary.simpleMessage("Verkaufen"),
+    "liveSupportButton" : MessageLookupByLibrary.simpleMessage("Hilfe"),
     "lock15Header" : MessageLookupByLibrary.simpleMessage("Nach %1 Minuten"),
     "lock1Header" : MessageLookupByLibrary.simpleMessage("Nach %1 Minute"),
     "lock30Header" : MessageLookupByLibrary.simpleMessage("Nach %1 Minuten"),
@@ -243,6 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationsHeader" : MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
     "nullOPDetails" : MessageLookupByLibrary.simpleMessage("null"),
     "offHeader" : MessageLookupByLibrary.simpleMessage("Aus"),
+    "okayButton" : MessageLookupByLibrary.simpleMessage("Okay"),
     "okayGoBackButton" : MessageLookupByLibrary.simpleMessage("Okay, zurück"),
     "onHeader" : MessageLookupByLibrary.simpleMessage("An"),
     "opblockOPDetails" : MessageLookupByLibrary.simpleMessage("Position in Block"),
@@ -320,6 +325,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferredSheetHeader" : MessageLookupByLibrary.simpleMessage("Übertragen"),
     "transferringParagraph" : MessageLookupByLibrary.simpleMessage("Bitte bestätige den nachfolgenden öffentl. Schlüssel, um das Konto zu übertragen."),
     "transferringSheetHeader" : MessageLookupByLibrary.simpleMessage("Übertrage"),
+    "unconfirmedAccountHeader" : MessageLookupByLibrary.simpleMessage("Noch nicht bestätigtes Konto"),
+    "unconfirmedAccountParagraph" : MessageLookupByLibrary.simpleMessage("Dies ist ein <colored>nicht bestätigtes Konto</colored>. Es wurde Dir bereits zugeordnet, aber Du musst noch einen Block lang warten. Das dauert in der Regel ungefähr 5 Minuten. Sobald der Block abgeschlossen ist, hast Du vollen Zugriff auf dieses Konto."),
     "undefinedHeader" : MessageLookupByLibrary.simpleMessage("Unbekannt"),
     "unencryptedKeyButton" : MessageLookupByLibrary.simpleMessage("Klartext Schlüssel"),
     "uninstallDisclaimerParagraph" : MessageLookupByLibrary.simpleMessage("Wenn Du Dein Gerät verlierst oder die Blaise Wallet deinstallierst, brauchst Du Deinen privaten Schlüssel für die Wiederherstellung."),

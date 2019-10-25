@@ -3,22 +3,21 @@
 // messages from the main program should be duplicated here with the same
 // function name.
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// Ignore issues from commonly used lints in this file.
+// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
+// ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-// ignore: unnecessary_new
 final messages = new MessageLookup();
 
-// ignore: unused_element
-final _keepAnalysisHappy = Intl.defaultLocale;
-
-// ignore: non_constant_identifier_names
-typedef MessageIfAbsent(String message_str, List args);
+typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  get localeName => 'ar';
+  String get localeName => 'ar';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -97,7 +96,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPINParagraph" : MessageLookupByLibrary.simpleMessage("تأكيد رمز المرور"),
     "confirmPasswordTextFieldHeader" : MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
     "confirmTextFieldHeader" : MessageLookupByLibrary.simpleMessage("تأكيد"),
+    "confirmationCodeError" : MessageLookupByLibrary.simpleMessage("فشل التحقق، تأكد من كتابة الرمز المرسل إليك بشكل صحيح"),
     "confirmationCodeTextFieldHeader" : MessageLookupByLibrary.simpleMessage("كود التفعيل"),
+    "connectingHeader" : MessageLookupByLibrary.simpleMessage("جارٍ الإتصال"),
     "contactAlreadyExistsError" : MessageLookupByLibrary.simpleMessage("جهة الاتصال موجود بالفعل"),
     "contactDoesntExistError" : MessageLookupByLibrary.simpleMessage("جهة الاتصال غير موجودة"),
     "contactNameTextFieldHeader" : MessageLookupByLibrary.simpleMessage("أسم جهة الإتصال"),
@@ -156,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "feeTextFieldHeader" : MessageLookupByLibrary.simpleMessage("رسوم"),
     "forSaleHeader" : MessageLookupByLibrary.simpleMessage("للبيع"),
     "freeAccountSheetHeader" : MessageLookupByLibrary.simpleMessage("حساب مجاني"),
+    "freepasaComplete" : MessageLookupByLibrary.simpleMessage("تم بنجاح، حسابك الجديد سيظهر بعد 1 تأكيد من الشبكة"),
     "getAFreeAccountButton" : MessageLookupByLibrary.simpleMessage("أحصل على حساب بالمجان"),
     "getAccountFirstParagraph" : MessageLookupByLibrary.simpleMessage("هناك خيارين للحصول على حسابك الأول:"),
     "getAccountSecondParagraph" : MessageLookupByLibrary.simpleMessage("1. يمكنك الحصول على حساب مجاني بإستخدام رقم تليفونك، <colored>فقط حساب واحد لكل رقم تليفون</colored>"),
@@ -179,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidDestinationError" : MessageLookupByLibrary.simpleMessage("وجهة غير صالحة"),
     "invalidPINParagraph" : MessageLookupByLibrary.simpleMessage("رمز المرور غير صحيح"),
     "invalidPasswordError" : MessageLookupByLibrary.simpleMessage("كلمة مرور خاطئة"),
+    "invalidPhoneNumberParagraph" : MessageLookupByLibrary.simpleMessage("رقم التليفون غير صالح"),
     "invalidPrivateKeyError" : MessageLookupByLibrary.simpleMessage("مفتاح خاص غير صالح"),
     "invalidPublicKeyError" : MessageLookupByLibrary.simpleMessage("مفتاح عام غير صالح"),
     "invalidReceivingAccountError" : MessageLookupByLibrary.simpleMessage("حساب المستلم غير صحيح"),
@@ -197,6 +200,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "listedForSaleSheetHeader" : MessageLookupByLibrary.simpleMessage("تم الإدراج"),
     "listingForSaleParagraph" : MessageLookupByLibrary.simpleMessage("برجاء تأكيد السعر والحساب الذي سيتلقى الدفع."),
     "listingForSaleSheetHeader" : MessageLookupByLibrary.simpleMessage("جارٍ الإدراج"),
+    "liveSupportButton" : MessageLookupByLibrary.simpleMessage("مساعدة؟"),
     "lock15Header" : MessageLookupByLibrary.simpleMessage("بعد %1 دقائق"),
     "lock1Header" : MessageLookupByLibrary.simpleMessage("بعد %1 دقيقة"),
     "lock30Header" : MessageLookupByLibrary.simpleMessage("بعد %1 دقائق"),
@@ -238,6 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noperationOPDetails" : MessageLookupByLibrary.simpleMessage("المعاملات المرسلة"),
     "notificationsHeader" : MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "offHeader" : MessageLookupByLibrary.simpleMessage("لا تعمل"),
+    "okayButton" : MessageLookupByLibrary.simpleMessage("موافق"),
     "okayGoBackButton" : MessageLookupByLibrary.simpleMessage("موافق، رجوع"),
     "onHeader" : MessageLookupByLibrary.simpleMessage("تعمل"),
     "openInExplorerButton" : MessageLookupByLibrary.simpleMessage("افتح في المستكشف"),
@@ -311,6 +316,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferredSheetHeader" : MessageLookupByLibrary.simpleMessage("تم النقل"),
     "transferringParagraph" : MessageLookupByLibrary.simpleMessage("قم بتأكيد \"المفتاح العام\" أدناه لنقل ملكية هذا الحساب إليه."),
     "transferringSheetHeader" : MessageLookupByLibrary.simpleMessage("جارٍ النقل"),
+    "unconfirmedAccountHeader" : MessageLookupByLibrary.simpleMessage("حساب (لم يتم تأكيده)"),
+    "unconfirmedAccountParagraph" : MessageLookupByLibrary.simpleMessage("هذا <colored>حساب غير مؤكد</colored>. تم نقله إليك، ولكن بإنتظار 1 تأكيد من الشبكة قبل ان تتمكن نم إستخدامه. قد تستغرق هذه العملية 5 دقائق، وعندما تكتمل سيكون بإمكانك استخدام الحساب."),
     "undefinedHeader" : MessageLookupByLibrary.simpleMessage("غير محدد"),
     "unencryptedKeyButton" : MessageLookupByLibrary.simpleMessage("مفتاح غير مشفر"),
     "uninstallDisclaimerParagraph" : MessageLookupByLibrary.simpleMessage("إذا فقدت جهازك أو الغيت تسطيب محفظة بليز، سوف تحتاج للـ \"مفتاح الخاص\" لكي تستعيد أموالك."),

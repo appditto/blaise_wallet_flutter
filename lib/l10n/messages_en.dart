@@ -3,22 +3,21 @@
 // messages from the main program should be duplicated here with the same
 // function name.
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// Ignore issues from commonly used lints in this file.
+// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
+// ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-// ignore: unnecessary_new
 final messages = new MessageLookup();
 
-// ignore: unused_element
-final _keepAnalysisHappy = Intl.defaultLocale;
-
-// ignore: non_constant_identifier_names
-typedef MessageIfAbsent(String message_str, List args);
+typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  get localeName => 'en';
+  String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -99,7 +98,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPINParagraph" : MessageLookupByLibrary.simpleMessage("Confirm your PIN"),
     "confirmPasswordTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "confirmTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Confirm"),
+    "confirmationCodeError" : MessageLookupByLibrary.simpleMessage("Failed to verify code, ensure you\'ve entered it correctly"),
     "confirmationCodeTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Confirmation Code"),
+    "connectingHeader" : MessageLookupByLibrary.simpleMessage("Connecting"),
     "contactAlreadyExistsError" : MessageLookupByLibrary.simpleMessage("Contact already exists"),
     "contactDoesntExistError" : MessageLookupByLibrary.simpleMessage("Contact doesn\'t exist"),
     "contactNameTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Contact Name"),
@@ -159,11 +160,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "feeTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Fee"),
     "forSaleHeader" : MessageLookupByLibrary.simpleMessage("For Sale"),
     "freeAccountSheetHeader" : MessageLookupByLibrary.simpleMessage("Free Account"),
+    "freepasaComplete" : MessageLookupByLibrary.simpleMessage("Success, your new account will be available after 1 network confirmation"),
     "getAFreeAccountButton" : MessageLookupByLibrary.simpleMessage("Get a Free Account"),
     "getAccountFirstParagraph" : MessageLookupByLibrary.simpleMessage("There are 2 options for getting your first account:"),
     "getAccountSecondParagraph" : MessageLookupByLibrary.simpleMessage("1- You can get a free account using your phone number. <colored>Only 1 account per phone number is allowed.</colored>"),
     "getAccountSheetHeader" : MessageLookupByLibrary.simpleMessage("Get Account"),
     "getAccountThirdParagraph" : MessageLookupByLibrary.simpleMessage("2- You can buy as many accounts as you want for <colored>%1 Pascal (%2).</colored>"),
+    "getAccountThirdParagraphAlternative" : MessageLookupByLibrary.simpleMessage("2- You can buy an account for <colored>%1 Pascal (%2).</colored><colored> Buying only 1 account is allowed per user.</colored>"),
+    "getAccountThirdParagraphAlternative2" : MessageLookupByLibrary.simpleMessage("2- You can buy an account for <colored>%1 Pascal (%2).</colored><colored> You can buy up to %3 accounts.</colored>"),
     "getAnAccountButton" : MessageLookupByLibrary.simpleMessage("Get an Account"),
     "goBackButton" : MessageLookupByLibrary.simpleMessage("Go Back"),
     "gotItButton" : MessageLookupByLibrary.simpleMessage("Got It!"),
@@ -180,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidDestinationError" : MessageLookupByLibrary.simpleMessage("Invalid destination"),
     "invalidPINParagraph" : MessageLookupByLibrary.simpleMessage("Invalid PIN"),
     "invalidPasswordError" : MessageLookupByLibrary.simpleMessage("Invalid password"),
+    "invalidPhoneNumberParagraph" : MessageLookupByLibrary.simpleMessage("Phone number is not valid"),
     "invalidPrivateKeyError" : MessageLookupByLibrary.simpleMessage("Invalid private key"),
     "invalidPublicKeyError" : MessageLookupByLibrary.simpleMessage("Invalid public key"),
     "invalidReceivingAccountError" : MessageLookupByLibrary.simpleMessage("Invalid receiving account"),
@@ -198,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "listedForSaleSheetHeader" : MessageLookupByLibrary.simpleMessage("Listed"),
     "listingForSaleParagraph" : MessageLookupByLibrary.simpleMessage("Confirm the price and the account that will be receiving the payment."),
     "listingForSaleSheetHeader" : MessageLookupByLibrary.simpleMessage("Listing"),
+    "liveSupportButton" : MessageLookupByLibrary.simpleMessage("Support"),
     "lock15Header" : MessageLookupByLibrary.simpleMessage("After %1 minutes"),
     "lock1Header" : MessageLookupByLibrary.simpleMessage("After %1 minute"),
     "lock30Header" : MessageLookupByLibrary.simpleMessage("After %1 minutes"),
@@ -241,6 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationsHeader" : MessageLookupByLibrary.simpleMessage("Notifications"),
     "nullOPDetails" : MessageLookupByLibrary.simpleMessage("null"),
     "offHeader" : MessageLookupByLibrary.simpleMessage("Off"),
+    "okayButton" : MessageLookupByLibrary.simpleMessage("Okay"),
     "okayGoBackButton" : MessageLookupByLibrary.simpleMessage("Okay, Go Back"),
     "onHeader" : MessageLookupByLibrary.simpleMessage("On"),
     "opblockOPDetails" : MessageLookupByLibrary.simpleMessage("opblock"),
@@ -266,6 +273,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "publicKeyParagraph" : MessageLookupByLibrary.simpleMessage("Below is your public key. As the name suggests, it is intended to be shared publicly and prove that a particular operation belongs to your private key."),
     "publicKeySheetHeader" : MessageLookupByLibrary.simpleMessage("Public Key"),
     "publicKeyTextFieldHeader" : MessageLookupByLibrary.simpleMessage("Public Key"),
+    "receiveAccountButton" : MessageLookupByLibrary.simpleMessage("Receive Account"),
+    "receiveAnAccountButton" : MessageLookupByLibrary.simpleMessage("Receive an Account"),
     "receiveButton" : MessageLookupByLibrary.simpleMessage("Receive"),
     "receivedHeader" : MessageLookupByLibrary.simpleMessage("Received"),
     "receivingAccountOPDetails" : MessageLookupByLibrary.simpleMessage("Receiving Account"),
@@ -298,6 +307,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signeraccountOPDetails" : MessageLookupByLibrary.simpleMessage("signer_account"),
     "somethingWentWrongError" : MessageLookupByLibrary.simpleMessage("Something went wrong, please try again later"),
     "successfullyImportedContactsParagraph" : MessageLookupByLibrary.simpleMessage("Successfully imported %1 contacts"),
+    "supportButton" : MessageLookupByLibrary.simpleMessage("Support"),
     "systemDefaultHeader" : MessageLookupByLibrary.simpleMessage("System Default"),
     "themeCopperHeader" : MessageLookupByLibrary.simpleMessage("Copper"),
     "themeDarkHeader" : MessageLookupByLibrary.simpleMessage("Dark"),
@@ -316,6 +326,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferredSheetHeader" : MessageLookupByLibrary.simpleMessage("Transferred"),
     "transferringParagraph" : MessageLookupByLibrary.simpleMessage("Confirm the public key below to transfer the ownership of this account to it."),
     "transferringSheetHeader" : MessageLookupByLibrary.simpleMessage("Transferring"),
+    "unconfirmedAccountHeader" : MessageLookupByLibrary.simpleMessage("Unconfirmed Account"),
+    "unconfirmedAccountParagraph" : MessageLookupByLibrary.simpleMessage("This is an <colored>unconfirmed account</colored>. It has been transferred to you, but there needs to be 1 network confirmation before you can use it. This usually takes about 5 minutes, once it\'s complete you\'ll be able to use this account."),
     "undefinedHeader" : MessageLookupByLibrary.simpleMessage("Undefined"),
     "unencryptedKeyButton" : MessageLookupByLibrary.simpleMessage("Unencrypted Key"),
     "uninstallDisclaimerParagraph" : MessageLookupByLibrary.simpleMessage("If you lose your device or uninstall Blaise Wallet, you\'ll need your private key to recover your funds."),

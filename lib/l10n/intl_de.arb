@@ -312,5 +312,13 @@
   "getAccountThirdParagraphAlternative": "2- Du kannst ein Konto für <colored>%1 Pascal (%2)</colored> kaufen.<colored> Der Blaise-Service erlaubt den Erwerb von einem Konto pro Benutzer. Im Normalfall brauchst Du auch nur eins.</colored>",
   "getAccountThirdParagraphAlternative2": "2- Du kannst ein Konto für <colored>%1 Pascal (%2)</colored> kaufen.<colored> Der Blaise-Service erlaubt den Erwerb von 3 Konten pro Benutzer. Im Normalfall brauchst Du lediglich eins.</colored>",
   "receiveAccountButton": "Konto erhalten",
-  "receiveAnAccountButton": "Ein Konto erhalten"
+  "receiveAnAccountButton": "Ein Konto erhalten",
+  "okayButton": "Okay",
+  "liveSupportButton": "Hilfe",
+  "invalidPhoneNumberParagraph": "Keine valide Telefonnummer",
+  "confirmationCodeError": "Der Code war falsch, bitte probiere es erneut",
+  "freepasaComplete": "Dein neues Konto wird nach dem nächsten Block zur Verfügung stehen",
+  "unconfirmedAccountHeader": "Noch nicht bestätigtes Konto",
+  "unconfirmedAccountParagraph": "Dies ist ein <colored>nicht bestätigtes Konto</colored>. Es wurde Dir bereits zugeordnet, aber Du musst noch einen Block lang warten. Das dauert in der Regel ungefähr 5 Minuten. Sobald der Block abgeschlossen ist, hast Du vollen Zugriff auf dieses Konto.",
+  "connectingHeader": "Verbinde"
 }

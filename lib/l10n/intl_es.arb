@@ -41,7 +41,7 @@
   "changeDaemonButton": "Cambiar Daemon",
   "addContactButton": "Agregar contacto",
   "encryptedKeyButton": "Clave encriptada",
-  "unencryptedKeyButton": "Calve no encriptada",
+  "unencryptedKeyButton": "Clave no encriptada",
   "encryptButton": "Encriptar",
   "showButton": "Mostrar",
   "hideButton": "Ocultar",

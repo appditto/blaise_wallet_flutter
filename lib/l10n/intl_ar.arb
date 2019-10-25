@@ -303,5 +303,13 @@
   "getAccountThirdParagraphAlternative": "2. يمكنك شراء حساب واحد مقابل <colored>%1 باسكال (%2).</colored><colored> مسموح فقط بـ \"حساب\" واحد لكل مستخدم</colored>",
   "getAccountThirdParagraphAlternative2": "2. يمكنك شراء \"حساب\" مقابل <colored>%1 باسكال (%2).</colored><colored> يمكنك شراء حتى %3 حساب.</colored>",
   "receiveAccountButton": "استلام حساب",
-  "receiveAnAccountButton": "استلام حساب"
+  "receiveAnAccountButton": "استلام حساب",
+  "okayButton": "موافق",
+  "liveSupportButton": "مساعدة؟",
+  "invalidPhoneNumberParagraph": "رقم التليفون غير صالح",
+  "confirmationCodeError": "فشل التحقق، تأكد من كتابة الرمز المرسل إليك بشكل صحيح",
+  "freepasaComplete": "تم بنجاح، حسابك الجديد سيظهر بعد 1 تأكيد من الشبكة",
+  "unconfirmedAccountHeader": "حساب (لم يتم تأكيده)",
+  "unconfirmedAccountParagraph": "هذا <colored>حساب غير مؤكد</colored>. تم نقله إليك، ولكن بإنتظار 1 تأكيد من الشبكة قبل ان تتمكن نم إستخدامه. قد تستغرق هذه العملية 5 دقائق، وعندما تكتمل سيكون بإمكانك استخدام الحساب.",
+  "connectingHeader": "جارٍ الإتصال"
 }
