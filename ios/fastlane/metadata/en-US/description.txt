@@ -1,0 +1,14 @@
+Blaise is a simple, sleek & secure Pascal wallet.
+Features:
+
+- Create a new Pascal wallet or import an existing one
+- Manage multiple Pascal accounts (PASAs)
+- Send Pascal instantly to anyone, anywhere in the world
+- Change account names, transfer accounts, or list them for sale
+- Manage contacts in an intuitive, easy-to-use address book
+- View your accounts operations history
+- Customize the wallet with various themes
+- Select one of the 5+ languages available
+
+IMPORTANT:
+Remember to backup your private key and store it in a safe place. It is the only way to recover your funds if you sign out of the wallet or lose your device! If someone else gets your unencrypted private key, they will have full control over your funds.

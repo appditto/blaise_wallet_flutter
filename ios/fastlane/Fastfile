@@ -1,0 +1,48 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build & sign iOS app"
+  lane :build_ios do |options|
+    match(type: "appstore", readonly: is_ci)
+    sh "./flutter_test.sh"
+    sh "./flutter_build.sh --clean"
+    build_ios_app(
+      export_options: {
+        method: "app-store",
+      }
+    )
+  end
+
+  desc "Upload iOS app to app store"
+  lane :deploy_ios do |options|
+    if options[:testflight]
+      upload_to_testflight(
+        skip_submission: true,
+        ipa: "./Runner.ipa"
+      )
+    else
+      deliver(
+        skip_metadata: false,
+        skip_screenshots: true,
+        submit_for_review: true,
+        force: true,
+        ipa: "./Runner.ipa"
+      )
+    end
+  end
+end

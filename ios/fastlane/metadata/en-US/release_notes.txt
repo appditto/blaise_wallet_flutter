@@ -1,0 +1,2 @@
+- Fix freepasa validation with international phone numbers
+- Lock screen fixes

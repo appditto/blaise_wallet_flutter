@@ -1,0 +1,21 @@
+Features:
+
+- Create a new Pascal wallet or import an existing one
+- Manage multiple Pascal accounts (PASAs)
+- Send Pascal instantly to anyone, anywhere in the world
+- Change account names, transfer accounts, or list them for sale
+- Manage contacts in an intuitive, easy-to-use address book
+- View your accounts operations history
+- Easily obtain new accounts by borrowing them or using the built-in freepasa integration
+- Receive push notifications when you receive Pascal
+- If you have questions, we can help - get live support directly from the developers
+
+IMPORTANT:
+
+Remember to backup your private key and store it in a safe place. It is the only way to recover your funds if you sign out of the wallet or lose your device! If someone else gets your unencrypted private key, they will have full control over your funds.
+
+For support:
+help@appditto.com
+
+PascalCoin website:
+https://pascalcoin.org
