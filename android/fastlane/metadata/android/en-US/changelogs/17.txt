@@ -1,0 +1,1 @@
+- Add themes to QR scanner

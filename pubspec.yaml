@@ -1,7 +1,7 @@
 name: blaise_wallet_flutter
 description: A new Flutter project.
 
-version: 1.0.6+16
+version: 1.0.7+17
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

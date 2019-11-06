@@ -1,2 +1,1 @@
-- Fix freepasa validation with international phone numbers
-- Lock screen fixes
+- Add themes to QR Scanner window
