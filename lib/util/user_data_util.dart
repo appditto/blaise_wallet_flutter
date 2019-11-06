@@ -55,10 +55,10 @@ class UserDataUtil {
     return _parseData(data.text, type);
   }
 
-  static Future<String> getQRData(DataType type) async {
+  static Future<String> getQRData(DataType type, OverlayTheme theme) async {
     UIUtil.cancelLockEvent();
     try {
-      String data = await BarcodeScanner.scan();
+      String data = await BarcodeScanner.scan(theme);
       if (isEmpty(data)) {
         return null;
       }

@@ -167,7 +167,8 @@ class _TransferAccountSheetState extends State<TransferAccountSheet> {
                                     onPressed: () async {
                                       String text =
                                           await UserDataUtil.getQRData(
-                                              DataType.PUBLIC_KEY);
+                                              DataType.PUBLIC_KEY,
+                                              StateContainer.of(context).curTheme.scannerTheme);
                                       if (text != null) {
                                         publicKeyController.text = text;
                                       }

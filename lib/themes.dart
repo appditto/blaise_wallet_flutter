@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -98,6 +99,7 @@ abstract class BaseTheme {
   Brightness brightness;
   SystemUiOverlayStyle statusBar;
   AppIconEnum appIcon;
+  OverlayTheme scannerTheme;
 
   /// Operator overrides
   bool operator ==(o) => (o != null && o.hashCode == hashCode);
@@ -275,6 +277,8 @@ class BlaiseLightTheme extends BaseTheme {
       SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent);
   
   AppIconEnum appIcon = AppIconEnum.LIGHT;
+
+  OverlayTheme scannerTheme = OverlayTheme.BLAISE;
 }
 
 class BlaiseDarkTheme extends BaseTheme {
@@ -446,6 +450,8 @@ class BlaiseDarkTheme extends BaseTheme {
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent);
   
   AppIconEnum appIcon = AppIconEnum.DARK;
+
+  OverlayTheme scannerTheme = OverlayTheme.BLAISEDARK;
 }
 
 class BlaiseCopperTheme extends BaseTheme {
@@ -617,6 +623,8 @@ class BlaiseCopperTheme extends BaseTheme {
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent);
 
   AppIconEnum appIcon = AppIconEnum.COPPER;
+
+  OverlayTheme scannerTheme = OverlayTheme.COPPER;
 }
 
 enum AppIconEnum { LIGHT, DARK, COPPER }

@@ -235,7 +235,8 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     onPressed: () async {
                                       String text =
                                           await UserDataUtil.getQRData(
-                                              DataType.ACCOUNT);
+                                              DataType.ACCOUNT,
+                                              StateContainer.of(context).curTheme.scannerTheme);
                                       if (text != null) {
                                         receiverFocusNode.unfocus();
                                         receiverController.text = text;

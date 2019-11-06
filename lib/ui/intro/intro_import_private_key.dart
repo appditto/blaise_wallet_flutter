@@ -136,7 +136,8 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                     onPressed: () async {
                                       String text =
                                           await UserDataUtil.getQRData(
-                                              DataType.RAW);
+                                              DataType.RAW,
+                                              StateContainer.of(context).curTheme.scannerTheme);
                                       if (text != null) {
                                         if (privateKeyIsValid(text) ||
                                             privateKeyIsEncrypted(text)) {

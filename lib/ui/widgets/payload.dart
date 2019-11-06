@@ -335,7 +335,8 @@ class _PayloadDialogState extends State<PayloadDialog>
                                             onPressed: () async {
                                               String text =
                                                   await UserDataUtil.getQRData(
-                                                      DataType.RAW);
+                                                      DataType.RAW,
+                                                      StateContainer.of(context).curTheme.scannerTheme);
                                               if (text != null &&
                                                   text.length <= 80) {
                                                 widget.onPayloadChanged(

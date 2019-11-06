@@ -189,7 +189,8 @@ class _AddContactSheetState extends State<AddContactSheet> {
                                     onPressed: () async {
                                       String text =
                                           await UserDataUtil.getQRData(
-                                              DataType.ACCOUNT);
+                                              DataType.ACCOUNT,
+                                              StateContainer.of(context).curTheme.scannerTheme);
                                       if (text != null) {
                                         addressController.text = text;
                                       }

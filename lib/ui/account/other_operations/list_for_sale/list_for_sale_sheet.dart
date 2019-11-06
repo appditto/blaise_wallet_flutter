@@ -228,7 +228,8 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                     onPressed: () async {
                                       String text =
                                           await UserDataUtil.getQRData(
-                                              DataType.ACCOUNT);
+                                              DataType.ACCOUNT,
+                                              StateContainer.of(context).curTheme.scannerTheme);
                                       if (text != null) {
                                         receiverFocusNode.unfocus();
                                         receiverController.text = text;
