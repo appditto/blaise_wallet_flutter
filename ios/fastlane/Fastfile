@@ -34,7 +34,8 @@ platform :ios do
     match(
       type: "appstore",
       readonly: is_ci,
-      keychain_name: 'fastlane_blaise'
+      keychain_name: 'fastlane_blaise',
+      keychain_password: 'blaisetempkeychainpassword'
     )
     sh "./flutter_test.sh"
     sh "./flutter_build.sh --clean"
