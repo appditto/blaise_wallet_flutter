@@ -41,6 +41,7 @@ update:
   script:
     - flutter packages get
     - flutter packages upgrade
+  interruptible: true
 
 android:build:
   stage: build
