@@ -15,27 +15,16 @@ update_fastlane
 
 default_platform(:ios)
 
-APP_ID = "com.appditto.blaise"
-PROVISIONING_PROFILE = "match AppStore com.appditto.blaise"
-
 platform :ios do
   desc "Build & sign iOS app"
   lane :build_ios do |options|
-    match(app_identifier: APP_ID, type: "appstore", readonly: is_ci)
-    settings_to_override = {
-      :BUNDLE_IDENTIFIER => APP_ID,
-      :PROVISIONING_PROFILE_SPECIFIER => PROVISIONING_PROFILE
-    }
+    match(type: "appstore", readonly: is_ci)
     sh "./flutter_test.sh"
     sh "./flutter_build.sh --clean"
     build_ios_app(
       export_options: {
-        method: "app-store",
-        provisioningProfiles: { 
-            MY_APP_ID => PROVISIONING_PROFILE
-        }
+        method: "app-store"
       },
-      xcargs: settings_to_override
     )
   end
 
