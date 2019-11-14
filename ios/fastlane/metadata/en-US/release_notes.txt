@@ -1,1 +1,1 @@
-- Add themes to QR Scanner window
+- Make QR Scanner Full Screen on iOS 13
