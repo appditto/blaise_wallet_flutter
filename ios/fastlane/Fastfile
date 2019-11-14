@@ -15,38 +15,49 @@ update_fastlane
 
 default_platform(:ios)
 
-def ensure_temp_keychain(name)
+TEMP_KEYCHAIN_NAME_DEFAULT = "fastlane_flutter"
+TEMP_KEYCHAN_PASSWORD_DEFAULT = "temppassword"
+
+def delete_temp_keychain(name)
   delete_keychain(
     name: name
   ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
   create_keychain(
     name: name,
-    password: 'blaisetempkeychainpassword',
-    unlock: true,
+    password: password,
+    unlock: false,
     timeout: false
   )
+end
+
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
 end
 
 platform :ios do
   desc "Build & sign iOS app"
   lane :build_ios do |options|
-    ensure_temp_keychain 'fastlane_blaise'
+    keychain_name = ENV['TEMP_KEYCHAIN_NAME'] || TEMP_KEYCHAIN_NAME_DEFAULT
+    keychain_password = ENV['TEMP_KEYCHAIN_PASSWORD'] || TEMP_KEYCHAN_PASSWORD_DEFAULT
+    ensure_temp_keychain(keychain_name, keychain_password)
     match(
       type: "appstore",
       readonly: is_ci,
-      keychain_name: 'fastlane_blaise',
-      keychain_password: 'blaisetempkeychainpassword'
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
     )
     sh "./flutter_test.sh"
     sh "./flutter_build.sh --clean"
     build_ios_app(
       export_options: {
-        method: "app-store"
-      },
+        method: "app-store",
+      }
     )
-    delete_keychain(
-      name: 'fastlane_blaise'
-    ) if File.exist? File.expand_path("~/Library/Keychains/fastlane_blaise-db")
+    delete_temp_keychain(keychain_name)
   end
 
   desc "Upload iOS app to app store"
