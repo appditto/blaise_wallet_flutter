@@ -37,6 +37,6 @@ eval $(echo "$response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[[:al
 echo "Uploading asset... $localAssetPath" >&2
 
 # Construct url
-GH_ASSET="https://uploads.github.com/repos/$GH_OWNER/$GH_REPO_NAME/releases/$id/assets?name=natrium_${VERSION}.apk"
+GH_ASSET="https://uploads.github.com/repos/$GH_OWNER/$GH_REPO_NAME/releases/$id/assets?name=blaise_${VERSION}.apk"
 
 curl -u "$GITHUB_OAUTH_BASIC" --data-binary @"$filename" -H "$AUTH" -H "Content-Type: application/octet-stream" $GH_ASSET
