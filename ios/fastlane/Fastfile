@@ -64,6 +64,12 @@ platform :ios do
           method: "app-store"
       }
     )
+    enable_automatic_code_signing(
+      path: "./Runner.xcodeproj",
+      team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
+      profile_name: "match AppStore #{CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)}",
+      code_sign_identity: "iPhone Developer"
+    )
     delete_temp_keychain(keychain_name)
   end
 
