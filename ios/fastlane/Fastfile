@@ -11,7 +11,7 @@
 #
 
 # Uncomment the line if you want fastlane to automatically update itself
-update_fastlane
+#update_fastlane
 
 default_platform(:ios)
 
@@ -69,6 +69,10 @@ platform :ios do
     rescue SystemExit, Interrupt
       raise
     rescue Exception => e
+      delete_temp_keychain(keychain_name)
+      sh "cp -Rp ../Runner.xcodeproj.bak/* ../Runner.xcodeproj/"
+      sh "rm -rf ../Runner.xcodeproj.bak"
+      raise
     ensure
       delete_temp_keychain(keychain_name)
       sh "cp -Rp ../Runner.xcodeproj.bak/* ../Runner.xcodeproj/"
