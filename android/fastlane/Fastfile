@@ -10,15 +10,15 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-# Uncomment the line if you want fastlane to automatically update itself
-update_fastlane
-
 default_platform(:android)
 
 platform :android do
+  before_all  do |lane, options|
+    update_fastlane
+  end
+
   desc "Build android aab and apk"
   lane :build_android do |options|
-    sh "./flutter_test.sh"
     sh "./flutter_build.sh --clean"
     sh "./flutter_build.sh --apk"
   end
@@ -27,7 +27,7 @@ platform :android do
   lane :deploy_android do |options|
     upload_to_play_store(
       track: options[:production] ? 'production' : options[:internal] ? 'internal' : options[:alpha] ? 'alpha' : 'beta',
-      aab: '../build/app/outputs/bundle/release/app.aab',
+      aab: ENV['AAB_PATH'],
       skip_upload_images: true,
       skip_upload_screenshots: true,
     )

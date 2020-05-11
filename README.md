@@ -1,6 +1,6 @@
 # Blaise - Simple, Sleek & Secure PASCAL Wallet
 
-[![GitHub release (latest)](https://img.shields.io/github/v/release/appditto/blaise_wallet_flutter)](https://github.com/appditto/blaise_wallet_flutter/releases) [![License](https://img.shields.io/github/license/appditto/blaise_wallet_flutter)](https://github.com/appditto/blaise_wallet_flutter/blob/master/LICENSE) [![Pipeline](https://gitlab.com/appditto/blaise_wallet_flutter/badges/master/pipeline.svg)](https://gitlab.com/appditto/blaise_wallet_flutter/pipelines) [![Twitter Follow](https://img.shields.io/twitter/follow/Appditto?style=social)](https://twitter.com/intent/follow?screen_name=Appditto)
+[![GitHub release (latest)](https://img.shields.io/github/v/release/appditto/blaise_wallet_flutter)](https://github.com/appditto/blaise_wallet_flutter/releases) [![License](https://img.shields.io/github/license/appditto/blaise_wallet_flutter)](https://github.com/appditto/blaise_wallet_flutter/blob/master/LICENSE) [[![CI](https://github.com/appditto/blaise_wallet_flutter/workflows/CI/badge.svg)](https://github.com/appditto/blaise_wallet_flutter/actions?query=workflow%3ACI) [![Twitter Follow](https://img.shields.io/twitter/follow/Appditto?style=social)](https://twitter.com/intent/follow?screen_name=Appditto)
 
 ## What is Blaise?
 ![Blaise Hero](https://blaisewallet.com/assets/hero-mockup.png)

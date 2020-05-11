@@ -10,13 +10,11 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-# Uncomment the line if you want fastlane to automatically update itself
-#update_fastlane
-
 default_platform(:ios)
 
 TEMP_KEYCHAIN_NAME_DEFAULT = "fastlane_flutter"
 TEMP_KEYCHAN_PASSWORD_DEFAULT = "temppassword"
+SIGH_PROVISIONING_PROFILE_NAME = "com.appditto.blaise AppStore"
 
 def delete_temp_keychain(name)
   delete_keychain(
@@ -39,43 +37,62 @@ def ensure_temp_keychain(name, password)
 end
 
 platform :ios do
+  before_all  do |lane, options|
+    update_fastlane
+  end
+
   desc "Build & sign iOS app"
   lane :build_ios do |options|
     begin
       sh "cp -Rp ../Runner.xcodeproj ../Runner.xcodeproj.bak"
-      disable_automatic_code_signing(
-        path: "./Runner.xcodeproj",
-        team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
-        profile_name: "match AppStore #{CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)}",
-        code_sign_identity: "iPhone Distribution"
-      )
       keychain_name = ENV['TEMP_KEYCHAIN_NAME'] || TEMP_KEYCHAIN_NAME_DEFAULT
       keychain_password = ENV['TEMP_KEYCHAIN_PASSWORD'] || TEMP_KEYCHAN_PASSWORD_DEFAULT
       ensure_temp_keychain(keychain_name, keychain_password)
       match(
         app_identifier: CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier),
         type: "appstore",
-        readonly: is_ci,
         keychain_name: keychain_name,
-        keychain_password: keychain_password
+        keychain_password: keychain_password,
+        readonly: false,
+        skip_provisioning_profiles: true
       )
-      sh "./flutter_test.sh"
+      cert(
+        keychain_path: "~/Library/Keychains/#{keychain_name}-db",
+        keychain_password: keychain_password        
+      )
+      sigh(
+        app_identifier: CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier),
+        readonly: false,
+        cert_id: lane_context[SharedValues::CERT_CERTIFICATE_ID],
+        provisioning_name: ENV['SIGH_PROVISIONING_PROFILE_NAME'],
+        ignore_profiles_with_different_name: true
+      )
+      disable_automatic_code_signing(
+        path: "./Runner.xcodeproj",
+        team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
+        profile_name: lane_context[SharedValues::SIGH_NAME],
+        profile_uuid: lane_context[SharedValues::SIGH_UUID],
+        code_sign_identity: "iPhone Distribution"
+      )
       sh "./flutter_build.sh --clean"
       build_ios_app(
         export_options: {
-            method: "app-store"
+            method: "app-store",
+            provisioningProfiles: { 
+              "com.appditto.blaise" => ENV['SIGH_PROVISIONING_PROFILE_NAME'],
+            }
         }
       )
     rescue SystemExit, Interrupt
       raise
     rescue Exception => e
       delete_temp_keychain(keychain_name)
-      sh "cp -Rp ../Runner.xcodeproj.bak/* ../Runner.xcodeproj/"
+      sh "cp -Rp ../Runner.xcodeproj.bak/* ../Runner.xcodeproj/ || true"
       sh "rm -rf ../Runner.xcodeproj.bak"
       raise
     ensure
       delete_temp_keychain(keychain_name)
-      sh "cp -Rp ../Runner.xcodeproj.bak/* ../Runner.xcodeproj/"
+      sh "cp -Rp ../Runner.xcodeproj.bak/* ../Runner.xcodeproj/ || true"
       sh "rm -rf ../Runner.xcodeproj.bak"
     end
   end
@@ -85,7 +102,7 @@ platform :ios do
     if options[:testflight]
       upload_to_testflight(
         skip_submission: true,
-        ipa: "./Runner.ipa"
+        ipa: ENV['IPA_PATH']
       )
     else
       deliver(
@@ -93,7 +110,7 @@ platform :ios do
         skip_screenshots: true,
         submit_for_review: true,
         force: true,
-        ipa: "./Runner.ipa"
+        ipa: ENV['IPA_PATH']
       )
     end
   end
