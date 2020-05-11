@@ -28,6 +28,7 @@ import 'package:logger/logger.dart';
 import 'package:oktoast/oktoast.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   // Register services
   setupServiceLocator();
   // Setup logger, only show warning and higher in release mode.
