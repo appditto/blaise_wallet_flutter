@@ -1,1 +1,2 @@
-- Make QR Scanner Full Screen on iOS 13
+- Performance improvements and bug fixes
+- Add Catalan language

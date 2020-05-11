@@ -1,0 +1,3 @@
+- Improve QR Scanner reliability on some devices
+- Add Catalan language
+- Performance improvements and bug fixes
