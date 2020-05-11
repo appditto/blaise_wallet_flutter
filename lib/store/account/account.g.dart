@@ -294,4 +294,11 @@ mixin _$Account on AccountBase, Store {
       _$AccountBaseActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  String toString() {
+    final string =
+        'operationsLoading: ${operationsLoading.toString()},rpcClient: ${rpcClient.toString()},account: ${account.toString()},accountBalance: ${accountBalance.toString()},operations: ${operations.toString()},operationsToDisplay: ${operationsToDisplay.toString()},paid: ${paid.toString()}';
+    return '{$string}';
+  }
 }

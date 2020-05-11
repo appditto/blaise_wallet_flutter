@@ -452,4 +452,11 @@ mixin _$Wallet on WalletBase, Store {
       _$WalletBaseActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  String toString() {
+    final string =
+        'walletLoading: ${walletLoading.toString()},totalWalletBalance: ${totalWalletBalance.toString()},walletAccounts: ${walletAccounts.toString()},rpcClient: ${rpcClient.toString()},publicKey: ${publicKey.toString()},accountStateMap: ${accountStateMap.toString()},localCurrencyPrice: ${localCurrencyPrice.toString()},btcPrice: ${btcPrice.toString()},uuid: ${uuid.toString()},activeAccount: ${activeAccount.toString()},borrowedAccount: ${borrowedAccount.toString()},isBorrowEligible: ${isBorrowEligible.toString()},hasExceededBorrowLimit: ${hasExceededBorrowLimit.toString()},hasReceivedSubscribeResponse: ${hasReceivedSubscribeResponse.toString()}';
+    return '{$string}';
+  }
 }

@@ -6,6 +6,7 @@ enum AvailableLanguage {
   DEFAULT,
   ENGLISH,
   ARABIC,
+  CATALAN,
   CHINESE_SIMPLIFIED,
   GERMAN,
   SPANISH,
@@ -22,6 +23,8 @@ class LanguageSetting extends SettingSelectionItem {
     switch (language) {
       case AvailableLanguage.ENGLISH:
         return "English (en)";
+      case AvailableLanguage.CATALAN:
+        return "Català (ca)";        
       case AvailableLanguage.ARABIC:
         return "العَرَبِيَّة‎ (ar)";
       case AvailableLanguage.CHINESE_SIMPLIFIED:
@@ -43,6 +46,8 @@ class LanguageSetting extends SettingSelectionItem {
         return "en";
       case AvailableLanguage.ARABIC:
         return "ar";
+      case AvailableLanguage.CATALAN:
+        return "ca";        
       case AvailableLanguage.CHINESE_SIMPLIFIED:
         return "zh-Hans";
       case AvailableLanguage.GERMAN:

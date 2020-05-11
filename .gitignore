@@ -45,6 +45,7 @@ version
 **/doc/api/
 .dart_tool/
 .flutter-plugins
+.flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/
@@ -93,6 +94,7 @@ unlinked_spec.ds
 **/ios/Runner/GeneratedPluginRegistrant.*
 **/ios/*.ipa
 **/ios/*.app.dSYM.zip
+**/ios/flutter_export_environment.sh
 
 # Coverage
 coverage/
