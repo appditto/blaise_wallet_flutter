@@ -221,354 +221,250 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 // Expanded list
                 Expanded(
-                  child: Stack(
-                    alignment: AlignmentDirectional.topEnd,
-                    children: <Widget>[
-                      // Container for the list
-                      Container(
-                        margin: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          color: StateContainer.of(context)
-                              .curTheme
-                              .backgroundPrimary,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12),
+                  child: Container(
+                    margin: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      color:
+                          StateContainer.of(context).curTheme.backgroundPrimary,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      boxShadow: [
+                        StateContainer.of(context).curTheme.shadowSettingsList,
+                      ],
+                    ),
+                    // Settings List
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12)),
+                      child: ListView(
+                        padding: EdgeInsetsDirectional.only(
+                            bottom: MediaQuery.of(context).padding.bottom + 24),
+                        children: <Widget>[
+                          // Preferences text
+                          Container(
+                            alignment: Alignment(-1, 0),
+                            margin: EdgeInsetsDirectional.only(
+                                start: 24, end: 24, top: 18, bottom: 8),
+                            child: AutoSizeText(
+                              AppLocalization.of(context).preferencesHeader,
+                              style: AppStyles.settingsHeader(context),
+                              maxLines: 1,
+                              stepGranularity: 0.1,
+                            ),
                           ),
-                          boxShadow: [
-                            StateContainer.of(context)
-                                .curTheme
-                                .shadowSettingsList,
-                          ],
-                        ),
-                        // Settings List
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12)),
-                          child: ListView(
-                            padding: EdgeInsetsDirectional.only(
-                                bottom:
-                                    MediaQuery.of(context).padding.bottom + 24),
-                            children: <Widget>[
-                              // Preferences text
-                              Container(
-                                alignment: Alignment(-1, 0),
-                                margin: EdgeInsetsDirectional.only(
-                                    start: 24, end: 24, top: 18, bottom: 8),
-                                child: AutoSizeText(
-                                  AppLocalization.of(context).preferencesHeader,
-                                  style: AppStyles.settingsHeader(context),
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
-                                ),
-                              ),
-                              // Divider
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
-                              // List Items
-                              SettingsListItem(
-                                header:
-                                    AppLocalization.of(context).currencyHeader,
-                                subheader: StateContainer.of(context)
-                                    .curCurrency
-                                    .getDisplayName(context),
-                                icon: AppIcons.currency,
-                                onPressed: () {
-                                  showAppDialog(
-                                      context: context,
-                                      builder: (_) => DialogOverlay(
-                                          title: AppLocalization.of(context)
-                                              .currencyHeader,
-                                          optionsList: getCurrencyList()));
-                                },
-                              ),
-                              SettingsListItem(
-                                header:
-                                    AppLocalization.of(context).languageHeader,
-                                subheader: StateContainer.of(context)
-                                    .curLanguage
-                                    .getDisplayName(context),
-                                icon: AppIcons.language,
-                                onPressed: () {
-                                  showAppDialog(
-                                      context: context,
-                                      builder: (_) => DialogOverlay(
-                                          title: AppLocalization.of(context)
-                                              .languageHeader,
-                                          optionsList: getLanguageList()));
-                                },
-                              ),
-                              SettingsListItem(
-                                header: AppLocalization.of(context).themeHeader,
-                                subheader: StateContainer.of(context)
+                          // Divider
+                          Container(
+                            width: double.maxFinite,
+                            height: 1,
+                            color:
+                                StateContainer.of(context).curTheme.textDark10,
+                          ),
+                          // List Items
+                          SettingsListItem(
+                            header: AppLocalization.of(context).currencyHeader,
+                            subheader: StateContainer.of(context)
+                                .curCurrency
+                                .getDisplayName(context),
+                            icon: AppIcons.currency,
+                            onPressed: () {
+                              showAppDialog(
+                                  context: context,
+                                  builder: (_) => DialogOverlay(
+                                      title: AppLocalization.of(context)
+                                          .currencyHeader,
+                                      optionsList: getCurrencyList()));
+                            },
+                          ),
+                          SettingsListItem(
+                            header: AppLocalization.of(context).languageHeader,
+                            subheader: StateContainer.of(context)
+                                .curLanguage
+                                .getDisplayName(context),
+                            icon: AppIcons.language,
+                            onPressed: () {
+                              showAppDialog(
+                                  context: context,
+                                  builder: (_) => DialogOverlay(
+                                      title: AppLocalization.of(context)
+                                          .languageHeader,
+                                      optionsList: getLanguageList()));
+                            },
+                          ),
+                          SettingsListItem(
+                            header: AppLocalization.of(context).themeHeader,
+                            subheader: StateContainer.of(context)
+                                        .curTheme
+                                        .toString() ==
+                                    BlaiseLightTheme().toString()
+                                ? AppLocalization.of(context).themeLightHeader
+                                : StateContainer.of(context)
                                             .curTheme
                                             .toString() ==
-                                        BlaiseLightTheme().toString()
+                                        BlaiseDarkTheme().toString()
                                     ? AppLocalization.of(context)
-                                        .themeLightHeader
-                                    : StateContainer.of(context)
-                                                .curTheme
-                                                .toString() ==
-                                            BlaiseDarkTheme().toString()
-                                        ? AppLocalization.of(context)
-                                            .themeDarkHeader
-                                        : AppLocalization.of(context)
-                                            .themeCopperHeader,
-                                icon: AppIcons.theme,
-                                onPressed: () {
-                                  showAppDialog(
-                                      context: context,
-                                      builder: (_) => DialogOverlay(
-                                          title: AppLocalization.of(context)
-                                              .themeHeader,
-                                          optionsList: getThemeList()));
-                                },
-                              ),
-                              SettingsListItem(
-                                header: AppLocalization.of(context)
-                                    .notificationsHeader,
-                                subheader: _curNotificiationSetting
-                                    .getDisplayName(context),
-                                icon: AppIcons.notifications,
-                                onPressed: () {
-                                  showAppDialog(
-                                      context: context,
-                                      builder: (_) => DialogOverlay(
-                                          title: AppLocalization.of(context)
-                                              .notificationsHeader,
-                                          optionsList: getNotificationList()));
-                                },
-                              ),
-                              SettingsListItem(
-                                header:
-                                    AppLocalization.of(context).securityHeader,
-                                icon: AppIcons.security,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/security');
-                                },
-                              ),
-                              SettingsListItem(
-                                header:
-                                    AppLocalization.of(context).daemonHeader,
-                                subheader: daemonURL ??
-                                    AppLocalization.of(context).defaultHeader,
-                                icon: AppIcons.changedaemon,
-                                onPressed: () {
-                                  AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: ChangeDaemonSheet(
-                                          onChanged: (newDaemon) {
-                                        EventTaxiImpl.singleton().fire(
-                                            DaemonChangedEvent(
-                                                newDaemon: newDaemon));
-                                        if (newDaemon !=
-                                            AppConstants.DEFAULT_RPC_HTTP_URL) {
-                                          setState(() {
-                                            daemonURL = newDaemon;
-                                          });
-                                        } else {
-                                          setState(() {
-                                            daemonURL = null;
-                                          });
-                                        }
-                                      }));
-                                },
-                              ),
-                              // Manage text
-                              Container(
-                                alignment: Alignment(-1, 0),
-                                margin: EdgeInsetsDirectional.only(
-                                    start: 24, end: 24, top: 18, bottom: 8),
-                                child: AutoSizeText(
-                                  AppLocalization.of(context).manageHeader,
-                                  style: AppStyles.settingsHeader(context),
-                                  maxLines: 1,
-                                  stepGranularity: 0.1,
-                                ),
-                              ),
-                              // Divider
-                              Container(
-                                width: double.maxFinite,
-                                height: 1,
-                                color: StateContainer.of(context)
-                                    .curTheme
-                                    .textDark10,
-                              ),
-                              SettingsListItem(
-                                header:
-                                    AppLocalization.of(context).contactsHeader,
-                                icon: AppIcons.contacts,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/contacts',
-                                      arguments: widget.account);
-                                },
-                              ),
-                              SettingsListItem(
-                                header: AppLocalization.of(context)
-                                    .backUpPrivateKeyHeader,
-                                icon: AppIcons.backupprivatekey,
-                                onPressed: () {
-                                  AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: BackupPrivateKeySheet());
-                                },
-                              ),
-                              SettingsListItem(
-                                header: AppLocalization.of(context)
-                                    .viewPublicKeyHeader,
-                                icon: Icons.public,
-                                onPressed: () {
-                                  AppSheets.showBottomSheet(
-                                      context: context,
-                                      widget: PublicKeySheet());
-                                },
-                              ),
-                              SettingsListItem(
-                                  header:
-                                      AppLocalization.of(context).shareHeader,
-                                  icon: AppIcons.share,
-                                  onPressed: () {
-                                    UIUtil.cancelLockEvent();
-                                    Share.share(AppLocalization.of(context)
-                                        .checkOutBlaiseParagraph);
-                                  }),
-                              SettingsListItem(
-                                header:
-                                    AppLocalization.of(context).logoutHeader,
-                                icon: AppIcons.logout,
-                                onPressed: () {
-                                  logoutPressed();
-                                },
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(versionString,
-                                        style: AppStyles.textStyleVersion(
-                                            context)),
-                                    Text(" | ",
-                                        style: AppStyles.textStyleVersion(
-                                            context)),
-                                    GestureDetector(
-                                        onTap: () {
-                                          AppWebView.showWebView(context,
-                                              AppConstants.PRIVACY_POLICY_URL);
-                                        },
-                                        child: Text(
-                                            AppLocalization.of(context)
-                                                .privacyPolicyHeader,
-                                            style: AppStyles
-                                                .textStyleVersionUnderline(
-                                                    context))),
-                                    Text(" | ",
-                                        style: AppStyles.textStyleVersion(
-                                            context)),
-                                    GestureDetector(
-                                        onTap: () {
-                                          AppWebView.showWebView(context,
-                                              AppConstants.PRIVACY_POLICY_URL);
-                                        },
-                                        child: Text("EULA",
-                                            style: AppStyles
-                                                .textStyleVersionUnderline(
-                                                    context))),
-                                  ],
-                                ),
-                              ),
-                            ],
+                                        .themeDarkHeader
+                                    : AppLocalization.of(context)
+                                        .themeCopperHeader,
+                            icon: AppIcons.theme,
+                            onPressed: () {
+                              showAppDialog(
+                                  context: context,
+                                  builder: (_) => DialogOverlay(
+                                      title: AppLocalization.of(context)
+                                          .themeHeader,
+                                      optionsList: getThemeList()));
+                            },
                           ),
-                        ),
-                      ),
-                      // Container for the live support button
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: StateContainer.of(context)
-                              .curTheme
-                              .gradientPrimary,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            StateContainer.of(context).curTheme.shadowPrimaryOne
-                          ],
-                        ),
-                        height: 40,
-                        padding: EdgeInsets.all(0),
-                        margin: EdgeInsetsDirectional.only(top: 12, end: 24),
-                        // Support Button
-                        child: FlatButton(
-                          splashColor: StateContainer.of(context)
-                              .curTheme
-                              .backgroundPrimary30,
-                          highlightColor: StateContainer.of(context)
-                              .curTheme
-                              .backgroundPrimary15,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          onPressed: () {
-                            AppWebView.showWebView(
-                                context,
-                                'https://blaisewallet.com/support/' +
-                                    "?fcBackgroundColor=" +
-                                    StateContainer.of(context)
-                                        .curTheme
-                                        .primary
-                                        .toString()
-                                        .substring(10, 16) +
-                                    "&fcForegroundColor=" +
-                                    "ffffff" +
-                                    "&loadingText=" +
-                                    AppLocalization.of(context)
-                                        .connectingHeader);
-                          },
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                          // A row for support icon and text
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              // Support icon
-                              Container(
-                                margin: EdgeInsetsDirectional.only(end: 8),
-                                child: Icon(AppIcons.support,
-                                    size: 20,
-                                    color: StateContainer.of(context)
-                                        .curTheme
-                                        .backgroundPrimary),
-                              ),
-                              // Support text
-                              Container(
-                                constraints: BoxConstraints(
-                                    maxWidth:
-                                        (MediaQuery.of(context).size.width -
-                                                100) *
-                                            0.4),
-                                child: AutoSizeText(
-                                  AppLocalization.of(context).supportButton,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                    fontFamily: "Metropolis",
-                                    color: StateContainer.of(context).curTheme.backgroundPrimary
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  minFontSize: 8,
-                                  stepGranularity: 0.1,
-                                ),
-                              ),
-                            ],
+                          SettingsListItem(
+                            header:
+                                AppLocalization.of(context).notificationsHeader,
+                            subheader: _curNotificiationSetting
+                                .getDisplayName(context),
+                            icon: AppIcons.notifications,
+                            onPressed: () {
+                              showAppDialog(
+                                  context: context,
+                                  builder: (_) => DialogOverlay(
+                                      title: AppLocalization.of(context)
+                                          .notificationsHeader,
+                                      optionsList: getNotificationList()));
+                            },
                           ),
-                        ),
+                          SettingsListItem(
+                            header: AppLocalization.of(context).securityHeader,
+                            icon: AppIcons.security,
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/security');
+                            },
+                          ),
+                          SettingsListItem(
+                            header: AppLocalization.of(context).daemonHeader,
+                            subheader: daemonURL ??
+                                AppLocalization.of(context).defaultHeader,
+                            icon: AppIcons.changedaemon,
+                            onPressed: () {
+                              AppSheets.showBottomSheet(
+                                  context: context,
+                                  widget:
+                                      ChangeDaemonSheet(onChanged: (newDaemon) {
+                                    EventTaxiImpl.singleton().fire(
+                                        DaemonChangedEvent(
+                                            newDaemon: newDaemon));
+                                    if (newDaemon !=
+                                        AppConstants.DEFAULT_RPC_HTTP_URL) {
+                                      setState(() {
+                                        daemonURL = newDaemon;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        daemonURL = null;
+                                      });
+                                    }
+                                  }));
+                            },
+                          ),
+                          // Manage text
+                          Container(
+                            alignment: Alignment(-1, 0),
+                            margin: EdgeInsetsDirectional.only(
+                                start: 24, end: 24, top: 18, bottom: 8),
+                            child: AutoSizeText(
+                              AppLocalization.of(context).manageHeader,
+                              style: AppStyles.settingsHeader(context),
+                              maxLines: 1,
+                              stepGranularity: 0.1,
+                            ),
+                          ),
+                          // Divider
+                          Container(
+                            width: double.maxFinite,
+                            height: 1,
+                            color:
+                                StateContainer.of(context).curTheme.textDark10,
+                          ),
+                          SettingsListItem(
+                            header: AppLocalization.of(context).contactsHeader,
+                            icon: AppIcons.contacts,
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/contacts',
+                                  arguments: widget.account);
+                            },
+                          ),
+                          SettingsListItem(
+                            header: AppLocalization.of(context)
+                                .backUpPrivateKeyHeader,
+                            icon: AppIcons.backupprivatekey,
+                            onPressed: () {
+                              AppSheets.showBottomSheet(
+                                  context: context,
+                                  widget: BackupPrivateKeySheet());
+                            },
+                          ),
+                          SettingsListItem(
+                            header:
+                                AppLocalization.of(context).viewPublicKeyHeader,
+                            icon: Icons.public,
+                            onPressed: () {
+                              AppSheets.showBottomSheet(
+                                  context: context, widget: PublicKeySheet());
+                            },
+                          ),
+                          SettingsListItem(
+                              header: AppLocalization.of(context).shareHeader,
+                              icon: AppIcons.share,
+                              onPressed: () {
+                                UIUtil.cancelLockEvent();
+                                Share.share(AppLocalization.of(context)
+                                    .checkOutBlaiseParagraph);
+                              }),
+                          SettingsListItem(
+                            header: AppLocalization.of(context).logoutHeader,
+                            icon: AppIcons.logout,
+                            onPressed: () {
+                              logoutPressed();
+                            },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(versionString,
+                                    style: AppStyles.textStyleVersion(context)),
+                                Text(" | ",
+                                    style: AppStyles.textStyleVersion(context)),
+                                GestureDetector(
+                                    onTap: () {
+                                      AppWebView.showWebView(context,
+                                          AppConstants.PRIVACY_POLICY_URL);
+                                    },
+                                    child: Text(
+                                        AppLocalization.of(context)
+                                            .privacyPolicyHeader,
+                                        style:
+                                            AppStyles.textStyleVersionUnderline(
+                                                context))),
+                                Text(" | ",
+                                    style: AppStyles.textStyleVersion(context)),
+                                GestureDetector(
+                                    onTap: () {
+                                      AppWebView.showWebView(context,
+                                          AppConstants.PRIVACY_POLICY_URL);
+                                    },
+                                    child: Text("EULA",
+                                        style:
+                                            AppStyles.textStyleVersionUnderline(
+                                                context))),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
