@@ -25,7 +25,7 @@ dependencies:
   flare_flutter: ^2.0.3
 
   # SVG
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.1
 
   # Font awesome
   font_awesome_flutter: ^8.8.1
