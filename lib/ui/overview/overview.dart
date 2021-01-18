@@ -13,8 +13,6 @@ import 'package:blaise_wallet_flutter/ui/util/app_icons.dart';
 import 'package:blaise_wallet_flutter/ui/util/routes.dart';
 import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/account_card.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/app_drawer.dart';
-import 'package:blaise_wallet_flutter/ui/widgets/app_scaffold.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/buttons.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/placeholder_account_card.dart';
 import 'package:blaise_wallet_flutter/ui/widgets/reactive_refresh.dart';
@@ -37,7 +35,7 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  GlobalKey<AppScaffoldState> _scaffoldKey = GlobalKey<AppScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // Opacity Animation
   Animation<double> _opacityAnimation;
   AnimationController _opacityAnimationController;
@@ -293,11 +291,12 @@ class _OverviewPageState extends State<OverviewPage>
   @override
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
-    return AppScaffold(
+    return Scaffold(
+      drawerEdgeDragWidth: 200,
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       endDrawer: SizedBox(
-          width: double.infinity, child: AppDrawer(child: SettingsPage())),
+          width: double.infinity, child: Drawer(child: SettingsPage())),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
