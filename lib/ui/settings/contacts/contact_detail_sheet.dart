@@ -146,7 +146,7 @@ class _ContactDetailSheetState extends State<ContactDetailSheet> {
                                 StateContainer.of(context).curTheme.textLight30,
                             onPressed: () {
                               AppWebView.showWebView(context,
-                                  'https://explore.pascalcoin.org/accounts/${widget.contact.account.toString()}');
+                                  'https://new-explorer.pascalcoin.org/accounts/${widget.contact.account.toString()}');
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0)),

@@ -360,7 +360,7 @@ class _OperationDetailsSheetState extends State<OperationDetailsSheet> {
                           buttonTop: true,
                           onPressed: () {
                             AppWebView.showWebView(context,
-                                'https://explore.pascalcoin.org/operations/${widget.operation.ophash}');
+                                'https://new-explorer.pascalcoin.org/operations/${widget.operation.ophash}');
                           },
                         ),
                       ],
