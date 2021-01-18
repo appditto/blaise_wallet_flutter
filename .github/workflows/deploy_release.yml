@@ -31,7 +31,6 @@ jobs:
           ANDROID_SDK_PATH: /Users/adapps/Library/Android/Sdk
           GEM_HOME: ~/.gems
         run: |
-          echo "::add-path::~/.gems/bin"
           echo flutter.sdk=${{ env.FLUTTER_PATH }} > local.properties
           echo sdk.dir=${{ env.ANDROID_SDK_PATH }} >> local.properties
           echo flutter.buildMode=release >> local.properties
@@ -39,7 +38,7 @@ jobs:
           echo keyAlias=${{ secrets.ANDROID_KEY_ALIAS }} >> key.properties
           echo keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }} >> key.properties
           echo storePassword=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} >> key.properties
-          fastlane build_android production:true
+          /usr/local/bin/fastlane build_android production:true
           rm -f key.properties
 
       - name: Upload APK
@@ -72,8 +71,7 @@ jobs:
           TEMP_KEYCHAIN_PASSWORD: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
           GEM_HOME: ~/.gems
         run: |
-          echo "::add-path::~/.gems/bin"
-          fastlane build_ios
+          /usr/local/bin/fastlane build_ios
 
       - name: Upload IPA
         if: success()
@@ -83,7 +81,7 @@ jobs:
           path: ios/Runner.ipa
 
   deploy_android:
-    name: Deploy android internal
+    name: Deploy android production
     needs: build_android
     runs-on: self-hosted
     steps:
@@ -94,7 +92,7 @@ jobs:
           name: android-aab
 
       - name: Set workspace in env
-        run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
+        run: echo "workspace=$GITHUB_WORKSPACE" >> $GITHUB_ENV
 
       - name: Deploy android
         if: success()
@@ -103,11 +101,10 @@ jobs:
           AAB_PATH: ${{ env.workspace }}/app.aab
           GEM_HOME: ~/.gems
         run: |
-          echo "::add-path::~/.gems/bin"
-          fastlane deploy_android production:true
+          /usr/local/bin/fastlane deploy_android production:true
 
   deploy_ios:
-    name: Deploy iOS testflight
+    name: Deploy iOS production
     needs: build_ios
     runs-on: self-hosted
     steps:
@@ -118,7 +115,7 @@ jobs:
           name: ios-ipa
 
       - name: Set workspace in env
-        run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
+        run: echo "workspace=$GITHUB_WORKSPACE" >> $GITHUB_ENV
 
       - name: Deploy iOS 
         if: success()
@@ -129,5 +126,4 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}   
           GEM_HOME: ~/.gems
         run: |
-          echo "::add-path::~/.gems/bin"
-          fastlane deploy_ios
+          /usr/local/bin/fastlane deploy_ios
