@@ -1,3 +1,4 @@
 - Disallow 0-fee transactions
+- Android 12 compatibility
 - Performance improvements
 - Bug fixes
