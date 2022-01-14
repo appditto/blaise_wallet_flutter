@@ -101,7 +101,7 @@ jobs:
         if: success()
         working-directory: android
         env:
-          AAB_PATH: ${{ env.workspace }}/app.aab
+          AAB_PATH: ${{ env.workspace }}/app-release.aab
           GEM_HOME: ~/.gems
         run: |
           /usr/local/bin/fastlane deploy_android internal:true
