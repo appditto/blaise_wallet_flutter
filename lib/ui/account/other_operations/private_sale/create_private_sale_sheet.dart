@@ -122,9 +122,10 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          toUppercase(AppLocalization.of(context)
-                              .creatingPrivateSaleSheetHeader
-                              ,context),
+                          toUppercase(
+                              AppLocalization.of(context)
+                                  .creatingPrivateSaleSheetHeader,
+                              context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -236,7 +237,9 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                       String text =
                                           await UserDataUtil.getQRData(
                                               DataType.ACCOUNT,
-                                              StateContainer.of(context).curTheme.scannerTheme);
+                                              StateContainer.of(context)
+                                                  .curTheme
+                                                  .scannerTheme);
                                       if (text != null) {
                                         receiverFocusNode.unfocus();
                                         receiverController.text = text;
@@ -244,7 +247,7 @@ class _CreatePrivateSaleSheetState extends State<CreatePrivateSaleSheet> {
                                     },
                                   ),
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter(
+                                    FilteringTextInputFormatter.allow(
                                         RegExp("[0-9-]")),
                                     PascalAccountFormatter()
                                   ],

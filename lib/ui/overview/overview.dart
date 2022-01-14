@@ -45,8 +45,6 @@ class _OverviewPageState extends State<OverviewPage>
   // Whether to lock app
   bool _lockDisabled;
 
-  // Firebase Instance
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   int accountToLogin; // Account to login after a notification
   bool walletLoaded;
 
@@ -165,34 +163,30 @@ class _OverviewPageState extends State<OverviewPage>
     }
   }
 
-  void registerPushNotifications() {
-    // Register push notifications
-    _firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> message) async {
-        if (message.containsKey('data')) {
-          _chooseCorrectAccountFromNotification(message['data']);
-        }
-      },
-      onResume: (Map<String, dynamic> message) async {
-        if (message.containsKey('data')) {
-          _chooseCorrectAccountFromNotification(message['data']);
-        }
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      if (settings.alert || settings.badge || settings.sound) {
+  void getNotificationPermissions() async {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      try {
+        _chooseCorrectAccountFromNotification(message.data);
+      } catch (e) {}
+    });
+    try {
+      NotificationSettings settings = await FirebaseMessaging.instance
+          .requestPermission(sound: true, badge: true, alert: true);
+      if (settings.alert == AppleNotificationSetting.enabled ||
+          settings.badge == AppleNotificationSetting.enabled ||
+          settings.sound == AppleNotificationSetting.enabled ||
+          settings.authorizationStatus == AuthorizationStatus.authorized) {
         sl.get<SharedPrefsUtil>().getNotificationsSet().then((beenSet) {
           if (!beenSet) {
             sl.get<SharedPrefsUtil>().setNotificationsOn(true);
           }
         });
       } else {
-        sl.get<SharedPrefsUtil>().setNotificationsOn(false);
+        sl.get<SharedPrefsUtil>().setNotificationsOn(false).then((_) {});
       }
-    });
+    } catch (e) {
+      sl.get<SharedPrefsUtil>().setNotificationsOn(false);
+    }
   }
 
   @override
@@ -200,7 +194,7 @@ class _OverviewPageState extends State<OverviewPage>
     super.initState();
     walletLoaded = false;
     _registerBus();
-    registerPushNotifications();
+    getNotificationPermissions();
     WidgetsBinding.instance.addObserver(this);
     _isRefreshing = false;
     _lockDisabled = false;
@@ -294,7 +288,7 @@ class _OverviewPageState extends State<OverviewPage>
     return Scaffold(
       drawerEdgeDragWidth: 200,
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       endDrawer: SizedBox(
           width: double.infinity, child: Drawer(child: SettingsPage())),
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,

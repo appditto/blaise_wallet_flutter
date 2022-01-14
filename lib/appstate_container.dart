@@ -62,8 +62,8 @@ class StateContainer extends StatefulWidget {
   // Exactly like MediaQuery.of and Theme.of
   // It basically says 'get the data from the widget of this type.
   static StateContainerState of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(_InheritedStateContainer)
-            as _InheritedStateContainer)
+    return context
+        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
         .data;
   }
 
@@ -122,20 +122,21 @@ class StateContainerState extends State<StateContainer> {
   Future<void> _addSampleContact() async {
     bool contactAdded = await sl.get<SharedPrefsUtil>().getFirstContactAdded();
     if (!contactAdded) {
-      bool addressExists = await sl.get<DBHelper>().contactExistsWithAccount(
-          AccountNumber.fromInt(1185729));
+      bool addressExists = await sl
+          .get<DBHelper>()
+          .contactExistsWithAccount(AccountNumber.fromInt(1185729));
       if (addressExists) {
         return;
       }
-      bool nameExists = await sl.get<DBHelper>().contactExistsWithName("BlaiseDonations");
+      bool nameExists =
+          await sl.get<DBHelper>().contactExistsWithName("BlaiseDonations");
       if (nameExists) {
         return;
       }
       await sl.get<SharedPrefsUtil>().setFirstContactAdded(true);
       Contact c = Contact(
           name: "BlaiseDonations",
-          account:
-              AccountNumber.fromInt(1185729),
+          account: AccountNumber.fromInt(1185729),
           payload: "Thanks!");
       await sl.get<DBHelper>().saveContact(c);
     }
@@ -148,22 +149,28 @@ class StateContainerState extends State<StateContainer> {
 
   // Register RX event listenerss
   void _registerBus() {
-    _subscribeEventSub = EventTaxiImpl.singleton().registerTo<SubscribeEvent>().listen((event) {
+    _subscribeEventSub =
+        EventTaxiImpl.singleton().registerTo<SubscribeEvent>().listen((event) {
       handleSubscribeResponse(event.response);
     });
-    _priceEventSub = EventTaxiImpl.singleton().registerTo<PriceEvent>().listen((event) {
+    _priceEventSub =
+        EventTaxiImpl.singleton().registerTo<PriceEvent>().listen((event) {
       // PriceResponse's get pushed periodically, it wasn't a request we made so don't pop the queue
       walletState.btcPrice = event.response.btcPrice;
       walletState.localCurrencyPrice = event.response.price;
     });
-    _connStatusSub = EventTaxiImpl.singleton().registerTo<ConnStatusEvent>().listen((event) {
+    _connStatusSub =
+        EventTaxiImpl.singleton().registerTo<ConnStatusEvent>().listen((event) {
       if (event.status == ConnectionStatus.CONNECTED) {
         walletState.requestUpdate();
-      } else if (event.status == ConnectionStatus.DISCONNECTED && !sl.get<WSClient>().suspended) {
+      } else if (event.status == ConnectionStatus.DISCONNECTED &&
+          !sl.get<WSClient>().suspended) {
         sl.get<WSClient>().initCommunication();
       }
     });
-    _newOpSub = EventTaxiImpl.singleton().registerTo<NewOperationEvent>().listen((event) {
+    _newOpSub = EventTaxiImpl.singleton()
+        .registerTo<NewOperationEvent>()
+        .listen((event) {
       walletState.addNewOp(event.operation);
     });
   }

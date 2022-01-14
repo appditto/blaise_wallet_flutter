@@ -182,11 +182,13 @@ class _DialogOverlayState extends State<DialogOverlay>
                                 Row(
                                   children: <Widget>[
                                     AppButton(
-                                      type: widget.feeDialog || widget.singleButton
+                                      type: widget.feeDialog ||
+                                              widget.singleButton
                                           ? AppButtonType.Primary
                                           : AppButtonType.Danger,
                                       text: widget.confirmButtonText,
-                                      buttonTop: widget.singleButton?false:true,
+                                      buttonTop:
+                                          widget.singleButton ? false : true,
                                       onPressed: () {
                                         if (widget.onConfirm != null) {
                                           widget.onConfirm();
@@ -195,19 +197,24 @@ class _DialogOverlayState extends State<DialogOverlay>
                                     ),
                                   ],
                                 ),
-                                !widget.singleButton? Row(
-                                  children: <Widget>[
-                                    AppButton(
-                                      type: widget.feeDialog
-                                          ? AppButtonType.PrimaryOutline
-                                          : AppButtonType.DangerOutline,
-                                      text: toUppercase(AppLocalization.of(context).cancelButton, context),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                ):SizedBox(),
+                                !widget.singleButton
+                                    ? Row(
+                                        children: <Widget>[
+                                          AppButton(
+                                            type: widget.feeDialog
+                                                ? AppButtonType.PrimaryOutline
+                                                : AppButtonType.DangerOutline,
+                                            text: toUppercase(
+                                                AppLocalization.of(context)
+                                                    .cancelButton,
+                                                context),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox(),
                               ],
                             )
                           : Container(
@@ -272,7 +279,7 @@ Future<T> showAppDialog<T>({
   assert(child == null || builder == null);
   assert(debugCheckHasMaterialLocalizations(context));
 
-  final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
+  final ThemeData theme = Theme.of(context);
   return showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext buildContext, Animation<double> animation,

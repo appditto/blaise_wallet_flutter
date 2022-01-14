@@ -19,6 +19,7 @@ import 'package:blaise_wallet_flutter/ui/util/text_styles.dart';
 import 'package:blaise_wallet_flutter/ui/intro/intro_welcome.dart';
 import 'package:blaise_wallet_flutter/util/sharedprefs_util.dart';
 import 'package:blaise_wallet_flutter/util/vault.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -37,6 +38,8 @@ void main() async {
   } else {
     Logger.level = Level.debug;
   }
+  // Setup firebase
+  await Firebase.initializeApp();
   // Run app
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -168,7 +171,11 @@ class _AppState extends State<App> {
               return null;
           }
         },
-        locale: StateContainer.of(context).curLanguage == null || StateContainer.of(context).curLanguage.language == AvailableLanguage.DEFAULT ? null : StateContainer.of(context).curLanguage.getLocale(),
+        locale: StateContainer.of(context).curLanguage == null ||
+                StateContainer.of(context).curLanguage.language ==
+                    AvailableLanguage.DEFAULT
+            ? null
+            : StateContainer.of(context).curLanguage.getLocale(),
         supportedLocales: [
           // Languages
           const Locale('en', 'US'), // English
@@ -176,7 +183,8 @@ class _AppState extends State<App> {
           const Locale('es'), // Spanish
           const Locale('tr'), // Turkish
           const Locale('ar'), // Arabic
-          const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), // Chinese Simplified
+          const Locale.fromSubtags(
+              languageCode: 'zh', scriptCode: 'Hans'), // Chinese Simplified
           // Currency-default requires country included
           const Locale("es", "AR"),
           const Locale("en", "AU"),
@@ -237,7 +245,7 @@ class _AppState extends State<App> {
           const Locale("es", "ES"),
           const Locale("ar", "AE"), // UAE
           const Locale("ar", "SA"), // Saudi Arabia
-          const Locale("ar", "KW"), // Kuwait          
+          const Locale("ar", "KW"), // Kuwait
         ],
       ),
     );
@@ -265,12 +273,14 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
           Navigator.of(context).pushReplacementNamed('/intro_welcome');
         } else if ((await sl.get<Vault>().getPrivateKey() != null) &&
             (await sl.get<SharedPrefsUtil>().getPrivateKeyBackedUp())) {
-          if (await sl.get<SharedPrefsUtil>().getLock() || await sl.get<SharedPrefsUtil>().shouldLock()) {
-            Navigator.of(context).pushReplacementNamed('/lock_screen', arguments: TransitionOption.NONE);
+          if (await sl.get<SharedPrefsUtil>().getLock() ||
+              await sl.get<SharedPrefsUtil>().shouldLock()) {
+            Navigator.of(context).pushReplacementNamed('/lock_screen',
+                arguments: TransitionOption.NONE);
           } else {
             walletState.requestUpdate();
             Navigator.of(context).pushReplacementNamed('/overview',
-              arguments: TransitionOption.NONE);
+                arguments: TransitionOption.NONE);
           }
         } else {
           Navigator.of(context).pushReplacementNamed('/intro_welcome');
@@ -282,7 +292,9 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
         await sl.get<Vault>().deleteAll();
         await sl.get<SharedPrefsUtil>().deleteAll();
         checkLoggedIn(retry: true, legacyStorage: false);
-      } else if (Platform.isAndroid && e.toString().contains("flutter_secure") && !legacyStorage) {
+      } else if (Platform.isAndroid &&
+          e.toString().contains("flutter_secure") &&
+          !legacyStorage) {
         /// Fallback secure storage
         /// A very small percentage of users are encountering issues writing to the
         /// Android keyStore using the flutter_secure_storage plugin.
@@ -340,13 +352,16 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
       setState(() {
         StateContainer.of(context).updateLanguage(setting);
       });
-    });    
+    });
   }
 
   void setDeviceLocaleAndCurrency() {
     setState(() {
       StateContainer.of(context).deviceLocale = Localizations.localeOf(context);
-      sl.get<SharedPrefsUtil>().getCurrency(StateContainer.of(context).deviceLocale).then((currency) {
+      sl
+          .get<SharedPrefsUtil>()
+          .getCurrency(StateContainer.of(context).deviceLocale)
+          .then((currency) {
         StateContainer.of(context).curCurrency = currency;
       });
     });

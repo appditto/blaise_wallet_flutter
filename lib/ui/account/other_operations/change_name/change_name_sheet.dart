@@ -99,9 +99,9 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          toUppercase(AppLocalization.of(context)
-                              .changeNameSheetHeader
-                              ,context),
+                          toUppercase(
+                              AppLocalization.of(context).changeNameSheetHeader,
+                              context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -152,7 +152,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
                                   controller: _nameController,
                                   focusNode: _nameFocus,
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter(RegExp(
+                                    FilteringTextInputFormatter.allow(RegExp(
                                         r'[0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()\-+{}[\]_:"|<>,\.\?\/~]')),
                                     PascalNameFormatter()
                                   ],

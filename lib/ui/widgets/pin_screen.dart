@@ -211,7 +211,8 @@ class _PinScreenState extends State<PinScreen>
                             _awaitingConfirmation = true;
                             _dotStates = List.filled(
                                 PIN_LENGTH, FontAwesomeIcons.circle);
-                            _header = AppLocalization.of(context).confirmPINParagraph;
+                            _header =
+                                AppLocalization.of(context).confirmPINParagraph;
                           });
                         } else {
                           // First and second pins match
@@ -281,7 +282,7 @@ class _PinScreenState extends State<PinScreen>
     }
     // Main scaffold that holds everything
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       // A Stack to achive the overlap between background gradient and number pad
       body: LayoutBuilder(

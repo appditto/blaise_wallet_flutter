@@ -116,9 +116,10 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          toUppercase(AppLocalization.of(context)
-                              .listForSaleSheetHeader
-                              ,context),
+                          toUppercase(
+                              AppLocalization.of(context)
+                                  .listForSaleSheetHeader,
+                              context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -229,7 +230,9 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                       String text =
                                           await UserDataUtil.getQRData(
                                               DataType.ACCOUNT,
-                                              StateContainer.of(context).curTheme.scannerTheme);
+                                              StateContainer.of(context)
+                                                  .curTheme
+                                                  .scannerTheme);
                                       if (text != null) {
                                         receiverFocusNode.unfocus();
                                         receiverController.text = text;
@@ -237,7 +240,7 @@ class _ListForSaleSheetState extends State<ListForSaleSheet> {
                                     },
                                   ),
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter(
+                                    FilteringTextInputFormatter.allow(
                                         RegExp("[0-9-]")),
                                     PascalAccountFormatter()
                                   ],

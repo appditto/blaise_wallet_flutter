@@ -43,7 +43,7 @@ class _IntroDecryptAndImportPrivateKeyPageState
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
         body: TapOutsideUnfocus(
             child: LayoutBuilder(
@@ -191,13 +191,14 @@ class _IntroDecryptAndImportPrivateKeyPageState
           context: context,
           builder: (_) => DialogOverlay(
                 title: AppLocalization.of(context).keyTypeNotSupportedHeader,
-                confirmButtonText: toUppercase(AppLocalization.of(context).okayGoBackButton, context),
+                confirmButtonText: toUppercase(
+                    AppLocalization.of(context).okayGoBackButton, context),
                 feeDialog: true,
                 body: TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          AppLocalization.of(context).keyTypeNotSupportedParagraph,
+                      text: AppLocalization.of(context)
+                          .keyTypeNotSupportedParagraph,
                       style: AppStyles.paragraph(context),
                     )
                   ],

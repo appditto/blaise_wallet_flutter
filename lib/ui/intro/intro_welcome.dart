@@ -16,7 +16,6 @@ class IntroWelcomePage extends StatefulWidget {
 }
 
 class _IntroWelcomePageState extends State<IntroWelcomePage> {
-
   List<DialogListItem> getLanguageList() {
     List<DialogListItem> ret = [];
     AvailableLanguage.values.forEach((AvailableLanguage value) {
@@ -25,10 +24,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
           option: setting.getDisplayName(context),
           action: () {
             if (setting != StateContainer.of(context).curLanguage) {
-              sl
-                  .get<SharedPrefsUtil>()
-                  .setLanguage(setting)
-                  .then((result) {
+              sl.get<SharedPrefsUtil>().setLanguage(setting).then((result) {
                 StateContainer.of(context).updateLanguage(setting);
               });
             }
@@ -37,7 +33,6 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
     });
     return ret;
   }
-
 
   @override
   void initState() {
@@ -48,7 +43,7 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
@@ -130,12 +125,17 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(120.0)),
                                 child: Container(
-                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-100),
-                                  padding: EdgeInsetsDirectional.only(start: 4, end: 4),
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width -
+                                              100),
+                                  padding: EdgeInsetsDirectional.only(
+                                      start: 4, end: 4),
                                   child: AutoSizeText.rich(
                                     TextSpan(children: [
                                       TextSpan(
-                                        text: AppLocalization.of(context).languageColonHeader,
+                                        text: AppLocalization.of(context)
+                                            .languageColonHeader,
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: StateContainer.of(context)
@@ -153,7 +153,9 @@ class _IntroWelcomePageState extends State<IntroWelcomePage> {
                                             fontWeight: FontWeight.w600),
                                       ),
                                       TextSpan(
-                                        text: StateContainer.of(context).curLanguage.getDisplayName(context),
+                                        text: StateContainer.of(context)
+                                            .curLanguage
+                                            .getDisplayName(context),
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: StateContainer.of(context)

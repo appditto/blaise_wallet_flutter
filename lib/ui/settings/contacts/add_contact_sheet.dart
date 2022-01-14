@@ -104,9 +104,9 @@ class _AddContactSheetState extends State<AddContactSheet> {
                         width: MediaQuery.of(context).size.width - 130,
                         alignment: Alignment(0, 0),
                         child: AutoSizeText(
-                          toUppercase(AppLocalization.of(context)
-                              .addContactSheetHeader
-                              ,context),
+                          toUppercase(
+                              AppLocalization.of(context).addContactSheetHeader,
+                              context),
                           style: AppStyles.header(context),
                           maxLines: 1,
                           stepGranularity: 0.1,
@@ -190,7 +190,9 @@ class _AddContactSheetState extends State<AddContactSheet> {
                                       String text =
                                           await UserDataUtil.getQRData(
                                               DataType.ACCOUNT,
-                                              StateContainer.of(context).curTheme.scannerTheme);
+                                              StateContainer.of(context)
+                                                  .curTheme
+                                                  .scannerTheme);
                                       if (text != null) {
                                         addressController.text = text;
                                       }
@@ -201,7 +203,8 @@ class _AddContactSheetState extends State<AddContactSheet> {
                             controller: addressController,
                             focusNode: addressFocusNode,
                             inputFormatters: [
-                              WhitelistingTextInputFormatter(RegExp("[0-9-]")),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp("[0-9-]")),
                               PascalAccountFormatter()
                             ],
                             onChanged: (newText) {

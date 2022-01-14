@@ -83,11 +83,15 @@ abstract class WalletBase with Store {
 
   @action
   Future<dynamic> getBalanceAndInsertBorrowed() async {
-    if (borrowedAccount != null && !this.walletAccounts.contains(borrowedAccount.account)) {
-      RPCResponse resp = await rpcClient.makeRpcRequest(GetAccountRequest(account: borrowedAccount.account.account));
+    if (borrowedAccount != null &&
+        !this.walletAccounts.contains(borrowedAccount.account)) {
+      RPCResponse resp = await rpcClient.makeRpcRequest(
+          GetAccountRequest(account: borrowedAccount.account.account));
       if (resp is PascalAccount) {
         resp.isBorrowed = true;
-        this.walletAccounts.removeWhere((acct) => acct.account == borrowedAccount.account);
+        this
+            .walletAccounts
+            .removeWhere((acct) => acct.account == borrowedAccount.account);
         this.walletAccounts.add(resp);
         return resp;
       }
@@ -97,7 +101,8 @@ abstract class WalletBase with Store {
 
   @action
   Future<dynamic> updateBorrowed() async {
-    BorrowResponse resp = await HttpAPI.getBorrowed(PublicKeyCoder().encodeToBase58(this.publicKey));
+    BorrowResponse resp = await HttpAPI.getBorrowed(
+        PublicKeyCoder().encodeToBase58(this.publicKey));
     if (resp == null) {
       isBorrowEligible = false;
     } else if (resp.account == null) {
@@ -114,14 +119,15 @@ abstract class WalletBase with Store {
   @action
   Future<dynamic> initiateBorrow() async {
     if (isBorrowEligible) {
-      BorrowResponse resp = await HttpAPI.borrowAccount(PublicKeyCoder().encodeToBase58(this.publicKey));
+      BorrowResponse resp = await HttpAPI.borrowAccount(
+          PublicKeyCoder().encodeToBase58(this.publicKey));
       if (resp == null) {
         isBorrowEligible = false;
       } else {
         isBorrowEligible = false;
         borrowedAccount = resp;
         return await this.getBalanceAndInsertBorrowed();
-      }      
+      }
     }
     return null;
   }
@@ -149,15 +155,13 @@ abstract class WalletBase with Store {
   @action
   Future<List<PascalAccount>> findAccountsWithNameLike(String name) async {
     // TODO - this RPC request is broken when exact is set to false
-    FindAccountsRequest findAccountsRequest = FindAccountsRequest(
-      name: name,
-      exact: true
-    );
+    FindAccountsRequest findAccountsRequest =
+        FindAccountsRequest(name: name, exact: true);
     RPCResponse resp = await this.rpcClient.makeRpcRequest(findAccountsRequest);
     if (resp.isError) {
       ErrorResponse err = resp;
       log.d("findaccounts returned error ${err.errorMessage}");
-      return null;      
+      return null;
     }
     AccountsResponse accountsResponse = resp;
     return accountsResponse.accounts;
@@ -186,14 +190,21 @@ abstract class WalletBase with Store {
       return false;
     }
     AccountsResponseBorrowed accountsResponse = resp;
-    bool hasCustomDaemon = (await sl.get<SharedPrefsUtil>().getRpcUrl()) != AppConstants.DEFAULT_RPC_HTTP_URL;
+    bool hasCustomDaemon = (await sl.get<SharedPrefsUtil>().getRpcUrl()) !=
+        AppConstants.DEFAULT_RPC_HTTP_URL;
     if (hasCustomDaemon) {
-      PascalAccount borrowedAccount = this.walletAccounts.firstWhere((acct) => acct.isBorrowed, orElse: () => null);
-      if (borrowedAccount != null && !accountsResponse.accounts.contains(borrowedAccount)) {
+      PascalAccount borrowedAccount = this
+          .walletAccounts
+          .firstWhere((acct) => acct.isBorrowed, orElse: () => null);
+      if (borrowedAccount != null &&
+          !accountsResponse.accounts.contains(borrowedAccount)) {
         accountsResponse.accounts.add(borrowedAccount);
       }
     } else if (accountsResponse.borrowedAccount != null) {
-      accountsResponse.accounts.where((acct) => acct.account == accountsResponse.borrowedAccount.account).forEach((acct) {
+      accountsResponse.accounts
+          .where((acct) =>
+              acct.account == accountsResponse.borrowedAccount.account)
+          .forEach((acct) {
         acct.isBorrowed = true;
       });
       this.borrowedAccount = accountsResponse.borrowedAccount;
@@ -206,24 +217,22 @@ abstract class WalletBase with Store {
       this.hasExceededBorrowLimit = !accountsResponse.borrowEligible;
     }
     // Check for freepasa account
-    AccountNumber freepasaAccount = await sl.get<SharedPrefsUtil>().getFreepasaAccount();
+    AccountNumber freepasaAccount =
+        await sl.get<SharedPrefsUtil>().getFreepasaAccount();
     if (freepasaAccount != null) {
       PascalAccount fpasaAccount = PascalAccount(
-        account: freepasaAccount,
-        balance: Currency('0'),
-        isFreepasa: true
-      );
+          account: freepasaAccount, balance: Currency('0'), isFreepasa: true);
       fpasaAccount.name = AccountName("");
       if (!accountsResponse.accounts.contains(fpasaAccount)) {
         accountsResponse.accounts.add(fpasaAccount);
       }
-    } 
+    }
     this.walletAccounts = accountsResponse.accounts;
     Currency totalBalance = Currency('0');
     this.walletAccounts.forEach((acct) {
       totalBalance += acct.balance;
     });
-    if (hasCustomDaemon) { 
+    if (hasCustomDaemon) {
       this.updateBorrowed();
     }
     this.totalWalletBalance = totalBalance;
@@ -233,10 +242,11 @@ abstract class WalletBase with Store {
 
   @action
   Account getAccountState(PascalAccount account) {
-    accountStateMap.putIfAbsent(account.account.account, () => Account(rpcClient: this.rpcClient, account: account));
+    accountStateMap.putIfAbsent(account.account.account,
+        () => Account(rpcClient: this.rpcClient, account: account));
     return accountStateMap[account.account.account];
   }
-  
+
   @action
   void changeRpcUrl(String rpcUrl) {
     this.rpcClient = RPCClient(rpcAddress: rpcUrl);
@@ -256,7 +266,10 @@ abstract class WalletBase with Store {
 
   @action
   void updateAccountName(PascalAccount account, AccountName newName) {
-    this.walletAccounts.where((acct) => acct.account == account.account).forEach((pa) {
+    this
+        .walletAccounts
+        .where((acct) => acct.account == account.account)
+        .forEach((pa) {
       pa.name = newName;
     });
     if (this.accountStateMap.containsKey(account.account.account)) {
@@ -280,6 +293,8 @@ abstract class WalletBase with Store {
 
   @action
   bool shouldHaveFee() {
+    return true;
+    /*
     for (Account accountState in accountStateMap.values) {
       if (accountState.operations == null) {
         continue;
@@ -288,17 +303,24 @@ abstract class WalletBase with Store {
         return true;
       }
     }
-    return false;
+    return false;*/
   }
 
   @action
-  String getLocalCurrencyDisplay({AvailableCurrency currency, Currency amount, int decimalDigits}) {
+  String getLocalCurrencyDisplay(
+      {AvailableCurrency currency, Currency amount, int decimalDigits}) {
     if (localCurrencyPrice == null) {
       return null;
     }
     currency = currency ?? AvailableCurrency(AvailableCurrencyEnum.USD);
-    Decimal converted = Decimal.parse(localCurrencyPrice.toString()) * Decimal.parse(amount.toStringOpt());
-    return NumberFormat.currency(locale:currency.getLocale().toString(), name: currency.getIso4217Code(), symbol: currency.getCurrencySymbol(), decimalDigits: decimalDigits).format(converted.toDouble());
+    Decimal converted = Decimal.parse(localCurrencyPrice.toString()) *
+        Decimal.parse(amount.toStringOpt());
+    return NumberFormat.currency(
+            locale: currency.getLocale().toString(),
+            name: currency.getIso4217Code(),
+            symbol: currency.getCurrencySymbol(),
+            decimalDigits: decimalDigits)
+        .format(converted.toDouble());
   }
 
   /// Websocket Actions
@@ -321,11 +343,19 @@ abstract class WalletBase with Store {
       this.publicKey = Keys.fromPrivateKey(privKey).publicKey;
     }
     String uuid = await sl.get<SharedPrefsUtil>().getUuid();
-    AvailableCurrency curCurrency = await sl.get<SharedPrefsUtil>().getCurrency(Locale("en", "US"));
-    String fcmToken = await FirebaseMessaging().getToken();
-    bool notificationsEnabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
+    AvailableCurrency curCurrency =
+        await sl.get<SharedPrefsUtil>().getCurrency(Locale("en", "US"));
+    String fcmToken = await FirebaseMessaging.instance.getToken();
+    bool notificationsEnabled =
+        await sl.get<SharedPrefsUtil>().getNotificationsOn();
     sl.get<WSClient>().clearQueue();
-    sl.get<WSClient>().queueRequest(SubscribeRequest(currency:curCurrency.getIso4217Code(), uuid:uuid, account: this.activeAccount == null ? null : this.activeAccount.account, fcmToken: fcmToken, notificationEnabled: notificationsEnabled, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
+    sl.get<WSClient>().queueRequest(SubscribeRequest(
+        currency: curCurrency.getIso4217Code(),
+        uuid: uuid,
+        account: this.activeAccount == null ? null : this.activeAccount.account,
+        fcmToken: fcmToken,
+        notificationEnabled: notificationsEnabled,
+        b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
     sl.get<WSClient>().processQueue();
   }
 
@@ -337,14 +367,19 @@ abstract class WalletBase with Store {
       this.publicKey = Keys.fromPrivateKey(privKey).publicKey;
     }
     bool enabled = await sl.get<SharedPrefsUtil>().getNotificationsOn();
-    String fcmToken = await FirebaseMessaging().getToken();
-    sl.get<WSClient>().sendRequest(FcmUpdateRequest(account: account.account, enabled: enabled, fcmToken: fcmToken, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
+    String fcmToken = await FirebaseMessaging.instance.getToken();
+    sl.get<WSClient>().sendRequest(FcmUpdateRequest(
+        account: account.account,
+        enabled: enabled,
+        fcmToken: fcmToken,
+        b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
   }
 
   @action
   Future<void> fcmDeleteAccount(AccountNumber account) async {
-    String fcmToken = await FirebaseMessaging().getToken();
-    sl.get<WSClient>().sendRequest(FcmDeleteAccountRequest(account: account.account, fcmToken: fcmToken));
+    String fcmToken = await FirebaseMessaging.instance.getToken();
+    sl.get<WSClient>().sendRequest(
+        FcmDeleteAccountRequest(account: account.account, fcmToken: fcmToken));
   }
 
   @action
@@ -357,23 +392,31 @@ abstract class WalletBase with Store {
     if (walletLoading) {
       return;
     }
-    bool enabled = forceDisable ? false : await sl.get<SharedPrefsUtil>().getNotificationsOn();
-    String fcmToken = await FirebaseMessaging().getToken();
+    bool enabled = forceDisable
+        ? false
+        : await sl.get<SharedPrefsUtil>().getNotificationsOn();
+    String fcmToken = await FirebaseMessaging.instance.getToken();
     List<int> accounts = [];
     for (PascalAccount acct in walletAccounts) {
       if (!acct.isBorrowed) {
         accounts.add(acct.account.account);
       }
     }
-    sl.get<WSClient>().sendRequest(FcmUpdateBulkRequest(accounts: accounts, enabled: enabled, fcmToken: fcmToken, b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
+    sl.get<WSClient>().sendRequest(FcmUpdateBulkRequest(
+        accounts: accounts,
+        enabled: enabled,
+        fcmToken: fcmToken,
+        b58pubkey: PublicKeyCoder().encodeToBase58(this.publicKey)));
   }
 
   @action
   void addNewOp(PascalOperation op) {
     this.accountStateMap.forEach((k, acct) {
-      if (op.senders.isNotEmpty && op.senders[0].sendingAccount == acct.account.account) {
+      if (op.senders.isNotEmpty &&
+          op.senders[0].sendingAccount == acct.account.account) {
         acct.addNewOperation(op);
-      } else if (op.receivers.isNotEmpty && op.receivers[0].receivingAccount == acct.account.account) {
+      } else if (op.receivers.isNotEmpty &&
+          op.receivers[0].receivingAccount == acct.account.account) {
         acct.addNewOperation(op);
       }
     });

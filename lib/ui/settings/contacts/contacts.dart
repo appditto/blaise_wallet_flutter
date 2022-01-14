@@ -140,53 +140,63 @@ class _ContactsPageState extends State<ContactsPage> {
 
   Future<void> _importContacts() async {
     UIUtil.cancelLockEvent();
-    String filePath = await FilePicker.getFilePath(
-        type: FileType.custom, allowedExtensions: ["txt"]);
-    File f = File(filePath);
-    if (!await f.exists()) {
-      UIUtil.showSnackbar(
-          AppLocalization.of(context).failedToImportContactsError, context);
-      return;
-    }
-    try {
-      String contents = await f.readAsString();
-      Iterable contactsJson = json.decode(contents);
-      List<Contact> contacts = List();
-      List<Contact> contactsToAdd = List();
-      contactsJson.forEach((contact) {
-        contacts.add(Contact.fromJson(contact));
-      });
-      for (Contact contact in contacts) {
-        if (!await sl.get<DBHelper>().contactExistsWithName(contact.name) &&
-            !await sl
-                .get<DBHelper>()
-                .contactExistsWithAccount(contact.account)) {
-          // Contact doesnt exist, make sure name and address are valid
-          if (contact.account != null &&
-              contact.account.toString().length > 0) {
-            if (contact.name.length <= 20) {
-              contactsToAdd.add(contact);
+    FilePickerResult result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ["txt"]);
+    if (result != null) {
+      File f = File(result.files.single.path);
+      if (!await f.exists()) {
+        UIUtil.showSnackbar(
+            AppLocalization.of(context).failedToImportContactsError, context);
+        return;
+      }
+      try {
+        String contents = await f.readAsString();
+        Iterable contactsJson = json.decode(contents);
+        List<Contact> contacts = List.empty();
+        List<Contact> contactsToAdd = List.empty();
+        contactsJson.forEach((contact) {
+          contacts.add(Contact.fromJson(contact));
+        });
+        for (Contact contact in contacts) {
+          if (!await sl.get<DBHelper>().contactExistsWithName(contact.name) &&
+              !await sl
+                  .get<DBHelper>()
+                  .contactExistsWithAccount(contact.account)) {
+            // Contact doesnt exist, make sure name and address are valid
+            if (contact.account != null &&
+                contact.account.toString().length > 0) {
+              if (contact.name.length <= 20) {
+                contactsToAdd.add(contact);
+              }
             }
           }
         }
-      }
-      // Save all the new contacts and update states
-      int numSaved = await sl.get<DBHelper>().saveContacts(contactsToAdd);
-      if (numSaved > 0) {
-        _updateContacts();
-        EventTaxiImpl.singleton().fire(ContactModifiedEvent(
-            contact: Contact(name: "", account: AccountNumber.fromInt(0))));
+        // Save all the new contacts and update states
+        int numSaved = await sl.get<DBHelper>().saveContacts(contactsToAdd);
+        if (numSaved > 0) {
+          _updateContacts();
+          EventTaxiImpl.singleton().fire(ContactModifiedEvent(
+              contact: Contact(name: "", account: AccountNumber.fromInt(0))));
+          UIUtil.showSnackbar(
+              AppLocalization.of(context)
+                  .successfullyImportedContactsParagraph
+                  .replaceAll("%1", numSaved.toString()),
+              context);
+        } else {
+          UIUtil.showSnackbar(
+              AppLocalization.of(context).noContactsToImportError, context);
+        }
+      } catch (e) {
+        log.e(e.toString());
         UIUtil.showSnackbar(
-            AppLocalization.of(context)
-                .successfullyImportedContactsParagraph
-                .replaceAll("%1", numSaved.toString()),
-            context);
-      } else {
-        UIUtil.showSnackbar(
-            AppLocalization.of(context).noContactsToImportError, context);
+            AppLocalization.of(context).failedToImportContactsError, context);
+        return;
       }
-    } catch (e) {
-      log.e(e.toString());
+    } else {
+      // Cancelled by user
+      log.e("FilePicker cancelled by user");
       UIUtil.showSnackbar(
           AppLocalization.of(context).failedToImportContactsError, context);
       return;
@@ -197,7 +207,7 @@ class _ContactsPageState extends State<ContactsPage> {
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Stack(

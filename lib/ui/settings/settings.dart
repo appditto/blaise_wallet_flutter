@@ -154,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(

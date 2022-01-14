@@ -31,10 +31,7 @@ class CountryCode {
   }
 
   factory CountryCode.fromJson(Map<String, dynamic> json) {
-    return CountryCode(
-      isoCode: json['iso'],
-      displayName: json['text']
-    );
+    return CountryCode(isoCode: json['iso'], displayName: json['text']);
   }
 }
 
@@ -53,23 +50,25 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   String requestId;
 
   Future<List<CountryCode>> readCountryCodeFromAssets() async {
-    return CountryCode.fromJsonList(
-      json.decode(await DefaultAssetBundle.of(context).loadString("assets/country_phone_map.json"))
-    );
+    return CountryCode.fromJsonList(json.decode(
+        await DefaultAssetBundle.of(context)
+            .loadString("assets/country_phone_map.json")));
   }
 
   CountryCode getDefaultCountryCode(List<CountryCode> list) {
     String locale = Localizations.localeOf(context).countryCode.toUpperCase();
-    return list.firstWhere((cc) => cc.isoCode == locale, orElse: () => list.firstWhere((cc) => cc.isoCode == 'US'));
+    return list.firstWhere((cc) => cc.isoCode == locale,
+        orElse: () => list.firstWhere((cc) => cc.isoCode == 'US'));
   }
 
   List<Widget> _getCountryCodeForPicker() {
     List<Widget> ret = [];
     _countryCodes.forEach((value) {
-      ret.add(Center(child: Text(
+      ret.add(Center(
+          child: Text(
         value?.displayName,
         style: AppStyles.paragraphMedium(context),
-        )));
+      )));
     });
     return ret;
   }
@@ -85,7 +84,9 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
       setState(() {
         _countryCodes = values;
         _selectedCountry = getDefaultCountryCode(values);
-        _cupertinoPickerController = FixedExtentScrollController(initialItem: _countryCodes.indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
+        _cupertinoPickerController = FixedExtentScrollController(
+            initialItem: _countryCodes
+                .indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
       });
     });
   }
@@ -131,7 +132,10 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           width: MediaQuery.of(context).size.width - 130,
                           alignment: Alignment(0, 0),
                           child: AutoSizeText(
-                            toUppercase(AppLocalization.of(context).freeAccountSheetHeader, context),
+                            toUppercase(
+                                AppLocalization.of(context)
+                                    .freeAccountSheetHeader,
+                                context),
                             style: AppStyles.header(context),
                             maxLines: 1,
                             stepGranularity: 0.1,
@@ -154,7 +158,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                           alignment: Alignment(-1, 0),
                           margin: EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
                           child: AutoSizeText(
-                            AppLocalization.of(context).enterPhoneNumberParagraph,
+                            AppLocalization.of(context)
+                                .enterPhoneNumberParagraph,
                             maxLines: 3,
                             stepGranularity: 0.1,
                             style: AppStyles.paragraph(context),
@@ -175,7 +180,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 30, 30, 0),
                                   child: AutoSizeText(
-                                    AppLocalization.of(context).countryCodeTextFieldHeader,
+                                    AppLocalization.of(context)
+                                        .countryCodeTextFieldHeader,
                                     style: AppStyles.textFieldLabel(context),
                                     maxLines: 1,
                                     stepGranularity: 0.1,
@@ -183,68 +189,71 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      start: 30, end: 30),
-                                  child: FlatButton(
-                                    onPressed: () {
-                                      if (_countryCodes == null) {
-                                        return;
-                                      }
-                                      showCountryCodePicker();
-                                    },
-                                    padding: EdgeInsets.all(0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        // Container for country code
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              60,
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 14, 0, 0),
-                                          child: AutoSizeText.rich(
-                                            TextSpan(children: [
-                                              TextSpan(
-                                                text: _selectedCountry?.displayName,
-                                                style: AppStyles.paragraphMedium(
-                                                    context),
-                                              ),
-                                            ]),
-                                            maxLines: 1,
-                                            stepGranularity: 0.1,
-                                            textAlign: TextAlign.start,
+                                    margin: EdgeInsetsDirectional.only(
+                                        start: 30, end: 30),
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        if (_countryCodes == null) {
+                                          return;
+                                        }
+                                        showCountryCodePicker();
+                                      },
+                                      padding: EdgeInsets.all(0),
+                                      child: Column(
+                                        children: <Widget>[
+                                          // Container for country code
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                60,
+                                            margin:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 14, 0, 0),
+                                            child: AutoSizeText.rich(
+                                              TextSpan(children: [
+                                                TextSpan(
+                                                  text: _selectedCountry
+                                                      ?.displayName,
+                                                  style:
+                                                      AppStyles.paragraphMedium(
+                                                          context),
+                                                ),
+                                              ]),
+                                              maxLines: 1,
+                                              stepGranularity: 0.1,
+                                              textAlign: TextAlign.start,
+                                            ),
                                           ),
-                                        ),
-                                        // Container for the underline
-                                        Container(
-                                          width: double.maxFinite,
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 10, 0, 0),
-                                          height: 1,
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .primary,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ),
+                                          // Container for the underline
+                                          Container(
+                                            width: double.maxFinite,
+                                            margin:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 10, 0, 0),
+                                            height: 1,
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .primary,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                                 // Container for phone number field
                                 Container(
                                   margin: EdgeInsetsDirectional.fromSTEB(
                                       30, 30, 30, 40),
                                   child: AppTextField(
-                                    label: AppLocalization.of(context).phoneNumberTextFieldHeader,
+                                    label: AppLocalization.of(context)
+                                        .phoneNumberTextFieldHeader,
                                     style: AppStyles.paragraphMedium(context),
                                     controller: _phoneNumberController,
                                     maxLines: 1,
                                     inputType: TextInputType.phone,
                                     inputFormatters: [
                                       PhoneNumberFormatter(),
-                                      WhitelistingTextInputFormatter(RegExp("[0-9-]"))
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp("[0-9-]"))
                                     ],
                                     onChanged: (text) {
                                       if (mounted && this._showPhoneError) {
@@ -257,7 +266,10 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                                 ),
                                 // Error Text
                                 ErrorContainer(
-                                  errorText: this._showPhoneError ? AppLocalization.of(context).invalidPhoneNumberParagraph : "",
+                                  errorText: this._showPhoneError
+                                      ? AppLocalization.of(context)
+                                          .invalidPhoneNumberParagraph
+                                      : "",
                                 ),
                               ],
                             ),
@@ -271,7 +283,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                     children: <Widget>[
                       AppButton(
                         type: AppButtonType.Primary,
-                        text: AppLocalization.of(context).sendConfirmationButton,
+                        text:
+                            AppLocalization.of(context).sendConfirmationButton,
                         buttonTop: true,
                         onPressed: () async {
                           if (this.requestId == null) {
@@ -281,21 +294,18 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
                             if (result != null) {
                               this.requestId = result;
                               AppSheets.showBottomSheet(
-                                context: context,
-                                widget: ConfirmFreeAccountSheet(
-                                  requestId: result,
-                                ),
-                                noBlur: true
-                              );
+                                  context: context,
+                                  widget: ConfirmFreeAccountSheet(
+                                    requestId: result,
+                                  ),
+                                  noBlur: true);
                             }
                           } else {
-                              AppSheets.showBottomSheet(
+                            AppSheets.showBottomSheet(
                                 context: context,
                                 widget: ConfirmFreeAccountSheet(
-                                  requestId: this.requestId
-                                ),
-                                noBlur: true
-                              );                            
+                                    requestId: this.requestId),
+                                noBlur: true);
                           }
                         },
                       ),
@@ -326,30 +336,30 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
     OverlayState overlayState = Overlay.of(context);
     _overlay = OverlayEntry(
       builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          color: StateContainer.of(context).curTheme.overlay20,
+          child: Center(
+            child: //Container for the animation
+                Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: MediaQuery.of(context).padding.top),
+              //Width/Height ratio for the animation is needed because BoxFit is not working as expected
               width: double.maxFinite,
-              height: double.maxFinite,
-              color: StateContainer.of(context).curTheme.overlay20,
+              height: MediaQuery.of(context).size.width,
               child: Center(
-                child: //Container for the animation
-                    Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).padding.top),
-                  //Width/Height ratio for the animation is needed because BoxFit is not working as expected
-                  width: double.maxFinite,
-                  height: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: FlareActor(
-                      StateContainer.of(context).curTheme.animationGetAccount,
-                      animation: "main",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: FlareActor(
+                  StateContainer.of(context).curTheme.animationGetAccount,
+                  animation: "main",
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
     overlayState.insert(_overlay);
   }
@@ -360,19 +370,19 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
       context: context,
       builder: (context) {
         return Container(
-          height: MediaQuery.of(context).size.height*0.4,
+          height: MediaQuery.of(context).size.height * 0.4,
           child: Material(
             child: CupertinoPicker(
-              backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
-              useMagnifier: true,
-              magnification: 1.5,
-              scrollController: _cupertinoPickerController,
-              onSelectedItemChanged: (index) {
-                countrySelection = _countryCodes[index];
-              },
-              itemExtent: 30,
-              children: _getCountryCodeForPicker()
-            ),
+                backgroundColor:
+                    StateContainer.of(context).curTheme.backgroundPrimary,
+                useMagnifier: true,
+                magnification: 1.5,
+                scrollController: _cupertinoPickerController,
+                onSelectedItemChanged: (index) {
+                  countrySelection = _countryCodes[index];
+                },
+                itemExtent: 30,
+                children: _getCountryCodeForPicker()),
           ),
         );
       },
@@ -380,7 +390,9 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
     if (countrySelection != null) {
       setState(() {
         _selectedCountry = countrySelection;
-        _cupertinoPickerController = FixedExtentScrollController(initialItem: _countryCodes.indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
+        _cupertinoPickerController = FixedExtentScrollController(
+            initialItem: _countryCodes
+                .indexWhere((cc) => cc.isoCode == _selectedCountry.isoCode));
       });
     }
   }
@@ -388,7 +400,8 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
   // Submit request, return request ID if successful
   Future<String> onSubmitted() async {
     // Validate phone number
-    if (_phoneNumberController.text.replaceAll(RegExp(r"[^0-9]"), "").length < 5) {
+    if (_phoneNumberController.text.replaceAll(RegExp(r"[^0-9]"), "").length <
+        5) {
       if (mounted) {
         setState(() {
           _showPhoneError = true;
@@ -398,13 +411,13 @@ class _GetFreeAccountSheetState extends State<GetFreeAccountSheet> {
     }
     // Make free pasa request
     String response = await HttpAPI.getFreePASA(
-      _selectedCountry.isoCode,
-      _phoneNumberController.text,
-      PublicKeyCoder().encodeToBase58(walletState.publicKey)
-    );
+        _selectedCountry.isoCode,
+        _phoneNumberController.text,
+        PublicKeyCoder().encodeToBase58(walletState.publicKey));
     // Error occured if null, otherwise move on to verification screen
     if (response == null) {
-      UIUtil.showSnackbar(AppLocalization.of(context).somethingWentWrongError, context);
+      UIUtil.showSnackbar(
+          AppLocalization.of(context).somethingWentWrongError, context);
       return null;
     }
     return response;

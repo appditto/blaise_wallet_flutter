@@ -44,7 +44,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
         body: TapOutsideUnfocus(
             child: LayoutBuilder(
@@ -137,7 +137,9 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                       String text =
                                           await UserDataUtil.getQRData(
                                               DataType.RAW,
-                                              StateContainer.of(context).curTheme.scannerTheme);
+                                              StateContainer.of(context)
+                                                  .curTheme
+                                                  .scannerTheme);
                                       if (text != null) {
                                         if (privateKeyIsValid(text) ||
                                             privateKeyIsEncrypted(text)) {
@@ -149,7 +151,7 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
                                     },
                                   ),
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter(RegExp(
+                                    FilteringTextInputFormatter.allow(RegExp(
                                         "[a-fA-F0-9]")), // Hex characters
                                     UpperCaseTextFormatter()
                                   ],
@@ -259,12 +261,13 @@ class _IntroImportPrivateKeyPageState extends State<IntroImportPrivateKeyPage> {
             builder: (_) => DialogOverlay(
                   title: AppLocalization.of(context).keyTypeNotSupportedHeader,
                   warningStyle: true,
-                  confirmButtonText: AppLocalization.of(context).okayGoBackButton,
+                  confirmButtonText:
+                      AppLocalization.of(context).okayGoBackButton,
                   body: TextSpan(
                     children: [
                       TextSpan(
-                        text:
-                            AppLocalization.of(context).keyTypeNotSupportedParagraph,
+                        text: AppLocalization.of(context)
+                            .keyTypeNotSupportedParagraph,
                         style: AppStyles.paragraph(context),
                       )
                     ],

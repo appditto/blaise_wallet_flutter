@@ -371,7 +371,7 @@ class _AccountPageState extends State<AccountPage>
     return Scaffold(
       drawerEdgeDragWidth: 200,
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       endDrawer: SizedBox(
           width: double.infinity,
           child: Drawer(child: SettingsPage(account: accountState))),
@@ -556,9 +556,10 @@ class _AccountPageState extends State<AccountPage>
                                         margin: EdgeInsetsDirectional.fromSTEB(
                                             12, 0, 12, 0),
                                         child: AutoSizeText(
-                                          toUppercase(AppLocalization.of(context)
-                                              .accountBalanceHeader
-                                              ,context),
+                                          toUppercase(
+                                              AppLocalization.of(context)
+                                                  .accountBalanceHeader,
+                                              context),
                                           style:
                                               AppStyles.paragraphTextLightSmall(
                                                   context),
@@ -764,9 +765,7 @@ class _AccountPageState extends State<AccountPage>
                                                           .padding
                                                           .bottom) /
                                                       2))) -
-                                      ((MediaQuery.of(context)
-                                              .padding
-                                              .bottom) +
+                                      ((MediaQuery.of(context).padding.bottom) +
                                           (24 -
                                               (MediaQuery.of(context)
                                                       .padding
@@ -774,80 +773,78 @@ class _AccountPageState extends State<AccountPage>
                                                   2)) -
                                       50 -
                                       20,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                      margin: EdgeInsetsDirectional
-                                          .fromSTEB(30, 0, 30, 0),
-                                      child: Observer(
-                                        builder: (context) {
-                                          String msgStr = "";
-                                          List<TextSpan> msg;
-                                          if ((walletState
-                                                      .borrowedAccount !=
-                                                  null &&
-                                              walletState
-                                                  .borrowedAccount
-                                                  .paid) || accountState.paid) {
-                                            msgStr = AppLocalization.of(
-                                                    context)
-                                                .borrowedAccountPaidParagraph;
-                                            msg = formatLocalizedColors(
-                                                context, msgStr);
-                                          } else {
-                                            formatExpiryDate(walletState
-                                                .borrowedAccount
-                                                ?.expiry);
-                                            msgStr = AppLocalization.of(
-                                                    context)
-                                                .borrowedAccountParagraph
-                                                .replaceAll("%1",
-                                                    accountPrice)
-                                                .replaceAll("%2",
-                                                    untilExpirationDays)
-                                                .replaceAll("%3",
-                                                    untilExpirationHours)
-                                                .replaceAll('%4',
-                                                    untilExpirationMinutes);
-                                            msg = formatLocalizedColors(
-                                                context, msgStr);
-                                          }
-                                          return AutoSizeText.rich(
-                                            TextSpan(children: msg),
-                                            stepGranularity: 0.5,
-                                            maxLines: 10,
-                                            minFontSize: 8,
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyle(fontSize: 14),
-                                          );
-                                        },
-                                      )),
-                                  // Container for the illustration
-                                  Container(
-                                    margin: EdgeInsetsDirectional.only(
-                                      top: 24,
-                                      bottom: 24,
-                                    ),
-                                    child: SvgRepaintAsset(
-                                        asset:
-                                            StateContainer.of(context)
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  30, 0, 30, 0),
+                                          child: Observer(
+                                            builder: (context) {
+                                              String msgStr = "";
+                                              List<TextSpan> msg;
+                                              if ((walletState.borrowedAccount !=
+                                                          null &&
+                                                      walletState
+                                                          .borrowedAccount
+                                                          .paid) ||
+                                                  accountState.paid) {
+                                                msgStr = AppLocalization.of(
+                                                        context)
+                                                    .borrowedAccountPaidParagraph;
+                                                msg = formatLocalizedColors(
+                                                    context, msgStr);
+                                              } else {
+                                                formatExpiryDate(walletState
+                                                    .borrowedAccount?.expiry);
+                                                msgStr = AppLocalization.of(
+                                                        context)
+                                                    .borrowedAccountParagraph
+                                                    .replaceAll(
+                                                        "%1", accountPrice)
+                                                    .replaceAll("%2",
+                                                        untilExpirationDays)
+                                                    .replaceAll("%3",
+                                                        untilExpirationHours)
+                                                    .replaceAll('%4',
+                                                        untilExpirationMinutes);
+                                                msg = formatLocalizedColors(
+                                                    context, msgStr);
+                                              }
+                                              return AutoSizeText.rich(
+                                                TextSpan(children: msg),
+                                                stepGranularity: 0.5,
+                                                maxLines: 10,
+                                                minFontSize: 8,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(fontSize: 14),
+                                              );
+                                            },
+                                          )),
+                                      // Container for the illustration
+                                      Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                          top: 24,
+                                          bottom: 24,
+                                        ),
+                                        child: SvgRepaintAsset(
+                                            asset: StateContainer.of(context)
                                                 .curTheme
                                                 .illustrationBorrowed,
-                                        width: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                            0.8,
-                                        height: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                            0.8 *
-                                            132 /
-                                            295),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8 *
+                                                132 /
+                                                295),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
                                 ),
                               )))
                       :
@@ -863,9 +860,10 @@ class _AccountPageState extends State<AccountPage>
                                           24, 18, 24, 4),
                                       alignment: Alignment(-1, 0),
                                       child: AutoSizeText(
-                                        toUppercase(AppLocalization.of(context)
-                                            .operationsHeader
-                                            ,context),
+                                        toUppercase(
+                                            AppLocalization.of(context)
+                                                .operationsHeader,
+                                            context),
                                         style: AppStyles.headerSmall(context),
                                         textAlign: TextAlign.left,
                                         stepGranularity: 0.5,
@@ -1063,7 +1061,9 @@ class _AccountPageState extends State<AccountPage>
                                       context: context,
                                       widget: SendSheet(
                                           account: accountState.account,
-                                          localCurrency: StateContainer.of(context).curCurrency),
+                                          localCurrency:
+                                              StateContainer.of(context)
+                                                  .curCurrency),
                                     );
                                   },
                                 );

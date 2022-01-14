@@ -15,16 +15,17 @@ class HttpAPI {
   static const String API_URL = 'https://blaiseapi.appditto.com/v1';
   static Logger log = sl.get<Logger>();
 
-
   static Future<BorrowResponse> getBorrowed(String b58pubkey) async {
     try {
       GetBorrowedRequest request = GetBorrowedRequest(b58pubkey: b58pubkey);
-      http.Response response = await http.post(API_URL, body: json.encode(request.toJson()));
+      http.Response response = await http.post(Uri.parse(API_URL),
+          body: json.encode(request.toJson()));
       if (response.statusCode != 200) {
         return null;
       }
       Map<dynamic, dynamic> jsonResp = json.decode(response.body);
-      if (jsonResp.containsKey('borrowed_account') && jsonResp['borrowed_account'] != '') {
+      if (jsonResp.containsKey('borrowed_account') &&
+          jsonResp['borrowed_account'] != '') {
         GetBorrowedResponse bResp = GetBorrowedResponse.fromJson(jsonResp);
         return bResp.account;
       } else if (jsonResp['borrowed_account'] == '') {
@@ -39,7 +40,8 @@ class HttpAPI {
   static Future<BorrowResponse> borrowAccount(String b58pubkey) async {
     try {
       BorrowRequest request = BorrowRequest(b58pubkey: b58pubkey);
-      http.Response response = await http.post(API_URL, body: json.encode(request.toJson()));
+      http.Response response = await http.post(Uri.parse(API_URL),
+          body: json.encode(request.toJson()));
       if (response.statusCode != 200) {
         return null;
       }
@@ -56,14 +58,13 @@ class HttpAPI {
 
   /// Request a FreePASA, using phone number
   /// Response is a request ID, which can be used in the verify phone number request
-  static Future<String> getFreePASA(String isoCode, String phoneNumber, String b58pubkey) async {
+  static Future<String> getFreePASA(
+      String isoCode, String phoneNumber, String b58pubkey) async {
     try {
       FreePASAGetRequest request = FreePASAGetRequest(
-        phoneIso: isoCode,
-        phoneNumber: phoneNumber,
-        b58pubkey: b58pubkey
-      );
-      http.Response response = await http.post(API_URL, body: json.encode(request.toJson()));
+          phoneIso: isoCode, phoneNumber: phoneNumber, b58pubkey: b58pubkey);
+      http.Response response = await http.post(Uri.parse(API_URL),
+          body: json.encode(request.toJson()));
       if (response.statusCode != 200) {
         return null;
       }
@@ -81,11 +82,10 @@ class HttpAPI {
   /// Response is the account that has been received
   static Future<int> verifyFreePASA(String requestId, String code) async {
     try {
-      FreePASAVerifyRequest request = FreePASAVerifyRequest(
-        requestId: requestId,
-        code: code
-      );
-      http.Response response = await http.post(API_URL, body: json.encode(request.toJson()));
+      FreePASAVerifyRequest request =
+          FreePASAVerifyRequest(requestId: requestId, code: code);
+      http.Response response = await http.post(Uri.parse(API_URL),
+          body: json.encode(request.toJson()));
       if (response.statusCode != 200) {
         log.d("RECEIVED STATUS CODE NOT OK ${response.statusCode}");
         return null;

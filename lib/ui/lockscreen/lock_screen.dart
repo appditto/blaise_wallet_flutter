@@ -109,14 +109,15 @@ class _LockScreenPageState extends State<LockScreenPage> {
     setState(() {
       _showUnlockButton = true;
     });
-    bool authenticated = await AuthUtil().authenticateWithBiometrics(AppLocalization.of(context).authenticateToUnlockParagraph);
+    bool authenticated = await AuthUtil().authenticateWithBiometrics(
+        AppLocalization.of(context).authenticateToUnlockParagraph);
     if (authenticated) {
       _goHome();
     } else {
       setState(() {
         _showUnlockButton = true;
       });
-    }    
+    }
   }
 
   Future<void> _authenticatePin({bool transitions = false}) async {
@@ -126,24 +127,26 @@ class _LockScreenPageState extends State<LockScreenPage> {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (BuildContext context) {
           return PinScreen(
-            type: PinOverlayType.ENTER_PIN,
-            expectedPin: expectedPin,
-            description: AppLocalization.of(context).enterPINToUnlockParagraph,
-            onSuccess: (pin) {
-              _goHome();
-            });
+              type: PinOverlayType.ENTER_PIN,
+              expectedPin: expectedPin,
+              description:
+                  AppLocalization.of(context).enterPINToUnlockParagraph,
+              onSuccess: (pin) {
+                _goHome();
+              });
         }),
       );
     } else {
       Navigator.of(context).push(
         NoPushTransitionRoute(builder: (BuildContext context) {
           return PinScreen(
-            type: PinOverlayType.ENTER_PIN,
-            expectedPin: expectedPin,
-            description: AppLocalization.of(context).enterPINToUnlockParagraph,
-            onSuccess: (pin) {
-              _goHome();
-            });
+              type: PinOverlayType.ENTER_PIN,
+              expectedPin: expectedPin,
+              description:
+                  AppLocalization.of(context).enterPINToUnlockParagraph,
+              onSuccess: (pin) {
+                _goHome();
+              });
         }),
       );
     }
@@ -153,7 +156,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
           _showUnlockButton = true;
         });
       }
-    });    
+    });
   }
 
   Future<void> _authenticate({bool transitions = false}) async {
@@ -241,7 +244,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
   Widget build(BuildContext context) {
     // The main scaffold that holds everything
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: StateContainer.of(context).curTheme.backgroundPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) => Column(
@@ -271,7 +274,8 @@ class _LockScreenPageState extends State<LockScreenPage> {
                                 MediaQuery.of(context).size.width * 0.08),
                         alignment: Alignment(0, 0),
                         child: Text(
-                          toUppercase(AppLocalization.of(context).lockedHeader, context),
+                          toUppercase(AppLocalization.of(context).lockedHeader,
+                              context),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 30,
@@ -322,7 +326,8 @@ class _LockScreenPageState extends State<LockScreenPage> {
                               onPressed: () {
                                 logoutPressed();
                               },
-                              padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
                               // A row for logout icon and text
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -346,11 +351,12 @@ class _LockScreenPageState extends State<LockScreenPage> {
                                     child: AutoSizeText(
                                       AppLocalization.of(context).logoutHeader,
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                        fontFamily: "Metropolis",
-                                        color: StateContainer.of(context).curTheme.backgroundPrimary
-                                      ),
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          fontFamily: "Metropolis",
+                                          color: StateContainer.of(context)
+                                              .curTheme
+                                              .backgroundPrimary),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       minFontSize: 8,
