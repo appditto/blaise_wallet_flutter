@@ -44,7 +44,7 @@ dependencies:
   qr_flutter: ^3.0.1
 
   # Banner style alerts
-  oktoast: ^2.3.2
+  oktoast: ^3.0.0
 
   # Service locator
   get_it: ^6.0.0

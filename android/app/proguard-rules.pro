@@ -12,3 +12,9 @@
 -keep class com.apptreesoftware.** { *; }
 ## Webview plugin
 -keep class com.flutter_webview_plugin.** { *; }
+## Realm
+-keep class io.realm.** { *; }
+## Vault
+-keep class com.bottlerocketstudios.** { *; }
+## File picker
+-keep class androidx.lifecycle.DefaultLifecycleObserver
