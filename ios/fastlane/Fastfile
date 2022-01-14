@@ -66,7 +66,7 @@ platform :ios do
       )
       cert(
         keychain_path: "~/Library/Keychains/#{keychain_name}-db",
-        keychain_password: keychain_passwor,
+        keychain_password: keychain_password,
         api_key: api_key 
       )
       sigh(
