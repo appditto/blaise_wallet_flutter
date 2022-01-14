@@ -1,0 +1,74 @@
+name: DEPLOY_RELEASE
+
+on:
+  push:
+    tags:
+    - 'v*-release-ios'
+
+jobs:
+  run_tests:
+    name: Run tests
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@master   
+
+      - name: Run tests
+        run: |
+          flutter pub get
+          flutter test
+
+  build_ios:
+    name: Build iOS app
+    needs: run_tests
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Build artifacts
+        working-directory: ios
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          TEMP_KEYCHAIN_NAME: ${{ secrets.TEMP_KEYCHAIN_NAME }}
+          TEMP_KEYCHAIN_PASSWORD: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+          API_KEY_ID: ${{ secrets.FASTLANE_API_KEY_ID }}
+          API_KEY_ISSUER: ${{ secrets.FASTLANE_API_KEY_ISSUER }}
+          API_KEY_FILEPATH: ${{ secrets.FASTLANE_API_KEY_FILEPATH }}          
+          GEM_HOME: ~/.gems
+        run: |
+          /usr/local/bin/fastlane build_ios
+
+      - name: Upload IPA
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: ios-ipa
+          path: ios/Runner.ipa
+
+  deploy_ios:
+    name: Deploy iOS production
+    needs: build_ios
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@master   
+      - name: Download IPA
+        uses: actions/download-artifact@v2
+        with:
+          name: ios-ipa
+
+      - name: Set workspace in env
+        run: echo "workspace=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
+      - name: Deploy iOS 
+        if: success()
+        working-directory: ios
+        env:
+          IPA_PATH: ${{ env.workspace }}/Runner.ipa   
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}   
+          API_KEY_ID: ${{ secrets.FASTLANE_API_KEY_ID }}
+          API_KEY_ISSUER: ${{ secrets.FASTLANE_API_KEY_ISSUER }}
+          API_KEY_FILEPATH: ${{ secrets.FASTLANE_API_KEY_FILEPATH }}          
+          GEM_HOME: ~/.gems
+        run: |
+          /usr/local/bin/fastlane deploy_ios
