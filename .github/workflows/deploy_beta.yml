@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@master   
       - name: Download AAB
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android-aab
 
@@ -113,7 +113,7 @@ jobs:
     steps:
       - uses: actions/checkout@master   
       - name: Download IPA
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ios-ipa
 
